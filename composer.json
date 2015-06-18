@@ -1,0 +1,30 @@
+{
+	"name": "ixolit/ixopay-php-client",
+	"description": "Ixopay Client for PHP",
+	"keywords": ["ixopay"],
+	"license": "proprietary",
+	"type": "project",
+	"require": {
+        "acquia/http-hmac-php": "*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "~4.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Ixopay\\Client\\": "src/"
+		}
+	},
+    "repositories": [
+      {"type": "composer", "url": "https://composer.ixolit.com/repo/private/"},
+      {"type": "composer", "url": "https://composer.ixolit.com/repo/packagist/"}
+    ],
+	"scripts": {
+
+	},
+	"config": {
+		"preferred-install": "source"
+	},
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
