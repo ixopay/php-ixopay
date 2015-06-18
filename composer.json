@@ -5,7 +5,8 @@
 	"license": "proprietary",
 	"type": "project",
 	"require": {
-        "acquia/http-hmac-php": "*"
+        "acquia/http-hmac-php": "*",
+        "guzzlehttp/guzzle": "5.*"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0"
