@@ -1,11 +1,14 @@
 <?php
 
 namespace Ixopay\Client;
+use Acquia\Hmac\RequestAuthenticator;
 use GuzzleHttp\Message\Request;
 use Acquia\Hmac\RequestSigner;
 use Acquia\Hmac\Digest\Version1;
 use Acquia\Hmac\Guzzle5\HmacAuthPlugin;
 use GuzzleHttp\Stream\Stream;
+use Ixopay\Client\Hmac\KeyLoader;
+use Ixopay\Http\Response;
 
 /**
  * Class Client
@@ -45,7 +48,7 @@ class Client {
         $signer->setProvider('IxoPay');
 
         $client = new \GuzzleHttp\Client();
-        $client->getEmitter()->attach(new HmacAuthPlugin($signer, $this->apiKey, $this->sharedSecret));
+        $request->getEmitter()->attach(new HmacAuthPlugin($signer, $this->apiKey, $this->sharedSecret));
 
         $response = $client->send($request);
 
@@ -59,7 +62,6 @@ class Client {
     protected function buildRequest($xml) {
         $body = Stream::factory($xml);
         $request = new Request('POST', self::$ixopayUrl, array(), $body);
-        //$request->addHeader('Date', time());
 
         return $request;
     }
