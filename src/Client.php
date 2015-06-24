@@ -8,6 +8,14 @@ use Acquia\Hmac\Digest\Version1;
 use Acquia\Hmac\Guzzle5\HmacAuthPlugin;
 use GuzzleHttp\Stream\Stream;
 use Ixopay\Client\Hmac\KeyLoader;
+use Ixopay\Client\Transaction\Capture;
+use Ixopay\Client\Transaction\Debit;
+use Ixopay\Client\Transaction\Deregister;
+use Ixopay\Client\Transaction\Preauthorize;
+use Ixopay\Client\Transaction\Refund;
+use Ixopay\Client\Transaction\Register;
+use Ixopay\Client\Transaction\Result;
+use Ixopay\Client\Transaction\Void;
 use Ixopay\Http\Response;
 
 /**
@@ -41,6 +49,8 @@ class Client {
         $this->sharedSecret = $sharedSecret;
     }
 
+
+
     public function signAndSendXml($xml) {
         $request = $this->buildRequest($xml);
 
@@ -66,7 +76,7 @@ class Client {
         return $request;
     }
 
-    protected function sendRequest() {
+    public function sendRequest() {
 
     }
 
@@ -98,7 +108,86 @@ class Client {
         $this->sharedSecret = $sharedSecret;
     }
 
+    /**
+     * @param Register $transactionData
+     * @return Result
+     */
+    public function register(Register $transactionData) {
 
+    }
+
+    /**
+     * @param Register $transactionData
+     * @return Result
+     */
+    public function completeRegister(Register $transactionData) {
+
+    }
+
+    /**
+     * @param Deregister $transactionData
+     * @return Result
+     */
+    public function deregister(Deregister $transactionData) {
+
+    }
+
+    /**
+     * @param Preauthorize $transactionData
+     * @return Result
+     */
+    public function preauthorize(Preauthorize $transactionData) {
+
+    }
+
+    /**
+     * @param Preauthorize $transactionData
+     * @return Result
+     */
+    public function completePreauthorize(Preauthorize $transactionData) {
+
+    }
+
+    /**
+     * @param Void $transactionData
+     *
+     * @return Result
+     */
+    public function void(Void $transactionData) {
+
+    }
+
+    /**
+     * @param Capture $transactionData
+     * @return Result
+     */
+    public function capture(Capture $transactionData) {
+
+    }
+
+    /**
+     * @param Refund $transactionData
+     * @return Result
+     */
+    public function refund(Refund $transactionData) {
+
+    }
+
+    /**
+     * @param Debit $transactionData
+     * @return Result
+     */
+    public function debit(Debit $transactionData) {
+
+    }
+
+    /**
+     * @param Debit $transactionData
+     * @return Result
+     */
+    public function completeDebit(Debit $transactionData) {
+
+    }
 
 
 }
