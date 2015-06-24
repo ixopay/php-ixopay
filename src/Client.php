@@ -1,13 +1,9 @@
 <?php
 
 namespace Ixopay\Client;
-use Acquia\Hmac\RequestAuthenticator;
-use GuzzleHttp\Message\Request;
-use Acquia\Hmac\RequestSigner;
-use Acquia\Hmac\Digest\Version1;
-use Acquia\Hmac\Guzzle5\HmacAuthPlugin;
-use GuzzleHttp\Stream\Stream;
-use Ixopay\Client\Hmac\KeyLoader;
+use Ixopay\Client\Http\CurlClient;
+use Ixopay\Client\Http\Response;
+use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Deregister;
@@ -16,7 +12,6 @@ use Ixopay\Client\Transaction\Refund;
 use Ixopay\Client\Transaction\Register;
 use Ixopay\Client\Transaction\Result;
 use Ixopay\Client\Transaction\Void;
-use Ixopay\Http\Response;
 
 /**
  * Class Client
@@ -49,35 +44,75 @@ class Client {
         $this->sharedSecret = $sharedSecret;
     }
 
+    /**
+     * @param AbstractTransaction $transaction
+     * @return Result
+     */
+    public function sendTransaction(AbstractTransaction $transaction) {
+        $xml = '';
+
+        $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, self::$ixopayUrl);
+    }
 
 
-    public function signAndSendXml($xml) {
-        $request = $this->buildRequest($xml);
+    /**
+     * @param string $xml
+     * @param string $apiKey
+     * @param string $sharedSecret
+     * @param string $url
+     * @return Response
+     */
+    public function signAndSendXml($xml, $apiKey, $sharedSecret, $url) {
 
-        $signer = new RequestSigner(new Version1('sha512'));
-        $signer->setProvider('IxoPay');
+        $timestamp = (new \DateTime('now',new \DateTimeZone('UTC')))->format('D, d M Y H:i:s T');
 
-        $client = new \GuzzleHttp\Client();
-        $request->getEmitter()->attach(new HmacAuthPlugin($signer, $this->apiKey, $this->sharedSecret));
+        $path = parse_url($url, PHP_URL_PATH);
+        $query = parse_url($url, PHP_URL_QUERY);
+        $anchor = parse_url($url, PHP_URL_FRAGMENT);
 
-        $response = $client->send($request);
+        $requestUri = $path.($query ? '?'.$query : '').($anchor ? '#'.$anchor : '');
 
-        return $response;
+        $contentType = 'text/xml; charset=utf-8';
+
+        $signature = $this->createSignature($sharedSecret, 'POST', $xml, $contentType , $timestamp, $requestUri);
+        $authHeader = 'IxoPay ' . $apiKey . ':' . $signature;
+
+        $headers = array(
+            'Date: '.$timestamp,
+            'Authorization: '.$authHeader,
+            'Content-Type: '.$contentType
+        );
+
+        return $this->sendRequest($xml, $headers, $url);
+
     }
 
     /**
-     * @param $xml
-     * @return \GuzzleHttp\Message\Request
+     * @param string $sharedSecret
+     * @param string $method
+     * @param string $body
+     * @param string $contentType
+     * @param string $timestamp
+     * @param string $requestUri
+     * @return string
      */
-    protected function buildRequest($xml) {
-        $body = Stream::factory($xml);
-        $request = new Request('POST', self::$ixopayUrl, array(), $body);
+    protected function createSignature($sharedSecret, $method, $body, $contentType, $timestamp, $requestUri) {
+        $parts = array($method, md5($body), $contentType, $timestamp, '', $requestUri);
 
-        return $request;
+        $str = join("\n", $parts);
+        $digest = hash_hmac('sha512', $str, $sharedSecret, true);
+        return base64_encode($digest);
     }
 
-    public function sendRequest() {
-
+    /**
+     * @param string $body
+     * @param string $header
+     * @param string $url
+     * @return Response
+     */
+    public function sendRequest($body, $headers, $url) {
+        $curl = new CurlClient();
+        return $curl->post($url, $body, $headers);
     }
 
     /**
