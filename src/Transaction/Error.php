@@ -45,22 +45,16 @@ class Error {
     protected $adapterMessage;
 
     /**
-     * @var \Exception
-     */
-    protected $exception;
-
-    /**
      * @param string $message
      * @param int|null $code
      * @param string|null $adapterMessage
      * @param string|null $adapterCode
      */
-    public function __construct($message, $code=null, $adapterMessage=null, $adapterCode=null, \Exception $exception=null) {
+    public function __construct($message, $code=null, $adapterMessage=null, $adapterCode=null) {
         $this->message = $message;
         $this->code = $code ?: self::UNKNOWN;
         $this->adapterMessage = $adapterMessage;
         $this->adapterCode = $adapterCode;
-        $this->exception = $exception;
     }
 
     /**
@@ -94,24 +88,5 @@ class Error {
     {
         return $this->adapterMessage;
     }
-
-    /**
-     * @return \Exception
-     */
-    public function getException()
-    {
-        return $this->exception;
-    }
-
-    /**
-     * @param \Exception $exception
-     */
-    public function setException($exception)
-    {
-        $this->exception = $exception;
-    }
-
-
-
 
 }

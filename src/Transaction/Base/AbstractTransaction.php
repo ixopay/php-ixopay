@@ -42,13 +42,6 @@ class AbstractTransaction {
     protected $extraData = array();
 
     /**
-     * pass in data you received during transaction initiation in Result
-     *
-     * @var null
-     */
-    protected $dataForCompletion = null;
-
-    /**
      * @var Request
      */
     protected $request;
@@ -161,20 +154,6 @@ class AbstractTransaction {
     public function addExtraData($key, $value) {
         $this->extraData[$key] = $value;
         return $this;
-    }
-
-    /**
-     * @return null
-     */
-    public function getDataForCompletion() {
-        return $this->dataForCompletion;
-    }
-
-    /**
-     * @param null $dataForCompletion
-     */
-    public function setDataForCompletion($dataForCompletion) {
-        $this->dataForCompletion = $dataForCompletion;
     }
 
     /**

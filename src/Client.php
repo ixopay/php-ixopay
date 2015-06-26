@@ -23,7 +23,7 @@ class Client {
     /**
      * @var string
      */
-    protected static $ixopayUrl = 'http://ixopay.x/transaction';
+    protected static $ixopayUrl = 'http://gateway.ixopay.com/transaction';
 
     /**
      * @var string
@@ -36,10 +36,24 @@ class Client {
     protected $sharedSecret;
 
     /**
+     * @var string
+     */
+    protected $username;
+
+    /**
+     * @var string
+     */
+    protected $password;
+
+    /**
+     * @param string $username
+     * @param string $password
      * @param string $apiKey
      * @param string $sharedSecret
      */
-    public function __construct($apiKey, $sharedSecret) {
+    public function __construct($username, $password, $apiKey, $sharedSecret) {
+        $this->username = $username;
+        $this->password = $password;
         $this->apiKey = $apiKey;
         $this->sharedSecret = $sharedSecret;
     }
@@ -64,27 +78,9 @@ class Client {
      */
     public function signAndSendXml($xml, $apiKey, $sharedSecret, $url) {
 
-        $timestamp = (new \DateTime('now',new \DateTimeZone('UTC')))->format('D, d M Y H:i:s T');
-
-        $path = parse_url($url, PHP_URL_PATH);
-        $query = parse_url($url, PHP_URL_QUERY);
-        $anchor = parse_url($url, PHP_URL_FRAGMENT);
-
-        $requestUri = $path.($query ? '?'.$query : '').($anchor ? '#'.$anchor : '');
-
-        $contentType = 'text/xml; charset=utf-8';
-
-        $signature = $this->createSignature($sharedSecret, 'POST', $xml, $contentType , $timestamp, $requestUri);
-        $authHeader = 'IxoPay ' . $apiKey . ':' . $signature;
-
-        $headers = array(
-            'Date: '.$timestamp,
-            'Authorization: '.$authHeader,
-            'Content-Type: '.$contentType
-        );
-
-        return $this->sendRequest($xml, $headers, $url);
-
+        $curl = new CurlClient();
+        return $curl->sign($apiKey, $sharedSecret, $url, $xml)
+            ->post($url, $xml);
     }
 
     /**
@@ -102,17 +98,6 @@ class Client {
         $str = join("\n", $parts);
         $digest = hash_hmac('sha512', $str, $sharedSecret, true);
         return base64_encode($digest);
-    }
-
-    /**
-     * @param string $body
-     * @param string $header
-     * @param string $url
-     * @return Response
-     */
-    public function sendRequest($body, $headers, $url) {
-        $curl = new CurlClient();
-        return $curl->post($url, $body, $headers);
     }
 
     /**

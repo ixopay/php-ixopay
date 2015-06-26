@@ -23,10 +23,6 @@ class Result {
      */
     const RETURN_TYPE_HTML = 'HTML';
     /**
-     * transaction is finished, however you MUST verify the result through the corresponding completeXXX method of Client
-     */
-    const RETURN_TYPE_FINISHED_VERIFY = 'FINISHED_VERIFY';
-    /**
      * no result yet, keep polling for status by using completeXXX method
      */
     const RETURN_TYPE_PENDING = 'PENDING';
@@ -90,96 +86,6 @@ class Result {
      */
     protected $extraData = array();
 
-    /**
-     * data returned in here, must be passed to the completeXXX method
-     *
-     * @var array
-     */
-    protected $dataForCompletion = null;
-
-
-    /**
-     * @param bool $success
-     * @param int $returnType
-     */
-    public function __construct($success, $returnType, $referenceId = null) {
-        $this->success = $success;
-        $this->returnType = $returnType;
-        $this->referenceId = $referenceId;
-    }
-
-    /**
-     * create a result object with an error
-     *
-     * @param string $errorMessage
-     * @param int $errorCode
-     * @param string|null $adapterMessage
-     * @param string|null $adapterCode
-     * @return static
-     */
-    public static function createWithError($errorMessage, $errorCode=Error::UNKNOWN, $adapterMessage=null, $adapterCode=null) {
-        $inst = new static(false, self::RETURN_TYPE_ERROR);
-        $error = new Error($errorMessage, $errorCode, $adapterMessage, $adapterCode);
-        $inst->addError($error);
-        return $inst;
-    }
-
-    /**
-     * @param null|mixed $referenceId
-     * @return static
-     */
-    public static function createFinished($referenceId=null) {
-        return new static(true, self::RETURN_TYPE_FINISHED, $referenceId);
-    }
-
-    /**
-     * @param string $referenceId
-     * @param string $registrationId
-     * @return static
-     */
-    public static function createFinishedWithRegistration($referenceId=null, $registrationId=null) {
-        $inst = new static(true, self::RETURN_TYPE_FINISHED, $referenceId);
-        $inst->setRegistrationId($registrationId);
-        return $inst;
-    }
-
-    /**
-     * @param null|mixed $referenceId
-     * @param null|string $redirectUrl
-     * @return static
-     */
-    public static function createWithRedirect($referenceId = null, $redirectUrl = null) {
-        $inst = new static(true, self::RETURN_TYPE_REDIRECT, $referenceId);
-        $inst->setRedirectUrl($redirectUrl);
-        return $inst;
-    }
-
-    /**
-     * @param null|mixed $referenceId
-     * @param string $htmlContent
-     * @return static
-     */
-    public static function createWithHtml($referenceId=null, $htmlContent = "") {
-        $inst = new static(true, self::RETURN_TYPE_HTML, $referenceId);
-        $inst->setHtmlContent($htmlContent);
-        return $inst;
-    }
-
-    /**
-     * @param null|mixed $referenceId
-     * @return static
-     */
-    public static function createWithVerify($referenceId=null) {
-        return new static(true, self::RETURN_TYPE_FINISHED_VERIFY, $referenceId);
-    }
-
-    /**
-     * @param null|mixed $referenceId
-     * @return static
-     */
-    public static function createWithPending($referenceId=null) {
-        return new static(true, self::RETURN_TYPE_PENDING, $referenceId);
-    }
 
     /**
      * @param string $referenceId
@@ -237,6 +143,13 @@ class Result {
     public function addExtraData($key, $value) {
         $this->extraData[$key] = $value;
         return $this;
+    }
+
+    /**
+     * @param boolean $success
+     */
+    public function setSuccess($success) {
+        $this->success = $success;
     }
 
     /**
@@ -348,20 +261,6 @@ class Result {
      */
     public function setPaymentDescriptor($paymentDescriptor) {
         $this->paymentDescriptor = $paymentDescriptor;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForCompletion() {
-        return $this->dataForCompletion;
-    }
-
-    /**
-     * @param array $dataForCompletion
-     */
-    public function setDataForCompletion($dataForCompletion) {
-        $this->dataForCompletion = $dataForCompletion;
     }
 
     /**

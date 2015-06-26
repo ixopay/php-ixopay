@@ -30,6 +30,16 @@ class CurlClient implements ClientInterface{
 	];
 
     /**
+     * @var string
+     */
+    protected $serviceName = 'IxoPay';
+
+    /**
+     * @var array
+     */
+    protected $additionalHeaders = array();
+
+    /**
      *
      */
     public function __construct() {
@@ -99,8 +109,13 @@ class CurlClient implements ClientInterface{
 
 		$this->setOption(CURLOPT_URL, $url);
 
+        $allHeaders = array();
+        foreach ($this->mergeHeaders($headers, $this->additionalHeaders) as $k=>$v) {
+            $allHeaders[] = $k.': '.$v;
+        }
+
 		if (!empty($headers)) {
-			$this->setOption(CURLOPT_HTTPHEADER, $headers);
+			$this->setOption(CURLOPT_HTTPHEADER, $allHeaders);
 		}
 
 		$exec = CurlExec::getInstance($this->handle)->exec();
@@ -169,6 +184,46 @@ class CurlClient implements ClientInterface{
 		return $this->send(self::METHOD_PUT, $url, $headers);
 	}
 
+    public function sign($apiId, $sharedSecret, $url, $body, $headers = array()) {
+        $timestamp = (new \DateTime('now',new \DateTimeZone('UTC')))->format('D, d M Y H:i:s T');
+
+        $path = parse_url($url, PHP_URL_PATH);
+        $query = parse_url($url, PHP_URL_QUERY);
+        $anchor = parse_url($url, PHP_URL_FRAGMENT);
+
+        $requestUri = $path.($query ? '?'.$query : '').($anchor ? '#'.$anchor : '');
+
+        $contentType = 'text/xml; charset=utf-8';
+
+        $signature = $this->createSignature($sharedSecret, 'POST', $body, $contentType , $timestamp, $requestUri);
+        $authHeader = $this->serviceName.' ' . $apiId . ':' . $signature;
+
+        $this->additionalHeaders = array(
+            'Date' => $timestamp,
+            'Authorization' => $authHeader,
+            'Content-Type' => $contentType
+        );
+
+        return $this;
+    }
+
+    /**
+     * @param string $sharedSecret
+     * @param string $method
+     * @param string $body
+     * @param string $contentType
+     * @param string $timestamp
+     * @param string $requestUri
+     * @return string
+     */
+    protected function createSignature($sharedSecret, $method, $body, $contentType, $timestamp, $requestUri) {
+        $parts = array($method, md5($body), $contentType, $timestamp, '', $requestUri);
+
+        $str = join("\n", $parts);
+        $digest = hash_hmac('sha512', $str, $sharedSecret, true);
+        return base64_encode($digest);
+    }
+
     /**
      * @return int
      */
@@ -189,5 +244,33 @@ class CurlClient implements ClientInterface{
     private function getError() {
 		return curl_error($this->handle);
 	}
+
+    /**
+     * @param array $headers1
+     * @param array $headers2
+     * @return array
+     */
+    private function mergeHeaders($headers1, $headers2) {
+        $ret = array();
+        foreach ($headers1 as $k=>$v) {
+            if (is_numeric($k)) {
+                $name = substr($v, 0, strpos($v,':'));
+                $value = trim(substr($v, strpos($v, ':')+1));
+                $ret[$name] = $value;
+            } else {
+                $ret[$k] = $v;
+            }
+        }
+        foreach ($headers2 as $k=>$v) {
+            if (is_numeric($k)) {
+                $name = substr($v, 0, strpos($v,':'));
+                $value = trim(substr($v, strpos($v, ':')+1));
+                $ret[$name] = $value;
+            } else {
+                $ret[$k] = $v;
+            }
+        }
+        return $ret;
+    }
 
 }
