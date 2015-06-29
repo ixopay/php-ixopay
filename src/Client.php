@@ -68,7 +68,7 @@ class Client {
      */
     public function __construct($username, $password, $apiKey, $sharedSecret, $language=null, $testMode = false) {
         $this->username = $username;
-        $this->password = $password;
+        $this->setPassword($password);
         $this->apiKey = $apiKey;
         $this->sharedSecret = $sharedSecret;
         $this->language = $language;
@@ -80,6 +80,8 @@ class Client {
      * @return Result
      */
     public function sendTransaction($transactionMethod, AbstractTransaction $transaction) {
+
+
         $dom = $this->getGenerator()->generateTransaction($transactionMethod, $transaction, $this->username, $this->password, $this->language, $this->testMode);
         $xml = $dom->saveXML();
 
@@ -268,7 +270,7 @@ class Client {
      * @param string $password
      */
     public function setPassword($password) {
-        $this->password = $password;
+        $this->password = $this->hashPassword($password);
     }
 
     /**
@@ -313,5 +315,15 @@ class Client {
         return new Parser();
     }
 
+    /**
+     * @param string $password
+     * @return string
+     */
+    private function hashPassword($password) {
+        for ($i=0; $i < 10; $i++) {
+            $password = sha1($password);
+        }
+        return $password;
+    }
 
 }
