@@ -26,7 +26,7 @@ class Client {
     /**
      * @var string
      */
-    protected static $ixopayUrl = 'http://ixopay.x/transaction';
+    protected static $ixopayUrl = 'http://gateway.ixopay.com/transaction';
 
     /**
      * @var string
