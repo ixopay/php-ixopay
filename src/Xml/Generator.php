@@ -101,7 +101,6 @@ class Generator {
         if ($transaction->getExtraData()) {
             $this->appendExtraDataNodes($parentNode, 'extraData', $transaction->getExtraData());
         }
-        $this->_appendTextNode($parentNode, 'extraData', $transaction->getExtraData());
 
         if ($transaction->getRequest()) {
             $this->appendRequestNode($parentNode, 'request', $transaction->getRequest());

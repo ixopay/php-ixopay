@@ -3,12 +3,10 @@
 namespace Ixopay\Client\Exception;
 
 /**
- * Class TypeException
+ * Class ClientException
  *
  * @package Ixopay\Client\Exception
  */
-class TypeException extends ClientException {
-
-
+class ClientException extends \Exception {
 
 }

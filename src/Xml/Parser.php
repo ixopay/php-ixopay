@@ -61,7 +61,7 @@ class Parser {
                     $result->addExtraData($key, $value);
                     break;
                 default:
-                    if ($child->nodeName != '#text') {
+                    if ($child->nodeName != '#text' && $child->localName != 'exception') {
                         throw new InvalidValueException('Unexpected element "' . $child->nodeName . '"');
                     }
                     break;

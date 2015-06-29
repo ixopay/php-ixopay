@@ -114,7 +114,7 @@ class CurlClient implements ClientInterface{
             $allHeaders[] = $k.': '.$v;
         }
 
-		if (!empty($headers)) {
+		if (!empty($allHeaders)) {
 			$this->setOption(CURLOPT_HTTPHEADER, $allHeaders);
 		}
 

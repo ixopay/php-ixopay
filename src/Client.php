@@ -1,6 +1,7 @@
 <?php
 
 namespace Ixopay\Client;
+use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Http\CurlClient;
 use Ixopay\Client\Http\Response;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
@@ -12,6 +13,8 @@ use Ixopay\Client\Transaction\Refund;
 use Ixopay\Client\Transaction\Register;
 use Ixopay\Client\Transaction\Result;
 use Ixopay\Client\Transaction\Void;
+use Ixopay\Client\Xml\Generator;
+use Ixopay\Client\Xml\Parser;
 
 /**
  * Class Client
@@ -23,7 +26,7 @@ class Client {
     /**
      * @var string
      */
-    protected static $ixopayUrl = 'http://gateway.ixopay.com/transaction';
+    protected static $ixopayUrl = 'http://ixopay.x/transaction';
 
     /**
      * @var string
@@ -46,26 +49,48 @@ class Client {
     protected $password;
 
     /**
+     * @var string
+     */
+    protected $language;
+
+    /**
+     * @var bool
+     */
+    protected $testMode;
+
+    /**
      * @param string $username
      * @param string $password
      * @param string $apiKey
      * @param string $sharedSecret
+     * @param string $language
+     * @param bool $testMode
      */
-    public function __construct($username, $password, $apiKey, $sharedSecret) {
+    public function __construct($username, $password, $apiKey, $sharedSecret, $language=null, $testMode = false) {
         $this->username = $username;
         $this->password = $password;
         $this->apiKey = $apiKey;
         $this->sharedSecret = $sharedSecret;
+        $this->language = $language;
+        $this->testMode = $testMode;
     }
 
     /**
      * @param AbstractTransaction $transaction
      * @return Result
      */
-    public function sendTransaction(AbstractTransaction $transaction) {
-        $xml = '';
+    public function sendTransaction($transactionMethod, AbstractTransaction $transaction) {
+        $dom = $this->getGenerator()->generateTransaction($transactionMethod, $transaction, $this->username, $this->password, $this->language, $this->testMode);
+        $xml = $dom->saveXML();
 
-        $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, self::$ixopayUrl);
+        $response = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, self::$ixopayUrl);
+
+        if ($response->getErrorCode() || $response->getErrorMessage()) {
+            throw new ClientException('Request failed: '.$response->getErrorCode().' '.$response->getErrorMessage());
+        }
+
+        $parser = $this->getParser();
+        return $parser->parseResult($response->getBody());
     }
 
 
@@ -81,6 +106,96 @@ class Client {
         $curl = new CurlClient();
         return $curl->sign($apiKey, $sharedSecret, $url, $xml)
             ->post($url, $xml);
+    }
+
+    /**
+     * @param Register $transactionData
+     * @return Result
+     */
+    public function register(Register $transactionData) {
+        return $this->sendTransaction('register', $transactionData);
+    }
+
+    /**
+     * @param Register $transactionData
+     * @return Result
+     */
+    public function completeRegister(Register $transactionData) {
+        return $this->sendTransaction('completeRegister', $transactionData);
+    }
+
+    /**
+     * @param Deregister $transactionData
+     * @return Result
+     */
+    public function deregister(Deregister $transactionData) {
+        return $this->sendTransaction('deregister', $transactionData);
+    }
+
+    /**
+     * @param Preauthorize $transactionData
+     * @return Result
+     */
+    public function preauthorize(Preauthorize $transactionData) {
+        return $this->sendTransaction('preauthorize', $transactionData);
+    }
+
+    /**
+     * @param Preauthorize $transactionData
+     * @return Result
+     */
+    public function completePreauthorize(Preauthorize $transactionData) {
+        return $this->sendTransaction('completePreauthorize', $transactionData);
+    }
+
+    /**
+     * @param Void $transactionData
+     *
+     * @return Result
+     */
+    public function void(Void $transactionData) {
+        return $this->sendTransaction('void', $transactionData);
+    }
+
+    /**
+     * @param Capture $transactionData
+     * @return Result
+     */
+    public function capture(Capture $transactionData) {
+        return $this->sendTransaction('capture', $transactionData);
+    }
+
+    /**
+     * @param Refund $transactionData
+     * @return Result
+     */
+    public function refund(Refund $transactionData) {
+        return $this->sendTransaction('refund', $transactionData);
+    }
+
+    /**
+     * @param Debit $transactionData
+     * @return Result
+     */
+    public function debit(Debit $transactionData) {
+        return $this->sendTransaction('debit', $transactionData);
+    }
+
+    /**
+     * @param Debit $transactionData
+     * @return Result
+     */
+    public function completeDebit(Debit $transactionData) {
+        return $this->sendTransaction('completeDebit', $transactionData);
+    }
+
+    /**
+     * @param $requestBody
+     * @return Callback\Result
+     * @throws Exception\InvalidValueException
+     */
+    public function readPostback($requestBody) {
+        return $this->getParser()->parseCallback($requestBody);
     }
 
     /**
@@ -129,84 +244,73 @@ class Client {
     }
 
     /**
-     * @param Register $transactionData
-     * @return Result
+     * @return string
      */
-    public function register(Register $transactionData) {
-
+    public function getUsername() {
+        return $this->username;
     }
 
     /**
-     * @param Register $transactionData
-     * @return Result
+     * @param string $username
      */
-    public function completeRegister(Register $transactionData) {
-
+    public function setUsername($username) {
+        $this->username = $username;
     }
 
     /**
-     * @param Deregister $transactionData
-     * @return Result
+     * @return string
      */
-    public function deregister(Deregister $transactionData) {
-
+    public function getPassword() {
+        return $this->password;
     }
 
     /**
-     * @param Preauthorize $transactionData
-     * @return Result
+     * @param string $password
      */
-    public function preauthorize(Preauthorize $transactionData) {
-
+    public function setPassword($password) {
+        $this->password = $password;
     }
 
     /**
-     * @param Preauthorize $transactionData
-     * @return Result
+     * @return string
      */
-    public function completePreauthorize(Preauthorize $transactionData) {
-
+    public function getLanguage() {
+        return $this->language;
     }
 
     /**
-     * @param Void $transactionData
-     *
-     * @return Result
+     * @param string $language
      */
-    public function void(Void $transactionData) {
-
+    public function setLanguage($language) {
+        $this->language = $language;
     }
 
     /**
-     * @param Capture $transactionData
-     * @return Result
+     * @return boolean
      */
-    public function capture(Capture $transactionData) {
-
+    public function isTestMode() {
+        return $this->testMode;
     }
 
     /**
-     * @param Refund $transactionData
-     * @return Result
+     * @param boolean $testMode
      */
-    public function refund(Refund $transactionData) {
-
+    public function setTestMode($testMode) {
+        $this->testMode = $testMode;
     }
 
     /**
-     * @param Debit $transactionData
-     * @return Result
+     * @return Generator
      */
-    public function debit(Debit $transactionData) {
-
+    protected function getGenerator() {
+        return new Generator();
     }
 
     /**
-     * @param Debit $transactionData
-     * @return Result
+     * @return Parser
      */
-    public function completeDebit(Debit $transactionData) {
-
+    protected function getParser() {
+        return new Parser();
     }
 
 

@@ -7,6 +7,6 @@ namespace Ixopay\Client\Exception;
  *
  * @package Ixopay\Client\Exception
  */
-class InvalidValueException extends \Exception {
+class InvalidValueException extends ClientException {
 
 }
