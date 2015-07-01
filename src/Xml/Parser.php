@@ -83,9 +83,9 @@ class Parser {
         $document = new \DOMDocument('1.0', 'utf-8');
         $document->loadXML($xml);
 
-        $root = $document->getElementsByTagNameNS('http://www.ixolit.com/IxoPay/V2/Postback', 'postback');
+        $root = $document->getElementsByTagNameNS('http://www.ixolit.com/IxoPay/V2/Callback', 'callback');
         if ($root->length < 0) {
-            throw new InvalidValueException('XML does not contain a root "postback" element');
+            throw new InvalidValueException('XML does not contain a root "callback" element');
         }
         $root = $root->item(0);
 

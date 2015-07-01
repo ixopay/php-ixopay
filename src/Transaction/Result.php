@@ -153,6 +153,8 @@ class Result {
     }
 
     /**
+     * returns whether the transaction was successful or not
+     *
      * @return boolean
      */
     public function isSuccess()
@@ -161,6 +163,8 @@ class Result {
     }
 
     /**
+     * contains IxoPay's transaction id
+     *
      * @return string
      */
     public function getReferenceId()
@@ -169,6 +173,8 @@ class Result {
     }
 
     /**
+     * contains the redirect url if returnType = 'REDIRECT'
+     *
      * @return string
      */
     public function getRedirectUrl()
@@ -177,6 +183,8 @@ class Result {
     }
 
     /**
+     * contains the html content to render if returnType = 'HTML'
+     *
      * @return string
      */
     public function getHtmlContent()
@@ -218,6 +226,8 @@ class Result {
     }
 
     /**
+     * tells you how to proceed with the transaction
+     *
      * @return int
      */
     public function getReturnType()
@@ -234,6 +244,8 @@ class Result {
     }
 
     /**
+     * contains the registrationId if transaction was a register, or a debit/preauthorize with register
+     *
      * @return string
      */
     public function getRegistrationId()
@@ -250,6 +262,8 @@ class Result {
     }
 
     /**
+     * contains the descriptor shown on the customer's account statement (if any)
+     *
      * @return string
      */
     public function getPaymentDescriptor() {
@@ -264,6 +278,8 @@ class Result {
     }
 
     /**
+     * contains additional data for your purpose (e.g. credit card information)
+     *
      * @return \IxopayV2\Data\Result\ResultData
      */
     public function getReturnData()

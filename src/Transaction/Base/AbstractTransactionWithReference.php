@@ -42,6 +42,8 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * provide a reference transaction id (or registration id) here if necessary (i.e. for void/capture/refund or recurring debits)
+     *
      * @param string $referenceTransactionId
      */
     public function setReferenceTransactionId($referenceTransactionId)
@@ -59,6 +61,8 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * set a reference customer if (if instructed by documentation)
+     *
      * @param string $referenceCustomerId
      */
     public function setReferenceCustomerId($referenceCustomerId)

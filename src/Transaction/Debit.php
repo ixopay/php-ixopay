@@ -30,6 +30,8 @@ class Debit extends AbstractTransactionWithReference implements AmountableInterf
     }
 
     /**
+     * set true if you want to register a user vault together with the debit
+     *
      * @param boolean $withRegister
      */
     public function setWithRegister($withRegister)

@@ -30,6 +30,8 @@ class Preauthorize extends AbstractTransaction implements AmountableInterface, O
     }
 
     /**
+     * set true if you want to register a user vault together with the preauthorize
+     *
      * @param boolean $withRegister
      */
     public function setWithRegister($withRegister)

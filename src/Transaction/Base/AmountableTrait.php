@@ -28,6 +28,8 @@ trait AmountableTrait {
     }
 
     /**
+     * the amount you want to charge/refund etc.
+     *
      * @param mixed $amount
      */
     public function setAmount($amount)

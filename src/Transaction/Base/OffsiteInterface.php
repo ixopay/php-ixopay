@@ -15,6 +15,8 @@ interface OffsiteInterface {
     public function getDescription();
 
     /**
+     * description of your transaction (e.g. purchsed goods etc.)
+     *
      * @param string $description
      */
     public function setDescription($description);
@@ -25,6 +27,8 @@ interface OffsiteInterface {
     public function getSuccessUrl();
 
     /**
+     * the url to which IxoPay redirects after a successful transaction
+     *
      * @param string $successUrl
      */
     public function setSuccessUrl($successUrl);
@@ -35,6 +39,8 @@ interface OffsiteInterface {
     public function getCancelUrl();
 
     /**
+     * the url to which IxoPay redirects after a cancelled transaction
+     *
      * @param string $cancelUrl
      */
     public function setCancelUrl($cancelUrl);
@@ -45,6 +51,8 @@ interface OffsiteInterface {
     public function getErrorUrl();
 
     /**
+     * the url to which IxoPay redirects after a failed transaction
+     *
      * @param string $errorUrl
      */
     public function setErrorUrl($errorUrl);
@@ -55,6 +63,8 @@ interface OffsiteInterface {
     public function getCallbackUrl();
 
     /**
+     * the url to which IxoPay sends the Callback notification
+     *
      * @param string $callbackUrl
      */
     public function setCallbackUrl($callbackUrl);

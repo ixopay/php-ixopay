@@ -55,6 +55,8 @@ class AbstractTransaction {
     }
 
     /**
+     * set a required transaction token (if described by the documentation of a payment method)
+     *
      * @param string $transactionToken
      */
     public function setTransactionToken($transactionToken)
@@ -71,6 +73,9 @@ class AbstractTransaction {
     }
 
     /**
+     * this is your own transaction id
+     * NOTE: your transaction ids MUST be unique
+     *
      * @param string $transactionId
      */
     public function setTransactionId($transactionId)
@@ -88,6 +93,8 @@ class AbstractTransaction {
     }
 
     /**
+     * any additional id if required by the payment method
+     *
      * @param string $additionalId1
      */
     public function setAdditionalId1($additionalId1)
@@ -105,6 +112,8 @@ class AbstractTransaction {
     }
 
     /**
+     * any additional id if required by the payment method
+     *
      * @param string $additionalId2
      */
     public function setAdditionalId2($additionalId2)
@@ -122,6 +131,8 @@ class AbstractTransaction {
     }
 
     /**
+     * customer information
+     *
      * @param \IxopayV2\Data\Customer $customer
      */
     public function setCustomer($customer)
@@ -138,6 +149,8 @@ class AbstractTransaction {
     }
 
     /**
+     * any additional data if required by the payment method
+     *
      * @param array $extraData
      */
     public function setExtraData($extraData)
@@ -164,6 +177,8 @@ class AbstractTransaction {
     }
 
     /**
+     * provider request information here (if required by the payment method)
+     *
      * @param Request $request
      */
     public function setRequest($request) {

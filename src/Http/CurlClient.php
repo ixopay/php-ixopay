@@ -216,7 +216,7 @@ class CurlClient implements ClientInterface{
      * @param string $requestUri
      * @return string
      */
-    protected function createSignature($sharedSecret, $method, $body, $contentType, $timestamp, $requestUri) {
+    public function createSignature($sharedSecret, $method, $body, $contentType, $timestamp, $requestUri) {
         $parts = array($method, md5($body), $contentType, $timestamp, '', $requestUri);
 
         $str = join("\n", $parts);

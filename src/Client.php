@@ -29,31 +29,42 @@ class Client {
     protected static $ixopayUrl = 'http://gateway.ixopay.com/transaction';
 
     /**
+     * the api key given by the ixopay gateway
+     *
      * @var string
      */
     protected $apiKey;
 
     /**
+     * the shared secret belonging to the api key
+     *
      * @var string
      */
     protected $sharedSecret;
 
     /**
+     * authentication username of an API user
+     *
      * @var string
      */
     protected $username;
 
     /**
+     * authentication password of an API user
      * @var string
      */
     protected $password;
 
     /**
+     * language you want to use (optional)
+     *
      * @var string
      */
     protected $language;
 
     /**
+     * set to true if you want to perform a test transaction
+     *
      * @var bool
      */
     protected $testMode;
@@ -76,10 +87,12 @@ class Client {
     }
 
     /**
+     * build the xml out of the Transaction Object and sends it
+     *
      * @param AbstractTransaction $transaction
      * @return Result
      */
-    public function sendTransaction($transactionMethod, AbstractTransaction $transaction) {
+    protected function sendTransaction($transactionMethod, AbstractTransaction $transaction) {
 
 
         $dom = $this->getGenerator()->generateTransaction($transactionMethod, $transaction, $this->username, $this->password, $this->language, $this->testMode);
@@ -97,6 +110,8 @@ class Client {
 
 
     /**
+     * signs and send a well-formed transaction xml
+     *
      * @param string $xml
      * @param string $apiKey
      * @param string $sharedSecret
@@ -111,6 +126,10 @@ class Client {
     }
 
     /**
+     * register a new user vault
+     *
+     * NOTE: not all payment methods support this function
+     *
      * @param Register $transactionData
      * @return Result
      */
@@ -119,6 +138,10 @@ class Client {
     }
 
     /**
+     * complete a registration (or poll status)
+     *
+     * NOTE: not all payment methods support this function
+     *
      * @param Register $transactionData
      * @return Result
      */
@@ -127,6 +150,10 @@ class Client {
     }
 
     /**
+     * deregister a previously registered user vault
+     *
+     * NOTE: not all payment methods support this function
+     *
      * @param Deregister $transactionData
      * @return Result
      */
@@ -135,6 +162,10 @@ class Client {
     }
 
     /**
+     * preauthorize a transaction
+     *
+     * NOTE: not all payment methods support this function
+     *
      * @param Preauthorize $transactionData
      * @return Result
      */
@@ -143,6 +174,8 @@ class Client {
     }
 
     /**
+     * complete a preauthorize transaction (or poll status)
+     *
      * @param Preauthorize $transactionData
      * @return Result
      */
@@ -151,8 +184,9 @@ class Client {
     }
 
     /**
-     * @param Void $transactionData
+     * void a previously preauthorized transaction
      *
+     * @param Void $transactionData
      * @return Result
      */
     public function void(Void $transactionData) {
@@ -160,6 +194,8 @@ class Client {
     }
 
     /**
+     * capture a previously preauthorized transaction
+     *
      * @param Capture $transactionData
      * @return Result
      */
@@ -168,6 +204,8 @@ class Client {
     }
 
     /**
+     * refund a performed debit/capture
+     *
      * @param Refund $transactionData
      * @return Result
      */
@@ -176,6 +214,8 @@ class Client {
     }
 
     /**
+     * perform a debit
+     *
      * @param Debit $transactionData
      * @return Result
      */
@@ -184,6 +224,8 @@ class Client {
     }
 
     /**
+     * complete a debit (or poll status)
+     *
      * @param Debit $transactionData
      * @return Result
      */
@@ -192,29 +234,40 @@ class Client {
     }
 
     /**
-     * @param $requestBody
+     * parses the callback notification xml and returns a Result object
+     * you SHOULD verify the callback first by using $this->validateCallback();
+     *
+     * @param string $requestBody
      * @return Callback\Result
      * @throws Exception\InvalidValueException
      */
-    public function readPostback($requestBody) {
+    public function readCallback($requestBody) {
         return $this->getParser()->parseCallback($requestBody);
     }
 
     /**
-     * @param string $sharedSecret
-     * @param string $method
-     * @param string $body
-     * @param string $contentType
-     * @param string $timestamp
-     * @param string $requestUri
-     * @return string
+     * validates if the received callback notification is properly signed
+     *
+     * @param string $requestBody - the raw xml body of the received request
+     * @param string $requestQuery - the query part of your receiving script, e.g. "/callback_receive.php?someId=0815" (without the hostname and with the leading slash and all query parameters)
+     * @param $dateHeader - value of the header field "Date"
+     * @param $authorizationHeader - value of the header field "Authorization"
+     * @return bool - true if the signature is correct
      */
-    protected function createSignature($sharedSecret, $method, $body, $contentType, $timestamp, $requestUri) {
-        $parts = array($method, md5($body), $contentType, $timestamp, '', $requestUri);
+    public function validateCallback($requestBody, $requestQuery, $dateHeader, $authorizationHeader) {
+        $curl = new CurlClient();
+        $digest = $curl->createSignature($this->getSharedSecret(), 'POST', $requestBody, 'text/xml; charset=utf-8', $dateHeader, $requestQuery);
+        $expectedSig = 'IxoPay ' . $this->getApiKey() . ':' . $digest;
 
-        $str = join("\n", $parts);
-        $digest = hash_hmac('sha512', $str, $sharedSecret, true);
-        return base64_encode($digest);
+        if (strpos($authorizationHeader,'Authorization:') !== false) {
+            $authorizationHeader = trim(str_replace('Authorization:', '', $authorizationHeader));
+        }
+
+        if ($authorizationHeader === $expectedSig) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
