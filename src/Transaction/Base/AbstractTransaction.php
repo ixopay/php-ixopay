@@ -77,6 +77,8 @@ class AbstractTransaction {
      * NOTE: your transaction ids MUST be unique
      *
      * @param string $transactionId
+     *
+     * @return $this
      */
     public function setTransactionId($transactionId)
     {
@@ -96,6 +98,8 @@ class AbstractTransaction {
      * any additional id if required by the payment method
      *
      * @param string $additionalId1
+     *
+     * @return $this
      */
     public function setAdditionalId1($additionalId1)
     {
@@ -115,6 +119,8 @@ class AbstractTransaction {
      * any additional id if required by the payment method
      *
      * @param string $additionalId2
+     *
+     * @return $this
      */
     public function setAdditionalId2($additionalId2)
     {
@@ -123,7 +129,7 @@ class AbstractTransaction {
     }
 
     /**
-     * @return \IxopayV2\Data\Customer
+     * @return Customer
      */
     public function getCustomer()
     {
@@ -133,11 +139,14 @@ class AbstractTransaction {
     /**
      * customer information
      *
-     * @param \IxopayV2\Data\Customer $customer
+     * @param Customer $customer
+     *
+     * @return $this
      */
     public function setCustomer($customer)
     {
         $this->customer = $customer;
+        return $this;
     }
 
     /**
@@ -152,6 +161,8 @@ class AbstractTransaction {
      * any additional data if required by the payment method
      *
      * @param array $extraData
+     *
+     * @return $this
      */
     public function setExtraData($extraData)
     {
