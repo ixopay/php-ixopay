@@ -10,60 +10,73 @@ namespace Ixopay\Client\Http;
  */
 class CurlExec {
 
-	private $headerString = "";
-	private $headers = array();
-	private $body;
+    /**
+     * @var string
+     */
+    private $headerString = "";
+
+    /**
+     * @var array
+     */
+    private $headers = array();
+
+    /**
+     * @var string
+     */
+    private $body;
 
     /**
      * @param resource $handle
      */
-	public function __construct($handle) {
-		$this->handle = $handle;
-		curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, array($this, 'readHeaders'));
-		$this->reset();
-	}
+    public function __construct($handle) {
+        $this->handle = $handle;
+        curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, array($this, 'readHeaders'));
+        $this->reset();
+    }
 
     /**
      * @param resource $handle
+     *
      * @return CurlExec
      */
-	public static function getInstance($handle){
-		return new self($handle);
-	}
+    public static function getInstance($handle) {
+        return new self($handle);
+    }
 
     /**
      * @param resource $curl
-     * @param $headerLine
+     * @param string   $headerLine
+     *
      * @return int
      */
-	private function readHeaders($curl, $headerLine) {
-		$this->headerString .= $headerLine;
-		return strlen($headerLine);
-	}
+    private function readHeaders($curl, $headerLine) {
+        $this->headerString .= $headerLine;
+        return strlen($headerLine);
+    }
 
-	/**
-	 * @return $this
-	 */
-	public function exec(){
-		$this->reset();
+    /**
+     * @return $this
+     */
+    public function exec() {
+        $this->reset();
 
-		$this->body = curl_exec($this->handle);
-		$this->headers = $this->parseHeaderMessage($this->headerString);
+        $this->body = curl_exec($this->handle);
+        $this->headers = $this->parseHeaderMessage($this->headerString);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param $headerMessage
-	 * @return array
-	 */
-	private function parseHeaderMessage($headerMessage)
-    {
+    /**
+     * @param string $headerMessage
+     *
+     * @return array
+     */
+    private function parseHeaderMessage($headerMessage) {
 
-		$headers = array();
+        $headers = array();
 
         $lines = preg_split('/(\\r?\\n)/', $headerMessage, -1, PREG_SPLIT_DELIM_CAPTURE);
-        foreach($lines as $line) {
+        foreach ($lines as $line) {
 
             // Parse message headers
             if (strpos($line, ':')) {
@@ -84,27 +97,27 @@ class CurlExec {
         return $headers;
     }
 
-	/**
-	 * set default values
-	 */
-	private function reset() {
-		$this->headerString = "";
-		$this->headers = array();
-		$this->body = null;
-	}
+    /**
+     * set default values
+     */
+    private function reset() {
+        $this->headerString = "";
+        $this->headers = array();
+        $this->body = null;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getBody() {
-		return $this->body;
-	}
+    /**
+     * @return mixed
+     */
+    public function getBody() {
+        return $this->body;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getHeaders() {
-		return $this->headers;
-	}
+    /**
+     * @return array
+     */
+    public function getHeaders() {
+        return $this->headers;
+    }
 
 }

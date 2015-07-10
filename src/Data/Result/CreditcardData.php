@@ -3,7 +3,7 @@
 namespace Ixopay\Client\Data\Result;
 
 /**
- * Class CreditcardData
+ * Represents a credit card.
  *
  * @package Ixopay\Client\Data
  */
@@ -71,145 +71,153 @@ class CreditcardData extends ResultData {
     /**
      * @return string
      */
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
     }
 
     /**
      * @param string $type
+     *
+     * @return $this
      */
-    public function setType($type)
-    {
+    public function setType($type) {
         $this->type = $type;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getFirstName()
-    {
+    public function getFirstName() {
         return $this->firstName;
     }
 
     /**
      * @param string $firstName
+     *
+     * @return $this
      */
-    public function setFirstName($firstName)
-    {
+    public function setFirstName($firstName) {
         $this->firstName = $firstName;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getLastName()
-    {
+    public function getLastName() {
         return $this->lastName;
     }
 
     /**
      * @param string $lastName
+     *
+     * @return $this
      */
-    public function setLastName($lastName)
-    {
+    public function setLastName($lastName) {
         $this->lastName = $lastName;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getCardHolder()
-    {
+    public function getCardHolder() {
         return $this->cardHolder;
     }
 
     /**
      * @param string $cardHolder
+     *
+     * @return $this
      */
-    public function setCardHolder($cardHolder)
-    {
+    public function setCardHolder($cardHolder) {
         $this->cardHolder = $cardHolder;
+        return $this;
     }
 
     /**
      * @return int
      */
-    public function getExpiryMonth()
-    {
+    public function getExpiryMonth() {
         return $this->expiryMonth;
     }
 
     /**
      * @param int $expiryMonth
+     *
+     * @return $this
      */
-    public function setExpiryMonth($expiryMonth)
-    {
+    public function setExpiryMonth($expiryMonth) {
         $this->expiryMonth = $expiryMonth;
+        return $this;
     }
 
     /**
      * @return int
      */
-    public function getExpiryYear()
-    {
+    public function getExpiryYear() {
         return $this->expiryYear;
     }
 
     /**
      * @param int $expiryYear
+     *
+     * @return $this
      */
-    public function setExpiryYear($expiryYear)
-    {
+    public function setExpiryYear($expiryYear) {
         $this->expiryYear = $expiryYear;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getFirstSixDigits()
-    {
+    public function getFirstSixDigits() {
         return $this->firstSixDigits;
     }
 
     /**
      * @param string $firstSixDigits
+     *
+     * @return $this
      */
-    public function setFirstSixDigits($firstSixDigits)
-    {
+    public function setFirstSixDigits($firstSixDigits) {
         $this->firstSixDigits = $firstSixDigits;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getLastFourDigits()
-    {
+    public function getLastFourDigits() {
         return $this->lastFourDigits;
     }
 
     /**
      * @param string $lastFourDigits
+     *
+     * @return $this
      */
-    public function setLastFourDigits($lastFourDigits)
-    {
+    public function setLastFourDigits($lastFourDigits) {
         $this->lastFourDigits = $lastFourDigits;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getCountry()
-    {
+    public function getCountry() {
         return $this->country;
     }
 
     /**
      * @param string $country
+     *
+     * @return $this
      */
-    public function setCountry($country)
-    {
+    public function setCountry($country) {
         $this->country = $country;
+        return $this;
     }
-
 }

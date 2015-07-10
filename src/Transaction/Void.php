@@ -5,7 +5,8 @@ namespace Ixopay\Client\Transaction;
 use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
 
 /**
- * Class Void
+ * Void: Revert a previously preauthorized transaction.
+ *
  * @package Ixopay\Client\Transaction
  */
 class Void extends AbstractTransactionWithReference {

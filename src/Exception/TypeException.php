@@ -9,6 +9,4 @@ namespace Ixopay\Client\Exception;
  */
 class TypeException extends ClientException {
 
-
-
 }

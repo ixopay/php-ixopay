@@ -7,6 +7,7 @@ use Ixopay\Client\Data\Request;
 
 /**
  * Class AbstractTransaction
+ *
  * @package Ixopay\Client\Transaction
  */
 class AbstractTransaction {
@@ -49,8 +50,7 @@ class AbstractTransaction {
     /**
      * @return string
      */
-    public function getTransactionToken()
-    {
+    public function getTransactionToken() {
         return $this->transactionToken;
     }
 
@@ -58,17 +58,18 @@ class AbstractTransaction {
      * set a required transaction token (if described by the documentation of a payment method)
      *
      * @param string $transactionToken
+     *
+     * @return $this
      */
-    public function setTransactionToken($transactionToken)
-    {
+    public function setTransactionToken($transactionToken) {
         $this->transactionToken = $transactionToken;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getTransactionId()
-    {
+    public function getTransactionId() {
         return $this->transactionId;
     }
 
@@ -80,8 +81,7 @@ class AbstractTransaction {
      *
      * @return $this
      */
-    public function setTransactionId($transactionId)
-    {
+    public function setTransactionId($transactionId) {
         $this->transactionId = $transactionId;
         return $this;
     }
@@ -89,8 +89,7 @@ class AbstractTransaction {
     /**
      * @return string
      */
-    public function getAdditionalId1()
-    {
+    public function getAdditionalId1() {
         return $this->additionalId1;
     }
 
@@ -101,8 +100,7 @@ class AbstractTransaction {
      *
      * @return $this
      */
-    public function setAdditionalId1($additionalId1)
-    {
+    public function setAdditionalId1($additionalId1) {
         $this->additionalId1 = $additionalId1;
         return $this;
     }
@@ -110,8 +108,7 @@ class AbstractTransaction {
     /**
      * @return string
      */
-    public function getAdditionalId2()
-    {
+    public function getAdditionalId2() {
         return $this->additionalId2;
     }
 
@@ -122,8 +119,7 @@ class AbstractTransaction {
      *
      * @return $this
      */
-    public function setAdditionalId2($additionalId2)
-    {
+    public function setAdditionalId2($additionalId2) {
         $this->additionalId2 = $additionalId2;
         return $this;
     }
@@ -131,8 +127,7 @@ class AbstractTransaction {
     /**
      * @return Customer
      */
-    public function getCustomer()
-    {
+    public function getCustomer() {
         return $this->customer;
     }
 
@@ -143,8 +138,7 @@ class AbstractTransaction {
      *
      * @return $this
      */
-    public function setCustomer($customer)
-    {
+    public function setCustomer($customer) {
         $this->customer = $customer;
         return $this;
     }
@@ -152,8 +146,7 @@ class AbstractTransaction {
     /**
      * @return array
      */
-    public function getExtraData()
-    {
+    public function getExtraData() {
         return $this->extraData;
     }
 
@@ -164,15 +157,15 @@ class AbstractTransaction {
      *
      * @return $this
      */
-    public function setExtraData($extraData)
-    {
+    public function setExtraData($extraData) {
         $this->extraData = $extraData;
         return $this;
     }
 
     /**
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return $this
      */
     public function addExtraData($key, $value) {
@@ -191,15 +184,19 @@ class AbstractTransaction {
      * provider request information here (if required by the payment method)
      *
      * @param Request $request
+     *
+     * @return $this
      */
     public function setRequest($request) {
         $this->request = $request;
+        return $this;
     }
 
     /**
      * get data from extra data
      *
      * @param string $key
+     *
      * @return mixed|null
      */
     public function __get($key) {

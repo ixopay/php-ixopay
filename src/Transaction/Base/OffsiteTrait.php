@@ -4,6 +4,7 @@ namespace Ixopay\Client\Transaction\Base;
 
 /**
  * Class OffsiteTrait
+ *
  * @package Ixopay\Client\Transaction
  */
 trait OffsiteTrait {
@@ -35,69 +36,85 @@ trait OffsiteTrait {
 
 
     /**
+     * The description of the transaction.
+     *
      * @return string
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
     /**
+     * The description of the transaction.
+     *
      * @param string $description
+     *
+     * @return $this
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
         return $this;
     }
 
     /**
+     * The URL to redirect to after a successful transaction.
+     *
      * @return string
      */
-    public function getSuccessUrl()
-    {
+    public function getSuccessUrl() {
         return $this->successUrl;
     }
 
     /**
+     * The URL to redirect to after a successful transaction.
+     *
      * @param string $successUrl
+     *
+     * @return $this
      */
-    public function setSuccessUrl($successUrl)
-    {
+    public function setSuccessUrl($successUrl) {
         $this->successUrl = $successUrl;
         return $this;
     }
 
     /**
+     * The URL to redirect to when the customer cancels the transaction.
+     *
      * @return string
      */
-    public function getCancelUrl()
-    {
+    public function getCancelUrl() {
         return $this->cancelUrl;
     }
 
     /**
+     * The URL to redirect to when the customer cancels the transaction.
+     *
      * @param string $cancelUrl
+     *
+     * @return $this
      */
-    public function setCancelUrl($cancelUrl)
-    {
+    public function setCancelUrl($cancelUrl) {
         $this->cancelUrl = $cancelUrl;
         return $this;
     }
 
     /**
+     * The URL to redirect to when an error occurs during transaction.
+     *
      * @return string
      */
-    public function getErrorUrl()
-    {
+    public function getErrorUrl() {
         return $this->errorUrl;
     }
 
     /**
+     * The URL to redirect to when an error occurs during transaction.
+     *
      * @param string $errorUrl
+     *
+     * @return $this
      */
-    public function setErrorUrl($errorUrl)
-    {
+    public function setErrorUrl($errorUrl) {
         $this->errorUrl = $errorUrl;
         return $this;
     }
@@ -105,20 +122,19 @@ trait OffsiteTrait {
     /**
      * @return string
      */
-    public function getCallbackUrl()
-    {
+    public function getCallbackUrl() {
         return $this->callbackUrl;
     }
 
     /**
+     * The URL to send any callback during this transaction.
+     *
      * @param string $callbackUrl
+     *
+     * @return $this
      */
-    public function setCallbackUrl($callbackUrl)
-    {
+    public function setCallbackUrl($callbackUrl) {
         $this->callbackUrl = $callbackUrl;
         return $this;
     }
-
-
-
 }

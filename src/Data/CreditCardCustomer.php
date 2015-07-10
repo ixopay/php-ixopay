@@ -3,7 +3,7 @@
 namespace Ixopay\Client\Data;
 
 /**
- * Class CreditCardCustomer
+ * Specialized class to represent a customer with credit card data.
  *
  * @package Ixopay\Client\Data
  */
@@ -44,6 +44,7 @@ class CreditCardCustomer extends Customer {
 
     /**
      * @param $number
+     *
      * @return $this
      */
     public function setNumber($number) {
@@ -59,7 +60,8 @@ class CreditCardCustomer extends Customer {
     }
 
     /**
-     * @param $expiryMonth
+     * @param int $expiryMonth
+     *
      * @return $this
      */
     public function setExpiryMonth($expiryMonth) {
@@ -75,7 +77,8 @@ class CreditCardCustomer extends Customer {
     }
 
     /**
-     * @param $expiryYear
+     * @param int $expiryYear
+     *
      * @return $this
      */
     public function setExpiryYear($expiryYear) {
@@ -91,7 +94,8 @@ class CreditCardCustomer extends Customer {
     }
 
     /**
-     * @param $startMonth
+     * @param int $startMonth
+     *
      * @return $this
      */
     public function setStartMonth($startMonth) {
@@ -107,7 +111,8 @@ class CreditCardCustomer extends Customer {
     }
 
     /**
-     * @param $startYear
+     * @param int $startYear
+     *
      * @return $this
      */
     public function setStartYear($startYear) {
@@ -123,7 +128,8 @@ class CreditCardCustomer extends Customer {
     }
 
     /**
-     * @param $cvv
+     * @param int $cvv
+     *
      * @return $this
      */
     public function setCvv($cvv) {
@@ -139,7 +145,8 @@ class CreditCardCustomer extends Customer {
     }
 
     /**
-     * @param $issueNumber
+     * @param string $issueNumber
+     *
      * @return $this
      */
     public function setIssueNumber($issueNumber) {
@@ -155,7 +162,8 @@ class CreditCardCustomer extends Customer {
     }
 
     /**
-     * @param $type
+     * @param string $type
+     *
      * @return $this
      */
     public function setType($type) {

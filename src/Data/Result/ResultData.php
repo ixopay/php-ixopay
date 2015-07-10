@@ -10,5 +10,4 @@ namespace Ixopay\Client\Data\Result;
  */
 abstract class ResultData {
 
-
 }

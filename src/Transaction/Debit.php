@@ -9,10 +9,11 @@ use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
 
 /**
- * Class Debit
+ * Debit: Charge the customer for a certain amount of money. This could be once, but also recurring.
+ *
  * @package Ixopay\Client\Transaction
  */
-class Debit extends AbstractTransactionWithReference implements AmountableInterface, OffsiteInterface{
+class Debit extends AbstractTransactionWithReference implements AmountableInterface, OffsiteInterface {
     use OffsiteTrait;
     use AmountableTrait;
 
@@ -24,8 +25,7 @@ class Debit extends AbstractTransactionWithReference implements AmountableInterf
     /**
      * @return boolean
      */
-    public function isWithRegister()
-    {
+    public function isWithRegister() {
         return $this->withRegister;
     }
 
@@ -33,10 +33,12 @@ class Debit extends AbstractTransactionWithReference implements AmountableInterf
      * set true if you want to register a user vault together with the debit
      *
      * @param boolean $withRegister
+     *
+     * @return $this
      */
-    public function setWithRegister($withRegister)
-    {
+    public function setWithRegister($withRegister) {
         $this->withRegister = $withRegister;
+        return $this;
     }
 
 }

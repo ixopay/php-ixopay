@@ -2,16 +2,15 @@
 
 namespace Ixopay\Client\Transaction;
 
-use IxopayV2\Transaction\Base\AbstractTransactionWithReference;
-use IxopayV2\Transaction\Base\AmountableInterface;
-use IxopayV2\Transaction\Base\AmountableTrait;
+use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
+use Ixopay\Client\Transaction\Base\AmountableInterface;
+use Ixopay\Client\Transaction\Base\AmountableTrait;
 
 /**
- * Class Capture
+ * Capture: Charge a previously preauthorized transaction.
+ *
  * @package Ixopay\Client\Transaction
  */
 class Capture extends AbstractTransactionWithReference implements AmountableInterface {
     use AmountableTrait;
-
-
 }

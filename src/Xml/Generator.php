@@ -32,6 +32,7 @@ class Generator {
     protected $document;
 
     /**
+     * @param string $method
      * @param AbstractTransaction $transaction
      * @param string $username
      * @param string $password
@@ -255,6 +256,8 @@ class Generator {
 
     /**
      * @param Debit $transaction
+     * @param string $method
+     *
      * @return \DOMElement
      */
     protected function generateDebitNode(Debit $transaction, $method) {
@@ -299,6 +302,7 @@ class Generator {
      */
     protected function generatePreauthorizeNode(Preauthorize $transaction, $method) {
         $node = $this->document->createElement($method);
+        // @todo $transaction parameter is expected to be an AbstractTransactionWithReference, Preauthorize extends the AbstractTransaction. The fact that it has referenced transaction should be checked.
         $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
         $this->appendAmountableNodes($node, $transaction);
         $this->appendOffsiteNodes($node, $transaction);
@@ -321,8 +325,9 @@ class Generator {
     }
 
     /**
-     * @param Void $transaction
+     * @param \Ixopay\Client\Transaction\Void $transaction
      * @param $method
+     *
      * @return \DOMElement
      */
     protected function generateVoidNode(Void $transaction, $method) {
@@ -404,7 +409,10 @@ class Generator {
      * @param \DOMNode $parentNode
      * @param string $nodeName
      * @param string $nodeValue
+     * @param bool $skipNullValue
+     *
      * @return \DOMElement|null
+     *
      */
     private function _appendTextNode(\DOMNode $parentNode, $nodeName, $nodeValue, $skipNullValue=true) {
         if (!$skipNullValue || $nodeValue !== null) {

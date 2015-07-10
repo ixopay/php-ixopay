@@ -30,10 +30,10 @@ class Request {
     protected $headers;
 
     /**
-     * @param array $getParams
-     * @param array $postParams
+     * @param array  $getParams
+     * @param array  $postParams
      * @param string $requestBody
-     * @param array $requestHeaders
+     * @param array  $requestHeaders
      */
     public function __construct($getParams, $postParams, $requestBody, $requestHeaders) {
         $this->post = $postParams;
@@ -68,35 +68,28 @@ class Request {
     /**
      * @return array
      */
-    public function getPost()
-    {
+    public function getPost() {
         return $this->post;
     }
 
     /**
      * @return array
      */
-    public function getGet()
-    {
+    public function getGet() {
         return $this->get;
     }
 
     /**
      * @return string
      */
-    public function getBody()
-    {
+    public function getBody() {
         return $this->body;
     }
 
     /**
      * @return array
      */
-    public function getHeaders()
-    {
+    public function getHeaders() {
         return $this->headers;
     }
-
-
-
 }

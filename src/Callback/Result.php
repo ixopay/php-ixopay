@@ -5,15 +5,19 @@ namespace Ixopay\Client\Callback;
 use Ixopay\Client\Transaction\Error;
 
 /**
- * Class Result
+ * Callback result, which is produced by processing a callback request's body.
+ * Reports the status of an asynchronous transaction.
  *
  * @package Ixopay\Client\Callback
  */
 class Result {
-
+    /** The callback reports, that the transaction finished successfully. */
     const RESULT_OK = 'OK';
+    /** The callback reports that the transaction is pending (an update call is expected, or the status should be pulled) */
     const RESULT_PENDING = 'PENDING';
+    /** The transaction failed, please refer to the errors. */
     const RESULT_ERROR = 'ERROR';
+    /** The callback request is invalid. */
     const RESULT_INVALID_REQUEST = 'INVALID_REQUEST';
 
     /**
@@ -23,12 +27,14 @@ class Result {
 
     /**
      * reference id from the payment gateway
+     *
      * @var string
      */
     protected $referenceId;
 
     /**
      * your transaction id from the initial transaction (if returned by adapter)
+     *
      * @var string
      */
     protected $transactionId;
@@ -48,30 +54,38 @@ class Result {
 
     /**
      * @param Error[] $errors
+     *
+     * @return $this
      */
-    public function setErrors($errors)
-    {
+    public function setErrors($errors) {
         $this->errors = $errors;
+        return $this;
     }
 
     /**
      * @param Error $error
+     *
+     * @return $this
      */
     public function addError(Error $error) {
         $this->errors[] = $error;
+        return $this;
     }
 
     /**
      * @param array $extraData
+     *
+     * @return $this
      */
-    public function setExtraData($extraData)
-    {
+    public function setExtraData($extraData) {
         $this->extraData = $extraData;
+        return $this;
     }
 
     /**
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return $this
      */
     public function addExtraData($key, $value) {
@@ -79,12 +93,10 @@ class Result {
         return $this;
     }
 
-
     /**
      * @return Error[]
      */
-    public function getErrors()
-    {
+    public function getErrors() {
         return $this->errors;
     }
 
@@ -108,55 +120,58 @@ class Result {
     /**
      * @return array
      */
-    public function getExtraData()
-    {
+    public function getExtraData() {
         return $this->extraData;
     }
 
     /**
      * @param string $result
+     *
+     * @return $this
      */
     public function setResult($result) {
         $this->result = $result;
+        return $this;
     }
 
     /**
      * @return int
      */
-    public function getResult()
-    {
+    public function getResult() {
         return $this->result;
     }
 
     /**
      * @return string
      */
-    public function getReferenceId()
-    {
+    public function getReferenceId() {
         return $this->referenceId;
     }
 
     /**
      * @param string $referenceId
+     *
+     * @return $this
      */
-    public function setReferenceId($referenceId)
-    {
+    public function setReferenceId($referenceId) {
         $this->referenceId = $referenceId;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getTransactionId()
-    {
+    public function getTransactionId() {
         return $this->transactionId;
     }
 
     /**
      * @param string $transactionId
+     *
+     * @return $this
      */
-    public function setTransactionId($transactionId)
-    {
+    public function setTransactionId($transactionId) {
         $this->transactionId = $transactionId;
+        return $this;
     }
 }

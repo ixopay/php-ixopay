@@ -9,7 +9,8 @@ use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
 
 /**
- * Class Preauthorize
+ * Preauthorize: Reserve a certain amount, which can be captured (=charging) or voided (=revert) later on.
+ *
  * @package Ixopay\Client\Transaction
  */
 class Preauthorize extends AbstractTransaction implements AmountableInterface, OffsiteInterface {
@@ -24,8 +25,7 @@ class Preauthorize extends AbstractTransaction implements AmountableInterface, O
     /**
      * @return boolean
      */
-    public function isWithRegister()
-    {
+    public function isWithRegister() {
         return $this->withRegister;
     }
 
@@ -33,10 +33,12 @@ class Preauthorize extends AbstractTransaction implements AmountableInterface, O
      * set true if you want to register a user vault together with the preauthorize
      *
      * @param boolean $withRegister
+     *
+     * @return $this
      */
-    public function setWithRegister($withRegister)
-    {
+    public function setWithRegister($withRegister) {
         $this->withRegister = $withRegister;
+        return $this;
     }
 
 }

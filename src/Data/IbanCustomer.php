@@ -28,9 +28,12 @@ class IbanCustomer extends Customer {
 
     /**
      * @param string $iban
+     *
+     * @return $this
      */
     public function setIban($iban) {
         $this->iban = $iban;
+        return $this;
     }
 
     /**
@@ -42,9 +45,11 @@ class IbanCustomer extends Customer {
 
     /**
      * @param string $bic
+     *
+     * @return $this
      */
     public function setBic($bic) {
         $this->bic = $bic;
+        return $this;
     }
-
 }

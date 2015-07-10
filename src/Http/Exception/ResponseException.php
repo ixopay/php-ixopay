@@ -7,13 +7,21 @@ namespace Ixopay\Client\Http\Exception;
  *
  * @package Ixopay\Client\Http\Exception
  */
-class ResponseException extends ClientException {
-
+class ResponseException extends ClientException
+{
+    /**
+     * @var mixed
+     */
     private $httpStatus;
+
+    /**
+     * @var mixed
+     */
     private $response;
 
     /**
      * @param mixed $httpStatus
+     *
      * @return ResponseException
      */
     public function setHttpStatus($httpStatus)
@@ -32,6 +40,7 @@ class ResponseException extends ClientException {
 
     /**
      * @param mixed $response
+     *
      * @return ResponseException
      */
     public function setResponse($response)
@@ -48,15 +57,16 @@ class ResponseException extends ClientException {
         return $this->response;
     }
 
-    public function toArray(){
-
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
         return array(
             'code' => $this->code,
             'message' => $this->message,
             'http-status' => $this->httpStatus,
             'response' => $this->response,
         );
-
     }
-
 }

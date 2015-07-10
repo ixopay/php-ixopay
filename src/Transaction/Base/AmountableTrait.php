@@ -5,6 +5,7 @@ namespace Ixopay\Client\Transaction\Base;
 
 /**
  * Class AmountableTrait
+ *
  * @package Ixopay\Client\Transaction\Base
  */
 trait AmountableTrait {
@@ -22,8 +23,7 @@ trait AmountableTrait {
     /**
      * @return mixed
      */
-    public function getAmount()
-    {
+    public function getAmount() {
         return $this->amount;
     }
 
@@ -31,9 +31,10 @@ trait AmountableTrait {
      * the amount you want to charge/refund etc.
      *
      * @param mixed $amount
+     *
+     * @return $this
      */
-    public function setAmount($amount)
-    {
+    public function setAmount($amount) {
         $this->amount = $amount;
         return $this;
     }
@@ -41,16 +42,18 @@ trait AmountableTrait {
     /**
      * @return mixed
      */
-    public function getCurrency()
-    {
+    public function getCurrency() {
         return $this->currency;
     }
 
     /**
+     * The currency code to charge/refund in.
+     *
      * @param mixed $currency
+     *
+     * @return $this
      */
-    public function setCurrency($currency)
-    {
+    public function setCurrency($currency) {
         $this->currency = $currency;
         return $this;
     }

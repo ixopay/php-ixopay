@@ -9,24 +9,26 @@ namespace Ixopay\Client\Http;
  */
 interface ResponseInterface {
 
-	/**
-	 * @return int
-	 */
-	public function getStatusCode();
+    /**
+     * @return int
+     */
+    public function getStatusCode();
 
-	/**
-	 * @return mixed
-	 */
-	public function getBody();
+    /**
+     * @return mixed
+     */
+    public function getBody();
 
-	/**
-	 * @return array
-	 */
-	public function getHeaders();
+    /**
+     * @return array
+     */
+    public function getHeaders();
 
-	/**
-	 * @return mixed
-	 */
-	public function json(array $config = array());
+    /**
+     * @param array $config
+     *
+     * @return mixed
+     */
+    public function json(array $config = array());
 
 }

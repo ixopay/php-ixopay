@@ -1,6 +1,7 @@
 <?php
 
 namespace Ixopay\Client;
+
 use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Http\CurlClient;
 use Ixopay\Client\Http\Response;
@@ -51,6 +52,7 @@ class Client {
 
     /**
      * authentication password of an API user
+     *
      * @var string
      */
     protected $password;
@@ -75,9 +77,9 @@ class Client {
      * @param string $apiKey
      * @param string $sharedSecret
      * @param string $language
-     * @param bool $testMode
+     * @param bool   $testMode
      */
-    public function __construct($username, $password, $apiKey, $sharedSecret, $language=null, $testMode = false) {
+    public function __construct($username, $password, $apiKey, $sharedSecret, $language = null, $testMode = false) {
         $this->username = $username;
         $this->setPassword($password);
         $this->apiKey = $apiKey;
@@ -89,19 +91,23 @@ class Client {
     /**
      * build the xml out of the Transaction Object and sends it
      *
+     * @param                     $transactionMethod
      * @param AbstractTransaction $transaction
+     *
      * @return Result
+     *
+     * @throws ClientException
+     * @throws Exception\InvalidValueException
      */
     protected function sendTransaction($transactionMethod, AbstractTransaction $transaction) {
-
-
-        $dom = $this->getGenerator()->generateTransaction($transactionMethod, $transaction, $this->username, $this->password, $this->language, $this->testMode);
+        $dom = $this->getGenerator()->generateTransaction($transactionMethod, $transaction, $this->username,
+            $this->password, $this->language, $this->testMode);
         $xml = $dom->saveXML();
 
         $response = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, self::$ixopayUrl);
 
         if ($response->getErrorCode() || $response->getErrorMessage()) {
-            throw new ClientException('Request failed: '.$response->getErrorCode().' '.$response->getErrorMessage());
+            throw new ClientException('Request failed: ' . $response->getErrorCode() . ' ' . $response->getErrorMessage());
         }
 
         $parser = $this->getParser();
@@ -116,6 +122,7 @@ class Client {
      * @param string $apiKey
      * @param string $sharedSecret
      * @param string $url
+     *
      * @return Response
      */
     public function signAndSendXml($xml, $apiKey, $sharedSecret, $url) {
@@ -131,6 +138,7 @@ class Client {
      * NOTE: not all payment methods support this function
      *
      * @param Register $transactionData
+     *
      * @return Result
      */
     public function register(Register $transactionData) {
@@ -143,6 +151,7 @@ class Client {
      * NOTE: not all payment methods support this function
      *
      * @param Register $transactionData
+     *
      * @return Result
      */
     public function completeRegister(Register $transactionData) {
@@ -155,6 +164,7 @@ class Client {
      * NOTE: not all payment methods support this function
      *
      * @param Deregister $transactionData
+     *
      * @return Result
      */
     public function deregister(Deregister $transactionData) {
@@ -167,6 +177,7 @@ class Client {
      * NOTE: not all payment methods support this function
      *
      * @param Preauthorize $transactionData
+     *
      * @return Result
      */
     public function preauthorize(Preauthorize $transactionData) {
@@ -177,6 +188,7 @@ class Client {
      * complete a preauthorize transaction (or poll status)
      *
      * @param Preauthorize $transactionData
+     *
      * @return Result
      */
     public function completePreauthorize(Preauthorize $transactionData) {
@@ -186,7 +198,8 @@ class Client {
     /**
      * void a previously preauthorized transaction
      *
-     * @param Void $transactionData
+     * @param \Ixopay\Client\Transaction\Void $transactionData
+     *
      * @return Result
      */
     public function void(Void $transactionData) {
@@ -197,6 +210,7 @@ class Client {
      * capture a previously preauthorized transaction
      *
      * @param Capture $transactionData
+     *
      * @return Result
      */
     public function capture(Capture $transactionData) {
@@ -207,6 +221,7 @@ class Client {
      * refund a performed debit/capture
      *
      * @param Refund $transactionData
+     *
      * @return Result
      */
     public function refund(Refund $transactionData) {
@@ -217,6 +232,7 @@ class Client {
      * perform a debit
      *
      * @param Debit $transactionData
+     *
      * @return Result
      */
     public function debit(Debit $transactionData) {
@@ -227,6 +243,7 @@ class Client {
      * complete a debit (or poll status)
      *
      * @param Debit $transactionData
+     *
      * @return Result
      */
     public function completeDebit(Debit $transactionData) {
@@ -238,6 +255,7 @@ class Client {
      * you SHOULD verify the callback first by using $this->validateCallback();
      *
      * @param string $requestBody
+     *
      * @return Callback\Result
      * @throws Exception\InvalidValueException
      */
@@ -248,18 +266,22 @@ class Client {
     /**
      * validates if the received callback notification is properly signed
      *
-     * @param string $requestBody - the raw xml body of the received request
-     * @param string $requestQuery - the query part of your receiving script, e.g. "/callback_receive.php?someId=0815" (without the hostname and with the leading slash and all query parameters)
-     * @param $dateHeader - value of the header field "Date"
-     * @param $authorizationHeader - value of the header field "Authorization"
+     * @param string $requestBody         - the raw xml body of the received request
+     * @param string $requestQuery        - the query part of your receiving script, e.g.
+     *                                    "/callback_receive.php?someId=0815" (without the hostname and with the
+     *                                    leading slash and all query parameters)
+     * @param        $dateHeader          - value of the header field "Date"
+     * @param        $authorizationHeader - value of the header field "Authorization"
+     *
      * @return bool - true if the signature is correct
      */
     public function validateCallback($requestBody, $requestQuery, $dateHeader, $authorizationHeader) {
         $curl = new CurlClient();
-        $digest = $curl->createSignature($this->getSharedSecret(), 'POST', $requestBody, 'text/xml; charset=utf-8', $dateHeader, $requestQuery);
+        $digest = $curl->createSignature($this->getSharedSecret(), 'POST', $requestBody, 'text/xml; charset=utf-8',
+            $dateHeader, $requestQuery);
         $expectedSig = 'IxoPay ' . $this->getApiKey() . ':' . $digest;
 
-        if (strpos($authorizationHeader,'Authorization:') !== false) {
+        if (strpos($authorizationHeader, 'Authorization:') !== false) {
             $authorizationHeader = trim(str_replace('Authorization:', '', $authorizationHeader));
         }
 
@@ -279,9 +301,12 @@ class Client {
 
     /**
      * @param string $apiKey
+     *
+     * @return $this
      */
     public function setApiKey($apiKey) {
         $this->apiKey = $apiKey;
+        return $this;
     }
 
     /**
@@ -293,9 +318,12 @@ class Client {
 
     /**
      * @param string $sharedSecret
+     *
+     * @return $this
      */
     public function setSharedSecret($sharedSecret) {
         $this->sharedSecret = $sharedSecret;
+        return $this;
     }
 
     /**
@@ -307,9 +335,12 @@ class Client {
 
     /**
      * @param string $username
+     *
+     * @return $this
      */
     public function setUsername($username) {
         $this->username = $username;
+        return $this;
     }
 
     /**
@@ -321,9 +352,12 @@ class Client {
 
     /**
      * @param string $password
+     *
+     * @return $this
      */
     public function setPassword($password) {
         $this->password = $this->hashPassword($password);
+        return $this;
     }
 
     /**
@@ -335,9 +369,12 @@ class Client {
 
     /**
      * @param string $language
+     *
+     * @return $this
      */
     public function setLanguage($language) {
         $this->language = $language;
+        return $this;
     }
 
     /**
@@ -349,9 +386,12 @@ class Client {
 
     /**
      * @param boolean $testMode
+     *
+     * @return $this
      */
     public function setTestMode($testMode) {
         $this->testMode = $testMode;
+        return $this;
     }
 
     /**
@@ -370,10 +410,11 @@ class Client {
 
     /**
      * @param string $password
+     *
      * @return string
      */
     private function hashPassword($password) {
-        for ($i=0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $password = sha1($password);
         }
         return $password;

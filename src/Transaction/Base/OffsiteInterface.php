@@ -15,7 +15,7 @@ interface OffsiteInterface {
     public function getDescription();
 
     /**
-     * description of your transaction (e.g. purchsed goods etc.)
+     * description of your transaction (e.g. purchased goods etc.)
      *
      * @param string $description
      */

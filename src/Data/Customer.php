@@ -3,7 +3,8 @@
 namespace Ixopay\Client\Data;
 
 /**
- * Class Customer
+ * Represents a generic customer without any specific data.
+ *
  * @package Ixopay\Client\Data
  */
 class Customer {
@@ -99,6 +100,7 @@ class Customer {
 
     /**
      * like social insurance number or equivalents
+     *
      * @var string
      */
     protected $nationalId;
@@ -106,22 +108,23 @@ class Customer {
     /**
      * @return string
      */
-    public function getIdentification()
-    {
+    public function getIdentification() {
         return $this->identification;
     }
 
     /**
      * @param string $identification
+     *
+     * @return $this
      */
-    public function setIdentification($identification)
-    {
+    public function setIdentification($identification) {
         $this->identification = $identification;
         return $this;
     }
 
     /**
-     * @param $firstName
+     * @param string $firstName
+     *
      * @return $this
      */
     public function setFirstName($firstName) {
@@ -137,7 +140,8 @@ class Customer {
     }
 
     /**
-     * @param $lastName
+     * @param string $lastName
+     *
      * @return $this
      */
     public function setLastName($lastName) {
@@ -155,22 +159,24 @@ class Customer {
     /**
      * @return \DateTime
      */
-    public function getBirthDate()
-    {
+    public function getBirthDate() {
         return $this->birthDate;
     }
 
     /**
      * @param \DateTime $birthDate
+     *
+     * @return $this
      */
-    public function setBirthDate($birthDate)
-    {
+    public function setBirthDate($birthDate) {
         $this->birthDate = $birthDate;
+        return $this;
     }
 
 
     /**
-     * @param $billingAddress1
+     * @param string $billingAddress1
+     *
      * @return $this
      */
     public function setBillingAddress1($billingAddress1) {
@@ -186,7 +192,8 @@ class Customer {
     }
 
     /**
-     * @param $billingAddress2
+     * @param string $billingAddress2
+     *
      * @return $this
      */
     public function setBillingAddress2($billingAddress2) {
@@ -202,7 +209,8 @@ class Customer {
     }
 
     /**
-     * @param $billingCity
+     * @param string $billingCity
+     *
      * @return $this
      */
     public function setBillingCity($billingCity) {
@@ -218,7 +226,8 @@ class Customer {
     }
 
     /**
-     * @param $billingPostcode
+     * @param string $billingPostcode
+     *
      * @return $this
      */
     public function setBillingPostcode($billingPostcode) {
@@ -234,7 +243,8 @@ class Customer {
     }
 
     /**
-     * @param $billingState
+     * @param string $billingState
+     *
      * @return $this
      */
     public function setBillingState($billingState) {
@@ -250,7 +260,8 @@ class Customer {
     }
 
     /**
-     * @param $billingCountry
+     * @param string $billingCountry
+     *
      * @return $this
      */
     public function setBillingCountry($billingCountry) {
@@ -266,7 +277,8 @@ class Customer {
     }
 
     /**
-     * @param $billingPhone
+     * @param string $billingPhone
+     *
      * @return $this
      */
     public function setBillingPhone($billingPhone) {
@@ -282,7 +294,8 @@ class Customer {
     }
 
     /**
-     * @param $shippingAddress1
+     * @param string $shippingAddress1
+     *
      * @return $this
      */
     public function setShippingAddress1($shippingAddress1) {
@@ -298,7 +311,8 @@ class Customer {
     }
 
     /**
-     * @param $shippingAddress2
+     * @param string $shippingAddress2
+     *
      * @return $this
      */
     public function setShippingAddress2($shippingAddress2) {
@@ -314,7 +328,8 @@ class Customer {
     }
 
     /**
-     * @param $shippingCity
+     * @param string $shippingCity
+     *
      * @return $this
      */
     public function setShippingCity($shippingCity) {
@@ -330,7 +345,8 @@ class Customer {
     }
 
     /**
-     * @param $shippingPostcode
+     * @param string $shippingPostcode
+     *
      * @return $this
      */
     public function setShippingPostcode($shippingPostcode) {
@@ -346,7 +362,8 @@ class Customer {
     }
 
     /**
-     * @param $shippingState
+     * @param string $shippingState
+     *
      * @return $this
      */
     public function setShippingState($shippingState) {
@@ -362,7 +379,8 @@ class Customer {
     }
 
     /**
-     * @param $shippingCountry
+     * @param string $shippingCountry
+     *
      * @return $this
      */
     public function setShippingCountry($shippingCountry) {
@@ -378,7 +396,8 @@ class Customer {
     }
 
     /**
-     * @param $shippingPhone
+     * @param string $shippingPhone
+     *
      * @return $this
      */
     public function setShippingPhone($shippingPhone) {
@@ -394,7 +413,8 @@ class Customer {
     }
 
     /**
-     * @param $company
+     * @param string $company
+     *
      * @return $this
      */
     public function setCompany($company) {
@@ -410,7 +430,8 @@ class Customer {
     }
 
     /**
-     * @param $email
+     * @param string $email
+     *
      * @return $this
      */
     public function setEmail($email) {
@@ -428,17 +449,18 @@ class Customer {
     /**
      * @return string
      */
-    public function getIpAddress()
-    {
+    public function getIpAddress() {
         return $this->ipAddress;
     }
 
     /**
      * @param string $ipAddress
+     *
+     * @return $this
      */
-    public function setIpAddress($ipAddress)
-    {
+    public function setIpAddress($ipAddress) {
         $this->ipAddress = $ipAddress;
+        return $this;
     }
 
     /**
@@ -450,8 +472,11 @@ class Customer {
 
     /**
      * @param string $nationalId
+     *
+     * @return $this
      */
     public function setNationalId($nationalId) {
         $this->nationalId = $nationalId;
+        return $this;
     }
 }
