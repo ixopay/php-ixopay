@@ -293,6 +293,20 @@ class Client {
     }
 
     /**
+     * validate callback by retrieving parameters from PHP GLOBALS
+     *
+     * @return bool
+     */
+    public function validateCallbackWithGlobals() {
+        $requestBody = file_get_contents('php://input');
+        $requestQuery = $_SERVER['REQUEST_URI'];
+        $dateHeader = $_SERVER['HTTP_DATE'];
+        $authorizationHeader = $_SERVER['HTTP_AUTHORIZATION'];
+
+        return $this->validateCallback($requestBody, $requestQuery, $dateHeader, $authorizationHeader);
+    }
+
+    /**
      * @return string
      */
     public function getApiKey() {
