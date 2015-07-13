@@ -38,7 +38,11 @@ class Parser {
              */
             switch ($child->localName) {
                 case 'success':
-                    $result->setSuccess($child->nodeValue ? true : false);
+                    if ($child->nodeValue == 'false' || !$child->nodeValue) {
+                        $result->setSuccess(false);
+                    } else {
+                        $result->setSuccess(true);
+                    }
                     break;
                 case 'referenceId':
                 case 'registrationId':

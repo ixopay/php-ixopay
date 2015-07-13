@@ -54,31 +54,38 @@ class Generator {
         $this->_appendTextNode($root, 'language', $language);
         $this->_appendTextNode($root, 'testMode', $testMode ? 'true' : 'false');
 
-        switch (true) {
-            case $transaction instanceof Debit:
-                $node = $this->generateDebitNode($transaction, $method);
-                break;
-            case $transaction instanceof Register:
-                $node = $this->generateRegisterNode($transaction, $method);
-                break;
-            case $transaction instanceof Deregister:
-                $node = $this->generateDeregisterNode($transaction, $method);
-                break;
-            case $transaction instanceof Preauthorize:
-                $node = $this->generatePreauthorizeNode($transaction, $method);
-                break;
-            case $transaction instanceof Capture:
-                $node = $this->generateCaptureNode($transaction, $method);
-                break;
-            case $transaction instanceof Void:
-                $node = $this->generateVoidNode($transaction, $method);
-                break;
-            case $transaction instanceof Refund:
-                $node = $this->generateRefundNode($transaction, $method);
-                break;
-            default:
-                return null;
-                break;
+        if (strpos($method, 'complete') === 0) {
+            //complete call requires only transactionId
+            $node = $this->document->createElement($method);
+            $this->appendAbstractTransactionNodes($node, $transaction);
+        } else {
+
+            switch (true) {
+                case $transaction instanceof Debit:
+                    $node = $this->generateDebitNode($transaction, $method);
+                    break;
+                case $transaction instanceof Register:
+                    $node = $this->generateRegisterNode($transaction, $method);
+                    break;
+                case $transaction instanceof Deregister:
+                    $node = $this->generateDeregisterNode($transaction, $method);
+                    break;
+                case $transaction instanceof Preauthorize:
+                    $node = $this->generatePreauthorizeNode($transaction, $method);
+                    break;
+                case $transaction instanceof Capture:
+                    $node = $this->generateCaptureNode($transaction, $method);
+                    break;
+                case $transaction instanceof Void:
+                    $node = $this->generateVoidNode($transaction, $method);
+                    break;
+                case $transaction instanceof Refund:
+                    $node = $this->generateRefundNode($transaction, $method);
+                    break;
+                default:
+                    return null;
+                    break;
+            }
         }
 
         $root->appendChild($node);
