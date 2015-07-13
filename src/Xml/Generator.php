@@ -43,7 +43,7 @@ class Generator {
     public function generateTransaction($method, AbstractTransaction $transaction, $username, $password, $language=null, $testMode=false) {
         $this->document = new \DOMDocument('1.0', 'utf-8');
         $this->document->formatOutput = true;
-        $root = $this->document->createElementNS('http://www.ixolit.com/IxoPay/V2/Transaction', 'transaction');
+        $root = $this->document->createElementNS('http://gateway.ixopay.com/Schema/V2/Transaction', 'transaction');
 
         $this->_appendTextNode($root, 'username', $username);
         $this->_appendTextNode($root, 'password', $password);

@@ -20,6 +20,15 @@ class Result {
     /** The callback request is invalid. */
     const RESULT_INVALID_REQUEST = 'INVALID_REQUEST';
 
+    const TYPE_DEBIT = 'DEBIT';
+    const TYPE_CAPTURE = 'CAPTURE';
+    const TYPE_DEREGISTER = 'DEREGISTER';
+    const TYPE_PREAUTHORIZE = 'PREAUTHORIZE';
+    const TYPE_REFUND = 'REFUND';
+    const TYPE_REGISTER = 'REGISTER';
+    const TYPE_VOID = 'VOID';
+    const TYPE_CHARGEBACK = 'CHARGEBACK';
+
     /**
      * @var string
      */
@@ -40,6 +49,13 @@ class Result {
     protected $transactionId;
 
     /**
+     * type of the transaction (e.g. DEBIT, CAPTURE etc.)
+     *
+     * @var string
+     */
+    protected $transactionType;
+
+    /**
      * @var Error[]
      */
     protected $errors = array();
@@ -50,6 +66,13 @@ class Result {
      * @var array
      */
     protected $extraData = array();
+
+    /**
+     * chargeback data (if transactionType = CHARGEBACK)
+     *
+     * @var ChargebackData
+     */
+    protected $chargebackData = null;
 
 
     /**
@@ -174,4 +197,33 @@ class Result {
         $this->transactionId = $transactionId;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getTransactionType() {
+        return $this->transactionType;
+    }
+
+    /**
+     * @param string $transactionType
+     */
+    public function setTransactionType($transactionType) {
+        $this->transactionType = $transactionType;
+    }
+
+    /**
+     * @return ChargebackData
+     */
+    public function getChargebackData() {
+        return $this->chargebackData;
+    }
+
+    /**
+     * @param ChargebackData $chargebackData
+     */
+    public function setChargebackData(ChargebackData $chargebackData) {
+        $this->chargebackData = $chargebackData;
+    }
+
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace Ixopay\Client\Xml;
+use Ixopay\Client\Callback\ChargebackData;
 use Ixopay\Client\Data\Result\CreditcardData;
 use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Exception\InvalidValueException;
@@ -26,7 +27,7 @@ class Parser {
         $document = new \DOMDocument('1.0', 'utf-8');
         $document->loadXML($xml);
 
-        $root = $document->getElementsByTagNameNS('http://www.ixolit.com/IxoPay/V2/Result', 'result');
+        $root = $document->getElementsByTagNameNS('http://gateway.ixopay.com/Schema/V2/Result', 'result');
         if ($root->length < 0) {
             throw new InvalidValueException('XML does not contain a root "result" element');
         }
@@ -87,7 +88,7 @@ class Parser {
         $document = new \DOMDocument('1.0', 'utf-8');
         $document->loadXML($xml);
 
-        $root = $document->getElementsByTagNameNS('http://www.ixolit.com/IxoPay/V2/Callback', 'callback');
+        $root = $document->getElementsByTagNameNS('http://gateway.ixopay.com/Schema/V2/Callback', 'callback');
         if ($root->length < 0) {
             throw new InvalidValueException('XML does not contain a root "callback" element');
         }
@@ -107,12 +108,19 @@ class Parser {
                 case 'transactionId':
                     $result->setTransactionId($child->nodeValue);
                     break;
+                case 'transactionType':
+                    $result->setTransactionType($child->nodeValue);
+                    break;
                 case 'errors':
                     $result->setErrors($this->parseErrors($child));
                     break;
                 case 'extraData':
                     list($key, $value) = $this->parseExtraData($child);
                     $result->addExtraData($key, $value);
+                    break;
+                case 'chargebackData':
+                    $chargebackData = $this->parseChargebackData($child);
+                    $result->setChargebackData($chargebackData);
                     break;
                 default:
                     if ($child->nodeName != '#text') {
@@ -258,6 +266,42 @@ class Parser {
         $value = $node->nodeValue;
 
         return array($key, $value);
+    }
+
+    /**
+     * @param \DOMNode $node
+     * @return ChargebackData
+     */
+    protected function parseChargebackData(\DOMNode $node) {
+        $data = new ChargebackData();
+
+        foreach ($node->childNodes as $child) {
+            /**
+             * @var \DOMNode $child
+             */
+            if ($child->nodeName == '#text' || empty($child->nodeValue)) {
+                continue;
+            }
+            switch ($child->localName) {
+                case 'originalReferenceId':
+                    $data->setOriginalReferenceId($child->nodeValue);
+                    break;
+                case 'originalTransactionId':
+                    $data->setOriginalTransactionId($child->nodeValue);
+                    break;
+                case 'amount':
+                    $data->setAmount((double)$child->nodeValue);
+                    break;
+                case 'currency':
+                    $data->setCurrency($child->nodeValue);
+                    break;
+                case 'chargebackDateTime':
+                    $data->setChargebackDateTime(new \DateTime($child->nodeValue));
+                    break;
+            }
+        }
+
+        return $data;
     }
 
 }
