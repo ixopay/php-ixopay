@@ -158,7 +158,9 @@ class Result {
     }
 
     /**
-     * @return int
+     * Returns the result code of the event (one of the Result::RESULT_* constants).
+     *
+     * @return string
      */
     public function getResult() {
         return $this->result;
