@@ -300,8 +300,22 @@ class Client {
     public function validateCallbackWithGlobals() {
         $requestBody = file_get_contents('php://input');
         $requestQuery = $_SERVER['REQUEST_URI'];
-        $dateHeader = $_SERVER['HTTP_DATE'];
-        $authorizationHeader = $_SERVER['HTTP_AUTHORIZATION'];
+        if (!empty($_SERVER['HTTP_DATE'])) {
+            $dateHeader = $_SERVER['HTTP_DATE'];
+        } elseif (!empty($_SERVER['HTTP_X_DATE'])) {
+            $dateHeader = $_SERVER['HTTP_X_DATE'];
+        } else {
+            $dateHeader = null;
+        }
+
+        if (!empty($_SERVER['HTTP_AUTHORIZATION'])) {
+            $authorizationHeader = $_SERVER['HTTP_AUTHORIZATION'];
+        } elseif (!empty($_SERVER['HTTP_X_AUTHORIZATION'])) {
+            $authorizationHeader = $_SERVER['HTTP_X_AUTHORIZATION'];
+        } else {
+            $authorizationHeader = null;
+        }
+
 
         return $this->validateCallback($requestBody, $requestQuery, $dateHeader, $authorizationHeader);
     }

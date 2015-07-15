@@ -222,7 +222,9 @@ class CurlClient implements ClientInterface {
 
         $this->additionalHeaders = array(
             'Date' => $timestamp,
+            'X-Date' => $timestamp,
             'Authorization' => $authHeader,
+            'X-Authorization' => $authHeader,
             'Content-Type' => $contentType
         );
 
