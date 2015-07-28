@@ -134,7 +134,15 @@ class Generator {
      * @throws TypeException
      */
     protected function appendOffsiteNodes(\DOMNode $parentNode, OffsiteInterface $transaction) {
-        $this->verifyUrl($transaction->getSuccessUrl(), 'successUrl');
+        if ($transaction instanceof AbstractTransactionWithReference && $transaction->getReferenceTransactionId()) {
+            if ($transaction->getSuccessUrl()) {
+                $this->verifyUrl($transaction->getSuccessUrl(), 'successUrl');
+            }
+        } else {
+            $this->verifyUrl($transaction->getSuccessUrl(), 'successUrl');
+
+        }
+
         $this->verifyUrl($transaction->getCallbackUrl(), 'callbackUrl');
         if ($transaction->getCancelUrl()) {
             $this->verifyUrl($transaction->getCancelUrl(), 'cancelUrl');
