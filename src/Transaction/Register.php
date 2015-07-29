@@ -3,6 +3,8 @@
 namespace Ixopay\Client\Transaction;
 
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
+use Ixopay\Client\Transaction\Base\OffsiteInterface;
+use Ixopay\Client\Transaction\Base\OffsiteTrait;
 
 /**
  * Register: Register the customer's payment data for recurring charges.
@@ -11,6 +13,6 @@ use Ixopay\Client\Transaction\Base\AbstractTransaction;
  *
  * @package Ixopay\Client\Transaction
  */
-class Register extends AbstractTransaction {
-
+class Register extends AbstractTransaction implements OffsiteInterface {
+    use OffsiteTrait;
 }
