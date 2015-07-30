@@ -3,6 +3,7 @@
 namespace Ixopay\Client;
 
 use Ixopay\Client\Exception\ClientException;
+use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Http\CurlClient;
 use Ixopay\Client\Http\Response;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
@@ -23,6 +24,11 @@ use Ixopay\Client\Xml\Parser;
  * @package Ixopay\Client
  */
 class Client {
+
+    /**
+     * The default url points to the IxoPay Gateway
+     */
+    const DEFAULT_IXOPAY_URL = 'http://gateway.ixopay.com/transaction';
 
     /**
      * @var string
@@ -70,6 +76,7 @@ class Client {
      * @var bool
      */
     protected $testMode;
+
 
     /**
      * @param string $username
@@ -448,4 +455,60 @@ class Client {
         return $password;
     }
 
+    /**
+     * Sets the IxoPay Gateway url (API URL) to the given one. This allows to set up a development/test environment.
+     * The API url is already set to the proper value by default.
+     *
+     * Please note that setting the API URL affects all instances (including the existing ones) of this client.
+     *
+     * DO NOT MODIFY THE API URL IN PRODUCTION ENVIRONMENT IF IT IS NOT NECESSARY TO PREVENT UNEXPECTED BEHAVIOUR!
+     *
+     * @param string $url   The URL to use to send the requests to.
+     *
+     * @return void
+     *
+     * @throws InvalidValueException
+     *
+     * @internal
+     */
+    public static function setApiUrl($url) {
+        if (empty($url)) {
+            throw new InvalidValueException('The URL to the IxoPay Gateway can not be empty!');
+        }
+
+        if (!\filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)) {
+            throw new InvalidValueException('The URL to the IxoPay Gateway should be a valid URL!');
+        }
+
+        self::$ixopayUrl = $url;
+    }
+
+    /**
+     * Retrieves the currently set API URL.
+     *
+     * @return string
+     */
+    public static function getApiUrl() {
+        return static::$ixopayUrl;
+    }
+
+    /**
+     * Retrieves the default API URL.
+     *
+     * @return string
+     */
+    public static function getDefaultUrl() {
+        return static::DEFAULT_IXOPAY_URL;
+    }
+
+    /**
+     * Resets the API URL to it's default value.
+     *
+     * Please note that setting the API URL affects all instances (including the existing ones) of this client.
+     *
+     * @return void
+     */
+    public static function resetApiUrl() {
+        static::setApiUrl(static::DEFAULT_IXOPAY_URL);
+    }
 }
