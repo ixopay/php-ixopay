@@ -480,7 +480,7 @@ class Client {
             throw new InvalidValueException('The URL to the IxoPay Gateway should be a valid URL!');
         }
 
-        self::$ixopayUrl = $url;
+        static::$ixopayUrl = $url;
     }
 
     /**
