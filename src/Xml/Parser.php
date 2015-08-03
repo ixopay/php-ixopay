@@ -122,6 +122,12 @@ class Parser {
                     $chargebackData = $this->parseChargebackData($child);
                     $result->setChargebackData($chargebackData);
                     break;
+                case 'amount':
+                    $result->setAmount((double)$child->nodeValue);
+                    break;
+                case 'currency':
+                    $result->setCurrency($child->nodeValue);
+                    break;
                 default:
                     if ($child->nodeName != '#text') {
                         throw new InvalidValueException('Unexpected element "' . $child->nodeName . '"');

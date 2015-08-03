@@ -56,6 +56,16 @@ class Result {
     protected $transactionType;
 
     /**
+     * @var double
+     */
+    protected $amount;
+
+    /**
+     * @var string
+     */
+    protected $currency;
+
+    /**
      * @var Error[]
      */
     protected $errors = array();
@@ -212,6 +222,34 @@ class Result {
      */
     public function setTransactionType($transactionType) {
         $this->transactionType = $transactionType;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmount() {
+        return $this->amount;
+    }
+
+    /**
+     * @param float $amount
+     */
+    public function setAmount($amount) {
+        $this->amount = $amount;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency() {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     */
+    public function setCurrency($currency) {
+        $this->currency = $currency;
     }
 
     /**
