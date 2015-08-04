@@ -66,9 +66,6 @@ class Parser {
                     $result->addExtraData($key, $value);
                     break;
                 default:
-                    if ($child->nodeName != '#text' && $child->localName != 'exception') {
-                        throw new InvalidValueException('Unexpected element "' . $child->nodeName . '"');
-                    }
                     break;
             }
         }
@@ -129,9 +126,6 @@ class Parser {
                     $result->setCurrency($child->nodeValue);
                     break;
                 default:
-                    if ($child->nodeName != '#text') {
-                        throw new InvalidValueException('Unexpected element "' . $child->nodeName . '"');
-                    }
                     break;
             }
         }
