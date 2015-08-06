@@ -298,6 +298,11 @@ class Parser {
                 case 'chargebackDateTime':
                     $data->setChargebackDateTime(new \DateTime($child->nodeValue));
                     break;
+                case 'reason':
+                    $data->setReason($child->nodeValue);
+                    break;
+                default:
+                    break;
             }
         }
 

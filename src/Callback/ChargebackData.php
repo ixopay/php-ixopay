@@ -30,6 +30,11 @@ class ChargebackData {
     protected $currency;
 
     /**
+     * @var string
+     */
+    protected $reason;
+
+    /**
      * @var \DateTime
      */
     protected $chargebackDateTime;
@@ -88,6 +93,20 @@ class ChargebackData {
      */
     public function setCurrency($currency) {
         $this->currency = $currency;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReason() {
+        return $this->reason;
+    }
+
+    /**
+     * @param string $reason
+     */
+    public function setReason($reason) {
+        $this->reason = $reason;
     }
 
     /**
