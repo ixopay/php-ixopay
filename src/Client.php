@@ -28,12 +28,12 @@ class Client {
     /**
      * The default url points to the IxoPay Gateway
      */
-    const DEFAULT_IXOPAY_URL = 'http://gateway.ixopay.com/transaction';
+    const DEFAULT_IXOPAY_URL = 'https://gateway.ixopay.com/transaction';
 
     /**
      * @var string
      */
-    protected static $ixopayUrl = 'http://gateway.ixopay.com/transaction';
+    protected static $ixopayUrl = 'https://gateway.ixopay.com/transaction';
 
     /**
      * the api key given by the ixopay gateway
