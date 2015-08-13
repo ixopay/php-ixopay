@@ -134,6 +134,67 @@ class Parser {
     }
 
     /**
+     * @param string $xml
+     * @return mixed
+     * @throws InvalidValueException
+     */
+    public function parseOptionsResult($xml) {
+        $result = array();
+        $success = false;
+        $error = null;
+
+        $document = new \DOMDocument('1.0', 'utf-8');
+        $document->loadXML($xml);
+
+        $root = $document->getElementsByTagNameNS('http://gateway.ixopay.com/Schema/V2/Options', 'response');
+        if ($root->length < 0) {
+            throw new InvalidValueException('XML does not contain a "response" element');
+        }
+        $root = $root->item(0);
+
+        foreach ($root->childNodes as $child) {
+            /**
+             * @var \DOMNode $child
+             */
+            switch ($child->localName) {
+                case 'success':
+                    $success = $child->nodeValue == 'true' ? true : false;
+                    break;
+                case 'error':
+                    $error = $child->nodeValue;
+                    break;
+                case 'parameter':
+                    $val = $child->nodeValue;
+                    $key = $child->attributes->getNamedItem('name')->nodeValue;
+                    if ($val === 'true') {
+                        $val = true;
+                    } elseif ($val === 'false') {
+                        $val = false;
+                    } elseif (ctype_digit($val)) {
+                        $val = (int)$val;
+                    } elseif (is_numeric($val)) {
+                        $val = (double)$val;
+                    } else {
+                        $json = json_decode($val, true);
+                        if ($json !== null) {
+                            $val = $json;
+                        }
+                    }
+                    $result[$key] = $val;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (count($result) === 1 && array_key_exists('undefined', $result)) {
+            $result = $result['undefined'];
+        }
+
+        return $result;
+    }
+
+    /**
      * @param \DOMNode $node
      * @return string
      * @throws InvalidValueException

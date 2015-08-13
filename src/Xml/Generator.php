@@ -95,6 +95,47 @@ class Generator {
     }
 
     /**
+     * @param string $username
+     * @param string $password
+     * @param string $identifier
+     * @param array $parameters
+     * @return \DOMDocument
+     */
+    public function generateOptions($username, $password, $identifier, $parameters=array()) {
+        $this->document = new \DOMDocument('1.0', 'utf-8');
+        $this->document->formatOutput = true;
+        $root = $this->document->createElementNS('http://gateway.ixopay.com/Schema/V2/Options', 'options');
+        $this->document->appendChild($root);
+
+        $this->_appendTextNode($root, 'username', $username);
+        $this->_appendTextNode($root, 'password', $password);
+
+        $requestNode = $this->document->createElement('request');
+        $root->appendChild($requestNode);
+
+        $this->_appendTextNode($requestNode, 'identifier', $identifier);
+
+        if ($parameters) {
+            foreach ($parameters as $k=>$v) {
+                if (is_array($v)) {
+                    $v = json_encode($v);
+                } elseif (is_object($v)) {
+                    if ($v instanceof \JsonSerializable) {
+                        $v = json_encode($v);
+                    } else {
+                        $v = null;
+                    }
+                }
+                $parNode = $this->_appendTextNode($requestNode, 'parameter', $v);
+                $parNode->setAttribute('name', $k);
+            }
+        }
+
+        return $this->document;
+
+    }
+
+    /**
      * @param \DOMNode $parentNode
      * @param AbstractTransaction $transaction
      */

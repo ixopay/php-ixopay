@@ -28,12 +28,16 @@ class Client {
     /**
      * The default url points to the IxoPay Gateway
      */
-    const DEFAULT_IXOPAY_URL = 'https://gateway.ixopay.com/transaction';
+    const DEFAULT_IXOPAY_URL = 'https://gateway.ixopay.com/';
+
+    const TRANSACTION_ROUTE = 'transaction';
+
+    const OPTIONS_ROUTE = 'options';
 
     /**
      * @var string
      */
-    protected static $ixopayUrl = 'https://gateway.ixopay.com/transaction';
+    protected static $ixopayUrl = 'https://gateway.ixopay.com/';
 
     /**
      * the api key given by the ixopay gateway
@@ -111,7 +115,7 @@ class Client {
             $this->password, $this->language, $this->testMode);
         $xml = $dom->saveXML();
 
-        $response = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, self::$ixopayUrl);
+        $response = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, self::$ixopayUrl.self::TRANSACTION_ROUTE);
 
         if ($response->getErrorCode() || $response->getErrorMessage()) {
             throw new ClientException('Request failed: ' . $response->getErrorCode() . ' ' . $response->getErrorMessage());
@@ -427,6 +431,36 @@ class Client {
     public function setTestMode($testMode) {
         $this->testMode = $testMode;
         return $this;
+    }
+
+    /**
+     * @param string $identifier
+     * @param mixed $args [optional]
+     * @param mixed $_ [optional]
+     * @return mixed
+     * @throws ClientException
+     * @throws InvalidValueException
+     */
+    public function getOptions($identifier, $args = null, $_ = null) {
+        if (func_num_args() > 1) {
+            $args = func_get_args();
+            array_shift($args);
+        } else {
+            $args = array();
+        }
+
+        $domDocument = $this->getGenerator()->generateOptions($this->getUsername(), $this->getPassword(), $identifier, $args);
+        $xml = $domDocument->saveXML();
+
+        $response = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, self::$ixopayUrl.self::OPTIONS_ROUTE);
+
+        if ($response->getErrorCode() || $response->getErrorMessage()) {
+            throw new ClientException('Request failed: ' . $response->getErrorCode() . ' ' . $response->getErrorMessage());
+        }
+
+        $return = $this->getParser()->parseOptionsResult($response->getBody());
+
+        return $return;
     }
 
     /**
