@@ -19,6 +19,8 @@ class Result {
     const RETURN_TYPE_HTML = 'HTML';
     /** no result yet, keep polling for status by using completeXXX method */
     const RETURN_TYPE_PENDING = 'PENDING';
+    /** no result yet, waiting for postback */
+    const RETURN_TYPE_PENDING_POSTBACK = 'PENDING_POSTBACK';
     /** transaction failed (see $errors) */
     const RETURN_TYPE_ERROR = 'ERROR';
 
