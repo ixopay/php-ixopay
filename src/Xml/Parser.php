@@ -119,6 +119,9 @@ class Parser {
                     $chargebackData = $this->parseChargebackData($child);
                     $result->setChargebackData($chargebackData);
                     break;
+                case 'returnData':
+                    $result->setReturnData($this->parseReturnData($child));
+                    break;
                 case 'amount':
                     $result->setAmount((double)$child->nodeValue);
                     break;

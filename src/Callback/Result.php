@@ -2,6 +2,7 @@
 
 namespace Ixopay\Client\Callback;
 
+use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Transaction\Error;
 
 /**
@@ -83,6 +84,11 @@ class Result {
      * @var ChargebackData
      */
     protected $chargebackData = null;
+
+    /**
+     * @var ResultData
+     */
+    protected $returnData = null;
 
 
     /**
@@ -264,6 +270,20 @@ class Result {
      */
     public function setChargebackData(ChargebackData $chargebackData) {
         $this->chargebackData = $chargebackData;
+    }
+
+    /**
+     * @return ResultData
+     */
+    public function getReturnData() {
+        return $this->returnData;
+    }
+
+    /**
+     * @param ResultData $returnData
+     */
+    public function setReturnData($returnData) {
+        $this->returnData = $returnData;
     }
 
 }
