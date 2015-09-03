@@ -5,6 +5,8 @@ namespace Ixopay\Client\Transaction;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Base\AmountableInterface;
 use Ixopay\Client\Transaction\Base\AmountableTrait;
+use Ixopay\Client\Transaction\Base\ItemsInterface;
+use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
 
@@ -13,9 +15,10 @@ use Ixopay\Client\Transaction\Base\OffsiteTrait;
  *
  * @package Ixopay\Client\Transaction
  */
-class Preauthorize extends AbstractTransaction implements AmountableInterface, OffsiteInterface {
+class Preauthorize extends AbstractTransaction implements AmountableInterface, OffsiteInterface, ItemsInterface {
     use OffsiteTrait;
     use AmountableTrait;
+    use ItemsTrait;
 
     /**
      * @var bool

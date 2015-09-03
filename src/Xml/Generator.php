@@ -10,6 +10,7 @@ use Ixopay\Client\Exception\TypeException;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
 use Ixopay\Client\Transaction\Base\AmountableInterface;
+use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
@@ -311,6 +312,38 @@ class Generator {
     }
 
     /**
+     * @param \DOMNode $parentNode
+     * @param ItemsInterface $transaction
+     */
+    protected function appendItemsNode(\DOMNode $parentNode, ItemsInterface $transaction) {
+        if ($transaction->getItems()) {
+            $node = $this->document->createElement('items');
+
+            foreach ($transaction->getItems() as $item) {
+                if ($item->getPrice()) {
+                    $this->verifyAmountType($item->getPrice(), 'item.amount');
+                }
+                if ($item->getQuantity()) {
+                    $this->verifyAmountType($item->getQuantity(), 'item.quantity');
+                }
+                if ($item->getCurrency()) {
+                    $this->verifyCurrencyType($item->getCurrency(), 'item.currency');
+                }
+                $itemNode = $this->document->createElement('item');
+                $this->_appendTextNode($itemNode, 'identification', $item->getIdentification());
+                $this->_appendTextNode($itemNode, 'name', $item->getName());
+                $this->_appendTextNode($itemNode, 'description', $item->getDescription());
+                $this->_appendTextNode($itemNode, 'quantity', $item->getQuantity());
+                $this->_appendTextNode($itemNode, 'price', $item->getPrice());
+                $this->_appendTextNode($itemNode, 'currency', $item->getCurrency());
+                $this->appendExtraDataNodes($itemNode, 'extraData', $item->getExtraData());
+                $node->appendChild($itemNode);
+            }
+            $parentNode->appendChild($node);
+        }
+    }
+
+    /**
      * @param Debit $transaction
      * @param string $method
      *
@@ -321,6 +354,7 @@ class Generator {
         $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
         $this->appendAmountableNodes($node, $transaction);
         $this->appendOffsiteNodes($node, $transaction);
+        $this->appendItemsNode($node, $transaction);
 
         $this->_appendTextNode($node, 'withRegister', $transaction->isWithRegister() ? 'true' : 'false');
 
@@ -362,6 +396,7 @@ class Generator {
         $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
         $this->appendAmountableNodes($node, $transaction);
         $this->appendOffsiteNodes($node, $transaction);
+        $this->appendItemsNode($node, $transaction);
 
         $this->_appendTextNode($node, 'withRegister', $transaction->isWithRegister() ? 'true' : 'false');
 
@@ -376,6 +411,7 @@ class Generator {
     protected function generateCaptureNode(Capture $transaction, $method) {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
+        $this->appendItemsNode($node, $transaction);
 
         return $node;
     }
@@ -402,6 +438,7 @@ class Generator {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
         $this->appendAmountableNodes($node, $transaction);
+        $this->appendItemsNode($node, $transaction);
 
         return $node;
     }

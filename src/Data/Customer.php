@@ -9,6 +9,9 @@ namespace Ixopay\Client\Data;
  */
 class Customer {
 
+    const GENDER_MALE = 'M';
+    const GENDER_FEMALE = 'F';
+
     /**
      * @var string
      */
@@ -27,6 +30,11 @@ class Customer {
      * @var \DateTime
      */
     protected $birthDate;
+
+    /**
+     * @var string
+     */
+    protected $gender;
 
     /**
      * @var string
@@ -479,4 +487,19 @@ class Customer {
         $this->nationalId = $nationalId;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getGender() {
+        return $this->gender;
+    }
+
+    /**
+     * @param string $gender
+     */
+    public function setGender($gender) {
+        $this->gender = $gender;
+    }
+
 }
