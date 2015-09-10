@@ -102,6 +102,11 @@ class Customer {
     protected $email;
 
     /**
+     * @var bool
+     */
+    protected $emailVerified;
+
+    /**
      * @var string
      */
     protected $ipAddress;
@@ -452,6 +457,20 @@ class Customer {
      */
     public function getEmail() {
         return $this->email;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isEmailVerified() {
+        return $this->emailVerified;
+    }
+
+    /**
+     * @param boolean $emailVerified
+     */
+    public function setEmailVerified($emailVerified) {
+        $this->emailVerified = $emailVerified;
     }
 
     /**

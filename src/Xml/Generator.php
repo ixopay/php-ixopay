@@ -254,6 +254,7 @@ class Generator {
         $this->_appendTextNode($node, 'shippingPhone', $customer->getShippingPhone());
         $this->_appendTextNode($node, 'company', $customer->getCompany());
         $this->_appendTextNode($node, 'email', $customer->getEmail());
+        $this->_appendTextNode($node, 'emailVerified', $customer->isEmailVerified() ? 'true' : 'false');
         $this->_appendTextNode($node, 'ipAddress', $customer->getIpAddress());
         $this->_appendTextNode($node, 'nationalId', $customer->getNationalId());
 
