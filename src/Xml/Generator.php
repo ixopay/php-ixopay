@@ -393,8 +393,7 @@ class Generator {
      */
     protected function generatePreauthorizeNode(Preauthorize $transaction, $method) {
         $node = $this->document->createElement($method);
-        // @todo $transaction parameter is expected to be an AbstractTransactionWithReference, Preauthorize extends the AbstractTransaction. The fact that it has referenced transaction should be checked.
-        $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
+        $this->appendAbstractTransactionNodes($node, $transaction);
         $this->appendAmountableNodes($node, $transaction);
         $this->appendOffsiteNodes($node, $transaction);
         $this->appendItemsNode($node, $transaction);
