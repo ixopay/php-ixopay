@@ -208,8 +208,8 @@ class Generator {
     protected function appendAmountableNodes(\DOMNode $parentNode, AmountableInterface $transaction) {
         $this->verifyAmountType($transaction->getAmount(), 'amount');
         $this->verifyCurrencyType($transaction->getCurrency(), 'currency');
-
-        $this->_appendTextNode($parentNode, 'amount', $transaction->getAmount());
+		
+        $this->_appendTextNode($parentNode, 'amount', number_format($transaction->getAmount(), 2, '.', ''));
         $this->_appendTextNode($parentNode, 'currency', $transaction->getCurrency());
     }
 
