@@ -17,6 +17,8 @@ use Ixopay\Client\Transaction\Result;
 use Ixopay\Client\Transaction\Void;
 use Ixopay\Client\Xml\Generator;
 use Ixopay\Client\Xml\Parser;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Class Client
@@ -81,6 +83,10 @@ class Client {
      */
     protected $testMode;
 
+	/**
+	 * @var LoggerInterface
+	 */
+    protected $logger;
 
     /**
      * @param string $username
@@ -97,6 +103,31 @@ class Client {
         $this->sharedSecret = $sharedSecret;
         $this->language = $language;
         $this->testMode = $testMode;
+    }
+
+	/**
+	 * Set a Logger instance
+	 * @param LoggerInterface $logger
+	 * @return $this
+	 */
+    public function setLogger(LoggerInterface $logger) {
+    	$this->logger = $logger;
+    	return $this;
+    }
+
+	/**
+     * Logs with an arbitrary level if we have a logger set
+     *
+     * @param mixed $level
+     * @param string $message
+     * @param array $context
+     * @return null
+     */
+    public function log($level, $message, array $context = array()) {
+    	if ($this->logger && $this->logger instanceof LoggerInterface) {
+    		$this->logger->log($level, $message, $context);
+    	}
+    	//dev/null
     }
 
     /**
@@ -137,10 +168,27 @@ class Client {
      * @return Response
      */
     public function signAndSendXml($xml, $apiKey, $sharedSecret, $url) {
+		$this->log(LogLevel::DEBUG, "POST $url ",
+			array(
+				'url' => $url,
+				'xml' => $xml,
+				'apiKey' => $apiKey,
+				'sharedSecret' => $sharedSecret,
+			)
+		);
 
         $curl = new CurlClient();
-        return $curl->sign($apiKey, $sharedSecret, $url, $xml)
+        $response = $curl
+        	->sign($apiKey, $sharedSecret, $url, $xml)
             ->post($url, $xml);
+
+		$this->log(LogLevel::DEBUG, "RESPONSE: " . $response->getBody(),
+			array(
+				'response' => $response
+			)
+		);
+
+		return $response;
     }
 
     /**

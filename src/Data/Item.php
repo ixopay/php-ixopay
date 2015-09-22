@@ -38,9 +38,11 @@ class Item extends Data {
 
     /**
      * @param string $identification
+	 * @return $this
      */
     public function setIdentification($identification) {
         $this->identification = $identification;
+        return $this;
     }
 
     /**

@@ -16,11 +16,11 @@ trait ItemsTrait {
 
     /**
      * @param Item[] $items
-     *
-     * @return void
+     * @return $this
      */
     public function setItems($items) {
         $this->items = $items;
+        return $this;
     }
 
     /**
@@ -33,9 +33,10 @@ trait ItemsTrait {
     /**
      * @param Item $item
      *
-     * @return void
+     * @return $this
      */
     public function addItem($item) {
         $this->items[] = $item;
+        return $this;
     }
 }
