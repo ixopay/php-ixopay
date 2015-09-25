@@ -411,6 +411,7 @@ class Generator {
     protected function generateCaptureNode(Capture $transaction, $method) {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
+        $this->appendAmountableNodes($node, $transaction);
         $this->appendItemsNode($node, $transaction);
 
         return $node;
