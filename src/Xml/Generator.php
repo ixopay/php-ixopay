@@ -38,10 +38,9 @@ class Generator {
      * @param string $username
      * @param string $password
      * @param string $language
-     * @param bool $testMode
      * @return \DOMDocument
      */
-    public function generateTransaction($method, AbstractTransaction $transaction, $username, $password, $language=null, $testMode=false) {
+    public function generateTransaction($method, AbstractTransaction $transaction, $username, $password, $language=null) {
         $this->document = new \DOMDocument('1.0', 'utf-8');
         $this->document->formatOutput = true;
         $root = $this->document->createElementNS('http://gateway.ixopay.com/Schema/V2/Transaction', 'transaction');
@@ -53,7 +52,6 @@ class Generator {
             $this->verifyLanguageType($language, 'language');
         }
         $this->_appendTextNode($root, 'language', $language);
-        $this->_appendTextNode($root, 'testMode', $testMode ? 'true' : 'false');
 
         if (strpos($method, 'complete') === 0) {
             //complete call requires only transactionId

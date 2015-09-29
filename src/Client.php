@@ -79,6 +79,7 @@ class Client {
     /**
      * set to true if you want to perform a test transaction
      *
+     * @deprecated
      * @var bool
      */
     protected $testMode;
@@ -94,7 +95,7 @@ class Client {
      * @param string $apiKey
      * @param string $sharedSecret
      * @param string $language
-     * @param bool   $testMode
+     * @param bool   $testMode - DEPRECATED
      */
     public function __construct($username, $password, $apiKey, $sharedSecret, $language = null, $testMode = false) {
         $this->username = $username;
@@ -143,7 +144,7 @@ class Client {
      */
     protected function sendTransaction($transactionMethod, AbstractTransaction $transaction) {
         $dom = $this->getGenerator()->generateTransaction($transactionMethod, $transaction, $this->username,
-            $this->password, $this->language, $this->testMode);
+            $this->password, $this->language);
         $xml = $dom->saveXML();
 
         $response = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, self::$ixopayUrl.self::TRANSACTION_ROUTE);
@@ -466,6 +467,7 @@ class Client {
 
     /**
      * @return boolean
+     * @deprecated
      */
     public function isTestMode() {
         return $this->testMode;
@@ -475,6 +477,7 @@ class Client {
      * @param boolean $testMode
      *
      * @return $this
+     * @deprecated
      */
     public function setTestMode($testMode) {
         $this->testMode = $testMode;
