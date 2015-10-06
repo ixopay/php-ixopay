@@ -7,7 +7,7 @@ namespace Ixopay\Client\Data;
  *
  * @package Ixopay\Client\Data
  */
-class Customer {
+class Customer extends Data {
 
     const GENDER_MALE = 'M';
     const GENDER_FEMALE = 'F';
