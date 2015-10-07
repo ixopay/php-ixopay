@@ -255,6 +255,7 @@ class Generator {
         $this->_appendTextNode($node, 'emailVerified', $customer->isEmailVerified() ? 'true' : 'false');
         $this->_appendTextNode($node, 'ipAddress', $customer->getIpAddress());
         $this->_appendTextNode($node, 'nationalId', $customer->getNationalId());
+        $this->_appendTextNode($node, 'gender', $customer->getGender());
 
         if ($customer instanceof IbanCustomer) {
             $this->_appendTextNode($node, 'iban', $customer->getIban());
