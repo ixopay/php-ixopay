@@ -256,6 +256,10 @@ class Generator {
         $this->_appendTextNode($node, 'ipAddress', $customer->getIpAddress());
         $this->_appendTextNode($node, 'nationalId', $customer->getNationalId());
 
+        if ($customer->getExtraData()) {
+            $this->appendExtraDataNodes($node, 'extraData', $customer->getExtraData());
+        }
+
         if ($customer instanceof IbanCustomer) {
             $this->_appendTextNode($node, 'iban', $customer->getIban());
             $this->_appendTextNode($node, 'bic', $customer->getBic());
