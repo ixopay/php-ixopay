@@ -236,6 +236,7 @@ class Generator {
         $this->_appendTextNode($node, 'firstName', $customer->getFirstName());
         $this->_appendTextNode($node, 'lastName', $customer->getLastName());
         $this->_appendTextNode($node, 'birthDate', $customer->getBirthDate() ? $customer->getBirthDate()->format('Y-m-d') : null);
+        $this->_appendTextNode($node, 'gender', $customer->getGender());
         $this->_appendTextNode($node, 'billingAddress1', $customer->getBillingAddress1());
         $this->_appendTextNode($node, 'billingAddress2', $customer->getBillingAddress2());
         $this->_appendTextNode($node, 'billingCity', $customer->getBillingCity());
