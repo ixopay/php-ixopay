@@ -10,4 +10,9 @@ namespace Ixopay\Client\Data\Result;
  */
 abstract class ResultData {
 
+    /**
+     * @return array
+     */
+    abstract public function toArray();
+
 }

@@ -220,4 +220,17 @@ class CreditcardData extends ResultData {
         $this->country = $country;
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray() {
+        $resultData = array();
+
+        foreach ($this as $field => $value) {
+            $resultData[$field] = $value;
+        }
+
+        return $resultData;
+    }
 }
