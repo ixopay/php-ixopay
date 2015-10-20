@@ -51,6 +51,14 @@ class Error {
     /** The request to the payment provider is timed out. */
     const TIMEOUT = 3001;
 
+    /*
+     * results which require manual intervention
+     */
+    /** a previous chargeback was reverted */
+    const CHARGEBACK_REVERTED = 4001;
+    /** dispute on payment provider site */
+    const PAYMENT_DISPUTE = 4002;
+
     /** An error occurred while processing the request. */
     const UNKNOWN = 9999;
 
