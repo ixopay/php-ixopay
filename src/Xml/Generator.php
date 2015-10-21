@@ -373,6 +373,7 @@ class Generator {
     protected function generateRegisterNode(Register $transaction, $method) {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionNodes($node, $transaction);
+        $this->appendOffsiteNodes($node, $transaction);
 
         return $node;
     }
