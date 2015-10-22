@@ -244,6 +244,9 @@ class Generator {
         $this->_appendTextNode($node, 'billingState', $customer->getBillingState());
         $this->_appendTextNode($node, 'billingCountry', $customer->getBillingCountry());
         $this->_appendTextNode($node, 'billingPhone', $customer->getBillingPhone());
+        $this->_appendTextNode($node, 'shippingFirstName', $customer->getShippingFirstName());
+        $this->_appendTextNode($node, 'shippingLastName', $customer->getShippingLastName());
+        $this->_appendTextNode($node, 'shippingCompany', $customer->getShippingCompany());
         $this->_appendTextNode($node, 'shippingAddress1', $customer->getShippingAddress1());
         $this->_appendTextNode($node, 'shippingAddress2', $customer->getShippingAddress2());
         $this->_appendTextNode($node, 'shippingCity', $customer->getShippingCity());

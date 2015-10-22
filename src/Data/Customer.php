@@ -67,6 +67,18 @@ class Customer extends Data {
     /**
      * @var string
      */
+    protected $shippingFirstName;
+    /**
+     * @var string
+     */
+    protected $shippingLastName;
+    /**
+     * @var string
+     */
+    protected $shippingCompany;
+    /**
+     * @var string
+     */
     protected $shippingAddress1;
     /**
      * @var string
@@ -519,6 +531,48 @@ class Customer extends Data {
      */
     public function setGender($gender) {
         $this->gender = $gender;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingFirstName() {
+        return $this->shippingFirstName;
+    }
+
+    /**
+     * @param string $shippingFirstName
+     */
+    public function setShippingFirstName($shippingFirstName) {
+        $this->shippingFirstName = $shippingFirstName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingLastName() {
+        return $this->shippingLastName;
+    }
+
+    /**
+     * @param string $shippingLastName
+     */
+    public function setShippingLastName($shippingLastName) {
+        $this->shippingLastName = $shippingLastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingCompany() {
+        return $this->shippingCompany;
+    }
+
+    /**
+     * @param string $shippingCompany
+     */
+    public function setShippingCompany($shippingCompany) {
+        $this->shippingCompany = $shippingCompany;
     }
 
 }
