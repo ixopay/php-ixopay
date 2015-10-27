@@ -35,6 +35,13 @@ class Result {
     protected $referenceId;
 
     /**
+     * purchase id from gateway (can be used for any subsequent action on this transaction)
+     *
+     * @var string
+     */
+    protected $purchaseId;
+
+    /**
      * id for vault registration (if applicable)
      *
      * @var string
@@ -245,6 +252,20 @@ class Result {
     public function setReturnType($returnType) {
         $this->returnType = $returnType;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPurchaseId() {
+        return $this->purchaseId;
+    }
+
+    /**
+     * @param string $purchaseId
+     */
+    public function setPurchaseId($purchaseId) {
+        $this->purchaseId = $purchaseId;
     }
 
     /**

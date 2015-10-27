@@ -45,6 +45,7 @@ class Parser {
                         $result->setSuccess(true);
                     }
                     break;
+                case 'purchaseId':
                 case 'referenceId':
                 case 'registrationId':
                 case 'redirectUrl':
