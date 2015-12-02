@@ -50,6 +50,13 @@ class Result {
     protected $transactionId;
 
     /**
+     * purchase id from gateway (can be used for any subsequent action on this transaction)
+     *
+     * @var string
+     */
+    protected $purchaseId;
+
+    /**
      * type of the transaction (e.g. DEBIT, CAPTURE etc.)
      *
      * @var string
@@ -214,6 +221,20 @@ class Result {
     public function setTransactionId($transactionId) {
         $this->transactionId = $transactionId;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPurchaseId() {
+        return $this->purchaseId;
+    }
+
+    /**
+     * @param string $purchaseId
+     */
+    public function setPurchaseId($purchaseId) {
+        $this->purchaseId = $purchaseId;
     }
 
     /**

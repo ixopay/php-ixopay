@@ -106,6 +106,9 @@ class Parser {
                 case 'transactionId':
                     $result->setTransactionId($child->nodeValue);
                     break;
+                case 'purchaseId':
+                    $result->setPurchaseId($child->nodeValue);
+                    break;
                 case 'transactionType':
                     $result->setTransactionType($child->nodeValue);
                     break;
