@@ -22,6 +22,9 @@ class Result {
     /** transaction failed (see $errors) */
     const RETURN_TYPE_ERROR = 'ERROR';
 
+    const REDIRECT_TYPE_IFRAME = 'iframe';
+    const REDIRECT_TYPE_FULLPAGE = 'fullpage';
+
     /**
      * @var bool
      */
@@ -49,9 +52,18 @@ class Result {
     protected $registrationId;
 
     /**
+     * one of the RETURN_TYPE_* constants, defines how to proceed with the transaction
+     *
      * @var string
      */
     protected $returnType;
+
+    /**
+     * if returnType = REDIRECT, this property informs if you should do a whole page redirect ("fullpage") or within an iframe ("iframe")
+     *
+     * @var string
+     */
+    protected $redirectType = null;
 
     /**
      * @var string
@@ -252,6 +264,20 @@ class Result {
     public function setReturnType($returnType) {
         $this->returnType = $returnType;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRedirectType() {
+        return $this->redirectType;
+    }
+
+    /**
+     * @param string $redirectType
+     */
+    public function setRedirectType($redirectType) {
+        $this->redirectType = $redirectType;
     }
 
     /**

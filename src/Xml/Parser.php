@@ -54,7 +54,11 @@ class Parser {
                     $result->{'set'.ucfirst($child->localName)}($child->nodeValue);
                     break;
                 case 'returnType':
-                    $result->setReturnType($this->parseReturnType($child));
+                    $returnType = $this->parseReturnType($child);
+                    $result->setReturnType($returnType);
+                    if ($returnType == Result::RETURN_TYPE_REDIRECT) {
+                        $result->setRedirectType($this->parseRedirectType($child));
+                    }
                     break;
                 case 'returnData':
                     $result->setReturnData($this->parseReturnData($child));
@@ -227,6 +231,14 @@ class Parser {
                 throw new InvalidValueException('Value "'.$node->nodeValue.'" is not allowed for "returnType"');
                 break;
         }
+    }
+
+    /**
+     * @param \DOMNode $node
+     * @return string
+     */
+    protected function parseRedirectType(\DOMNode $node) {
+        return $node->attributes->getNamedItem('redirectType')->nodeValue;
     }
 
     /**
