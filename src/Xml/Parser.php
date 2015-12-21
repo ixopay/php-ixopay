@@ -238,7 +238,13 @@ class Parser {
      * @return string
      */
     protected function parseRedirectType(\DOMNode $node) {
-        return $node->attributes->getNamedItem('redirectType')->nodeValue;
+        if ($node && $node->attributes) {
+            $attr = $node->attributes->getNamedItem('redirectType');
+            if ($attr) {
+                return $attr->nodeValue;
+            }
+        }
+        return null;
     }
 
     /**
