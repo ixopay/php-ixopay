@@ -449,6 +449,17 @@ class Client {
     }
 
     /**
+     * set the hashed password
+     *
+     * @param string $password
+     * @return $this
+     */
+    public function setHashedPassword($password) {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getLanguage() {
