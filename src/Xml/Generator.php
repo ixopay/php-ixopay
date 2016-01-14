@@ -400,7 +400,7 @@ class Generator {
      */
     protected function generatePreauthorizeNode(Preauthorize $transaction, $method) {
         $node = $this->document->createElement($method);
-        $this->appendAbstractTransactionNodes($node, $transaction);
+        $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
         $this->appendAmountableNodes($node, $transaction);
         $this->appendOffsiteNodes($node, $transaction);
         $this->appendItemsNode($node, $transaction);
