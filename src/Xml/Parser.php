@@ -3,6 +3,7 @@
 namespace Ixopay\Client\Xml;
 use Ixopay\Client\Callback\ChargebackData;
 use Ixopay\Client\Data\Result\CreditcardData;
+use Ixopay\Client\Data\Result\PhoneData;
 use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Transaction\Error;
@@ -291,6 +292,34 @@ class Parser {
                 }
             }
             return $cc;
+        } elseif ($type->firstChild->nodeValue == 'phoneData') {
+            $node = $node->firstChild;
+            while($node->nodeName == '#text') {
+                $node = $node->nextSibling;
+            }
+            if ($node->localName != 'phoneData') {
+                throw new InvalidValueException('Expecting element named "phoneData"');
+            }
+            $phone = new PhoneData();
+            foreach ($node->childNodes as $child) {
+                /**
+                 * @var \DOMNode $child
+                 */
+                switch ($child->localName) {
+                    case 'phoneNumber':
+                        $phone->setPhoneNumber($child->nodeValue);
+                        break;
+                    case 'operator':
+                        $phone->setOperator($child->nodeValue);
+                        break;
+                    case 'country':
+                        $phone->setCountry($child->nodeValue);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return $phone;
         }
         return null;
     }
