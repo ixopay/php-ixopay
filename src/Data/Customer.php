@@ -480,9 +480,11 @@ class Customer extends Data {
 
     /**
      * @param boolean $emailVerified
+     * @return $this
      */
     public function setEmailVerified($emailVerified) {
         $this->emailVerified = $emailVerified;
+        return $this;
     }
 
     /**
@@ -528,9 +530,11 @@ class Customer extends Data {
 
     /**
      * @param string $gender
+     * @return $this
      */
     public function setGender($gender) {
         $this->gender = $gender;
+        return $this;
     }
 
     /**
@@ -542,9 +546,11 @@ class Customer extends Data {
 
     /**
      * @param string $shippingFirstName
+     * @return $this
      */
     public function setShippingFirstName($shippingFirstName) {
         $this->shippingFirstName = $shippingFirstName;
+        return $this;
     }
 
     /**
@@ -556,9 +562,11 @@ class Customer extends Data {
 
     /**
      * @param string $shippingLastName
+     * @return $this
      */
     public function setShippingLastName($shippingLastName) {
         $this->shippingLastName = $shippingLastName;
+        return $this;
     }
 
     /**
@@ -570,9 +578,11 @@ class Customer extends Data {
 
     /**
      * @param string $shippingCompany
+     * @return $this
      */
     public function setShippingCompany($shippingCompany) {
         $this->shippingCompany = $shippingCompany;
+        return $this;
     }
 
 }
