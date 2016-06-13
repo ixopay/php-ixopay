@@ -4,12 +4,14 @@ namespace Ixopay\Client;
 
 use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Exception\InvalidValueException;
+use Ixopay\Client\Exception\TimeoutException;
 use Ixopay\Client\Http\CurlClient;
 use Ixopay\Client\Http\Response;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Deregister;
+use Ixopay\Client\Transaction\Error;
 use Ixopay\Client\Transaction\Preauthorize;
 use Ixopay\Client\Transaction\Refund;
 use Ixopay\Client\Transaction\Register;
@@ -151,6 +153,9 @@ class Client {
 
         if ($response->getErrorCode() || $response->getErrorMessage()) {
             throw new ClientException('Request failed: ' . $response->getErrorCode() . ' ' . $response->getErrorMessage());
+        }
+        if ($response->getStatusCode() == 504 || $response->getStatusCode() == 522) {
+            throw new TimeoutException('Request timed-out');
         }
 
         $parser = $this->getParser();
