@@ -47,6 +47,10 @@ class Error {
     const FRAUDULENT_CARD = 2010;
     /** card type is not supported */
     const UNSUPPORTED_CARD = 2011;
+    /** transaction was cancelled by the payment system */
+    const TRANSACTION_CANCELLED = 2012;
+    /** transaction was declined by risk check */
+    const RISK_CHECK_BLOCK = 2013;
 
     /** The request to the payment provider is timed out. */
     const TIMEOUT = 3001;
