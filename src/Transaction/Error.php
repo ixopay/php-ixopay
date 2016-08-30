@@ -51,6 +51,12 @@ class Error {
     const TRANSACTION_CANCELLED = 2012;
     /** transaction was declined by risk check */
     const RISK_CHECK_BLOCK = 2013;
+    /** card should be picked-up by merchant */
+    const PICKUP_CARD = 2014;
+    /** card is claimed as lost */
+    const LOST_CARD = 2015;
+    /** card is claimed as lost */
+    const STOLEN_CARD = 2016;
 
     /** The request to the payment provider is timed out. */
     const TIMEOUT = 3001;
