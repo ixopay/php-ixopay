@@ -16,7 +16,7 @@ use Ixopay\Client\Transaction\Preauthorize;
 use Ixopay\Client\Transaction\Refund;
 use Ixopay\Client\Transaction\Register;
 use Ixopay\Client\Transaction\Result;
-use Ixopay\Client\Transaction\Void;
+use Ixopay\Client\Transaction\VoidTransaction;
 use Ixopay\Client\Xml\Generator;
 use Ixopay\Client\Xml\Parser;
 use Psr\Log\LoggerInterface;
@@ -263,11 +263,11 @@ class Client {
     /**
      * void a previously preauthorized transaction
      *
-     * @param \Ixopay\Client\Transaction\Void $transactionData
+     * @param \Ixopay\Client\Transaction\VoidTransaction $transactionData
      *
      * @return Result
      */
-    public function void(Void $transactionData) {
+    public function void(VoidTransaction $transactionData) {
         return $this->sendTransaction('void', $transactionData);
     }
 
