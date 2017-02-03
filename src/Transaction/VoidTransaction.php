@@ -9,6 +9,6 @@ use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
  *
  * @package Ixopay\Client\Transaction
  */
-class Void extends AbstractTransactionWithReference {
+class VoidTransaction extends AbstractTransactionWithReference {
 
 }

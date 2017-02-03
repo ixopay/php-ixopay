@@ -4,6 +4,7 @@ namespace Ixopay\Client;
 
 use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Exception\InvalidValueException;
+use Ixopay\Client\Exception\TimeoutException;
 use Ixopay\Client\Http\CurlClient;
 use Ixopay\Client\Http\Response;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
@@ -14,7 +15,7 @@ use Ixopay\Client\Transaction\Preauthorize;
 use Ixopay\Client\Transaction\Refund;
 use Ixopay\Client\Transaction\Register;
 use Ixopay\Client\Transaction\Result;
-use Ixopay\Client\Transaction\Void;
+use Ixopay\Client\Transaction\VoidTransaction;
 use Ixopay\Client\Xml\Generator;
 use Ixopay\Client\Xml\Parser;
 use Psr\Log\LoggerInterface;
@@ -152,6 +153,9 @@ class Client {
         if ($response->getErrorCode() || $response->getErrorMessage()) {
             throw new ClientException('Request failed: ' . $response->getErrorCode() . ' ' . $response->getErrorMessage());
         }
+        if ($response->getStatusCode() == 504 || $response->getStatusCode() == 522) {
+            throw new TimeoutException('Request timed-out');
+        }
 
         $parser = $this->getParser();
         return $parser->parseResult($response->getBody());
@@ -258,11 +262,11 @@ class Client {
     /**
      * void a previously preauthorized transaction
      *
-     * @param \Ixopay\Client\Transaction\Void $transactionData
+     * @param \Ixopay\Client\Transaction\VoidTransaction $transactionData
      *
      * @return Result
      */
-    public function void(Void $transactionData) {
+    public function void(VoidTransaction $transactionData) {
         return $this->sendTransaction('void', $transactionData);
     }
 

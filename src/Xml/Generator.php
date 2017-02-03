@@ -18,7 +18,7 @@ use Ixopay\Client\Transaction\Deregister;
 use Ixopay\Client\Transaction\Preauthorize;
 use Ixopay\Client\Transaction\Refund;
 use Ixopay\Client\Transaction\Register;
-use Ixopay\Client\Transaction\Void;
+use Ixopay\Client\Transaction\VoidTransaction;
 
 /**
  * Class Generator
@@ -75,7 +75,7 @@ class Generator {
                 case $transaction instanceof Capture:
                     $node = $this->generateCaptureNode($transaction, $method);
                     break;
-                case $transaction instanceof Void:
+                case $transaction instanceof VoidTransaction:
                     $node = $this->generateVoidNode($transaction, $method);
                     break;
                 case $transaction instanceof Refund:
@@ -425,12 +425,12 @@ class Generator {
     }
 
     /**
-     * @param \Ixopay\Client\Transaction\Void $transaction
+     * @param \Ixopay\Client\Transaction\VoidTransaction $transaction
      * @param $method
      *
      * @return \DOMElement
      */
-    protected function generateVoidNode(Void $transaction, $method) {
+    protected function generateVoidNode(VoidTransaction $transaction, $method) {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
 
