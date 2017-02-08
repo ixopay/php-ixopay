@@ -57,7 +57,12 @@ class Error {
     const LOST_CARD = 2015;
     /** card is claimed as lost */
     const STOLEN_CARD = 2016;
-
+    /** provided IBAN is invalid */
+    const IBAN_INVALID = 2017;
+    /** provided BIC is invalid */
+    const BIC_INVALID = 2018;
+    /** provided customer data invalid (e.g. invalid country), see error message for details */
+    const CUSTOMER_DATA_INVALID = 2019;
 
 
     /** The request to the payment provider is timed out. */
