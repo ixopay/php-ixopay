@@ -345,12 +345,13 @@ class Client {
         $digest = $curl->createSignature($this->getSharedSecret(), 'POST', $requestBody, 'text/xml; charset=utf-8',
             $dateHeader, $requestQuery);
         $expectedSig = 'IxoPay ' . $this->getApiKey() . ':' . $digest;
+        $expectedSig2 = 'Gateway '.$this->getApiKey() . ':' . $digest;
 
         if (strpos($authorizationHeader, 'Authorization:') !== false) {
             $authorizationHeader = trim(str_replace('Authorization:', '', $authorizationHeader));
         }
 
-        if ($authorizationHeader === $expectedSig) {
+        if ($authorizationHeader === $expectedSig || $authorizationHeader === $expectedSig2) {
             return true;
         } else {
             return false;
