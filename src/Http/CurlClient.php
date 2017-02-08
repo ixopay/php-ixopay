@@ -48,6 +48,13 @@ class CurlClient implements ClientInterface {
     }
 
     /**
+     * @param string $serviceName
+     */
+    public function setServiceName($serviceName) {
+        $this->serviceName = $serviceName;
+    }
+
+    /**
      * @param string $option
      * @param mixed  $value
      *
