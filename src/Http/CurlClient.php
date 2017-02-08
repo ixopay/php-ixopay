@@ -32,7 +32,7 @@ class CurlClient implements ClientInterface {
     /**
      * @var string
      */
-    protected $serviceName = 'IxoPay';
+    protected $serviceName = 'Gateway';
 
     /**
      * @var array
