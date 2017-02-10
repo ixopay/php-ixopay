@@ -267,6 +267,8 @@ class Generator {
         if ($customer instanceof IbanCustomer) {
             $this->_appendTextNode($node, 'iban', $customer->getIban());
             $this->_appendTextNode($node, 'bic', $customer->getBic());
+            $this->_appendTextNode($node, 'mandateId', $customer->getMandateId());
+            $this->_appendTextNode($node, 'mandateDate', $customer->getMandateDate() ? $customer->getMandateDate()->format('Y-m-d') : null);
         } elseif ($customer instanceof CreditCardCustomer) {
             $this->_appendTextNode($node, 'number', $customer->getNumber());
             $this->_appendTextNode($node, 'expiryMonth', $customer->getExpiryMonth());

@@ -32,7 +32,7 @@ class CurlClient implements ClientInterface {
     /**
      * @var string
      */
-    protected $serviceName = 'IxoPay';
+    protected $serviceName = 'Gateway';
 
     /**
      * @var array
@@ -45,6 +45,13 @@ class CurlClient implements ClientInterface {
     public function __construct() {
         $this->handle = curl_init();
         $this->setOptionArray(self::$defaultOptions);
+    }
+
+    /**
+     * @param string $serviceName
+     */
+    public function setServiceName($serviceName) {
+        $this->serviceName = $serviceName;
     }
 
     /**

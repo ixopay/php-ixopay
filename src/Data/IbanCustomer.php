@@ -20,6 +20,16 @@ class IbanCustomer extends Customer {
     protected $bic;
 
     /**
+     * @var string
+     */
+    protected $mandateId;
+
+    /**
+     * @var \DateTime
+     */
+    protected $mandateDate;
+
+    /**
      * @return string
      */
     public function getIban() {
@@ -52,4 +62,33 @@ class IbanCustomer extends Customer {
         $this->bic = $bic;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getMandateId() {
+        return $this->mandateId;
+    }
+
+    /**
+     * @param string $mandateId
+     */
+    public function setMandateId($mandateId) {
+        $this->mandateId = $mandateId;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getMandateDate() {
+        return $this->mandateDate;
+    }
+
+    /**
+     * @param \DateTime $mandateDate
+     */
+    public function setMandateDate($mandateDate) {
+        $this->mandateDate = $mandateDate;
+    }
+
 }
