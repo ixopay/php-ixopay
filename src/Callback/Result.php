@@ -29,6 +29,7 @@ class Result {
     const TYPE_REGISTER = 'REGISTER';
     const TYPE_VOID = 'VOID';
     const TYPE_CHARGEBACK = 'CHARGEBACK';
+    const TYPE_PAYOUT = 'PAYOUT';
 
     /**
      * @var string

@@ -15,6 +15,7 @@ use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Deregister;
+use Ixopay\Client\Transaction\Payout;
 use Ixopay\Client\Transaction\Preauthorize;
 use Ixopay\Client\Transaction\Refund;
 use Ixopay\Client\Transaction\Register;
@@ -80,6 +81,9 @@ class Generator {
                     break;
                 case $transaction instanceof Refund:
                     $node = $this->generateRefundNode($transaction, $method);
+                    break;
+                case $transaction instanceof Payout:
+                    $node = $this->generatePayoutNode($transaction, $method);
                     break;
                 default:
                     return null;
@@ -448,6 +452,21 @@ class Generator {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
         $this->appendAmountableNodes($node, $transaction);
+        $this->appendItemsNode($node, $transaction);
+
+        return $node;
+    }
+
+    /**
+     * @param Payout $transaction
+     * @param string $method
+     * @return \DOMElement
+     */
+    protected function generatePayoutNode(Payout $transaction, $method) {
+        $node = $this->document->createElement($method);
+        $this->appendAbstractTransactionNodes($node, $transaction);
+        $this->appendAmountableNodes($node, $transaction);
+        $this->_appendTextNode($node, 'description', $transaction->getDescription());
         $this->appendItemsNode($node, $transaction);
 
         return $node;

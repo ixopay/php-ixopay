@@ -24,6 +24,8 @@ class Error {
     const LOGICAL_ERROR = 1006;
     /** invalid configuration at payment provider */
     const INVALID_CONFIGURATION = 1007;
+    /** provider has an unexpected system error */
+    const UNEXPECTED_SYSTEM_ERROR = 1008;
 
     /**  The recurring registration was cancelled by the user externally (e.g. on the payment provider's site) */
     const ACCOUNT_CLOSED_EXTERNALLY = 2001;
@@ -63,10 +65,19 @@ class Error {
     const BIC_INVALID = 2018;
     /** provided customer data invalid (e.g. invalid country), see error message for details */
     const CUSTOMER_DATA_INVALID = 2019;
-
+    /** cvv code required */
+    const CVV_REQUIRED = 2020;
 
     /** The request to the payment provider is timed out. */
     const TIMEOUT = 3001;
+    /** transaction not allowed */
+    const NOT_ALLOWED = 3002;
+    /** provider temporary unavailable */
+    const TEMPORARY_UNAVAILABLE = 3003;
+    /** transaction duplicate */
+    const DUPLICATE_TRANSACTION_ID = 3004;
+    /** communication error with the provider */
+    const COMMUNICATION_ERROR = 3005;
 
     /*
      * results which require manual intervention

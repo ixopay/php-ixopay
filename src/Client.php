@@ -11,6 +11,7 @@ use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Deregister;
+use Ixopay\Client\Transaction\Payout;
 use Ixopay\Client\Transaction\Preauthorize;
 use Ixopay\Client\Transaction\Refund;
 use Ixopay\Client\Transaction\Register;
@@ -312,6 +313,17 @@ class Client {
      */
     public function completeDebit(Debit $transactionData) {
         return $this->sendTransaction('completeDebit', $transactionData);
+    }
+
+    /**
+     * perform a payout transaction (credit the customer)
+     *
+     * @param Payout $transactionData
+     *
+     * @return Result
+     */
+    public function payout(Payout $transactionData) {
+        return $this->sendTransaction('payout', $transactionData);
     }
 
     /**
