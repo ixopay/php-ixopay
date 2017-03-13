@@ -28,7 +28,7 @@ class Parser {
         $document = new \DOMDocument('1.0', 'utf-8');
         $document->loadXML($xml);
 
-        $root = $document->getElementsByTagNameNS('http://gateway.ixopay.com/Schema/V2/Result', 'result');
+        $root = $document->getElementsByTagName('result');
         if ($root->length < 0) {
             throw new InvalidValueException('XML does not contain a root "result" element');
         }
@@ -91,7 +91,7 @@ class Parser {
         $document = new \DOMDocument('1.0', 'utf-8');
         $document->loadXML($xml);
 
-        $root = $document->getElementsByTagNameNS('http://gateway.ixopay.com/Schema/V2/Callback', 'callback');
+        $root = $document->getElementsByTagName('callback');
         if ($root->length < 0) {
             throw new InvalidValueException('XML does not contain a root "callback" element');
         }
@@ -158,7 +158,7 @@ class Parser {
         $document = new \DOMDocument('1.0', 'utf-8');
         $document->loadXML($xml);
 
-        $root = $document->getElementsByTagNameNS('http://gateway.ixopay.com/Schema/V2/Options', 'response');
+        $root = $document->getElementsByTagName('response');
         if ($root->length < 0) {
             throw new InvalidValueException('XML does not contain a "response" element');
         }
