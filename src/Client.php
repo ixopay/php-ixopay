@@ -92,6 +92,11 @@ class Client {
     protected $logger;
 
     /**
+     * @var Generator
+     */
+    protected $generator;
+
+    /**
      * @param string $username
      * @param string $password
      * @param string $apiKey
@@ -546,8 +551,11 @@ class Client {
     /**
      * @return Generator
      */
-    protected function getGenerator() {
-        return new Generator();
+    public function getGenerator() {
+        if (!$this->generator) {
+            $this->generator = new Generator();
+        }
+        return $this->generator;
     }
 
     /**

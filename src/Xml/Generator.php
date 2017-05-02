@@ -34,6 +34,18 @@ class Generator {
     protected $document;
 
     /**
+     * @var string
+     */
+    protected $namespaceRoot = 'http://gateway.ixopay.com';
+
+    /**
+     * @param string $namespaceRoot
+     */
+    public function setNamespaceRoot($namespaceRoot) {
+        $this->namespaceRoot = $namespaceRoot;
+    }
+
+    /**
      * @param string $method
      * @param AbstractTransaction $transaction
      * @param string $username
@@ -44,7 +56,7 @@ class Generator {
     public function generateTransaction($method, AbstractTransaction $transaction, $username, $password, $language=null) {
         $this->document = new \DOMDocument('1.0', 'utf-8');
         $this->document->formatOutput = true;
-        $root = $this->document->createElementNS('http://gateway.ixopay.com/Schema/V2/Transaction', 'transaction');
+        $root = $this->document->createElementNS($this->namespaceRoot . '/Schema/V2/Transaction', 'transaction');
 
         $this->_appendTextNode($root, 'username', $username);
         $this->_appendTextNode($root, 'password', $password);
@@ -107,7 +119,7 @@ class Generator {
     public function generateOptions($username, $password, $identifier, $parameters=array()) {
         $this->document = new \DOMDocument('1.0', 'utf-8');
         $this->document->formatOutput = true;
-        $root = $this->document->createElementNS('http://gateway.ixopay.com/Schema/V2/Options', 'options');
+        $root = $this->document->createElementNS($this->namespaceRoot . '/Schema/V2/Options', 'options');
         $this->document->appendChild($root);
 
         $this->_appendTextNode($root, 'username', $username);
