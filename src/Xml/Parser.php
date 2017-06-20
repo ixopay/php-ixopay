@@ -3,6 +3,7 @@
 namespace Ixopay\Client\Xml;
 use Ixopay\Client\Callback\ChargebackData;
 use Ixopay\Client\Data\Result\CreditcardData;
+use Ixopay\Client\Data\Result\IbanData;
 use Ixopay\Client\Data\Result\PhoneData;
 use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Exception\InvalidValueException;
@@ -320,6 +321,40 @@ class Parser {
                 }
             }
             return $phone;
+        } elseif ($type->firstChild->nodeValue == 'ibanData') {
+            $node = $node->firstChild;
+            while($node->nodeName == '#text') {
+                $node = $node->nextSibling;
+            }
+            if ($node->localName != 'ibanData') {
+                throw new InvalidValueException('Expecting element named "ibanData"');
+            }
+            $ibanData = new IbanData();
+            foreach ($node->childNodes as $child) {
+                /**
+                 * @var \DOMNode $child
+                 */
+                switch ($child->localName) {
+                    case 'accountOwner':
+                        $ibanData->setAccountOwner($child->nodeValue);
+                        break;
+                    case 'iban':
+                        $ibanData->setIban($child->nodeValue);
+                        break;
+                    case 'bic':
+                        $ibanData->setBic($child->nodeValue);
+                        break;
+                    case 'bankName':
+                        $ibanData->setBankName($child->nodeValue);
+                        break;
+                    case 'country':
+                        $ibanData->setCountry($child->nodeValue);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return $ibanData;
         }
         return null;
     }
