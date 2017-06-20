@@ -17,7 +17,7 @@ class Result {
     const RETURN_TYPE_REDIRECT = 'REDIRECT';
     /** transaction needs rendering of $htmlContent */
     const RETURN_TYPE_HTML = 'HTML';
-    /** no result yet, keep polling for status by using completeXXX method */
+    /** no result yet, wait for callback notification */
     const RETURN_TYPE_PENDING = 'PENDING';
     /** transaction failed (see $errors) */
     const RETURN_TYPE_ERROR = 'ERROR';
