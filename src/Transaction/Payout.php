@@ -23,6 +23,11 @@ class Payout extends AbstractTransaction implements AmountableInterface, ItemsIn
     protected $description;
 
     /**
+     * @var string
+     */
+    protected $callbackUrl;
+
+    /**
      * @return string
      */
     public function getDescription() {
@@ -34,6 +39,20 @@ class Payout extends AbstractTransaction implements AmountableInterface, ItemsIn
      */
     public function setDescription($description) {
         $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCallbackUrl() {
+        return $this->callbackUrl;
+    }
+
+    /**
+     * @param string $callbackUrl
+     */
+    public function setCallbackUrl($callbackUrl) {
+        $this->callbackUrl = $callbackUrl;
     }
 
 }
