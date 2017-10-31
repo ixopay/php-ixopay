@@ -382,7 +382,7 @@ class Client {
      */
     public function validateCallbackWithGlobals() {
         $requestBody = file_get_contents('php://input');
-        $requestQuery = $_SERVER['REQUEST_URI'].(!empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '');
+        $requestQuery = $_SERVER['REQUEST_URI'];
         if (!empty($_SERVER['HTTP_DATE'])) {
             $dateHeader = $_SERVER['HTTP_DATE'];
         } elseif (!empty($_SERVER['HTTP_X_DATE'])) {
