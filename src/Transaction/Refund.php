@@ -18,4 +18,42 @@ use Ixopay\Client\Transaction\Base\ItemsTrait;
 class Refund extends AbstractTransactionWithReference implements AmountableInterface, ItemsInterface {
     use AmountableTrait;
     use ItemsTrait;
+
+    /**
+     * @var string
+     */
+    protected $description;
+
+    /**
+     * @var string
+     */
+    protected $callbackUrl;
+
+    /**
+     * @return string
+     */
+    public function getDescription() {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description) {
+        $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCallbackUrl() {
+        return $this->callbackUrl;
+    }
+
+    /**
+     * @param string $callbackUrl
+     */
+    public function setCallbackUrl($callbackUrl) {
+        $this->callbackUrl = $callbackUrl;
+    }
 }

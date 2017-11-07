@@ -464,6 +464,13 @@ class Generator {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
         $this->appendAmountableNodes($node, $transaction);
+        if ($transaction->getDescription()) {
+            $this->_appendTextNode($node, 'description', $transaction->getDescription());
+        }
+        if ($transaction->getCallbackUrl()) {
+            $this->verifyUrl($transaction->getCallbackUrl(), 'callbackUrl');
+            $this->_appendTextNode($node, 'callbackUrl', $transaction->getCallbackUrl());
+        }
         $this->appendItemsNode($node, $transaction);
 
         return $node;
