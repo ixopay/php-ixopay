@@ -67,6 +67,8 @@ class Error {
     const CUSTOMER_DATA_INVALID = 2019;
     /** cvv code required */
     const CVV_REQUIRED = 2020;
+    /** 3D-secure verification failed */
+    const SECURE_3D_FAILED = 2021;
 
     /** The request to the payment provider is timed out. */
     const TIMEOUT = 3001;
