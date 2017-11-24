@@ -20,10 +20,20 @@ class Debit extends AbstractTransactionWithReference implements AmountableInterf
     use AmountableTrait;
     use ItemsTrait;
 
+    const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
+    const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';
+    const TRANSACTION_INDICATOR_RECURRING = 'RECURRING';
+    const TRANSACTION_INDICATOR_CARDONFILE = 'CARDONFILE';
+
     /**
      * @var bool
      */
     protected $withRegister = false;
+
+    /**
+     * @var string
+     */
+    protected $transactionIndicator;
 
     /**
      * @return boolean
@@ -41,6 +51,21 @@ class Debit extends AbstractTransactionWithReference implements AmountableInterf
      */
     public function setWithRegister($withRegister) {
         $this->withRegister = $withRegister;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionIndicator() {
+        return $this->transactionIndicator;
+    }
+
+    /**
+     * @param string $transactionIndicator
+     */
+    public function setTransactionIndicator($transactionIndicator) {
+        $this->transactionIndicator = $transactionIndicator;
         return $this;
     }
 

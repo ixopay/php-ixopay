@@ -20,10 +20,20 @@ class Preauthorize extends AbstractTransactionWithReference implements Amountabl
     use AmountableTrait;
     use ItemsTrait;
 
+    const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
+    const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';
+    const TRANSACTION_INDICATOR_RECURRING = 'RECURRING';
+    const TRANSACTION_INDICATOR_CARDONFILE = 'CARDONFILE';
+
     /**
      * @var bool
      */
     protected $withRegister = false;
+
+    /**
+     * @var string
+     */
+    protected $transactionIndicator;
 
     /**
      * @return boolean
@@ -44,4 +54,18 @@ class Preauthorize extends AbstractTransactionWithReference implements Amountabl
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getTransactionIndicator() {
+        return $this->transactionIndicator;
+    }
+
+    /**
+     * @param string $transactionIndicator
+     */
+    public function setTransactionIndicator($transactionIndicator) {
+        $this->transactionIndicator = $transactionIndicator;
+        return $this;
+    }
 }

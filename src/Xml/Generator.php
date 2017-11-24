@@ -382,6 +382,9 @@ class Generator {
         $this->appendItemsNode($node, $transaction);
 
         $this->_appendTextNode($node, 'withRegister', $transaction->isWithRegister() ? 'true' : 'false');
+        if ($transaction->getTransactionIndicator()) {
+            $this->_appendTextNode($node, 'transactionIndicator', $transaction->getTransactionIndicator());
+        }
 
         return $node;
     }
@@ -424,6 +427,9 @@ class Generator {
         $this->appendItemsNode($node, $transaction);
 
         $this->_appendTextNode($node, 'withRegister', $transaction->isWithRegister() ? 'true' : 'false');
+        if ($transaction->getTransactionIndicator()) {
+            $this->_appendTextNode($node, 'transactionIndicator', $transaction->getTransactionIndicator());
+        }
 
         return $node;
     }
