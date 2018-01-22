@@ -43,6 +43,11 @@ class AbstractTransaction {
     protected $extraData = array();
 
     /**
+     * @var string
+     */
+    protected $merchantMetaData;
+
+    /**
      * @var Request
      */
     protected $request;
@@ -159,6 +164,24 @@ class AbstractTransaction {
      */
     public function setExtraData($extraData) {
         $this->extraData = $extraData;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantMetaData()
+    {
+        return $this->merchantMetaData;
+    }
+
+    /**
+     * @param string $merchantMetaData
+     * @return AbstractTransaction
+     */
+    public function setMerchantMetaData($merchantMetaData)
+    {
+        $this->merchantMetaData = $merchantMetaData;
         return $this;
     }
 

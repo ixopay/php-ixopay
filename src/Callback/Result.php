@@ -87,6 +87,11 @@ class Result {
     protected $extraData = array();
 
     /**
+     * @var string
+     */
+    protected $merchantMetaData;
+
+    /**
      * chargeback data (if transactionType = CHARGEBACK)
      *
      * @var ChargebackData
@@ -137,6 +142,24 @@ class Result {
      */
     public function addExtraData($key, $value) {
         $this->extraData[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantMetaData(): string
+    {
+        return $this->merchantMetaData;
+    }
+
+    /**
+     * @param string $merchantMetaData
+     * @return Result
+     */
+    public function setMerchantMetaData(string $merchantMetaData): Result
+    {
+        $this->merchantMetaData = $merchantMetaData;
         return $this;
     }
 

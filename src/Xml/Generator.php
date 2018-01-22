@@ -165,6 +165,9 @@ class Generator {
         if ($transaction->getExtraData()) {
             $this->appendExtraDataNodes($parentNode, 'extraData', $transaction->getExtraData());
         }
+        if ($transaction->getMerchantMetaData()) {
+            $this->_appendTextNode($parentNode, 'merchantMetaData', $transaction->getMerchantMetaData());
+        }
 
         if ($transaction->getRequest()) {
             $this->appendRequestNode($parentNode, 'request', $transaction->getRequest());
