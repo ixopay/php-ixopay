@@ -3,7 +3,7 @@
 namespace Ixopay\Client\Callback;
 
 /**
- * Class ChargebackData
+ * Class ChargebackReversalData
  *
  * @package Ixopay\Client\Callback
  */
