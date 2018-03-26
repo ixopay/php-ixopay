@@ -29,6 +29,7 @@ class Result {
     const TYPE_REGISTER = 'REGISTER';
     const TYPE_VOID = 'VOID';
     const TYPE_CHARGEBACK = 'CHARGEBACK';
+    const TYPE_CHARGEBACK_REVERSAL = 'CHARGEBACK-REVERSAL';
     const TYPE_PAYOUT = 'PAYOUT';
 
     /**
@@ -92,6 +93,13 @@ class Result {
      * @var ChargebackData
      */
     protected $chargebackData = null;
+
+    /**
+     * Chargeback reversal data (if transactionType = CHARGEBACK-REVERSAL)
+     *
+     * @var ChargebackReversalData
+     */
+    protected $chargebackReversalData = null;
 
     /**
      * @var ResultData
@@ -292,6 +300,20 @@ class Result {
      */
     public function setChargebackData(ChargebackData $chargebackData) {
         $this->chargebackData = $chargebackData;
+    }
+
+    /**
+     * @return ChargebackReversalData
+     */
+    public function getChargebackReversalData() {
+        return $this->chargebackReversalData;
+    }
+
+    /**
+     * @param ChargebackReversalData $chargebackReversalData
+     */
+    public function setChargebackReversalData($chargebackReversalData) {
+        $this->chargebackReversalData = $chargebackReversalData;
     }
 
     /**

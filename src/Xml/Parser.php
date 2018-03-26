@@ -2,6 +2,7 @@
 
 namespace Ixopay\Client\Xml;
 use Ixopay\Client\Callback\ChargebackData;
+use Ixopay\Client\Callback\ChargebackReversalData;
 use Ixopay\Client\Data\Result\CreditcardData;
 use Ixopay\Client\Data\Result\IbanData;
 use Ixopay\Client\Data\Result\PhoneData;
@@ -129,6 +130,9 @@ class Parser {
                     $chargebackData = $this->parseChargebackData($child);
                     $result->setChargebackData($chargebackData);
                     break;
+                case 'chargebackReversalData':
+                    $reversalData = $this->parseChargebackReversalData($child);
+                    $result->setChargebackReversalData($reversalData);
                 case 'returnData':
                     $result->setReturnData($this->parseReturnData($child));
                     break;
@@ -447,6 +451,50 @@ class Parser {
                     break;
                 case 'chargebackDateTime':
                     $data->setChargebackDateTime(new \DateTime($child->nodeValue));
+                    break;
+                case 'reason':
+                    $data->setReason($child->nodeValue);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param \DOMNode $node
+     * @return ChargebackReversalData
+     */
+    protected function parseChargebackReversalData(\DOMNode $node) {
+        $data = new ChargebackReversalData();
+
+        foreach ($node->childNodes as $child) {
+            /**
+             * @var \DOMNode $child
+             */
+            if ($child->nodeName == '#text' || empty($child->nodeValue)) {
+                continue;
+            }
+            switch ($child->localName) {
+                case 'originalReferenceId':
+                    $data->setOriginalReferenceId($child->nodeValue);
+                    break;
+                case 'originalTransactionId':
+                    $data->setOriginalTransactionId($child->nodeValue);
+                    break;
+                case 'chargebackReferenceId':
+                    $data->setChargebackReferenceId($child->nodeValue);
+                    break;
+                case 'amount':
+                    $data->setAmount((double)$child->nodeValue);
+                    break;
+                case 'currency':
+                    $data->setCurrency($child->nodeValue);
+                    break;
+                case 'reversalDateTime':
+                    $data->setReversalDateTime(new \DateTime($child->nodeValue));
                     break;
                 case 'reason':
                     $data->setReason($child->nodeValue);
