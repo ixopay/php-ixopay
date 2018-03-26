@@ -489,7 +489,7 @@ class Generator {
      */
     protected function generatePayoutNode(Payout $transaction, $method) {
         $node = $this->document->createElement($method);
-        $this->appendAbstractTransactionNodes($node, $transaction);
+        $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
         $this->appendAmountableNodes($node, $transaction);
         $this->_appendTextNode($node, 'description', $transaction->getDescription());
         if ($transaction->getCallbackUrl()) {

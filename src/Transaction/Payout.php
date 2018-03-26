@@ -2,7 +2,7 @@
 
 namespace Ixopay\Client\Transaction;
 
-use Ixopay\Client\Transaction\Base\AbstractTransaction;
+use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
 use Ixopay\Client\Transaction\Base\AmountableInterface;
 use Ixopay\Client\Transaction\Base\AmountableTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
@@ -13,7 +13,7 @@ use Ixopay\Client\Transaction\Base\ItemsTrait;
  *
  * @package Ixopay\Client\Transaction
  */
-class Payout extends AbstractTransaction implements AmountableInterface, ItemsInterface {
+class Payout extends AbstractTransactionWithReference implements AmountableInterface, ItemsInterface {
     use ItemsTrait;
     use AmountableTrait;
 
