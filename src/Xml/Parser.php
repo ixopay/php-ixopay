@@ -126,6 +126,9 @@ class Parser {
                     list($key, $value) = $this->parseExtraData($child);
                     $result->addExtraData($key, $value);
                     break;
+                case 'merchantMetaData':
+                    $result->setMerchantMetaData($child->nodeValue);
+                    break;
                 case 'chargebackData':
                     $chargebackData = $this->parseChargebackData($child);
                     $result->setChargebackData($chargebackData);
