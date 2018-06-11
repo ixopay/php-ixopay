@@ -81,6 +81,23 @@ class Error {
     /** communication error with the provider */
     const COMMUNICATION_ERROR = 3005;
 
+    // schedule errors
+
+    /** schedule request is invalid */
+    const INVALID_SCHEDULE_REQUEST = 7001;
+
+    /** schedule request failed */
+    const SCHEDULE_REQUEST_FAILED = 7002;
+
+    /** The transaction for starting a schedule must be a register, a debit-with-register or a preauthorize-with-register */
+    const INITIAL_TRANSACTION_IS_NOT_A_REGISTER = 7035;
+
+    /** The period beetween the initial and second transaction must be greater than 24 hours */
+    const INVALID_PERIOD_FROM_INTIAL_TO_SECOND_TRANSACTION = 7036;
+
+    /** The startDateTime is invalid or older than 24 hours */
+    const INVALID_START_DATE_TIME = 7050;
+
     /*
      * results which require manual intervention
      */

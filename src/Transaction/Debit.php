@@ -9,16 +9,19 @@ use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
+use Ixopay\Client\Transaction\Base\ScheduleInterface;
+use Ixopay\Client\Transaction\Base\ScheduleTrait;
 
 /**
  * Debit: Charge the customer for a certain amount of money. This could be once, but also recurring.
  *
  * @package Ixopay\Client\Transaction
  */
-class Debit extends AbstractTransactionWithReference implements AmountableInterface, OffsiteInterface, ItemsInterface {
+class Debit extends AbstractTransactionWithReference implements AmountableInterface, OffsiteInterface, ItemsInterface, ScheduleInterface {
     use OffsiteTrait;
     use AmountableTrait;
     use ItemsTrait;
+    use ScheduleTrait;
 
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
     const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';

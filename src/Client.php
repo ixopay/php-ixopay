@@ -2,6 +2,7 @@
 
 namespace Ixopay\Client;
 
+use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Exception\TimeoutException;
@@ -36,7 +37,15 @@ class Client {
 
     const TRANSACTION_ROUTE = 'transaction';
 
+    const SCHEDULE_ROUTE = 'schedule';
+
     const OPTIONS_ROUTE = 'options';
+
+    const SCHEDULE_ACTION_START = 'startSchedule';
+    const SCHEDULE_ACTION_SHOW = 'showSchedule';
+    const SCHEDULE_ACTION_PAUSE = 'pauseSchedule';
+    const SCHEDULE_ACTION_CONTINUE = 'continueSchedule';
+    const SCHEDULE_ACTION_CANCEL = 'cancelSchedule';
 
     /**
      * @var string
@@ -147,26 +156,148 @@ class Client {
      * @return Result
      *
      * @throws ClientException
-     * @throws Exception\InvalidValueException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws TimeoutException
      */
     protected function sendTransaction($transactionMethod, AbstractTransaction $transaction) {
         $dom = $this->getGenerator()->generateTransaction($transactionMethod, $transaction, $this->username,
             $this->password, $this->language);
         $xml = $dom->saveXML();
+        
+        $httpResponse= $this->sendRequest($xml, self::$ixopayUrl.self::TRANSACTION_ROUTE);
 
-        $response = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, self::$ixopayUrl.self::TRANSACTION_ROUTE);
+        return $this->getParser()->parseResult($httpResponse->getBody());
+    }
 
-        if ($response->getErrorCode() || $response->getErrorMessage()) {
-            throw new ClientException('Request failed: ' . $response->getErrorCode() . ' ' . $response->getErrorMessage());
+    /**
+     * @param ScheduleData $schedule
+     *
+     * @return Schedule\ScheduleResult
+     * @throws ClientException
+     * @throws Exception\TypeException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws TimeoutException
+     */
+    public function startSchedule(ScheduleData $schedule) {
+        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_START, $schedule);
+    }
+
+    /**
+     * @param ScheduleData $schedule
+     *
+     * @return Schedule\ScheduleResult
+     * @throws ClientException
+     * @throws Exception\TypeException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws TimeoutException
+     */
+    public function showSchedule(ScheduleData $schedule) {
+        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_SHOW, $schedule);
+    }
+
+    /**
+     * @param ScheduleData $schedule
+     *
+     * @return Schedule\ScheduleResult
+     * @throws ClientException
+     * @throws Exception\TypeException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws TimeoutException
+     */
+    public function pauseSchedule(ScheduleData $schedule) {
+        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_PAUSE, $schedule);
+    }
+
+    /**
+     * @param ScheduleData $schedule
+     *
+     * @return Schedule\ScheduleResult
+     * @throws ClientException
+     * @throws Exception\TypeException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws TimeoutException
+     */
+    public function continueSchedule(ScheduleData $schedule) {
+        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_CONTINUE, $schedule);
+    }
+
+    /**
+     * @param ScheduleData $schedule
+     *
+     * @return Schedule\ScheduleResult
+     * @throws ClientException
+     * @throws Exception\TypeException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws TimeoutException
+     */
+    public function cancelSchedule(ScheduleData $schedule) {
+        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_CANCEL, $schedule);
+    }
+
+    /**
+     * @param              $scheduleAction
+     * @param ScheduleData $schedule
+     *
+     * @return Schedule\ScheduleResult
+     * @throws ClientException
+     * @throws Exception\TypeException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws TimeoutException
+     */
+    public function sendScheduleRequest($scheduleAction, ScheduleData $schedule) {
+
+        $scheduleXml = $this->getGenerator()->generateScheduleXml($scheduleAction, $schedule, $this->username, $this->password);
+
+        $httpResponse = $this->sendRequest($scheduleXml, self::$ixopayUrl.self::SCHEDULE_ROUTE);
+
+        return $this->getParser()->parseScheduleResult($httpResponse->getBody());
+    }
+
+    /**
+     * @param string $xml
+     *
+     * @return Response
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
+    protected function sendRequest($xml, $url) {
+        
+        $httpResponse = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, $url);
+
+        if ($httpResponse->getErrorCode() || $httpResponse->getErrorMessage()) {
+            throw new ClientException('Request failed: ' . $httpResponse->getErrorCode() . ' ' . $httpResponse->getErrorMessage());
         }
-        if ($response->getStatusCode() == 504 || $response->getStatusCode() == 522) {
+        if ($httpResponse->getStatusCode() == 504 || $httpResponse->getStatusCode() == 522) {
             throw new TimeoutException('Request timed-out');
         }
 
-        $parser = $this->getParser();
-        return $parser->parseResult($response->getBody());
+        return $httpResponse;
     }
 
+    /**
+     * @param string[] $compareValues
+     * @param string   $subject
+     *
+     * @return bool
+     */
+    protected function startsWith(array $compareValues, $subject) {
+        $firstLetter = substr( $subject, 0, 1 );
+        foreach($compareValues as $compareValue) {
+            if ($firstLetter == $compareValue) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * signs and send a well-formed transaction xml
@@ -177,6 +308,7 @@ class Client {
      * @param string $url
      *
      * @return Response
+     * @throws Http\Exception\ClientException
      */
     public function signAndSendXml($xml, $apiKey, $sharedSecret, $url) {
 		$this->log(LogLevel::DEBUG, "POST $url ",
@@ -210,6 +342,8 @@ class Client {
      * @param Register $transactionData
      *
      * @return Result
+     * @throws ClientException
+     * @throws InvalidValueException
      */
     public function register(Register $transactionData) {
         return $this->sendTransaction('register', $transactionData);
@@ -223,6 +357,8 @@ class Client {
      * @param Register $transactionData
      *
      * @return Result
+     * @throws ClientException
+     * @throws InvalidValueException
      */
     public function completeRegister(Register $transactionData) {
         return $this->sendTransaction('completeRegister', $transactionData);
@@ -236,6 +372,8 @@ class Client {
      * @param Deregister $transactionData
      *
      * @return Result
+     * @throws ClientException
+     * @throws InvalidValueException
      */
     public function deregister(Deregister $transactionData) {
         return $this->sendTransaction('deregister', $transactionData);
@@ -249,6 +387,8 @@ class Client {
      * @param Preauthorize $transactionData
      *
      * @return Result
+     * @throws ClientException
+     * @throws InvalidValueException
      */
     public function preauthorize(Preauthorize $transactionData) {
         return $this->sendTransaction('preauthorize', $transactionData);
@@ -260,6 +400,8 @@ class Client {
      * @param Preauthorize $transactionData
      *
      * @return Result
+     * @throws ClientException
+     * @throws InvalidValueException
      */
     public function completePreauthorize(Preauthorize $transactionData) {
         return $this->sendTransaction('completePreauthorize', $transactionData);
@@ -271,6 +413,8 @@ class Client {
      * @param \Ixopay\Client\Transaction\VoidTransaction $transactionData
      *
      * @return Result
+     * @throws ClientException
+     * @throws InvalidValueException
      */
     public function void(VoidTransaction $transactionData) {
         return $this->sendTransaction('void', $transactionData);
@@ -282,6 +426,8 @@ class Client {
      * @param Capture $transactionData
      *
      * @return Result
+     * @throws ClientException
+     * @throws InvalidValueException
      */
     public function capture(Capture $transactionData) {
         return $this->sendTransaction('capture', $transactionData);
@@ -293,6 +439,8 @@ class Client {
      * @param Refund $transactionData
      *
      * @return Result
+     * @throws ClientException
+     * @throws InvalidValueException
      */
     public function refund(Refund $transactionData) {
         return $this->sendTransaction('refund', $transactionData);
@@ -304,6 +452,8 @@ class Client {
      * @param Debit $transactionData
      *
      * @return Result
+     * @throws ClientException
+     * @throws InvalidValueException
      */
     public function debit(Debit $transactionData) {
         return $this->sendTransaction('debit', $transactionData);
@@ -559,6 +709,13 @@ class Client {
     }
 
     /**
+     * @param string $namespaceRoot
+     */
+    public function setNamespaceRoot($namespaceRoot) {
+        $this->getGenerator()->setNamespaceRoot($namespaceRoot);
+    }
+
+    /**
      * @return Parser
      */
     protected function getParser() {
@@ -633,4 +790,5 @@ class Client {
     public static function resetApiUrl() {
         static::setApiUrl(static::DEFAULT_IXOPAY_URL);
     }
+
 }

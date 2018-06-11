@@ -7,7 +7,9 @@ use Ixopay\Client\Data\Result\CreditcardData;
 use Ixopay\Client\Data\Result\IbanData;
 use Ixopay\Client\Data\Result\PhoneData;
 use Ixopay\Client\Data\Result\ResultData;
+use Ixopay\Client\Schedule\ScheduleResult;
 use Ixopay\Client\Exception\InvalidValueException;
+use Ixopay\Client\Schedule\ScheduleError;
 use Ixopay\Client\Transaction\Error;
 use Ixopay\Client\Transaction\Result;
 use Ixopay\Client\Callback\Result as CallbackResult;
@@ -54,7 +56,13 @@ class Parser {
                 case 'redirectUrl':
                 case 'htmlContent':
                 case 'paymentDescriptor':
+                case 'scheduleId':
+                case 'scheduleStatus':
                     $result->{'set'.ucfirst($child->localName)}($child->nodeValue);
+                    break;
+                case 'scheduledAt':
+                    $scheduleAt = \DateTime::createFromFormat('Y-m-d H:i:s T', $child->nodeValue);
+                    $result->setScheduledAt($scheduleAt ?: null);
                     break;
                 case 'returnType':
                     $returnType = $this->parseReturnType($child);
@@ -212,6 +220,56 @@ class Parser {
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $xml
+     *
+     * @return ScheduleResult
+     *
+     * @throws InvalidValueException
+     */
+    public function parseScheduleResult($xml) {
+        $scheduleResult = new ScheduleResult();
+
+        $document = new \DOMDocument('1.0', 'utf-8');
+        $document->loadXML($xml);
+
+        $root = $document->getElementsByTagName('scheduleResult');
+        if ($root->length < 0) {
+            throw new InvalidValueException('XML does not contain a root "scheduleResult" element');
+        }
+        $root = $root->item(0);
+
+        foreach ($root->childNodes as $childNode) {
+            /**
+             * @var \DOMNode $childNode
+             */
+            switch ($childNode->localName) {
+                case 'operationSuccess':
+                    if ($childNode->nodeValue == 'false' || !$childNode->nodeValue) {
+                        $scheduleResult->setOperationSuccess(false);
+                    } else {
+                        $scheduleResult->setOperationSuccess(true);
+                    }
+                    break;
+                case 'scheduleId':
+                case 'registrationId':
+                case 'oldStatus':
+                case 'newStatus':
+                case 'scheduledAt':
+                    $scheduleResult->{'set'.ucfirst($childNode->localName)}($childNode->nodeValue);
+                    break;
+                case 'errors':
+                    $scheduleResult->setErrors($this->parseScheduleErrors($childNode));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $scheduleResult;
+
     }
 
     /**
@@ -408,6 +466,50 @@ class Parser {
             }
 
             $error = new Error($message, $code, $adapterMessage, $adapterCode);
+            $errors[] = $error;
+
+        }
+        return $errors;
+    }
+
+    /**
+     * @param \DOMNode $node
+     *
+     * @return ScheduleError[]
+     *
+     * @throws InvalidValueException
+     */
+    protected function parseScheduleErrors(\DOMNode $node) {
+        $errors = array();
+
+        foreach ($node->childNodes as $child) {
+            /**
+             * @var \DOMNode $child
+             */
+            if ($child->nodeName == '#text') {
+                continue;
+            }
+            if ($child->localName != 'error') {
+                throw new InvalidValueException('Expecting element named "error"');
+            }
+            $message = $code = null;
+            foreach ($child->childNodes as $childNode) {
+                /**
+                 * @var \DOMNode $childNode
+                 */
+                switch ($childNode->localName) {
+                    case 'message':
+                        $message = $childNode->nodeValue;
+                        break;
+                    case 'code':
+                        $code = $childNode->nodeValue;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            $error = new ScheduleError($message, $code);
             $errors[] = $error;
 
         }

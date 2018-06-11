@@ -25,6 +25,12 @@ class Result {
     const REDIRECT_TYPE_IFRAME = 'iframe';
     const REDIRECT_TYPE_FULLPAGE = 'fullpage';
 
+    const SCHEDULE_STATUS_ACTIVE = 'ACTIVE';
+    const SCHEDULE_STATUS_PAUSED = 'PAUSED';
+    const SCHEDULE_STATUS_CANCELLED = 'CANCELLED';
+    const SCHEDULE_STATUS_ERROR = 'ERROR';
+    const SCHEDULE_STATUS_CREATE_PENDING = 'CREATE-PENDING'; // create process of a schedule not yet finished
+
     /**
      * @var bool
      */
@@ -88,6 +94,21 @@ class Result {
     protected $returnData = null;
 
     /**
+     * @var string
+     */
+    protected $scheduleId = null;
+
+    /**
+     * @var string
+     */
+    protected $scheduleStatus = null;
+
+    /**
+     * @var string|null - e.g. '2019-12-31 23:59:00 UTC'
+     */
+    protected $scheduledAt = null;
+
+    /**
      * @var Error[]
      */
     protected $errors = array();
@@ -96,7 +117,6 @@ class Result {
      * @var array
      */
     protected $extraData = array();
-
 
     /**
      * @param string $referenceId
@@ -352,6 +372,42 @@ class Result {
     }
 
     /**
+     * @return string
+     */
+    public function getScheduleId() {
+        return $this->scheduleId;
+    }
+
+    /**
+     * @param string $scheduleId
+     *
+     * @return Result
+     */
+    public function setScheduleId($scheduleId) {
+        $this->scheduleId = $scheduleId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScheduleStatus() {
+        return $this->scheduleStatus;
+    }
+
+    /**
+     * @param string $scheduleStatus
+     *
+     * @return Result
+     */
+    public function setScheduleStatus($scheduleStatus) {
+        $this->scheduleStatus = $scheduleStatus;
+
+        return $this;
+    }
+
+    /**
 	 * @return array
 	 */
     public function toArray() {
@@ -366,6 +422,29 @@ class Result {
     		}
     	}
 		return $properties;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScheduledAt() {
+        return $this->scheduledAt;
+    }
+
+    /**
+     * @param string|\DateTime|null $scheduledAt
+     *
+     * @return Result
+     */
+    public function setScheduledAt($scheduledAt) {
+
+        if ($scheduledAt instanceof \DateTime) {
+            $scheduledAt = $scheduledAt->format('Y-m-d H:i:s T');
+        }
+
+        $this->scheduledAt = $scheduledAt;
+
+        return $this;
     }
 
 }
