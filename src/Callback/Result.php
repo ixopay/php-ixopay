@@ -156,7 +156,7 @@ class Result {
     /**
      * @return string
      */
-    public function getMerchantMetaData(): string
+    public function getMerchantMetaData()
     {
         return $this->merchantMetaData;
     }
@@ -165,7 +165,7 @@ class Result {
      * @param string $merchantMetaData
      * @return Result
      */
-    public function setMerchantMetaData(string $merchantMetaData): Result
+    public function setMerchantMetaData($merchantMetaData)
     {
         $this->merchantMetaData = $merchantMetaData;
         return $this;
