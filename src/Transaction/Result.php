@@ -3,6 +3,7 @@
 namespace Ixopay\Client\Transaction;
 
 use Ixopay\Client\Data\Result\ResultData;
+use Ixopay\Client\Data\Result\RiskCheckData;
 
 /**
  * Class Result
@@ -117,6 +118,11 @@ class Result {
      * @var array
      */
     protected $extraData = array();
+
+    /**
+     * @var RiskCheckData|null
+     */
+    protected $riskCheckData;
 
     /**
      * @param string $referenceId
@@ -408,23 +414,6 @@ class Result {
     }
 
     /**
-	 * @return array
-	 */
-    public function toArray() {
-    	$properties = get_object_vars($this);
-    	foreach(array_keys($properties) as $prop) {
-    		if (is_object($properties[$prop])) {
-    			if (method_exists($properties[$prop], 'toArray')) {
-					$properties[$prop] = $properties[$prop]->toArray();
-				} else {
-					unset($properties[$prop]);
-				}
-    		}
-    	}
-		return $properties;
-    }
-
-    /**
      * @return string
      */
     public function getScheduledAt() {
@@ -445,6 +434,41 @@ class Result {
         $this->scheduledAt = $scheduledAt;
 
         return $this;
+    }
+
+    /**
+     * @return RiskCheckData|null
+     */
+    public function getRiskCheckData() {
+        return $this->riskCheckData;
+    }
+
+    /**
+     * @param RiskCheckData|null $riskCheckData
+     *
+     * @return Result
+     */
+    public function setRiskCheckData($riskCheckData) {
+        $this->riskCheckData = $riskCheckData;
+
+        return $this;
+    }
+
+    /**
+	 * @return array
+	 */
+    public function toArray() {
+    	$properties = get_object_vars($this);
+    	foreach(array_keys($properties) as $prop) {
+    		if (is_object($properties[$prop])) {
+    			if (method_exists($properties[$prop], 'toArray')) {
+					$properties[$prop] = $properties[$prop]->toArray();
+				} else {
+					unset($properties[$prop]);
+				}
+    		}
+    	}
+		return $properties;
     }
 
 }

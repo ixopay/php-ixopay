@@ -1,12 +1,14 @@
 <?php
 
 namespace Ixopay\Client\Xml;
+
 use Ixopay\Client\Callback\ChargebackData;
 use Ixopay\Client\Callback\ChargebackReversalData;
 use Ixopay\Client\Data\Result\CreditcardData;
 use Ixopay\Client\Data\Result\IbanData;
 use Ixopay\Client\Data\Result\PhoneData;
 use Ixopay\Client\Data\Result\ResultData;
+use Ixopay\Client\Data\Result\RiskCheckData;
 use Ixopay\Client\Schedule\ScheduleResult;
 use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Schedule\ScheduleError;
@@ -73,6 +75,9 @@ class Parser {
                     break;
                 case 'returnData':
                     $result->setReturnData($this->parseReturnData($child));
+                    break;
+                case 'riskCheckData':
+                    $result->setRiskCheckData($this->parseRiskCheckData($child));
                     break;
                 case 'errors':
                     $result->setErrors($this->parseErrors($child));
@@ -610,6 +615,40 @@ class Parser {
         }
 
         return $data;
+    }
+
+    /**
+     * @param \DOMNode $node
+     *
+     * @return RiskCheckData
+     */
+    protected function parseRiskCheckData(\DOMNode $node) {
+        $riskCheckData = new RiskCheckData();
+
+        foreach($node->childNodes as $child) {
+
+            /**
+             * @var \DOMNode $child
+             */
+            if ($child->nodeName == '#text' || empty($child->nodeValue)) {
+                continue;
+            }
+            switch ($child->localName) {
+                case 'result':
+                    $riskCheckData->setResult($child->nodeValue);
+                    break;
+                case 'riskScore':
+                    $riskCheckData->setRiskScore($child->nodeValue);
+                    break;
+                case 'threeDSecureRequired':
+                    $riskCheckData->setThreeDSecureRequired($child->nodeValue);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $riskCheckData;
     }
 
 }
