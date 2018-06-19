@@ -389,8 +389,14 @@ class Generator {
             $this->_appendTextNode($node, 'cvv', $customer->getCvv());
             $this->_appendTextNode($node, 'issueNumber', $customer->getIssueNumber());
             $this->_appendTextNode($node, 'type', $customer->getType());
+            $this->_appendTextNode($node, 'merchantFingerprint', $customer->getMerchantFingerprint());
+            $this->_appendTextNode($node, 'binBrand', $customer->getBinBrand());
+            $this->_appendTextNode($node, 'binBank', $customer->getBinBank());
+            $this->_appendTextNode($node, 'binType', $customer->getBinType());
+            $this->_appendTextNode($node, 'binLevel', $customer->getBinLevel());
+            $this->_appendTextNode($node, 'binCountry2Iso', $customer->getBinCountry2Iso());
+            $this->_appendTextNode($node, 'eciFlag', $customer->getEciFlag());
         }
-
 
         $parentNode->appendChild($node);
     }
