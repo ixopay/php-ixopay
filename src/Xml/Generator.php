@@ -395,7 +395,7 @@ class Generator {
             $this->_appendTextNode($node, 'binType', $customer->getBinType());
             $this->_appendTextNode($node, 'binLevel', $customer->getBinLevel());
             $this->_appendTextNode($node, 'binCountry2Iso', $customer->getBinCountry2Iso());
-            $this->_appendTextNode($node, 'eciFlag', $customer->getEciFlag());
+            $this->_appendTextNode($node, 'eci', $customer->getEci());
         }
 
         $parentNode->appendChild($node);

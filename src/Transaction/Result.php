@@ -2,6 +2,7 @@
 
 namespace Ixopay\Client\Transaction;
 
+use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\Result\ResultData;
 
 /**
@@ -92,6 +93,11 @@ class Result {
      * @var ResultData
      */
     protected $returnData = null;
+
+    /**
+     * @var Customer
+     */
+    protected $customer = null;
 
     /**
      * @var string

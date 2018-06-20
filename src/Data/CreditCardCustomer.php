@@ -41,34 +41,42 @@ class CreditCardCustomer extends Customer {
      * @var string
      */
     protected $type;
+
     /**
      * @var string
      */
     protected $merchantFingerprint;
+
     /**
      * @var string
      */
     protected $binBrand;
+
     /**
      * @var string
      */
     protected $binBank;
+
     /**
      * @var string
      */
     protected $binType;
+
     /**
      * @var string
      */
     protected $binLevel;
+
     /**
      * @var string
      */
     protected $binCountry2Iso;
+
     /**
      * @var string
      */
-    protected $eciFlag;
+    protected $eci;
+
     /**
      * @param $number
      *
@@ -304,17 +312,17 @@ class CreditCardCustomer extends Customer {
     /**
      * @return string
      */
-    public function getEciFlag()
+    public function getEci()
     {
-        return $this->eciFlag;
+        return $this->eci;
     }
 
     /**
-     * @param string $eciFlag
+     * @param string $eci
      */
-    public function setEciFlag($eciFlag)
+    public function setEci($eci)
     {
-        $this->eciFlag = $eciFlag;
+        $this->eci = $eci;
     }
 
 }
