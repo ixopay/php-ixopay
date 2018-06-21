@@ -653,7 +653,6 @@ class Parser {
                 case 'billingState':
                 case 'billingCountry':
                 case 'billingPhone':
-                case 'ipAddress':
                 case 'shippingFirstName':
                 case 'shippingLastName':
                 case 'shippingCompany':
@@ -672,6 +671,7 @@ class Parser {
                     break;
                 case 'emailVerified':
                     $customer->setEmailVerified($customer->isEmailVerified() === 'true' ? true : false);
+                    break;
                 default:
                     break;
             }
