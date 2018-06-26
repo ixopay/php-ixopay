@@ -7,6 +7,7 @@ use Ixopay\Client\Data\Result\CreditcardData;
 use Ixopay\Client\Data\Result\IbanData;
 use Ixopay\Client\Data\Result\PhoneData;
 use Ixopay\Client\Data\Result\ResultData;
+use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Schedule\ScheduleResult;
 use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Schedule\ScheduleError;
@@ -215,6 +216,9 @@ class Parser {
             }
         }
 
+        if ($success == false) {
+            throw new ClientException($error);
+        }
         if (count($result) === 1 && array_key_exists('undefined', $result)) {
             $result = $result['undefined'];
         }
