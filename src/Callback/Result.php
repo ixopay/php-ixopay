@@ -2,6 +2,7 @@
 
 namespace Ixopay\Client\Callback;
 
+use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Transaction\Error;
 
@@ -111,6 +112,10 @@ class Result {
      */
     protected $returnData = null;
 
+    /**
+     * @var Customer
+     */
+    protected $customer = null;
 
     /**
      * @param Error[] $errors
@@ -370,4 +375,22 @@ class Result {
 		return $properties;
     }
 
+    /**
+     * @return Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param Customer $customer
+     *
+     * @return Customer
+     */
+    public function setCustomer($customer)
+    {
+        $this->customer = $customer;
+        return $customer;
+    }
 }

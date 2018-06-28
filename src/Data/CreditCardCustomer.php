@@ -178,5 +178,4 @@ class CreditCardCustomer extends Customer {
         return $this->type;
     }
 
-
 }

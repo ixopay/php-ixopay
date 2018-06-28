@@ -4,6 +4,7 @@ namespace Ixopay\Client\Xml;
 
 use Ixopay\Client\Callback\ChargebackData;
 use Ixopay\Client\Callback\ChargebackReversalData;
+use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\Result\CreditcardData;
 use Ixopay\Client\Data\Result\IbanData;
 use Ixopay\Client\Data\Result\PhoneData;
@@ -77,6 +78,9 @@ class Parser {
                 case 'returnData':
                     $result->setReturnData($this->parseReturnData($child));
                     break;
+                case 'customerData':
+                    $result->setCustomer($this->parseCustomerData($child));
+                    break;
                 case 'errors':
                     $result->setErrors($this->parseErrors($child));
                     break;
@@ -149,6 +153,9 @@ class Parser {
                     $result->setChargebackReversalData($reversalData);
                 case 'returnData':
                     $result->setReturnData($this->parseReturnData($child));
+                    break;
+                case 'customerData':
+                    $result->setCustomer($this->parseCustomerData($child));
                     break;
                 case 'amount':
                     $result->setAmount((double)$child->nodeValue);
@@ -427,11 +434,18 @@ class Parser {
                     case 'cardHolder':
                     case 'firstSixDigits':
                     case 'lastFourDigits':
+                    case 'merchantFingerprint':
+                    case 'binBrand':
+                    case 'binBank':
+                    case 'binType':
+                    case 'binLevel':
+                    case 'binCountry2Iso':
+                    case 'eci':
                         $cc->{'set'.ucfirst($child->localName)}($child->nodeValue);
                         break;
                     case 'expiryMonth':
                     case 'expiryYear':
-                    $cc->{'set'.ucfirst($child->localName)}((int)$child->nodeValue);
+                        $cc->{'set'.ucfirst($child->localName)}((int)$child->nodeValue);
                         break;
                     default:
                         break;
@@ -692,4 +706,57 @@ class Parser {
         return $data;
     }
 
+    /**
+     * @param \DOMNode $node
+     * @return Customer
+     */
+    protected function parseCustomerData(\DOMNode $node) {
+        $customer = new Customer();
+
+        foreach ($node->childNodes as $child) {
+            /**
+             * @var \DOMNode $child
+             */
+            if ($child->nodeName == '#text' || empty($child->nodeValue)) {
+                continue;
+            }
+            switch ($child->localName) {
+                case 'identification':
+                case 'firstName':
+                case 'lastName':
+                case 'gender':
+                case 'birthDate':
+                case 'billingAddress1':
+                case 'billingAddress2':
+                case 'billingCity':
+                case 'billingPostcode':
+                case 'billingState':
+                case 'billingCountry':
+                case 'billingPhone':
+                case 'shippingFirstName':
+                case 'shippingLastName':
+                case 'shippingCompany':
+                case 'shippingAddress1':
+                case 'shippingAddress2':
+                case 'shippingCity':
+                case 'shippingPostcode':
+                case 'shippingState':
+                case 'shippingCountry':
+                case 'shippingPhone':
+                case 'company':
+                case 'email':
+                case 'ipAddress':
+                case 'nationalId':
+                    $customer->{'set'.ucfirst($child->localName)}($child->nodeValue);
+                    break;
+                case 'emailVerified':
+                    $customer->setEmailVerified($customer->isEmailVerified() === 'true' ? true : false);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $customer;
+    }
 }

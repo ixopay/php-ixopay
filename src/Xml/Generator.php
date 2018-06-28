@@ -423,7 +423,6 @@ class Generator {
             $this->_appendTextNode($node, 'type', $customer->getType());
         }
 
-
         $parentNode->appendChild($node);
     }
 
