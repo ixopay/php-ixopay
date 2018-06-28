@@ -8,6 +8,7 @@ use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Exception\TimeoutException;
 use Ixopay\Client\Http\CurlClient;
 use Ixopay\Client\Http\Response;
+use Ixopay\Client\StatusApi\StatusRequestData;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
@@ -38,6 +39,8 @@ class Client {
     const TRANSACTION_ROUTE = 'transaction';
 
     const SCHEDULE_ROUTE = 'schedule';
+
+    const STATUS_ROUTE = 'status';
 
     const OPTIONS_ROUTE = 'options';
 
@@ -258,6 +261,25 @@ class Client {
         $httpResponse = $this->sendRequest($scheduleXml, self::$ixopayUrl.self::SCHEDULE_ROUTE);
 
         return $this->getParser()->parseScheduleResult($httpResponse->getBody());
+    }
+
+    /**
+     * @param StatusRequestData $statusRequestData
+     *
+     * @return StatusApi\StatusResult
+     * @throws ClientException
+     * @throws Exception\TypeException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws TimeoutException
+     */
+    public function sendStatusRequest(StatusRequestData $statusRequestData) {
+
+        $statusRequestXml = $this->getGenerator()->generateStatusRequestXml($statusRequestData, $this->username, $this->password);
+
+        $httpResponse = $this->sendRequest($statusRequestXml, self::$ixopayUrl.self::STATUS_ROUTE);
+
+        return $this->getParser()->parseStatusResult($httpResponse->getBody());
     }
 
     /**
