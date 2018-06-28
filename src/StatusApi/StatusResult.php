@@ -14,8 +14,10 @@ use Ixopay\Client\Transaction\Error;
  */
 class StatusResult {
 
-    const TRANSACTION_STATUS = 'SUCCESS';
+    const TRANSACTION_SUCCESS = 'SUCCESS';
     const TRANSACTION_PENDING = 'PENDING';
+    const TRANSACTION_REDIRECT = 'REDIRECT';
+    const TRANSACTION_CANCELLED = 'CANCELLED';
     const TRANSACTION_ERROR = 'ERROR';
 
     const TYPE_DEBIT = 'DEBIT';
