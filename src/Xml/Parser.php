@@ -231,6 +231,9 @@ class Parser {
                 case 'returnData':
                     $statusResult->setReturnData($this->parseReturnData($child));
                     break;
+                case 'customerData':
+                    $statusResult->setCustomer($this->parseCustomerData($child));
+                    break;
                 case 'amount':
                     $statusResult->setAmount((double)$child->nodeValue);
                     break;

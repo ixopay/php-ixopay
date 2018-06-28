@@ -4,6 +4,7 @@ namespace Ixopay\Client\StatusApi;
 
 use Ixopay\Client\Callback\ChargebackData;
 use Ixopay\Client\Callback\ChargebackReversalData;
+use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Transaction\Error;
 
@@ -111,6 +112,11 @@ class StatusResult {
      * @var ResultData
      */
     protected $returnData = null;
+
+    /**
+     * @var Customer
+     */
+    protected $customer = null;
 
     /**
      * @return bool
@@ -370,6 +376,24 @@ class StatusResult {
      */
     public function setReturnData($returnData) {
         $this->returnData = $returnData;
+    }
+
+    /**
+     * @return Customer
+     */
+    public function getCustomer() {
+        return $this->customer;
+    }
+
+    /**
+     * @param Customer $customer
+     *
+     * @return StatusResult
+     */
+    public function setCustomer($customer) {
+        $this->customer = $customer;
+
+        return $this;
     }
 
     /**
