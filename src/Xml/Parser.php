@@ -134,6 +134,9 @@ class Parser {
                 case 'transactionType':
                     $result->setTransactionType($child->nodeValue);
                     break;
+                case 'paymentMethod':
+                    $result->setPaymentMethod($child->nodeValue);
+                    break;
                 case 'errors':
                     $result->setErrors($this->parseErrors($child));
                     break;
@@ -210,6 +213,9 @@ class Parser {
                     break;
                 case 'transactionType':
                     $statusResult->setTransactionType($child->nodeValue);
+                    break;
+                case 'paymentMethod':
+                    $statusResult->setPaymentMethod($child->nodeValue);
                     break;
                 case 'errors':
                     $statusResult->setErrors($this->parseErrors($child));

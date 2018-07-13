@@ -67,6 +67,11 @@ class Result {
     protected $transactionType;
 
     /**
+     * @var string
+     */
+    protected $paymentMethod;
+
+    /**
      * @var double
      */
     protected $amount;
@@ -288,6 +293,20 @@ class Result {
         $this->transactionType = $transactionType;
     }
 
+    /**
+     * @return string
+     */
+    public function getPaymentMethod() {
+        return $this->paymentMethod;
+    }
+
+    /**
+     * @param string $paymentMethod
+     */
+    public function setPaymentMethod($paymentMethod) {
+        $this->paymentMethod = $paymentMethod;
+    }
+    
     /**
      * @return float
      */
