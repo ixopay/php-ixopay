@@ -437,12 +437,13 @@ class Parser {
                     case 'cardHolder':
                     case 'firstSixDigits':
                     case 'lastFourDigits':
-                    case 'merchantFingerprint':
+                    case 'fingerprint':
                     case 'binBrand':
                     case 'binBank':
                     case 'binType':
                     case 'binLevel':
-                    case 'binCountry2Iso':
+                    case 'binCountry':
+                    case 'threeDSecure':
                     case 'eci':
                         $cc->{'set'.ucfirst($child->localName)}($child->nodeValue);
                         break;

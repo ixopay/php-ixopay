@@ -23,6 +23,10 @@ class CreditcardData extends ResultData {
     const TYPE_HIPERCARD = 'hipercard';
     const TYPE_TRANSCARD = 'transcard';
 
+    const SECURE_3D_MANDATORY = 'MANDATORY';
+    const SECURE_3D_OPTIONAL = 'OPTIONAL';
+    const SECURE_3D_OFF = 'OFF';
+
     /**
      * @var string
      */
@@ -71,7 +75,7 @@ class CreditcardData extends ResultData {
     /**
      * @var string
      */
-    protected $merchantFingerprint;
+    protected $fingerprint;
 
     /**
      * @var string
@@ -96,7 +100,12 @@ class CreditcardData extends ResultData {
     /**
      * @var string
      */
-    protected $binCountry2Iso;
+    protected $binCountry;
+
+    /**
+     * @var string
+     */
+    protected $threeDSecure;
 
     /**
      * @var string
@@ -259,17 +268,17 @@ class CreditcardData extends ResultData {
     /**
      * @return string
      */
-    public function getMerchantFingerprint()
+    public function getfingerprint()
     {
-        return $this->merchantFingerprint;
+        return $this->fingerprint;
     }
 
     /**
-     * @param string $merchantFingerprint
+     * @param string $fingerprint
      */
-    public function setMerchantFingerprint($merchantFingerprint)
+    public function setFingerprint($fingerprint)
     {
-        $this->merchantFingerprint = $merchantFingerprint;
+        $this->fingerprint = $fingerprint;
     }
 
     /**
@@ -339,17 +348,29 @@ class CreditcardData extends ResultData {
     /**
      * @return string
      */
-    public function getBinCountry2Iso()
-    {
-        return $this->binCountry2Iso;
+    public function getBinCountry() {
+        return $this->binCountry;
     }
 
     /**
-     * @param string $binCountry2Iso
+     * @param string $binCountry
      */
-    public function setBinCountry2Iso($binCountry2Iso)
-    {
-        $this->binCountry2Iso = $binCountry2Iso;
+    public function setBinCountry($binCountry) {
+        $this->binCountry = $binCountry;
+    }
+
+    /**
+     * @return string
+     */
+    public function getThreeDSecure() {
+        return $this->threeDSecure;
+    }
+
+    /**
+     * @param string $threeDSecure
+     */
+    public function setThreeDSecure($threeDSecure) {
+        $this->threeDSecure = $threeDSecure;
     }
 
     /**
