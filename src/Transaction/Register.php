@@ -18,4 +18,23 @@ use Ixopay\Client\Transaction\Base\ScheduleTrait;
 class Register extends AbstractTransaction implements OffsiteInterface, ScheduleInterface {
     use OffsiteTrait;
     use ScheduleTrait;
+
+    /**
+     * @var string
+     */
+    protected $updateRegisterId;
+
+    /**
+     * @return string
+     */
+    public function getUpdateRegisterId() {
+        return $this->updateRegisterId;
+    }
+
+    /**
+     * @param string $updateRegisterId
+     */
+    public function setUpdateRegisterId($updateRegisterId) {
+        $this->updateRegisterId = $updateRegisterId;
+    }
 }

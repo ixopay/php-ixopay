@@ -529,6 +529,9 @@ class Generator {
     protected function generateRegisterNode(Register $transaction, $method) {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionNodes($node, $transaction);
+        if ($transaction->getUpdateRegisterId()) {
+            $this->_appendTextNode($node, 'updateRegisterId', $transaction->getUpdateRegisterId());
+        }
         $this->appendOffsiteNodes($node, $transaction);
 
         if ($transaction->getSchedule()) {
