@@ -158,6 +158,7 @@ class Generator {
             $this->verifyPeriodUnitType($schedule->getPeriodUnit(), 'periodUnit');
             $this->_appendTextNode($scheduleNode, 'periodUnit', $schedule->getPeriodUnit());
 
+            $this->verifyFutureDateTime($schedule->getStartDateTime(), 'startDateTime');
             $this->_appendTextNode($scheduleNode, 'startDateTime', $schedule->getStartDateTime()->format('Y-m-d H:i:s T'));
 
         } else {
@@ -166,6 +167,7 @@ class Generator {
         }
 
         if ($scheduleAction === 'continueSchedule') {
+            $this->verifyFutureDateTime($schedule->getStartDateTime(), 'continueDateTime');
             $this->_appendTextNode($scheduleNode, 'continueDateTime', $schedule->getContinueDateTime()->format('Y-m-d H:i:s T'));
         }
 
@@ -672,7 +674,7 @@ class Generator {
      * @throws TypeException
      */
     private function verifyPeriodLengthType($value, $elementName) {
-        if (!ctype_digit($value)) {
+        if (!ctype_digit((string)$value)) {
             throw new TypeException('Value of '.$elementName.' must be a positive integer');
         }
     }
@@ -688,6 +690,17 @@ class Generator {
         }
     }
 
+    /**
+     * @param \DateTime $startDateTime
+     * @param string $elementName
+     * @throws TypeException
+     */
+    private function verifyFutureDateTime($startDateTime, $elementName) {
+        if (!($startDateTime instanceof \DateTime) || $startDateTime < new \DateTime()) {
+            throw new TypeException('Value of '.$elementName.' must be a Date/Time object in future');
+        }
+    }
+    
     /**
      * @param \DOMNode $parentNode
      * @param string $nodeName
