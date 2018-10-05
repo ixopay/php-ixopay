@@ -2,6 +2,7 @@
 
 namespace Ixopay\Client\Transaction;
 
+use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\Result\ResultData;
 
 /**
@@ -92,6 +93,11 @@ class Result {
      * @var ResultData
      */
     protected $returnData = null;
+
+    /**
+     * @var Customer
+     */
+    protected $customer = null;
 
     /**
      * @var string
@@ -445,6 +451,22 @@ class Result {
         $this->scheduledAt = $scheduledAt;
 
         return $this;
+    }
+
+    /**
+     * @return Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param Customer $customer
+     */
+    public function setCustomer($customer)
+    {
+        $this->customer = $customer;
     }
 
 }

@@ -23,6 +23,10 @@ class CreditcardData extends ResultData {
     const TYPE_HIPERCARD = 'hipercard';
     const TYPE_TRANSCARD = 'transcard';
 
+    const SECURE_3D_MANDATORY = 'MANDATORY';
+    const SECURE_3D_OPTIONAL = 'OPTIONAL';
+    const SECURE_3D_OFF = 'OFF';
+
     /**
      * @var string
      */
@@ -67,6 +71,46 @@ class CreditcardData extends ResultData {
      * @var string
      */
     protected $lastFourDigits;
+
+    /**
+     * @var string
+     */
+    protected $fingerprint;
+
+    /**
+     * @var string
+     */
+    protected $binBrand;
+
+    /**
+     * @var string
+     */
+    protected $binBank;
+
+    /**
+     * @var string
+     */
+    protected $binType;
+
+    /**
+     * @var string
+     */
+    protected $binLevel;
+
+    /**
+     * @var string
+     */
+    protected $binCountry;
+
+    /**
+     * @var string
+     */
+    protected $threeDSecure;
+
+    /**
+     * @var string
+     */
+    protected $eci;
 
     /**
      * @return string
@@ -222,6 +266,139 @@ class CreditcardData extends ResultData {
     }
 
     /**
+     * @return string
+     */
+    public function getFingerprint()
+    {
+        return $this->fingerprint;
+    }
+
+    /**
+     * @param string $fingerprint
+     */
+    public function setFingerprint($fingerprint)
+    {
+        $this->fingerprint = $fingerprint;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBinBrand()
+    {
+        return $this->binBrand;
+    }
+
+    /**
+     * @param string $binBrand
+     */
+    public function setBinBrand($binBrand)
+    {
+        $this->binBrand = $binBrand;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBinBank()
+    {
+        return $this->binBank;
+    }
+
+    /**
+     * @param string $binBank
+     */
+    public function setBinBank($binBank)
+    {
+        $this->binBank = $binBank;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBinType()
+    {
+        return $this->binType;
+    }
+
+    /**
+     * @param string $binType
+     */
+    public function setBinType($binType)
+    {
+        $this->binType = $binType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBinLevel()
+    {
+        return $this->binLevel;
+    }
+
+    /**
+     * @param string $binLevel
+     */
+    public function setBinLevel($binLevel)
+    {
+        $this->binLevel = $binLevel;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBinCountry() {
+        return $this->binCountry;
+    }
+
+    /**
+     * @param string $binCountry
+     */
+    public function setBinCountry($binCountry) {
+        $this->binCountry = $binCountry;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getThreeDSecure() {
+        return $this->threeDSecure;
+    }
+
+    /**
+     * @param string $threeDSecure
+     */
+    public function setThreeDSecure($threeDSecure) {
+        $this->threeDSecure = $threeDSecure;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEci()
+    {
+        return $this->eci;
+    }
+
+    /**
+     * @param string $eci
+     */
+    public function setEci($eci)
+    {
+        $this->eci = $eci;
+        return $this;
+    }
+
+
+    /**
      * @return array
      */
     public function toArray() {
@@ -233,4 +410,5 @@ class CreditcardData extends ResultData {
 
         return $resultData;
     }
+
 }

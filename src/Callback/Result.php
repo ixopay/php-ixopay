@@ -2,6 +2,7 @@
 
 namespace Ixopay\Client\Callback;
 
+use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Transaction\Error;
 
@@ -66,6 +67,11 @@ class Result {
     protected $transactionType;
 
     /**
+     * @var string
+     */
+    protected $paymentMethod;
+
+    /**
      * @var double
      */
     protected $amount;
@@ -74,6 +80,16 @@ class Result {
      * @var string
      */
     protected $currency;
+
+    /**
+     * @var string
+     */
+    protected $scheduleId;
+
+    /**
+     * @var string
+     */
+    protected $scheduleStatus;
 
     /**
      * @var Error[]
@@ -111,6 +127,10 @@ class Result {
      */
     protected $returnData = null;
 
+    /**
+     * @var Customer
+     */
+    protected $customer = null;
 
     /**
      * @param Error[] $errors
@@ -284,6 +304,22 @@ class Result {
     }
 
     /**
+     * @return string
+     */
+    public function getPaymentMethod() {
+        return $this->paymentMethod;
+    }
+
+    /**
+     * @param string $paymentMethod
+     * @return Result
+     */
+    public function setPaymentMethod($paymentMethod) {
+        $this->paymentMethod = $paymentMethod;
+        return $this;
+    }
+    
+    /**
      * @return float
      */
     public function getAmount() {
@@ -311,6 +347,38 @@ class Result {
         $this->currency = $currency;
     }
 
+    /**
+     * @return string
+     */
+    public function getScheduleId() {
+        return $this->scheduleId;
+    }
+
+    /**
+     * @param string $scheduleId
+     * @return Result
+     */
+    public function setScheduleId($scheduleId) {
+        $this->scheduleId = $scheduleId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScheduleStatus() {
+        return $this->scheduleStatus;
+    }
+
+    /**
+     * @param string $scheduleStatus
+     * @return Result
+     */
+    public function setScheduleStatus($scheduleStatus) {
+        $this->scheduleStatus = $scheduleStatus;
+        return $this;
+    }
+    
     /**
      * @return ChargebackData
      */
@@ -370,4 +438,22 @@ class Result {
 		return $properties;
     }
 
+    /**
+     * @return Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param Customer $customer
+     *
+     * @return Customer
+     */
+    public function setCustomer($customer)
+    {
+        $this->customer = $customer;
+        return $customer;
+    }
 }
