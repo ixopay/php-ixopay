@@ -60,7 +60,7 @@ class Parser {
                 case 'paymentDescriptor':
                 case 'scheduleId':
                 case 'scheduleStatus':
-                    if (method_exists($cc, 'set'.ucfirst($child->localName))) {
+                    if (method_exists($result, 'set'.ucfirst($child->localName))) {
                         $result->{'set' . ucfirst($child->localName)}($child->nodeValue);
                     }
                     break;
@@ -281,7 +281,7 @@ class Parser {
                 case 'oldStatus':
                 case 'newStatus':
                 case 'scheduledAt':
-                    if (method_exists($cc, 'set'.ucfirst($childNode->localName))) {
+                    if (method_exists($scheduleResult, 'set'.ucfirst($childNode->localName))) {
                         $scheduleResult->{'set' . ucfirst($childNode->localName)}($childNode->nodeValue);
                     }
                     break;
@@ -690,7 +690,7 @@ class Parser {
                 case 'email':
                 case 'ipAddress':
                 case 'nationalId':
-                    if (method_exists($cc, 'set'.ucfirst($child->localName))) {
+                    if (method_exists($customer, 'set'.ucfirst($child->localName))) {
                         $customer->{'set' . ucfirst($child->localName)}($child->nodeValue);
                     }
                     break;
