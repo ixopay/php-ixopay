@@ -1,9 +1,9 @@
-#Ixopay Client
+Ixopay Client
 ==============
 
-1. Instantiate the "Ixopay\Client\Client" with your credentials.
+1. Instantiate the `Ixopay\Client\Client` with your credentials.
 
-```
+```php
 $client = new Client("username", "password", "apiKey", "sharedSecret");
 
 $customer = new Customer();
