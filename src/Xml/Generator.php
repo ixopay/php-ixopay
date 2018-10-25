@@ -6,6 +6,7 @@ use Ixopay\Client\Data\CreditCardCustomer;
 use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\IbanCustomer;
 use Ixopay\Client\Data\Request;
+use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\TypeException;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
@@ -21,6 +22,7 @@ use Ixopay\Client\Transaction\Preauthorize;
 use Ixopay\Client\Transaction\Refund;
 use Ixopay\Client\Transaction\Register;
 use Ixopay\Client\Transaction\VoidTransaction;
+use Ixopay\Client\Transaction\Base\AddToCustomerProfileInterface;
 
 /**
  * Class Generator
@@ -283,6 +285,29 @@ class Generator {
 
     /**
      * @param \DOMNode $parentNode
+     * @param AddToCustomerProfileInterface $transaction
+     * @throws InvalidValueException
+     */
+    protected function appendAddToCustomerProfileNode(\DOMNode $parentNode, AddToCustomerProfileInterface $transaction) {
+        $profileNode = $this->document->createElement('addToCustomerProfile');
+
+        if ($transaction->getCustomerProfileGuid() && $transaction->getCustomerProfileIdentification()) {
+            throw new InvalidValueException('Only one profile identification is allowed');
+        }
+
+        if ($transaction->getCustomerProfileGuid()) {
+            $this->_appendTextNode($profileNode, 'profileGuid', $transaction->getCustomerProfileGuid());
+            $parentNode->appendChild($profileNode);
+        } elseif ($transaction->getCustomerProfileIdentification()) {
+            $this->_appendTextNode($profileNode, 'customerIdentification', $transaction->getCustomerProfileIdentification());
+            $parentNode->appendChild($profileNode);
+        }
+
+
+    }
+
+    /**
+     * @param \DOMNode $parentNode
      * @param OffsiteInterface $transaction
      * @throws TypeException
      */
@@ -485,6 +510,9 @@ class Generator {
         if ($transaction->getSchedule()) {
             $this->appendScheduleNode($node, $transaction->getSchedule());
         }
+        if ($transaction->getAddToCustomerProfile()) {
+            $this->appendAddToCustomerProfileNode($node, $transaction);
+        }
 
         return $node;
     }
@@ -503,6 +531,9 @@ class Generator {
 
         if ($transaction->getSchedule()) {
             $this->appendScheduleNode($node, $transaction->getSchedule());
+        }
+        if ($transaction->getAddToCustomerProfile()) {
+            $this->appendAddToCustomerProfileNode($node, $transaction);
         }
 
         return $node;
@@ -540,6 +571,9 @@ class Generator {
         }
         if ($transaction->getSchedule()) {
             $this->appendScheduleNode($node, $transaction->getSchedule());
+        }
+        if ($transaction->getAddToCustomerProfile()) {
+            $this->appendAddToCustomerProfileNode($node, $transaction);
         }
 
         return $node;
