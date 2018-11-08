@@ -47,6 +47,8 @@ class Client {
     const SCHEDULE_ACTION_CONTINUE = 'continueSchedule';
     const SCHEDULE_ACTION_CANCEL = 'cancelSchedule';
 
+    const CUSTOMER_PROFILE_GET = 'api/v3/customerProfiles/[API_KEY]/getProfile';
+
     /**
      * @var string
      */
@@ -283,6 +285,31 @@ class Client {
     }
 
     /**
+     * @param array $dataArray
+     * @param string $path
+     * @return Response
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
+    protected function sendJsonApiRequest($dataArray, $path) {
+        
+        $url = self::$ixopayUrl.$path;
+        $body = json_encode($dataArray);
+        
+        $httpResponse = $this->signAndSendJson($body, $url, $this->username, $this->password, $this->apiKey, $this->sharedSecret);
+
+        if ($httpResponse->getErrorCode() || $httpResponse->getErrorMessage()) {
+            throw new ClientException('Request failed: ' . $httpResponse->getErrorCode() . ' ' . $httpResponse->getErrorMessage());
+        }
+        if ($httpResponse->getStatusCode() == 504 || $httpResponse->getStatusCode() == 522) {
+            throw new TimeoutException('Request timed-out');
+        }
+
+        return $httpResponse;
+    }
+
+    /**
      * @param string[] $compareValues
      * @param string   $subject
      *
@@ -332,6 +359,44 @@ class Client {
 		);
 
 		return $response;
+    }
+
+    /**
+     * signs and send a well-formed transaction xml
+     *
+     * @param string $xml
+     * @param string $apiKey
+     * @param string $sharedSecret
+     * @param string $url
+     *
+     * @return Response
+     * @throws Http\Exception\ClientException
+     */
+    public function signAndSendJson($jsonBody, $url, $username, $password, $apiKey, $sharedSecret) {
+        $url = str_replace('[API_KEY]', $apiKey, $url);
+        
+        $this->log(LogLevel::DEBUG, "POST $url ",
+            array(
+                'url' => $url,
+                'json' => $jsonBody,
+                'apiKey' => $apiKey,
+                'sharedSecret' => $sharedSecret,
+            )
+        );
+
+        $curl = new CurlClient();
+        $response = $curl
+            ->signJson($sharedSecret, $url, $jsonBody)
+            ->setAuthentication($username, $password)
+            ->post($url, $jsonBody);
+
+        $this->log(LogLevel::DEBUG, "RESPONSE: " . $response->getBody(),
+            array(
+                'response' => $response
+            )
+        );
+
+        return $response;
     }
 
     /**
@@ -551,6 +616,26 @@ class Client {
 
 
         return $this->validateCallback($requestBody, $requestQuery, $dateHeader, $authorizationHeader);
+    }
+    
+    public function getCustomerProfileByProfileGuid($profileGuid) {
+        $requestData = array(
+            'profileGuid' => $profileGuid
+        );
+        
+        $response = $this->sendJsonApiRequest($requestData, self::CUSTOMER_PROFILE_GET);
+        
+        return $response;
+    }
+    
+    public function getCustomerProfileByIdentification($customerIdentification) {
+        $requestData = array(
+            'customerIdentification' => $customerIdentification
+        );
+
+        $response = $this->sendJsonApiRequest($requestData, self::CUSTOMER_PROFILE_GET);
+
+        return $response;
     }
 
     /**
