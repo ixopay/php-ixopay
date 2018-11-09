@@ -37,5 +37,14 @@ interface AddToCustomerProfileInterface {
      * @return string
      */
     public function getCustomerProfileIdentification();
+    
+    /**
+     * @return bool
+     */
+    public function getMarkAsPreferred();
 
+    /**
+     * @param bool $markAsPreferred
+     */
+    public function setMarkAsPreferred($markAsPreferred);
 }

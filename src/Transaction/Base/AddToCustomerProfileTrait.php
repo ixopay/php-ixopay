@@ -24,6 +24,11 @@ trait AddToCustomerProfileTrait {
     protected $customerProfileIdentification;
 
     /**
+     * @var string
+     */
+    protected $markAsPrefrred;
+
+    /**
      * @return bool
      */
     public function getAddToCustomerProfile() {
@@ -68,6 +73,22 @@ trait AddToCustomerProfileTrait {
      */
     public function setCustomerProfileIdentification($customerProfileIdentification) {
         $this->customerProfileIdentification = $customerProfileIdentification;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMarkAsPrefrred() {
+        return $this->markAsPrefrred;
+    }
+
+    /**
+     * @param string $markAsPrefrred
+     * @return AddToCustomerProfileTrait
+     */
+    public function setMarkAsPrefrred($markAsPrefrred) {
+        $this->markAsPrefrred = $markAsPrefrred;
         return $this;
     }
 

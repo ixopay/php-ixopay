@@ -297,9 +297,18 @@ class Generator {
 
         if ($transaction->getCustomerProfileGuid()) {
             $this->_appendTextNode($profileNode, 'profileGuid', $transaction->getCustomerProfileGuid());
+            if ($transaction->getMarkAsPreferred()) {
+                $this->_appendTextNode($profileNode, 'markAsPreferred', 'true');
+            }
+            
             $parentNode->appendChild($profileNode);
+            
         } elseif ($transaction->getCustomerProfileIdentification()) {
             $this->_appendTextNode($profileNode, 'customerIdentification', $transaction->getCustomerProfileIdentification());
+            if ($transaction->getMarkAsPreferred()) {
+                $this->_appendTextNode($profileNode, 'markAsPreferred', 'true');
+            }
+            
             $parentNode->appendChild($profileNode);
         }
 
