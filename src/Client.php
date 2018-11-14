@@ -2,6 +2,9 @@
 
 namespace Ixopay\Client;
 
+use Ixopay\Client\CustomerProfile\CustomerData;
+use Ixopay\Client\CustomerProfile\GetProfileResponse;
+use Ixopay\Client\CustomerProfile\PaymentInstrument;
 use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Exception\InvalidValueException;
@@ -48,6 +51,7 @@ class Client {
     const SCHEDULE_ACTION_CANCEL = 'cancelSchedule';
 
     const CUSTOMER_PROFILE_GET = 'api/v3/customerProfiles/[API_KEY]/getProfile';
+    const CUSTOMER_PROFILE_UPDATE = 'api/v3/customerProfiles/[API_KEY]/updateProfile';
 
     /**
      * @var string
@@ -617,7 +621,14 @@ class Client {
 
         return $this->validateCallback($requestBody, $requestQuery, $dateHeader, $authorizationHeader);
     }
-    
+
+    /**
+     * @param string $profileGuid
+     * @return Response
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
     public function getCustomerProfileByProfileGuid($profileGuid) {
         $requestData = array(
             'profileGuid' => $profileGuid
@@ -627,17 +638,79 @@ class Client {
         
         return $response;
     }
-    
+
+    /**
+     * @param string $customerIdentification
+     * @return Response
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
     public function getCustomerProfileByIdentification($customerIdentification) {
         $requestData = array(
             'customerIdentification' => $customerIdentification
         );
 
         $response = $this->sendJsonApiRequest($requestData, self::CUSTOMER_PROFILE_GET);
+        $json = json_decode($response->getBody());
+        if ($response->getStatusCode() == 200 && $json) {
+            $result = new GetProfileResponse();
+            $result->_populateFromResponse(json_decode($response->getBody()));
+            return $result;
+        } elseif ($json) {
+            return $json;
+        }
 
         return $response;
     }
 
+    /**
+     * @param string $profileGuid
+     * @param CustomerData $customerData
+     * @param string|PaymentInstrument|null $preferredInstrument
+     * @return Response
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
+    public function updateCustomerProfileByProfileGuid($profileGuid, CustomerData $customerData, $preferredInstrument = null) {
+        $requestData = array(
+            'profileGuid' => $profileGuid,
+            'customerData' => $customerData->toArray()
+        );
+        if ($preferredInstrument !== null) {
+            if ($preferredInstrument instanceof PaymentInstrument) {
+                $requestData['preferredInstrument'] = $preferredInstrument->getPaymentToken();
+            } else {
+                $requestData['preferredInstrument'] = $preferredInstrument;
+            }
+
+        }
+
+        $response = $this->sendJsonApiRequest($requestData, self::CUSTOMER_PROFILE_UPDATE);
+
+        return $response;
+    }
+    
+    public function updateCustomerProfileByIdentification($customerIdentification, CustomerData $customerData, $preferredInstrument = null) {
+        $requestData = array(
+            'customerIdentification' => $customerIdentification,
+            'customerData' => $customerData->toArray()
+        );
+        if ($preferredInstrument !== null) {
+            if ($preferredInstrument instanceof PaymentInstrument) {
+                $requestData['preferredInstrument'] = $preferredInstrument->getPaymentToken();
+            } else {
+                $requestData['preferredInstrument'] = $preferredInstrument;
+            }
+
+        }
+
+        $response = $this->sendJsonApiRequest($requestData, self::CUSTOMER_PROFILE_UPDATE);
+
+        return $response;
+    }
+    
     /**
      * @return string
      */
