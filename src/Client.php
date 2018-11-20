@@ -52,6 +52,7 @@ class Client {
 
     const CUSTOMER_PROFILE_GET = 'api/v3/customerProfiles/[API_KEY]/getProfile';
     const CUSTOMER_PROFILE_UPDATE = 'api/v3/customerProfiles/[API_KEY]/updateProfile';
+    const CUSTOMER_PROFILE_DELETE = 'api/v3/customerProfiles/[API_KEY]/deleteProfile';
 
     /**
      * @var string
@@ -368,11 +369,13 @@ class Client {
     /**
      * signs and send a well-formed transaction xml
      *
-     * @param string $xml
-     * @param string $apiKey
-     * @param string $sharedSecret
+     * @param $jsonBody
      * @param string $url
      *
+     * @param $username
+     * @param $password
+     * @param string $apiKey
+     * @param string $sharedSecret
      * @return Response
      * @throws Http\Exception\ClientException
      */
@@ -413,6 +416,7 @@ class Client {
      * @return Result
      * @throws ClientException
      * @throws InvalidValueException
+     * @throws Http\Exception\ClientException
      */
     public function register(Register $transactionData) {
         return $this->sendTransaction('register', $transactionData);
@@ -428,6 +432,7 @@ class Client {
      * @return Result
      * @throws ClientException
      * @throws InvalidValueException
+     * @throws Http\Exception\ClientException
      */
     public function completeRegister(Register $transactionData) {
         return $this->sendTransaction('completeRegister', $transactionData);
@@ -443,6 +448,7 @@ class Client {
      * @return Result
      * @throws ClientException
      * @throws InvalidValueException
+     * @throws Http\Exception\ClientException
      */
     public function deregister(Deregister $transactionData) {
         return $this->sendTransaction('deregister', $transactionData);
@@ -458,6 +464,7 @@ class Client {
      * @return Result
      * @throws ClientException
      * @throws InvalidValueException
+     * @throws Http\Exception\ClientException
      */
     public function preauthorize(Preauthorize $transactionData) {
         return $this->sendTransaction('preauthorize', $transactionData);
@@ -471,6 +478,7 @@ class Client {
      * @return Result
      * @throws ClientException
      * @throws InvalidValueException
+     * @throws Http\Exception\ClientException
      */
     public function completePreauthorize(Preauthorize $transactionData) {
         return $this->sendTransaction('completePreauthorize', $transactionData);
@@ -484,6 +492,7 @@ class Client {
      * @return Result
      * @throws ClientException
      * @throws InvalidValueException
+     * @throws Http\Exception\ClientException
      */
     public function void(VoidTransaction $transactionData) {
         return $this->sendTransaction('void', $transactionData);
@@ -497,6 +506,7 @@ class Client {
      * @return Result
      * @throws ClientException
      * @throws InvalidValueException
+     * @throws Http\Exception\ClientException
      */
     public function capture(Capture $transactionData) {
         return $this->sendTransaction('capture', $transactionData);
@@ -510,6 +520,7 @@ class Client {
      * @return Result
      * @throws ClientException
      * @throws InvalidValueException
+     * @throws Http\Exception\ClientException
      */
     public function refund(Refund $transactionData) {
         return $this->sendTransaction('refund', $transactionData);
@@ -523,6 +534,7 @@ class Client {
      * @return Result
      * @throws ClientException
      * @throws InvalidValueException
+     * @throws Http\Exception\ClientException
      */
     public function debit(Debit $transactionData) {
         return $this->sendTransaction('debit', $transactionData);
@@ -534,6 +546,10 @@ class Client {
      * @param Debit $transactionData
      *
      * @return Result
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws TimeoutException
      */
     public function completeDebit(Debit $transactionData) {
         return $this->sendTransaction('completeDebit', $transactionData);
@@ -545,6 +561,10 @@ class Client {
      * @param Payout $transactionData
      *
      * @return Result
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws TimeoutException
      */
     public function payout(Payout $transactionData) {
         return $this->sendTransaction('payout', $transactionData);
@@ -623,6 +643,8 @@ class Client {
     }
 
     /**
+     * retrieves customer profile by profile-guid
+     *
      * @param string $profileGuid
      * @return Response
      * @throws ClientException
@@ -640,6 +662,8 @@ class Client {
     }
 
     /**
+     * retrieves customer profile by customer identification
+     *
      * @param string $customerIdentification
      * @return Response
      * @throws ClientException
@@ -665,6 +689,8 @@ class Client {
     }
 
     /**
+     * updates customer profile by profile-guid
+     *
      * @param string $profileGuid
      * @param CustomerData $customerData
      * @param string|PaymentInstrument|null $preferredInstrument
@@ -691,7 +717,18 @@ class Client {
 
         return $response;
     }
-    
+
+    /**
+     * updates customer profile by customer identification
+     *
+     * @param $customerIdentification
+     * @param CustomerData $customerData
+     * @param null $preferredInstrument
+     * @return Response
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
     public function updateCustomerProfileByIdentification($customerIdentification, CustomerData $customerData, $preferredInstrument = null) {
         $requestData = array(
             'customerIdentification' => $customerIdentification,
@@ -710,7 +747,45 @@ class Client {
 
         return $response;
     }
-    
+
+    /**
+     * deletes customer profile by profile-guid
+     *
+     * @param $profileGuid
+     * @return Response
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
+    public function deleteCustomerProfileByProfileGuid($profileGuid) {
+        $requestData = array(
+            'profileGuid' => $profileGuid,
+        );
+
+        $response = $this->sendJsonApiRequest($requestData, self::CUSTOMER_PROFILE_DELETE);
+
+        return $response;
+    }
+
+    /**
+     * deletes customer profile by customer identification
+     *
+     * @param $customerIdentification
+     * @return Response
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
+    public function deleteCustomerProfileByIdentification($customerIdentification) {
+        $requestData = array(
+            'customerIdentification' => $customerIdentification,
+        );
+
+        $response = $this->sendJsonApiRequest($requestData, self::CUSTOMER_PROFILE_DELETE);
+
+        return $response;
+    }
+
     /**
      * @return string
      */
@@ -944,6 +1019,7 @@ class Client {
      * Please note that setting the API URL affects all instances (including the existing ones) of this client.
      *
      * @return void
+     * @throws InvalidValueException
      */
     public static function resetApiUrl() {
         static::setApiUrl(static::DEFAULT_IXOPAY_URL);
