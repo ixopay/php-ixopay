@@ -11,7 +11,7 @@ namespace Ixopay\Client\CustomerProfile\PaymentData;
  * @property string $walletOwner
  * @property string $walletType
  */
-class WalletData {
+class WalletData extends PaymentData {
 
     const TYPE_PAYPAL = 'paypal';
 

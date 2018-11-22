@@ -5,17 +5,15 @@ namespace Ixopay\Client\CustomerProfile;
 use Ixopay\Client\Json\ResponseObject;
 
 /**
- * Class GetProfileResponse
+ * Class UpdateProfileResponse
  *
  * @package Ixopay\Client\CustomerProfile
  *
- * @property bool $profileExists
  * @property string $profileGuid
  * @property string $customerIdentification
- * @property string $preferredMethod
  * @property CustomerData $customer
- * @property PaymentInstrument[] $paymentInstruments
+ * @property array $changedFields
  */
-class GetProfileResponse extends ResponseObject {
+class UpdateProfileResponse extends ResponseObject {
 
 }

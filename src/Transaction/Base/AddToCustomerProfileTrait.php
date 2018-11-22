@@ -26,7 +26,7 @@ trait AddToCustomerProfileTrait {
     /**
      * @var string
      */
-    protected $markAsPrefrred;
+    protected $markAsPreferred;
 
     /**
      * @return bool
@@ -79,16 +79,16 @@ trait AddToCustomerProfileTrait {
     /**
      * @return string
      */
-    public function getMarkAsPrefrred() {
-        return $this->markAsPrefrred;
+    public function getMarkAsPreferred() {
+        return $this->markAsPreferred;
     }
 
     /**
      * @param string $markAsPrefrred
      * @return AddToCustomerProfileTrait
      */
-    public function setMarkAsPrefrred($markAsPrefrred) {
-        $this->markAsPrefrred = $markAsPrefrred;
+    public function setMarkAsPreferred($markAsPreferred) {
+        $this->markAsPreferred = $markAsPreferred;
         return $this;
     }
 

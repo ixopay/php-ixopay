@@ -16,7 +16,10 @@ class DataObject implements \ArrayAccess, \JsonSerializable {
 
     protected static $_typeMap = array(
         'customerData' => \Ixopay\Client\CustomerProfile\CustomerData::class,
-        'paymentInstrument' => \Ixopay\Client\CustomerProfile\PaymentInstrument::class
+        'paymentInstrument' => \Ixopay\Client\CustomerProfile\PaymentInstrument::class,
+        'paymentData.card' => \Ixopay\Client\CustomerProfile\PaymentData\CardData::class,
+        'paymentData.iban' => \Ixopay\Client\CustomerProfile\PaymentData\IbanData::class,
+        'paymentData.wallet' => \Ixopay\Client\CustomerProfile\PaymentData\WalletData::class,
     );
 
     /**
@@ -102,6 +105,13 @@ class DataObject implements \ArrayAccess, \JsonSerializable {
      * @return array
      */
     public function jsonSerialize() {
+        return $this->_data;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray() {
         return $this->_data;
     }
 

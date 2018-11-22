@@ -5,6 +5,8 @@ namespace Ixopay\Client;
 use Ixopay\Client\CustomerProfile\CustomerData;
 use Ixopay\Client\CustomerProfile\GetProfileResponse;
 use Ixopay\Client\CustomerProfile\PaymentInstrument;
+use Ixopay\Client\CustomerProfile\UpdateProfileResponse;
+use Ixopay\Client\Json\ErrorResponse;
 use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Exception\InvalidValueException;
@@ -624,7 +626,7 @@ class Client {
 
     /**
      * @param string $profileGuid
-     * @return Response
+     * @return GetProfileResponse|ErrorResponse
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
@@ -633,15 +635,25 @@ class Client {
         $requestData = array(
             'profileGuid' => $profileGuid
         );
-        
+
         $response = $this->sendJsonApiRequest($requestData, self::CUSTOMER_PROFILE_GET);
-        
-        return $response;
+        $json = json_decode($response->getBody());
+        if ($response->getStatusCode() == 200 && $json && ($json->success || isset($json->profileExists))) {
+            $result = new GetProfileResponse();
+            $result->_populateFromResponse($json);
+            return $result;
+        } elseif ($json && !$json->success) {
+            $result = new ErrorResponse();
+            $result->_populateFromResponse($json);
+            return $result;
+        }
+
+        throw new ClientException('Invalid response received: '.$response->getBody());
     }
 
     /**
      * @param string $customerIdentification
-     * @return Response
+     * @return GetProfileResponse|ErrorResponse
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
@@ -653,22 +665,24 @@ class Client {
 
         $response = $this->sendJsonApiRequest($requestData, self::CUSTOMER_PROFILE_GET);
         $json = json_decode($response->getBody());
-        if ($response->getStatusCode() == 200 && $json) {
+        if ($response->getStatusCode() == 200 && $json && ($json->success || isset($json->profileExists))) {
             $result = new GetProfileResponse();
-            $result->_populateFromResponse(json_decode($response->getBody()));
+            $result->_populateFromResponse($json);
             return $result;
-        } elseif ($json) {
-            return $json;
+        } elseif ($json && !$json->success) {
+            $result = new ErrorResponse();
+            $result->_populateFromResponse($json);
+            return $result;
         }
 
-        return $response;
+        throw new ClientException('Invalid response received: '.$response->getBody());
     }
 
     /**
      * @param string $profileGuid
      * @param CustomerData $customerData
      * @param string|PaymentInstrument|null $preferredInstrument
-     * @return Response
+     * @return ErrorResponse|UpdateProfileResponse
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
@@ -680,7 +694,7 @@ class Client {
         );
         if ($preferredInstrument !== null) {
             if ($preferredInstrument instanceof PaymentInstrument) {
-                $requestData['preferredInstrument'] = $preferredInstrument->getPaymentToken();
+                $requestData['preferredInstrument'] = $preferredInstrument->paymentToken;
             } else {
                 $requestData['preferredInstrument'] = $preferredInstrument;
             }
@@ -688,10 +702,30 @@ class Client {
         }
 
         $response = $this->sendJsonApiRequest($requestData, self::CUSTOMER_PROFILE_UPDATE);
+        $json = json_decode($response->getBody());
+        if ($response->getStatusCode() == 200 && $json && $json->success) {
+            $result = new UpdateProfileResponse();
+            $result->_populateFromResponse($json);
+            return $result;
+        } elseif ($json && !$json->success) {
+            $result = new ErrorResponse();
+            $result->_populateFromResponse($json);
+            return $result;
+        }
 
-        return $response;
+        throw new ClientException('Invalid response received: '.$response->getBody());
+
     }
-    
+
+    /**
+     * @param string $customerIdentification
+     * @param CustomerData $customerData
+     * @param string|PaymentInstrument|null $preferredInstrument
+     * @return UpdateProfileResponse|ErrorResponse
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
     public function updateCustomerProfileByIdentification($customerIdentification, CustomerData $customerData, $preferredInstrument = null) {
         $requestData = array(
             'customerIdentification' => $customerIdentification,
@@ -699,7 +733,7 @@ class Client {
         );
         if ($preferredInstrument !== null) {
             if ($preferredInstrument instanceof PaymentInstrument) {
-                $requestData['preferredInstrument'] = $preferredInstrument->getPaymentToken();
+                $requestData['preferredInstrument'] = $preferredInstrument->paymentToken;
             } else {
                 $requestData['preferredInstrument'] = $preferredInstrument;
             }
@@ -707,8 +741,18 @@ class Client {
         }
 
         $response = $this->sendJsonApiRequest($requestData, self::CUSTOMER_PROFILE_UPDATE);
+        $json = json_decode($response->getBody());
+        if ($response->getStatusCode() == 200 && $json && $json->success) {
+            $result = new UpdateProfileResponse();
+            $result->_populateFromResponse($json);
+            return $result;
+        } elseif ($json && !$json->success) {
+            $result = new ErrorResponse();
+            $result->_populateFromResponse($json);
+            return $result;
+        }
 
-        return $response;
+        throw new ClientException('Invalid response received: '.$response->getBody());
     }
     
     /**
