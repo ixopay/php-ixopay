@@ -1,6 +1,7 @@
 <?php
 
 namespace Ixopay\Client\Xml;
+
 use Ixopay\Client\Callback\ChargebackData;
 use Ixopay\Client\Callback\ChargebackReversalData;
 use Ixopay\Client\Data\Customer;
@@ -12,6 +13,7 @@ use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Schedule\ScheduleResult;
 use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Schedule\ScheduleError;
+use Ixopay\Client\StatusApi\StatusResult;
 use Ixopay\Client\Transaction\Error;
 use Ixopay\Client\Transaction\Result;
 use Ixopay\Client\Callback\Result as CallbackResult;
@@ -179,6 +181,83 @@ class Parser {
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $xml
+     * @return StatusResult
+     * @throws InvalidValueException
+     */
+    public function parseStatusResult($xml) {
+        $statusResult = new StatusResult();
+
+        $document = new \DOMDocument('1.0', 'utf-8');
+        $document->loadXML($xml);
+
+        $root = $document->getElementsByTagName('statusResult');
+        if ($root->length < 0) {
+            throw new InvalidValueException('XML does not contain a root "statusResult" element');
+        }
+        $root = $root->item(0);
+
+        foreach ($root->childNodes as $child) {
+            /**
+             * @var \DOMNode $child
+             */
+            switch ($child->localName) {
+                case 'operationSuccess':
+                    $statusResult->setOperationSuccess($child->nodeValue === 'true' ? true : false);
+                    break;
+                case 'transactionStatus':
+                    $statusResult->setTransactionStatus($child->nodeValue);
+                    break;
+                case 'transactionUuid':
+                    $statusResult->setTransactionUuid($child->nodeValue);
+                    break;
+                case 'merchantTransactionId':
+                    $statusResult->setMerchantTransactionId($child->nodeValue);
+                    break;
+                case 'purchaseId':
+                    $statusResult->setPurchaseId($child->nodeValue);
+                    break;
+                case 'transactionType':
+                    $statusResult->setTransactionType($child->nodeValue);
+                    break;
+                case 'errors':
+                    $statusResult->setErrors($this->parseErrors($child));
+                    break;
+                case 'extraData':
+                    list($key, $value) = $this->parseExtraData($child);
+                    $statusResult->addExtraData($key, $value);
+                    break;
+                case 'merchantMetaData':
+                    $statusResult->setMerchantMetaData($child->nodeValue);
+                    break;
+                case 'chargebackData':
+                    $chargebackData = $this->parseChargebackData($child);
+                    $statusResult->setChargebackData($chargebackData);
+                    break;
+                case 'chargebackReversalData':
+                    $reversalData = $this->parseChargebackReversalData($child);
+                    $statusResult->setChargebackReversalData($reversalData);
+                case 'returnData':
+                    $statusResult->setReturnData($this->parseReturnData($child));
+                    break;
+                case 'customerData':
+                    $statusResult->setCustomer($this->parseCustomerData($child));
+                    break;
+                case 'amount':
+                    $statusResult->setAmount((double)$child->nodeValue);
+                    break;
+                case 'currency':
+                    $statusResult->setCurrency($child->nodeValue);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $statusResult;
     }
 
     /**
