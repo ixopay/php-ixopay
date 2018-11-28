@@ -5,6 +5,8 @@ namespace Ixopay\Client\Transaction;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
+use Ixopay\Client\Transaction\Base\ScheduleInterface;
+use Ixopay\Client\Transaction\Base\ScheduleTrait;
 
 /**
  * Register: Register the customer's payment data for recurring charges.
@@ -13,6 +15,7 @@ use Ixopay\Client\Transaction\Base\OffsiteTrait;
  *
  * @package Ixopay\Client\Transaction
  */
-class Register extends AbstractTransaction implements OffsiteInterface {
+class Register extends AbstractTransaction implements OffsiteInterface, ScheduleInterface {
     use OffsiteTrait;
+    use ScheduleTrait;
 }

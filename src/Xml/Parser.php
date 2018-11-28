@@ -1,11 +1,19 @@
 <?php
 
 namespace Ixopay\Client\Xml;
+
 use Ixopay\Client\Callback\ChargebackData;
+use Ixopay\Client\Callback\ChargebackReversalData;
+use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\Result\CreditcardData;
+use Ixopay\Client\Data\Result\IbanData;
 use Ixopay\Client\Data\Result\PhoneData;
 use Ixopay\Client\Data\Result\ResultData;
+use Ixopay\Client\Exception\ClientException;
+use Ixopay\Client\Schedule\ScheduleResult;
 use Ixopay\Client\Exception\InvalidValueException;
+use Ixopay\Client\Schedule\ScheduleError;
+use Ixopay\Client\StatusApi\StatusResult;
 use Ixopay\Client\Transaction\Error;
 use Ixopay\Client\Transaction\Result;
 use Ixopay\Client\Callback\Result as CallbackResult;
@@ -28,7 +36,7 @@ class Parser {
         $document = new \DOMDocument('1.0', 'utf-8');
         $document->loadXML($xml);
 
-        $root = $document->getElementsByTagNameNS('http://gateway.ixopay.com/Schema/V2/Result', 'result');
+        $root = $document->getElementsByTagName('result');
         if ($root->length < 0) {
             throw new InvalidValueException('XML does not contain a root "result" element');
         }
@@ -52,7 +60,15 @@ class Parser {
                 case 'redirectUrl':
                 case 'htmlContent':
                 case 'paymentDescriptor':
-                    $result->{'set'.ucfirst($child->localName)}($child->nodeValue);
+                case 'scheduleId':
+                case 'scheduleStatus':
+                    if (method_exists($result, 'set'.ucfirst($child->localName))) {
+                        $result->{'set' . ucfirst($child->localName)}($child->nodeValue);
+                    }
+                    break;
+                case 'scheduledAt':
+                    $scheduleAt = \DateTime::createFromFormat('Y-m-d H:i:s T', $child->nodeValue);
+                    $result->setScheduledAt($scheduleAt ?: null);
                     break;
                 case 'returnType':
                     $returnType = $this->parseReturnType($child);
@@ -63,6 +79,9 @@ class Parser {
                     break;
                 case 'returnData':
                     $result->setReturnData($this->parseReturnData($child));
+                    break;
+                case 'customerData':
+                    $result->setCustomer($this->parseCustomerData($child));
                     break;
                 case 'errors':
                     $result->setErrors($this->parseErrors($child));
@@ -91,7 +110,7 @@ class Parser {
         $document = new \DOMDocument('1.0', 'utf-8');
         $document->loadXML($xml);
 
-        $root = $document->getElementsByTagNameNS('http://gateway.ixopay.com/Schema/V2/Callback', 'callback');
+        $root = $document->getElementsByTagName('callback');
         if ($root->length < 0) {
             throw new InvalidValueException('XML does not contain a root "callback" element');
         }
@@ -117,6 +136,9 @@ class Parser {
                 case 'transactionType':
                     $result->setTransactionType($child->nodeValue);
                     break;
+                case 'paymentMethod':
+                    $result->setPaymentMethod($child->nodeValue);
+                    break;
                 case 'errors':
                     $result->setErrors($this->parseErrors($child));
                     break;
@@ -124,12 +146,22 @@ class Parser {
                     list($key, $value) = $this->parseExtraData($child);
                     $result->addExtraData($key, $value);
                     break;
+                case 'merchantMetaData':
+                    $result->setMerchantMetaData($child->nodeValue);
+                    break;
                 case 'chargebackData':
                     $chargebackData = $this->parseChargebackData($child);
                     $result->setChargebackData($chargebackData);
                     break;
+                case 'chargebackReversalData':
+                    $reversalData = $this->parseChargebackReversalData($child);
+                    $result->setChargebackReversalData($reversalData);
+                    break;
                 case 'returnData':
                     $result->setReturnData($this->parseReturnData($child));
+                    break;
+                case 'customerData':
+                    $result->setCustomer($this->parseCustomerData($child));
                     break;
                 case 'amount':
                     $result->setAmount((double)$child->nodeValue);
@@ -137,12 +169,95 @@ class Parser {
                 case 'currency':
                     $result->setCurrency($child->nodeValue);
                     break;
+                case 'scheduleId':
+                    $result->setScheduleId($child->nodeValue);
+                    break;
+                case 'scheduleStatus':
+                    $result->setScheduleStatus($child->nodeValue);
+                    break;
                 default:
                     break;
             }
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $xml
+     * @return StatusResult
+     * @throws InvalidValueException
+     */
+    public function parseStatusResult($xml) {
+        $statusResult = new StatusResult();
+
+        $document = new \DOMDocument('1.0', 'utf-8');
+        $document->loadXML($xml);
+
+        $root = $document->getElementsByTagName('statusResult');
+        if ($root->length < 0) {
+            throw new InvalidValueException('XML does not contain a root "statusResult" element');
+        }
+        $root = $root->item(0);
+
+        foreach ($root->childNodes as $child) {
+            /**
+             * @var \DOMNode $child
+             */
+            switch ($child->localName) {
+                case 'operationSuccess':
+                    $statusResult->setOperationSuccess($child->nodeValue === 'true' ? true : false);
+                    break;
+                case 'transactionStatus':
+                    $statusResult->setTransactionStatus($child->nodeValue);
+                    break;
+                case 'transactionUuid':
+                    $statusResult->setTransactionUuid($child->nodeValue);
+                    break;
+                case 'merchantTransactionId':
+                    $statusResult->setMerchantTransactionId($child->nodeValue);
+                    break;
+                case 'purchaseId':
+                    $statusResult->setPurchaseId($child->nodeValue);
+                    break;
+                case 'transactionType':
+                    $statusResult->setTransactionType($child->nodeValue);
+                    break;
+                case 'errors':
+                    $statusResult->setErrors($this->parseErrors($child));
+                    break;
+                case 'extraData':
+                    list($key, $value) = $this->parseExtraData($child);
+                    $statusResult->addExtraData($key, $value);
+                    break;
+                case 'merchantMetaData':
+                    $statusResult->setMerchantMetaData($child->nodeValue);
+                    break;
+                case 'chargebackData':
+                    $chargebackData = $this->parseChargebackData($child);
+                    $statusResult->setChargebackData($chargebackData);
+                    break;
+                case 'chargebackReversalData':
+                    $reversalData = $this->parseChargebackReversalData($child);
+                    $statusResult->setChargebackReversalData($reversalData);
+                case 'returnData':
+                    $statusResult->setReturnData($this->parseReturnData($child));
+                    break;
+                case 'customerData':
+                    $statusResult->setCustomer($this->parseCustomerData($child));
+                    break;
+                case 'amount':
+                    $statusResult->setAmount((double)$child->nodeValue);
+                    break;
+                case 'currency':
+                    $statusResult->setCurrency($child->nodeValue);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $statusResult;
     }
 
     /**
@@ -158,7 +273,7 @@ class Parser {
         $document = new \DOMDocument('1.0', 'utf-8');
         $document->loadXML($xml);
 
-        $root = $document->getElementsByTagNameNS('http://gateway.ixopay.com/Schema/V2/Options', 'response');
+        $root = $document->getElementsByTagName('response');
         if ($root->length < 0) {
             throw new InvalidValueException('XML does not contain a "response" element');
         }
@@ -199,11 +314,66 @@ class Parser {
             }
         }
 
+        if ($success == false) {
+            throw new ClientException($error);
+        }
         if (count($result) === 1 && array_key_exists('undefined', $result)) {
             $result = $result['undefined'];
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $xml
+     *
+     * @return ScheduleResult
+     *
+     * @throws InvalidValueException
+     */
+    public function parseScheduleResult($xml) {
+        $scheduleResult = new ScheduleResult();
+
+        $document = new \DOMDocument('1.0', 'utf-8');
+        $document->loadXML($xml);
+
+        $root = $document->getElementsByTagName('scheduleResult');
+        if ($root->length < 0) {
+            throw new InvalidValueException('XML does not contain a root "scheduleResult" element');
+        }
+        $root = $root->item(0);
+
+        foreach ($root->childNodes as $childNode) {
+            /**
+             * @var \DOMNode $childNode
+             */
+            switch ($childNode->localName) {
+                case 'operationSuccess':
+                    if ($childNode->nodeValue == 'false' || !$childNode->nodeValue) {
+                        $scheduleResult->setOperationSuccess(false);
+                    } else {
+                        $scheduleResult->setOperationSuccess(true);
+                    }
+                    break;
+                case 'scheduleId':
+                case 'registrationId':
+                case 'oldStatus':
+                case 'newStatus':
+                case 'scheduledAt':
+                    if (method_exists($scheduleResult, 'set'.ucfirst($childNode->localName))) {
+                        $scheduleResult->{'set' . ucfirst($childNode->localName)}($childNode->nodeValue);
+                    }
+                    break;
+                case 'errors':
+                    $scheduleResult->setErrors($this->parseScheduleErrors($childNode));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $scheduleResult;
+
     }
 
     /**
@@ -281,11 +451,23 @@ class Parser {
                     case 'cardHolder':
                     case 'firstSixDigits':
                     case 'lastFourDigits':
-                        $cc->{'set'.ucfirst($child->localName)}($child->nodeValue);
+                    case 'fingerprint':
+                    case 'binBrand':
+                    case 'binBank':
+                    case 'binType':
+                    case 'binLevel':
+                    case 'binCountry':
+                    case 'threeDSecure':
+                    case 'eci':
+                        if (method_exists($cc, 'set'.ucfirst($child->localName))) {
+                            $cc->{'set' . ucfirst($child->localName)}($child->nodeValue);
+                        }
                         break;
                     case 'expiryMonth':
                     case 'expiryYear':
-                    $cc->{'set'.ucfirst($child->localName)}((int)$child->nodeValue);
+                        if (method_exists($cc, 'set'.ucfirst($child->localName))) {
+                            $cc->{'set' . ucfirst($child->localName)}((int)$child->nodeValue);
+                        }
                         break;
                     default:
                         break;
@@ -320,6 +502,40 @@ class Parser {
                 }
             }
             return $phone;
+        } elseif ($type->firstChild->nodeValue == 'ibanData') {
+            $node = $node->firstChild;
+            while($node->nodeName == '#text') {
+                $node = $node->nextSibling;
+            }
+            if ($node->localName != 'ibanData') {
+                throw new InvalidValueException('Expecting element named "ibanData"');
+            }
+            $ibanData = new IbanData();
+            foreach ($node->childNodes as $child) {
+                /**
+                 * @var \DOMNode $child
+                 */
+                switch ($child->localName) {
+                    case 'accountOwner':
+                        $ibanData->setAccountOwner($child->nodeValue);
+                        break;
+                    case 'iban':
+                        $ibanData->setIban($child->nodeValue);
+                        break;
+                    case 'bic':
+                        $ibanData->setBic($child->nodeValue);
+                        break;
+                    case 'bankName':
+                        $ibanData->setBankName($child->nodeValue);
+                        break;
+                    case 'country':
+                        $ibanData->setCountry($child->nodeValue);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return $ibanData;
         }
         return null;
     }
@@ -366,6 +582,50 @@ class Parser {
             }
 
             $error = new Error($message, $code, $adapterMessage, $adapterCode);
+            $errors[] = $error;
+
+        }
+        return $errors;
+    }
+
+    /**
+     * @param \DOMNode $node
+     *
+     * @return ScheduleError[]
+     *
+     * @throws InvalidValueException
+     */
+    protected function parseScheduleErrors(\DOMNode $node) {
+        $errors = array();
+
+        foreach ($node->childNodes as $child) {
+            /**
+             * @var \DOMNode $child
+             */
+            if ($child->nodeName == '#text') {
+                continue;
+            }
+            if ($child->localName != 'error') {
+                throw new InvalidValueException('Expecting element named "error"');
+            }
+            $message = $code = null;
+            foreach ($child->childNodes as $childNode) {
+                /**
+                 * @var \DOMNode $childNode
+                 */
+                switch ($childNode->localName) {
+                    case 'message':
+                        $message = $childNode->nodeValue;
+                        break;
+                    case 'code':
+                        $code = $childNode->nodeValue;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            $error = new ScheduleError($message, $code);
             $errors[] = $error;
 
         }
@@ -424,4 +684,103 @@ class Parser {
         return $data;
     }
 
+    /**
+     * @param \DOMNode $node
+     * @return ChargebackReversalData
+     */
+    protected function parseChargebackReversalData(\DOMNode $node) {
+        $data = new ChargebackReversalData();
+
+        foreach ($node->childNodes as $child) {
+            /**
+             * @var \DOMNode $child
+             */
+            if ($child->nodeName == '#text' || empty($child->nodeValue)) {
+                continue;
+            }
+            switch ($child->localName) {
+                case 'originalReferenceId':
+                    $data->setOriginalReferenceId($child->nodeValue);
+                    break;
+                case 'originalTransactionId':
+                    $data->setOriginalTransactionId($child->nodeValue);
+                    break;
+                case 'chargebackReferenceId':
+                    $data->setChargebackReferenceId($child->nodeValue);
+                    break;
+                case 'amount':
+                    $data->setAmount((double)$child->nodeValue);
+                    break;
+                case 'currency':
+                    $data->setCurrency($child->nodeValue);
+                    break;
+                case 'reversalDateTime':
+                    $data->setReversalDateTime(new \DateTime($child->nodeValue));
+                    break;
+                case 'reason':
+                    $data->setReason($child->nodeValue);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param \DOMNode $node
+     * @return Customer
+     */
+    protected function parseCustomerData(\DOMNode $node) {
+        $customer = new Customer();
+
+        foreach ($node->childNodes as $child) {
+            /**
+             * @var \DOMNode $child
+             */
+            if ($child->nodeName == '#text' || empty($child->nodeValue)) {
+                continue;
+            }
+            switch ($child->localName) {
+                case 'identification':
+                case 'firstName':
+                case 'lastName':
+                case 'gender':
+                case 'birthDate':
+                case 'billingAddress1':
+                case 'billingAddress2':
+                case 'billingCity':
+                case 'billingPostcode':
+                case 'billingState':
+                case 'billingCountry':
+                case 'billingPhone':
+                case 'shippingFirstName':
+                case 'shippingLastName':
+                case 'shippingCompany':
+                case 'shippingAddress1':
+                case 'shippingAddress2':
+                case 'shippingCity':
+                case 'shippingPostcode':
+                case 'shippingState':
+                case 'shippingCountry':
+                case 'shippingPhone':
+                case 'company':
+                case 'email':
+                case 'ipAddress':
+                case 'nationalId':
+                    if (method_exists($customer, 'set'.ucfirst($child->localName))) {
+                        $customer->{'set' . ucfirst($child->localName)}($child->nodeValue);
+                    }
+                    break;
+                case 'emailVerified':
+                    $customer->setEmailVerified($customer->isEmailVerified() === 'true' ? true : false);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $customer;
+    }
 }

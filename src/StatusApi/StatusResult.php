@@ -1,26 +1,24 @@
 <?php
 
-namespace Ixopay\Client\Callback;
+namespace Ixopay\Client\StatusApi;
 
+use Ixopay\Client\Callback\ChargebackData;
+use Ixopay\Client\Callback\ChargebackReversalData;
 use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Transaction\Error;
 
 /**
- * Callback result, which is produced by processing a callback request's body.
- * Reports the status of an asynchronous transaction.
  *
- * @package Ixopay\Client\Callback
+ * @package Ixopay\Client\StatusApi
  */
-class Result {
-    /** The callback reports, that the transaction finished successfully. */
-    const RESULT_OK = 'OK';
-    /** The callback reports that the transaction is pending (an update call is expected, or the status should be pulled) */
-    const RESULT_PENDING = 'PENDING';
-    /** The transaction failed, please refer to the errors. */
-    const RESULT_ERROR = 'ERROR';
-    /** The callback request is invalid. */
-    const RESULT_INVALID_REQUEST = 'INVALID_REQUEST';
+class StatusResult {
+
+    const TRANSACTION_SUCCESS = 'SUCCESS';
+    const TRANSACTION_PENDING = 'PENDING';
+    const TRANSACTION_REDIRECT = 'REDIRECT';
+    const TRANSACTION_CANCELLED = 'CANCELLED';
+    const TRANSACTION_ERROR = 'ERROR';
 
     const TYPE_DEBIT = 'DEBIT';
     const TYPE_CAPTURE = 'CAPTURE';
@@ -34,23 +32,28 @@ class Result {
     const TYPE_PAYOUT = 'PAYOUT';
 
     /**
+     * @var bool
+     */
+    protected $operationSuccess;
+
+    /**
      * @var string
      */
-    protected $result;
+    protected $transactionStatus;
 
     /**
      * reference id from the payment gateway
      *
      * @var string
      */
-    protected $referenceId;
+    protected $transactionUuid;
 
     /**
      * your transaction id from the initial transaction (if returned by adapter)
      *
      * @var string
      */
-    protected $transactionId;
+    protected $merchantTransactionId;
 
     /**
      * purchase id from gateway (can be used for any subsequent action on this transaction)
@@ -67,11 +70,6 @@ class Result {
     protected $transactionType;
 
     /**
-     * @var string
-     */
-    protected $paymentMethod;
-
-    /**
      * @var double
      */
     protected $amount;
@@ -80,16 +78,6 @@ class Result {
      * @var string
      */
     protected $currency;
-
-    /**
-     * @var string
-     */
-    protected $scheduleId;
-
-    /**
-     * @var string
-     */
-    protected $scheduleStatus;
 
     /**
      * @var Error[]
@@ -131,6 +119,78 @@ class Result {
      * @var Customer
      */
     protected $customer = null;
+
+    /**
+     * @return bool
+     */
+    public function isOperationSuccess() {
+        return $this->operationSuccess;
+    }
+
+    /**
+     * @param bool $operationSuccess
+     *
+     * @return StatusResult
+     */
+    public function setOperationSuccess($operationSuccess) {
+        $this->operationSuccess = $operationSuccess;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionStatus() {
+        return $this->transactionStatus;
+    }
+
+    /**
+     * @param string $transactionStatus
+     *
+     * @return StatusResult
+     */
+    public function setTransactionStatus($transactionStatus) {
+        $this->transactionStatus = $transactionStatus;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionUuid() {
+        return $this->transactionUuid;
+    }
+
+    /**
+     * @param string $transactionUuid
+     *
+     * @return StatusResult
+     */
+    public function setTransactionUuid($transactionUuid) {
+        $this->transactionUuid = $transactionUuid;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantTransactionId() {
+        return $this->merchantTransactionId;
+    }
+
+    /**
+     * @param string $merchantTransactionId
+     *
+     * @return StatusResult
+     */
+    public function setMerchantTransactionId($merchantTransactionId) {
+        $this->merchantTransactionId = $merchantTransactionId;
+
+        return $this;
+    }
 
     /**
      * @param Error[] $errors
@@ -183,7 +243,7 @@ class Result {
 
     /**
      * @param string $merchantMetaData
-     * @return Result
+     * @return $this
      */
     public function setMerchantMetaData($merchantMetaData)
     {
@@ -223,59 +283,6 @@ class Result {
     }
 
     /**
-     * @param string $result
-     *
-     * @return $this
-     */
-    public function setResult($result) {
-        $this->result = $result;
-        return $this;
-    }
-
-    /**
-     * Returns the result code of the event (one of the Result::RESULT_* constants).
-     *
-     * @return string
-     */
-    public function getResult() {
-        return $this->result;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReferenceId() {
-        return $this->referenceId;
-    }
-
-    /**
-     * @param string $referenceId
-     *
-     * @return $this
-     */
-    public function setReferenceId($referenceId) {
-        $this->referenceId = $referenceId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTransactionId() {
-        return $this->transactionId;
-    }
-
-    /**
-     * @param string $transactionId
-     *
-     * @return $this
-     */
-    public function setTransactionId($transactionId) {
-        $this->transactionId = $transactionId;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getPurchaseId() {
@@ -304,22 +311,6 @@ class Result {
     }
 
     /**
-     * @return string
-     */
-    public function getPaymentMethod() {
-        return $this->paymentMethod;
-    }
-
-    /**
-     * @param string $paymentMethod
-     * @return Result
-     */
-    public function setPaymentMethod($paymentMethod) {
-        $this->paymentMethod = $paymentMethod;
-        return $this;
-    }
-    
-    /**
      * @return float
      */
     public function getAmount() {
@@ -347,38 +338,6 @@ class Result {
         $this->currency = $currency;
     }
 
-    /**
-     * @return string
-     */
-    public function getScheduleId() {
-        return $this->scheduleId;
-    }
-
-    /**
-     * @param string $scheduleId
-     * @return Result
-     */
-    public function setScheduleId($scheduleId) {
-        $this->scheduleId = $scheduleId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getScheduleStatus() {
-        return $this->scheduleStatus;
-    }
-
-    /**
-     * @param string $scheduleStatus
-     * @return Result
-     */
-    public function setScheduleStatus($scheduleStatus) {
-        $this->scheduleStatus = $scheduleStatus;
-        return $this;
-    }
-    
     /**
      * @return ChargebackData
      */
@@ -421,39 +380,39 @@ class Result {
         $this->returnData = $returnData;
     }
 
-	/**
-	 * @return array
-	 */
-    public function toArray() {
-    	$properties = get_object_vars($this);
-    	foreach(array_keys($properties) as $prop) {
-    		if (is_object($properties[$prop])) {
-    			if (method_exists($properties[$prop], 'toArray')) {
-					$properties[$prop] = $properties[$prop]->toArray();
-				} else {
-					unset($properties[$prop]);
-				}
-    		}
-    	}
-		return $properties;
-    }
-
     /**
      * @return Customer
      */
-    public function getCustomer()
-    {
+    public function getCustomer() {
         return $this->customer;
     }
 
     /**
      * @param Customer $customer
      *
-     * @return Customer
+     * @return StatusResult
      */
-    public function setCustomer($customer)
-    {
+    public function setCustomer($customer) {
         $this->customer = $customer;
-        return $customer;
+
+        return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray() {
+        $properties = get_object_vars($this);
+        foreach(array_keys($properties) as $prop) {
+            if (is_object($properties[$prop])) {
+                if (method_exists($properties[$prop], 'toArray')) {
+                    $properties[$prop] = $properties[$prop]->toArray();
+                } else {
+                    unset($properties[$prop]);
+                }
+            }
+        }
+        return $properties;
+    }
+
 }

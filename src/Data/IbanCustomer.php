@@ -2,6 +2,9 @@
 
 namespace Ixopay\Client\Data;
 
+
+use Ixopay\Client\Exception\InvalidValueException;
+
 /**
  * Class IbanCustomer
  *
@@ -75,6 +78,7 @@ class IbanCustomer extends Customer {
      */
     public function setMandateId($mandateId) {
         $this->mandateId = $mandateId;
+        return $this;
     }
 
     /**
@@ -86,9 +90,20 @@ class IbanCustomer extends Customer {
 
     /**
      * @param \DateTime $mandateDate
+     *
+     * @throws InvalidValueException
      */
     public function setMandateDate($mandateDate) {
+        if (\is_string($mandateDate)) {
+            $mandateDate = \DateTime::createFromFormat('Y-m-d', $mandateDate);
+
+            if ($mandateDate === false) {
+                throw new InvalidValueException('$mandateDate has to have the format Y-m-d');
+            }
+        }
+
         $this->mandateDate = $mandateDate;
+        return $this;
     }
 
 }

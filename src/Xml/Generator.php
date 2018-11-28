@@ -6,7 +6,9 @@ use Ixopay\Client\Data\CreditCardCustomer;
 use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\IbanCustomer;
 use Ixopay\Client\Data\Request;
+use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\TypeException;
+use Ixopay\Client\StatusApi\StatusRequestData;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
 use Ixopay\Client\Transaction\Base\AmountableInterface;
@@ -15,10 +17,11 @@ use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Deregister;
+use Ixopay\Client\Transaction\Payout;
 use Ixopay\Client\Transaction\Preauthorize;
 use Ixopay\Client\Transaction\Refund;
 use Ixopay\Client\Transaction\Register;
-use Ixopay\Client\Transaction\Void;
+use Ixopay\Client\Transaction\VoidTransaction;
 
 /**
  * Class Generator
@@ -33,6 +36,18 @@ class Generator {
     protected $document;
 
     /**
+     * @var string
+     */
+    protected $namespaceRoot = 'http://gateway.ixopay.com';
+
+    /**
+     * @param string $namespaceRoot
+     */
+    public function setNamespaceRoot($namespaceRoot) {
+        $this->namespaceRoot = $namespaceRoot;
+    }
+
+    /**
      * @param string $method
      * @param AbstractTransaction $transaction
      * @param string $username
@@ -43,7 +58,7 @@ class Generator {
     public function generateTransaction($method, AbstractTransaction $transaction, $username, $password, $language=null) {
         $this->document = new \DOMDocument('1.0', 'utf-8');
         $this->document->formatOutput = true;
-        $root = $this->document->createElementNS('http://gateway.ixopay.com/Schema/V2/Transaction', 'transaction');
+        $root = $this->document->createElementNS($this->namespaceRoot . '/Schema/V2/Transaction', 'transaction');
 
         $this->_appendTextNode($root, 'username', $username);
         $this->_appendTextNode($root, 'password', $password);
@@ -75,11 +90,14 @@ class Generator {
                 case $transaction instanceof Capture:
                     $node = $this->generateCaptureNode($transaction, $method);
                     break;
-                case $transaction instanceof Void:
+                case $transaction instanceof VoidTransaction:
                     $node = $this->generateVoidNode($transaction, $method);
                     break;
                 case $transaction instanceof Refund:
                     $node = $this->generateRefundNode($transaction, $method);
+                    break;
+                case $transaction instanceof Payout:
+                    $node = $this->generatePayoutNode($transaction, $method);
                     break;
                 default:
                     return null;
@@ -94,6 +112,104 @@ class Generator {
     }
 
     /**
+     * @param string              $method
+     * @param AbstractTransaction $transaction
+     * @param string              $username
+     * @param string              $password
+     * @param string|null          $language
+     *
+     * @return string
+     */
+    public function generateTransactionXml($method, AbstractTransaction $transaction, $username, $password, $language=null) {
+        return $this->generateTransaction($method, $transaction, $username, $password, $language)->saveXML();
+    }
+
+    /**
+     * @param string       $scheduleAction
+     * @param ScheduleData $schedule
+     * @param string       $username
+     * @param string       $password
+     *
+     * @return string
+     * @throws TypeException
+     */
+    public function generateScheduleXml($scheduleAction, ScheduleData $schedule, $username, $password) {
+
+        $this->document = new \DOMDocument('1.0', 'utf-8');
+        $this->document->formatOutput = true;
+        $root = $this->document->createElementNS($this->namespaceRoot . '/Schema/V2/Schedule', 'schedule');
+
+        $this->_appendTextNode($root, 'username', $username);
+        $this->_appendTextNode($root, 'password', $password);
+
+        if (!in_array($scheduleAction, ['startSchedule', 'showSchedule', 'pauseSchedule', 'continueSchedule', 'cancelSchedule'])) {
+            throw new TypeException('One of the following nodes is required: startSchedule, showSchedule, pauseSchedule, continueSchedule, cancelSchedule');
+        }
+
+        $scheduleNode = $this->document->createElement($scheduleAction);
+
+        if ($scheduleAction === 'startSchedule') {
+            $this->_appendTextNode($scheduleNode, 'registrationId', $schedule->getRegistrationId());
+
+            $this->appendAmountableNodes($scheduleNode, $schedule);
+
+            $this->verifyPeriodLengthType($schedule->getPeriodLength(), 'periodLength');
+            $this->_appendTextNode($scheduleNode, 'periodLength', $schedule->getPeriodLength());
+
+            $this->verifyPeriodUnitType($schedule->getPeriodUnit(), 'periodUnit');
+            $this->_appendTextNode($scheduleNode, 'periodUnit', $schedule->getPeriodUnit());
+
+            $this->verifyFutureDateTime($schedule->getStartDateTime(), 'startDateTime');
+            $this->_appendTextNode($scheduleNode, 'startDateTime', $schedule->getStartDateTime()->format('Y-m-d H:i:s T'));
+
+        } else {
+            $this->_appendTextNode($scheduleNode, 'scheduleId', $schedule->getScheduleId());
+
+        }
+
+        if ($scheduleAction === 'continueSchedule') {
+            $this->verifyFutureDateTime($schedule->getStartDateTime(), 'continueDateTime');
+            $this->_appendTextNode($scheduleNode, 'continueDateTime', $schedule->getContinueDateTime()->format('Y-m-d H:i:s T'));
+        }
+
+        $root->appendChild($scheduleNode);
+        $this->document->appendChild($root);
+
+        return $this->document->saveXML();
+    }
+
+    /**
+     * @param StatusRequestData $statusRequestData
+     * @param                   $username
+     * @param                   $password
+     *
+     * @return string
+     * @throws TypeException
+     */
+    public function generateStatusRequestXml(StatusRequestData $statusRequestData, $username, $password) {
+
+        $this->document = new \DOMDocument('1.0', 'utf-8');
+        $this->document->formatOutput = true;
+        $root = $this->document->createElementNS($this->namespaceRoot . '/Schema/V2/Status', 'status');
+
+        $this->_appendTextNode($root, 'username', $username);
+        $this->_appendTextNode($root, 'password', $password);
+
+        $statusRequestData->validate();
+
+        if ($statusRequestData->getTransactionUuid()) {
+            $this->_appendTextNode($root, 'transactionUuid', $statusRequestData->getTransactionUuid());
+        }
+        if ($statusRequestData->getMerchantTransactionId()) {
+            $this->_appendTextNode($root, 'merchantTransactionId', $statusRequestData->getMerchantTransactionId());
+        }
+
+        $this->document->appendChild($root);
+
+        return $this->document->saveXML();
+    }
+
+    /**
      * @param string $username
      * @param string $password
      * @param string $identifier
@@ -103,7 +219,7 @@ class Generator {
     public function generateOptions($username, $password, $identifier, $parameters=array()) {
         $this->document = new \DOMDocument('1.0', 'utf-8');
         $this->document->formatOutput = true;
-        $root = $this->document->createElementNS('http://gateway.ixopay.com/Schema/V2/Options', 'options');
+        $root = $this->document->createElementNS($this->namespaceRoot . '/Schema/V2/Options', 'options');
         $this->document->appendChild($root);
 
         $this->_appendTextNode($root, 'username', $username);
@@ -149,6 +265,9 @@ class Generator {
         if ($transaction->getExtraData()) {
             $this->appendExtraDataNodes($parentNode, 'extraData', $transaction->getExtraData());
         }
+        if ($transaction->getMerchantMetaData()) {
+            $this->_appendTextNode($parentNode, 'merchantMetaData', $transaction->getMerchantMetaData());
+        }
 
         if ($transaction->getRequest()) {
             $this->appendRequestNode($parentNode, 'request', $transaction->getRequest());
@@ -166,6 +285,32 @@ class Generator {
         $this->_appendTextNode($parentNode, 'referenceId2', $transaction->getReferenceId2());
         $this->_appendTextNode($parentNode, 'referenceId3', $transaction->getReferenceId3());
         $this->_appendTextNode($parentNode, 'referenceId4', $transaction->getReferenceId4());
+    }
+
+    /**
+     * @param \DOMNode     $parentNode
+     * @param ScheduleData $scheduleData
+     *
+     * @throws TypeException
+     */
+    protected function appendScheduleNode(\DOMNode $parentNode, ScheduleData $scheduleData) {
+
+        $scheduleNode = $this->document->createElement('startSchedule');
+
+        $this->verifyAmountType($scheduleData->getAmount(), 'amount');
+        $this->verifyCurrencyType($scheduleData->getCurrency(), 'currency');
+
+        $this->_appendTextNode($scheduleNode, 'amount', number_format($scheduleData->getAmount(), 2, '.', ''));
+        $this->_appendTextNode($scheduleNode, 'currency', $scheduleData->getCurrency());
+
+        $this->_appendTextNode($scheduleNode, 'periodLength', $scheduleData->getPeriodLength());
+        $this->_appendTextNode($scheduleNode, 'periodUnit', $scheduleData->getPeriodUnit());
+
+        if ($scheduleData->getStartDateTime()) {
+            $this->_appendTextNode($scheduleNode, 'startDateTime', $scheduleData->getStartDateTime()->format('Y-m-d H:i:s T'));
+        }
+
+        $parentNode->appendChild($scheduleNode);
     }
 
     /**
@@ -280,7 +425,6 @@ class Generator {
             $this->_appendTextNode($node, 'type', $customer->getType());
         }
 
-
         $parentNode->appendChild($node);
     }
 
@@ -366,19 +510,32 @@ class Generator {
         $this->appendItemsNode($node, $transaction);
 
         $this->_appendTextNode($node, 'withRegister', $transaction->isWithRegister() ? 'true' : 'false');
+        if ($transaction->getTransactionIndicator()) {
+            $this->_appendTextNode($node, 'transactionIndicator', $transaction->getTransactionIndicator());
+        }
+
+        if ($transaction->getSchedule()) {
+            $this->appendScheduleNode($node, $transaction->getSchedule());
+        }
 
         return $node;
     }
 
     /**
      * @param Register $transaction
-     * @param $method
+     * @param          $method
+     *
      * @return \DOMElement
+     * @throws TypeException
      */
     protected function generateRegisterNode(Register $transaction, $method) {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionNodes($node, $transaction);
         $this->appendOffsiteNodes($node, $transaction);
+
+        if ($transaction->getSchedule()) {
+            $this->appendScheduleNode($node, $transaction->getSchedule());
+        }
 
         return $node;
     }
@@ -397,8 +554,10 @@ class Generator {
 
     /**
      * @param Preauthorize $transaction
-     * @param $method
+     * @param              $method
+     *
      * @return \DOMElement
+     * @throws TypeException
      */
     protected function generatePreauthorizeNode(Preauthorize $transaction, $method) {
         $node = $this->document->createElement($method);
@@ -408,6 +567,12 @@ class Generator {
         $this->appendItemsNode($node, $transaction);
 
         $this->_appendTextNode($node, 'withRegister', $transaction->isWithRegister() ? 'true' : 'false');
+        if ($transaction->getTransactionIndicator()) {
+            $this->_appendTextNode($node, 'transactionIndicator', $transaction->getTransactionIndicator());
+        }
+        if ($transaction->getSchedule()) {
+            $this->appendScheduleNode($node, $transaction->getSchedule());
+        }
 
         return $node;
     }
@@ -427,12 +592,12 @@ class Generator {
     }
 
     /**
-     * @param \Ixopay\Client\Transaction\Void $transaction
+     * @param \Ixopay\Client\Transaction\VoidTransaction $transaction
      * @param $method
      *
      * @return \DOMElement
      */
-    protected function generateVoidNode(Void $transaction, $method) {
+    protected function generateVoidNode(VoidTransaction $transaction, $method) {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
 
@@ -448,6 +613,32 @@ class Generator {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
         $this->appendAmountableNodes($node, $transaction);
+        if ($transaction->getDescription()) {
+            $this->_appendTextNode($node, 'description', $transaction->getDescription());
+        }
+        if ($transaction->getCallbackUrl()) {
+            $this->verifyUrl($transaction->getCallbackUrl(), 'callbackUrl');
+            $this->_appendTextNode($node, 'callbackUrl', $transaction->getCallbackUrl());
+        }
+        $this->appendItemsNode($node, $transaction);
+
+        return $node;
+    }
+
+    /**
+     * @param Payout $transaction
+     * @param string $method
+     * @return \DOMElement
+     */
+    protected function generatePayoutNode(Payout $transaction, $method) {
+        $node = $this->document->createElement($method);
+        $this->appendAbstractTransactionWithReferenceNodes($node, $transaction);
+        $this->appendAmountableNodes($node, $transaction);
+        $this->_appendTextNode($node, 'description', $transaction->getDescription());
+        if ($transaction->getCallbackUrl()) {
+            $this->verifyUrl($transaction->getCallbackUrl(), 'callbackUrl');
+            $this->_appendTextNode($node, 'callbackUrl', $transaction->getCallbackUrl());
+        }
         $this->appendItemsNode($node, $transaction);
 
         return $node;
@@ -509,6 +700,39 @@ class Generator {
     }
 
     /**
+     * @param string $value
+     * @param string $elementName
+     * @throws TypeException
+     */
+    private function verifyPeriodLengthType($value, $elementName) {
+        if (!ctype_digit((string)$value)) {
+            throw new TypeException('Value of '.$elementName.' must be a positive integer');
+        }
+    }
+
+    /**
+     * @param string $value
+     * @param string $elementName
+     * @throws TypeException
+     */
+    private function verifyPeriodUnitType($value, $elementName) {
+        if (!in_array($value, ScheduleData::getValidPeriodUnits())) {
+            throw new TypeException('Value of '.$elementName.' must match one of the following values: "'.implode('", "', ScheduleData::getValidPeriodUnits()).'"');
+        }
+    }
+
+    /**
+     * @param \DateTime $startDateTime
+     * @param string $elementName
+     * @throws TypeException
+     */
+    private function verifyFutureDateTime($startDateTime, $elementName) {
+        if (!($startDateTime instanceof \DateTime) || $startDateTime < new \DateTime()) {
+            throw new TypeException('Value of '.$elementName.' must be a Date/Time object in future');
+        }
+    }
+    
+    /**
      * @param \DOMNode $parentNode
      * @param string $nodeName
      * @param string $nodeValue
@@ -523,6 +747,7 @@ class Generator {
             $node->appendChild($this->document->createTextNode($nodeValue));
             $parentNode->appendChild($node);
             return $node;
+
         }
         return null;
     }

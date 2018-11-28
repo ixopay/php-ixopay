@@ -9,15 +9,13 @@ use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 
 /**
- * Refund: Refund money from a previous Debit (or Capture) transaction to the customer.
- *
- * @note Preauthorized transactions can be reverted with a Void transaction, not a Refund!
+ * Payout: Payout a certain amount of money to the customer. (Debits the merchant's account, Credits the customer's account)
  *
  * @package Ixopay\Client\Transaction
  */
-class Refund extends AbstractTransactionWithReference implements AmountableInterface, ItemsInterface {
-    use AmountableTrait;
+class Payout extends AbstractTransactionWithReference implements AmountableInterface, ItemsInterface {
     use ItemsTrait;
+    use AmountableTrait;
 
     /**
      * @var string
@@ -56,4 +54,5 @@ class Refund extends AbstractTransactionWithReference implements AmountableInter
     public function setCallbackUrl($callbackUrl) {
         $this->callbackUrl = $callbackUrl;
     }
+
 }

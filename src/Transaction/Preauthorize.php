@@ -9,21 +9,34 @@ use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
+use Ixopay\Client\Transaction\Base\ScheduleInterface;
+use Ixopay\Client\Transaction\Base\ScheduleTrait;
 
 /**
  * Preauthorize: Reserve a certain amount, which can be captured (=charging) or voided (=revert) later on.
  *
  * @package Ixopay\Client\Transaction
  */
-class Preauthorize extends AbstractTransactionWithReference implements AmountableInterface, OffsiteInterface, ItemsInterface {
+class Preauthorize extends AbstractTransactionWithReference implements AmountableInterface, OffsiteInterface, ItemsInterface, ScheduleInterface {
     use OffsiteTrait;
     use AmountableTrait;
     use ItemsTrait;
+    use ScheduleTrait;
+
+    const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
+    const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';
+    const TRANSACTION_INDICATOR_RECURRING = 'RECURRING';
+    const TRANSACTION_INDICATOR_CARDONFILE = 'CARDONFILE';
 
     /**
      * @var bool
      */
     protected $withRegister = false;
+
+    /**
+     * @var string
+     */
+    protected $transactionIndicator;
 
     /**
      * @return boolean
@@ -44,4 +57,18 @@ class Preauthorize extends AbstractTransactionWithReference implements Amountabl
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getTransactionIndicator() {
+        return $this->transactionIndicator;
+    }
+
+    /**
+     * @param string $transactionIndicator
+     */
+    public function setTransactionIndicator($transactionIndicator) {
+        $this->transactionIndicator = $transactionIndicator;
+        return $this;
+    }
 }

@@ -1,32 +1,23 @@
 {
-	"name": "ixolit/ixopay-php-client-internal",
-	"description": "Ixopay Client for PHP (DEPRECATED !!!!!!)",
-	"keywords": ["ixopay"],
-	"license": "MIT",
-	"type": "project",
-	"require": {
-	    "php": ">=5.5.0",
+    "name": "ixolit/ixopay-php-client",
+    "description": "Ixopay Client for PHP",
+    "keywords": [
+        "ixopay"
+    ],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": ">=7.0",
         "ext-curl": "*",
         "psr/log": "1.*"
-	},
-	"require-dev": {
-		"phpunit/phpunit": "~4.0"
-	},
-	"autoload": {
-		"psr-4": {
-			"Ixopay\\Client\\": "src/"
-		}
-	},
-    "repositories": [
-      {"type": "composer", "url": "https://composer.ixolit.com/repo/private/"},
-      {"type": "composer", "url": "https://composer.ixolit.com/repo/packagist/"}
-    ],
-	"scripts": {
-
-	},
-	"config": {
-		"preferred-install": "source"
-	},
+    },
+    "autoload": {
+        "psr-4": {
+            "Ixopay\\Client\\": "src/"
+        }
+    },
+    "scripts": {
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
