@@ -84,7 +84,7 @@ composer init
 composer require ixolit/ixopay-php-client
 ```
 
-3.) Now in your php file require your PRS-4 autoload file:
+3.) Now in your php file require your PSR-4 autoload file:
 
 ```
 require_once('/path/to/client/autoload.php'); // with composer it is something like __DIR__.'/vendor/autoload.php'
