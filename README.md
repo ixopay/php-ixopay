@@ -72,7 +72,7 @@ if ($result->isSuccess()) {
 
 The PHP Client requires a PSR-4 autoloader. (https://www.php-fig.org/psr/psr-4/)
 
-We recommend to use composer, which generates a autoloader file for you (https://getcomposer.org/doc/01-basic-usage.md#autoloading).
+We recommend to use composer, which generates an autoloader file for you (https://getcomposer.org/doc/01-basic-usage.md#autoloading).
 
 1.) If you do not already use composer (Install guide on: https://getcomposer.org/) in your project directory, initialize it in your shell/ terminal:
 ```
