@@ -9,6 +9,7 @@ use Ixopay\Client\Data\Request;
 use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\TypeException;
+use Ixopay\Client\StatusApi\StatusRequestData;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
 use Ixopay\Client\Transaction\Base\AmountableInterface;
@@ -174,6 +175,37 @@ class Generator {
         }
 
         $root->appendChild($scheduleNode);
+        $this->document->appendChild($root);
+
+        return $this->document->saveXML();
+    }
+
+    /**
+     * @param StatusRequestData $statusRequestData
+     * @param                   $username
+     * @param                   $password
+     *
+     * @return string
+     * @throws TypeException
+     */
+    public function generateStatusRequestXml(StatusRequestData $statusRequestData, $username, $password) {
+
+        $this->document = new \DOMDocument('1.0', 'utf-8');
+        $this->document->formatOutput = true;
+        $root = $this->document->createElementNS($this->namespaceRoot . '/Schema/V2/Status', 'status');
+
+        $this->_appendTextNode($root, 'username', $username);
+        $this->_appendTextNode($root, 'password', $password);
+
+        $statusRequestData->validate();
+
+        if ($statusRequestData->getTransactionUuid()) {
+            $this->_appendTextNode($root, 'transactionUuid', $statusRequestData->getTransactionUuid());
+        }
+        if ($statusRequestData->getMerchantTransactionId()) {
+            $this->_appendTextNode($root, 'merchantTransactionId', $statusRequestData->getMerchantTransactionId());
+        }
+
         $this->document->appendChild($root);
 
         return $this->document->saveXML();

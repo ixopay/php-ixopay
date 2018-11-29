@@ -8,12 +8,14 @@ use Ixopay\Client\CustomerProfile\GetProfileResponse;
 use Ixopay\Client\CustomerProfile\PaymentInstrument;
 use Ixopay\Client\CustomerProfile\UpdateProfileResponse;
 use Ixopay\Client\Json\ErrorResponse;
+use Ixopay\Client\Exception\RateLimitException;
 use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Exception\TimeoutException;
 use Ixopay\Client\Http\CurlClient;
 use Ixopay\Client\Http\Response;
+use Ixopay\Client\StatusApi\StatusRequestData;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
@@ -44,6 +46,8 @@ class Client {
     const TRANSACTION_ROUTE = 'transaction';
 
     const SCHEDULE_ROUTE = 'schedule';
+
+    const STATUS_ROUTE = 'status';
 
     const OPTIONS_ROUTE = 'options';
 
@@ -169,6 +173,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws InvalidValueException
      * @throws TimeoutException
+     * @throws RateLimitException
      */
     protected function sendTransaction($transactionMethod, AbstractTransaction $transaction) {
         $dom = $this->getGenerator()->generateTransaction($transactionMethod, $transaction, $this->username,
@@ -189,6 +194,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws InvalidValueException
      * @throws TimeoutException
+     * @throws RateLimitException
      */
     public function startSchedule(ScheduleData $schedule) {
         return $this->sendScheduleRequest(self::SCHEDULE_ACTION_START, $schedule);
@@ -203,6 +209,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws InvalidValueException
      * @throws TimeoutException
+     * @throws RateLimitException
      */
     public function showSchedule(ScheduleData $schedule) {
         return $this->sendScheduleRequest(self::SCHEDULE_ACTION_SHOW, $schedule);
@@ -217,6 +224,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws InvalidValueException
      * @throws TimeoutException
+     * @throws RateLimitException
      */
     public function pauseSchedule(ScheduleData $schedule) {
         return $this->sendScheduleRequest(self::SCHEDULE_ACTION_PAUSE, $schedule);
@@ -231,6 +239,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws InvalidValueException
      * @throws TimeoutException
+     * @throws RateLimitException
      */
     public function continueSchedule(ScheduleData $schedule) {
         return $this->sendScheduleRequest(self::SCHEDULE_ACTION_CONTINUE, $schedule);
@@ -245,6 +254,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws InvalidValueException
      * @throws TimeoutException
+     * @throws RateLimitException
      */
     public function cancelSchedule(ScheduleData $schedule) {
         return $this->sendScheduleRequest(self::SCHEDULE_ACTION_CANCEL, $schedule);
@@ -260,6 +270,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws InvalidValueException
      * @throws TimeoutException
+     * @throws RateLimitException
      */
     public function sendScheduleRequest($scheduleAction, ScheduleData $schedule) {
 
@@ -271,12 +282,33 @@ class Client {
     }
 
     /**
+     * @param StatusRequestData $statusRequestData
+     *
+     * @return StatusApi\StatusResult
+     * @throws ClientException
+     * @throws Exception\TypeException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws TimeoutException
+     * @throws RateLimitException
+     */
+    public function sendStatusRequest(StatusRequestData $statusRequestData) {
+
+        $statusRequestXml = $this->getGenerator()->generateStatusRequestXml($statusRequestData, $this->username, $this->password);
+
+        $httpResponse = $this->sendRequest($statusRequestXml, self::$ixopayUrl.self::STATUS_ROUTE);
+
+        return $this->getParser()->parseStatusResult($httpResponse->getBody());
+    }
+
+    /**
      * @param string $xml
      *
      * @return Response
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
+     * @throws RateLimitException
      */
     protected function sendRequest($xml, $url) {
         
@@ -287,6 +319,33 @@ class Client {
         }
         if ($httpResponse->getStatusCode() == 504 || $httpResponse->getStatusCode() == 522) {
             throw new TimeoutException('Request timed-out');
+        }
+        if ($httpResponse->getStatusCode() == 429) {
+            $rateLimitMessage = 'Rate Limit exceeded';
+
+            if (is_array($httpResponse->getHeaders())) {
+
+                /**
+                 *
+                 * Following Headers are available in the response of rate-limited api requests:
+                 *      "X-RateLimit-Limit"
+                 *      "X-RateLimit-Remaining"
+                 *      "Retry-After"
+                 *
+                 */
+
+                $rateLimit = !empty($httpResponse->getHeaders()['X-RateLimit-Limit']) ? $httpResponse->getHeaders()['X-RateLimit-Limit'] : null;
+                $retryAfter = !empty($httpResponse->getHeaders()['Retry-After']) ? $httpResponse->getHeaders()['Retry-After'] : null;
+
+                if ($rateLimit) {
+                    $rateLimitMessage .= ' | Rate Limit: '.$rateLimit;
+                }
+                if ($rateLimit) {
+                    $rateLimitMessage .= ' | Retry-After: '.$retryAfter.' seconds';
+                }
+            }
+
+            throw new RateLimitException($rateLimitMessage);
         }
 
         return $httpResponse;
