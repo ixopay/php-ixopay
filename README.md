@@ -15,7 +15,7 @@ use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Result;
 
-require_once('/path/to/client/autoload.php'); // for further instructions see description below
+require_once('/path/to/autoload.php'); // for further instructions see description below
 
 $client = new Client("username", "password", "apiKey", "sharedSecret");
 

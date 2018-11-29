@@ -3,7 +3,7 @@
 use Ixopay\Client\Client;
 use Ixopay\Client\Callback\Result;
 
-require_once('/path/to/client/autoload.php');
+require_once('/path/to/autoload.php'); // see README.md
 
 $client = new Client('username', 'password', 'apiKey', 'sharedSecret');
 
