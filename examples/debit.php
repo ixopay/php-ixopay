@@ -1,8 +1,14 @@
 <?php
 
-$client = new \Ixopay\Client\Client('username', 'password', 'apiKey', 'sharedSecret');
+use Ixopay\Client\Client;
+use Ixopay\Client\Data\Customer;
+use Ixopay\Client\Transaction\Debit;
 
-$customer = new \Ixopay\Client\Data\Customer();
+require_once('/path/to/client/autoload.php');
+
+$client = new Client('username', 'password', 'apiKey', 'sharedSecret');
+
+$customer = new Customer();
 $customer
     ->setFirstName('John')
     ->setLastName('Smith')
@@ -10,7 +16,7 @@ $customer
     ->setIpAddress('123.123.123.123');
 //add further customer details if necessary
 
-$debit = new \Ixopay\Client\Transaction\Debit();
+$debit = new Debit();
 $debit->setAmount(9.99)
     ->setCurrency('EUR')
     ->setCallbackUrl('https://myhost.com/path/to/my/callbackHandler')
