@@ -1,4 +1,4 @@
-#Ixopay Client
+Ixopay Client
 ==============
 
 Installing via composer:
@@ -25,7 +25,10 @@ $customer->setBillingCountry("AT")
 
 $debit = new Debit();
 
-$debit->setTransactionId("uniqueTransactionReference")
+// define your transaction ID: e.g. 'myId-'.date('Y-m-d').'-'.uniqid()
+$merchantTransactionId = 'your_transaction_id'; // must be unique
+
+$debit->setTransactionId($merchantTransactionId)
 	->setSuccessUrl($redirectUrl)
 	->setCancelUrl($redirectUrl)
 	->setCallbackUrl($callbackUrl)
