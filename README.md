@@ -1,13 +1,13 @@
 Ixopay Client
 ==============
 
-Installing via composer:
-```
+#Installation via composer:
+```sh
 composer require ixolit/ixopay-php-client
 ```
 
-PHP Example:
-```
+#Basis Usage:
+```php
 <?php
 
 use Ixopay\Client\Client;
@@ -15,7 +15,7 @@ use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Result;
 
-require_once('/path/to/autoload.php'); // for further instructions see description below
+require_once('path/to/initClientAutoload.php'); // if no composer autoload is in use already
 
 $client = new Client("username", "password", "apiKey", "sharedSecret");
 
@@ -36,8 +36,10 @@ $debit->setTransactionId($merchantTransactionId)
 	->setCurrency('EUR')
 	->setCustomer($customer);
 
+// send the transaction
 $result = $client->debit($debit);
 
+// now handle the result
 if ($result->isSuccess()) {
 	//act depending on $result->getReturnType()
 	
@@ -64,30 +66,3 @@ if ($result->isSuccess()) {
         //finishCart();
     }
 }
-
-
-```
-
-### Composer and Autoloading
-
-The PHP Client requires a PSR-4 autoloader. (https://www.php-fig.org/psr/psr-4/)
-
-We recommend to use composer, which generates an autoloader file for you (https://getcomposer.org/doc/01-basic-usage.md#autoloading).
-
-1.) If you do not already use composer (Install guide on: https://getcomposer.org/) in your project directory, initialize it in your shell/ terminal:
-```
-composer init
-```
-
-2.) In the shell install the php client in your project directory
-```
-composer require ixolit/ixopay-php-client
-```
-
-3.) Now in your php file require your PSR-4 autoload file:
-
-```
-require_once('/path/to/client/autoload.php'); // with composer it is something like __DIR__.'/vendor/autoload.php'
-```
-
-4.) Instantiate the "Ixopay\Client\Client" with your credentials, send the transaction and react on the result.
