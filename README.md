@@ -1,13 +1,13 @@
 Ixopay Client
 ==============
 
-# Installation via composer:
+## Installation via composer:
 
 ```sh
 composer require ixolit/ixopay-php-client
 ```
 
-# Usage:
+## Usage:
 
 ```php
 <?php
