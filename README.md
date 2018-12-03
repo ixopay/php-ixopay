@@ -1,12 +1,14 @@
 Ixopay Client
 ==============
 
-#Installation via composer:
+# Installation via composer:
+
 ```sh
 composer require ixolit/ixopay-php-client
 ```
 
-#Basis Usage:
+# Usage:
+
 ```php
 <?php
 
@@ -15,8 +17,10 @@ use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Result;
 
-require_once('path/to/initClientAutoload.php'); // if no composer autoload is in use already
+// Include the autoloader (if not already done via Composer autoloader)
+require_once('path/to/initClientAutoload.php');
 
+// Instantiate the "Ixopay\Client\Client" with your credentials
 $client = new Client("username", "password", "apiKey", "sharedSecret");
 
 $customer = new Customer();
