@@ -54,7 +54,7 @@ class Client {
     /**
      * @var string
      */
-    protected static $ixopayUrl = 'https://gateway.ixopay.com/';
+    protected static $gatewayUrl = 'https://gateway.ixopay.com/';
 
     /**
      * the api key given by the ixopay gateway
@@ -170,7 +170,7 @@ class Client {
             $this->password, $this->language);
         $xml = $dom->saveXML();
         
-        $httpResponse= $this->sendRequest($xml, self::$ixopayUrl.self::TRANSACTION_ROUTE);
+        $httpResponse= $this->sendRequest($xml, self::$gatewayUrl.self::TRANSACTION_ROUTE);
 
         return $this->getParser()->parseResult($httpResponse->getBody());
     }
@@ -266,7 +266,7 @@ class Client {
 
         $scheduleXml = $this->getGenerator()->generateScheduleXml($scheduleAction, $schedule, $this->username, $this->password);
 
-        $httpResponse = $this->sendRequest($scheduleXml, self::$ixopayUrl.self::SCHEDULE_ROUTE);
+        $httpResponse = $this->sendRequest($scheduleXml, self::$gatewayUrl.self::SCHEDULE_ROUTE);
 
         return $this->getParser()->parseScheduleResult($httpResponse->getBody());
     }
@@ -286,7 +286,7 @@ class Client {
 
         $statusRequestXml = $this->getGenerator()->generateStatusRequestXml($statusRequestData, $this->username, $this->password);
 
-        $httpResponse = $this->sendRequest($statusRequestXml, self::$ixopayUrl.self::STATUS_ROUTE);
+        $httpResponse = $this->sendRequest($statusRequestXml, self::$gatewayUrl.self::STATUS_ROUTE);
 
         return $this->getParser()->parseStatusResult($httpResponse->getBody());
     }
@@ -746,7 +746,7 @@ class Client {
         $domDocument = $this->getGenerator()->generateOptions($this->getUsername(), $this->getPassword(), $identifier, $args);
         $xml = $domDocument->saveXML();
 
-        $response = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, self::$ixopayUrl.self::OPTIONS_ROUTE);
+        $response = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, self::$gatewayUrl.self::OPTIONS_ROUTE);
 
         if ($response->getErrorCode() || $response->getErrorMessage()) {
             throw new ClientException('Request failed: ' . $response->getErrorCode() . ' ' . $response->getErrorMessage());
@@ -818,7 +818,7 @@ class Client {
             throw new InvalidValueException('The URL to the IxoPay Gateway should be a valid URL!');
         }
 
-        static::$ixopayUrl = $url;
+        static::$gatewayUrl = $url;
     }
 
     /**
@@ -827,7 +827,7 @@ class Client {
      * @return string
      */
     public static function getApiUrl() {
-        return static::$ixopayUrl;
+        return static::$gatewayUrl;
     }
 
     /**
