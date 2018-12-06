@@ -6,6 +6,7 @@ use Ixopay\Client\Data\CreditCardCustomer;
 use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\IbanCustomer;
 use Ixopay\Client\Data\Request;
+use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\TypeException;
 use Ixopay\Client\StatusApi\StatusRequestData;
@@ -22,6 +23,7 @@ use Ixopay\Client\Transaction\Preauthorize;
 use Ixopay\Client\Transaction\Refund;
 use Ixopay\Client\Transaction\Register;
 use Ixopay\Client\Transaction\VoidTransaction;
+use Ixopay\Client\Transaction\Base\AddToCustomerProfileInterface;
 
 /**
  * Class Generator
@@ -159,6 +161,7 @@ class Generator {
             $this->verifyPeriodUnitType($schedule->getPeriodUnit(), 'periodUnit');
             $this->_appendTextNode($scheduleNode, 'periodUnit', $schedule->getPeriodUnit());
 
+            $this->verifyFutureDateTime($schedule->getStartDateTime(), 'startDateTime');
             $this->_appendTextNode($scheduleNode, 'startDateTime', $schedule->getStartDateTime()->format('Y-m-d H:i:s T'));
 
         } else {
@@ -167,6 +170,7 @@ class Generator {
         }
 
         if ($scheduleAction === 'continueSchedule') {
+            $this->verifyFutureDateTime($schedule->getStartDateTime(), 'continueDateTime');
             $this->_appendTextNode($scheduleNode, 'continueDateTime', $schedule->getContinueDateTime()->format('Y-m-d H:i:s T'));
         }
 
@@ -309,6 +313,38 @@ class Generator {
         }
 
         $parentNode->appendChild($scheduleNode);
+    }
+
+    /**
+     * @param \DOMNode $parentNode
+     * @param AddToCustomerProfileInterface $transaction
+     * @throws InvalidValueException
+     */
+    protected function appendAddToCustomerProfileNode(\DOMNode $parentNode, AddToCustomerProfileInterface $transaction) {
+        $profileNode = $this->document->createElement('addToCustomerProfile');
+
+        if ($transaction->getCustomerProfileGuid() && $transaction->getCustomerProfileIdentification()) {
+            throw new InvalidValueException('Only one profile identification is allowed');
+        }
+
+        if ($transaction->getCustomerProfileGuid()) {
+            $this->_appendTextNode($profileNode, 'profileGuid', $transaction->getCustomerProfileGuid());
+            if ($transaction->getMarkAsPreferred()) {
+                $this->_appendTextNode($profileNode, 'markAsPreferred', 'true');
+            }
+            
+            $parentNode->appendChild($profileNode);
+            
+        } elseif ($transaction->getCustomerProfileIdentification()) {
+            $this->_appendTextNode($profileNode, 'customerIdentification', $transaction->getCustomerProfileIdentification());
+            if ($transaction->getMarkAsPreferred()) {
+                $this->_appendTextNode($profileNode, 'markAsPreferred', 'true');
+            }
+            
+            $parentNode->appendChild($profileNode);
+        }
+
+
     }
 
     /**
@@ -515,6 +551,9 @@ class Generator {
         if ($transaction->getSchedule()) {
             $this->appendScheduleNode($node, $transaction->getSchedule());
         }
+        if ($transaction->getAddToCustomerProfile()) {
+            $this->appendAddToCustomerProfileNode($node, $transaction);
+        }
 
         return $node;
     }
@@ -533,6 +572,9 @@ class Generator {
 
         if ($transaction->getSchedule()) {
             $this->appendScheduleNode($node, $transaction->getSchedule());
+        }
+        if ($transaction->getAddToCustomerProfile()) {
+            $this->appendAddToCustomerProfileNode($node, $transaction);
         }
 
         return $node;
@@ -570,6 +612,9 @@ class Generator {
         }
         if ($transaction->getSchedule()) {
             $this->appendScheduleNode($node, $transaction->getSchedule());
+        }
+        if ($transaction->getAddToCustomerProfile()) {
+            $this->appendAddToCustomerProfileNode($node, $transaction);
         }
 
         return $node;
@@ -703,7 +748,7 @@ class Generator {
      * @throws TypeException
      */
     private function verifyPeriodLengthType($value, $elementName) {
-        if (!ctype_digit($value)) {
+        if (!ctype_digit((string)$value)) {
             throw new TypeException('Value of '.$elementName.' must be a positive integer');
         }
     }
@@ -719,6 +764,17 @@ class Generator {
         }
     }
 
+    /**
+     * @param \DateTime $startDateTime
+     * @param string $elementName
+     * @throws TypeException
+     */
+    private function verifyFutureDateTime($startDateTime, $elementName) {
+        if (!($startDateTime instanceof \DateTime) || $startDateTime < new \DateTime()) {
+            throw new TypeException('Value of '.$elementName.' must be a Date/Time object in future');
+        }
+    }
+    
     /**
      * @param \DOMNode $parentNode
      * @param string $nodeName

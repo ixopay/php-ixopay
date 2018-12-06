@@ -78,6 +78,7 @@ class IbanCustomer extends Customer {
      */
     public function setMandateId($mandateId) {
         $this->mandateId = $mandateId;
+        return $this;
     }
 
     /**
@@ -102,6 +103,7 @@ class IbanCustomer extends Customer {
         }
 
         $this->mandateDate = $mandateDate;
+        return $this;
     }
 
 }

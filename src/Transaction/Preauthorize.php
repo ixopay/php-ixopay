@@ -3,6 +3,8 @@
 namespace Ixopay\Client\Transaction;
 
 use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
+use Ixopay\Client\Transaction\Base\AddToCustomerProfileInterface;
+use Ixopay\Client\Transaction\Base\AddToCustomerProfileTrait;
 use Ixopay\Client\Transaction\Base\AmountableInterface;
 use Ixopay\Client\Transaction\Base\AmountableTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
@@ -17,12 +19,13 @@ use Ixopay\Client\Transaction\Base\ScheduleTrait;
  *
  * @package Ixopay\Client\Transaction
  */
-class Preauthorize extends AbstractTransactionWithReference implements AmountableInterface, OffsiteInterface, ItemsInterface, ScheduleInterface {
+class Preauthorize extends AbstractTransactionWithReference implements AmountableInterface, OffsiteInterface, ItemsInterface, ScheduleInterface, AddToCustomerProfileInterface {
     use OffsiteTrait;
     use AmountableTrait;
     use ItemsTrait;
     use ScheduleTrait;
-
+    use AddToCustomerProfileTrait;
+    
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
     const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';
     const TRANSACTION_INDICATOR_RECURRING = 'RECURRING';

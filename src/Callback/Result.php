@@ -82,6 +82,16 @@ class Result {
     protected $currency;
 
     /**
+     * @var string
+     */
+    protected $scheduleId;
+
+    /**
+     * @var string
+     */
+    protected $scheduleStatus;
+
+    /**
      * @var Error[]
      */
     protected $errors = array();
@@ -302,9 +312,11 @@ class Result {
 
     /**
      * @param string $paymentMethod
+     * @return Result
      */
     public function setPaymentMethod($paymentMethod) {
         $this->paymentMethod = $paymentMethod;
+        return $this;
     }
     
     /**
@@ -335,6 +347,38 @@ class Result {
         $this->currency = $currency;
     }
 
+    /**
+     * @return string
+     */
+    public function getScheduleId() {
+        return $this->scheduleId;
+    }
+
+    /**
+     * @param string $scheduleId
+     * @return Result
+     */
+    public function setScheduleId($scheduleId) {
+        $this->scheduleId = $scheduleId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScheduleStatus() {
+        return $this->scheduleStatus;
+    }
+
+    /**
+     * @param string $scheduleStatus
+     * @return Result
+     */
+    public function setScheduleStatus($scheduleStatus) {
+        $this->scheduleStatus = $scheduleStatus;
+        return $this;
+    }
+    
     /**
      * @return ChargebackData
      */

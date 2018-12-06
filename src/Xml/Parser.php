@@ -62,7 +62,9 @@ class Parser {
                 case 'paymentDescriptor':
                 case 'scheduleId':
                 case 'scheduleStatus':
-                    $result->{'set'.ucfirst($child->localName)}($child->nodeValue);
+                    if (method_exists($result, 'set'.ucfirst($child->localName))) {
+                        $result->{'set' . ucfirst($child->localName)}($child->nodeValue);
+                    }
                     break;
                 case 'scheduledAt':
                     $scheduleAt = \DateTime::createFromFormat('Y-m-d H:i:s T', $child->nodeValue);
@@ -154,6 +156,7 @@ class Parser {
                 case 'chargebackReversalData':
                     $reversalData = $this->parseChargebackReversalData($child);
                     $result->setChargebackReversalData($reversalData);
+                    break;
                 case 'returnData':
                     $result->setReturnData($this->parseReturnData($child));
                     break;
@@ -165,6 +168,12 @@ class Parser {
                     break;
                 case 'currency':
                     $result->setCurrency($child->nodeValue);
+                    break;
+                case 'scheduleId':
+                    $result->setScheduleId($child->nodeValue);
+                    break;
+                case 'scheduleStatus':
+                    $result->setScheduleStatus($child->nodeValue);
                     break;
                 default:
                     break;
@@ -354,7 +363,9 @@ class Parser {
                 case 'oldStatus':
                 case 'newStatus':
                 case 'scheduledAt':
-                    $scheduleResult->{'set'.ucfirst($childNode->localName)}($childNode->nodeValue);
+                    if (method_exists($scheduleResult, 'set'.ucfirst($childNode->localName))) {
+                        $scheduleResult->{'set' . ucfirst($childNode->localName)}($childNode->nodeValue);
+                    }
                     break;
                 case 'errors':
                     $scheduleResult->setErrors($this->parseScheduleErrors($childNode));
@@ -451,11 +462,15 @@ class Parser {
                     case 'binCountry':
                     case 'threeDSecure':
                     case 'eci':
-                        $cc->{'set'.ucfirst($child->localName)}($child->nodeValue);
+                        if (method_exists($cc, 'set'.ucfirst($child->localName))) {
+                            $cc->{'set' . ucfirst($child->localName)}($child->nodeValue);
+                        }
                         break;
                     case 'expiryMonth':
                     case 'expiryYear':
-                        $cc->{'set'.ucfirst($child->localName)}((int)$child->nodeValue);
+                        if (method_exists($cc, 'set'.ucfirst($child->localName))) {
+                            $cc->{'set' . ucfirst($child->localName)}((int)$child->nodeValue);
+                        }
                         break;
                     default:
                         break;
@@ -757,7 +772,9 @@ class Parser {
                 case 'email':
                 case 'ipAddress':
                 case 'nationalId':
-                    $customer->{'set'.ucfirst($child->localName)}($child->nodeValue);
+                    if (method_exists($customer, 'set'.ucfirst($child->localName))) {
+                        $customer->{'set' . ucfirst($child->localName)}($child->nodeValue);
+                    }
                     break;
                 case 'emailVerified':
                     $customer->setEmailVerified($customer->isEmailVerified() === 'true' ? true : false);

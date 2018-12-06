@@ -1,7 +1,6 @@
 <?php
 
 namespace Ixopay\Client\Exception;
-use Throwable;
 
 /**
  * Class RateLimitException
