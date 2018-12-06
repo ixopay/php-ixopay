@@ -223,6 +223,9 @@ class Parser {
                 case 'transactionType':
                     $statusResult->setTransactionType($child->nodeValue);
                     break;
+                case 'paymentMethod':
+                    $statusResult->setPaymentMethod($child->nodeValue);
+                    break;
                 case 'errors':
                     $statusResult->setErrors($this->parseErrors($child));
                     break;
