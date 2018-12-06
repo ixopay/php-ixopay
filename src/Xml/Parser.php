@@ -240,6 +240,7 @@ class Parser {
                 case 'chargebackReversalData':
                     $reversalData = $this->parseChargebackReversalData($child);
                     $statusResult->setChargebackReversalData($reversalData);
+                    break;
                 case 'returnData':
                     $statusResult->setReturnData($this->parseReturnData($child));
                     break;
