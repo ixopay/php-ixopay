@@ -361,7 +361,7 @@ class Client {
      */
     protected function sendJsonApiRequest($dataArray, $path) {
         
-        $url = self::$ixopayUrl.$path;
+        $url = self::$gatewayUrl.$path;
         $body = json_encode($dataArray);
         
         $httpResponse = $this->signAndSendJson($body, $url, $this->username, $this->password, $this->apiKey, $this->sharedSecret);
