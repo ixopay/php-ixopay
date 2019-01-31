@@ -90,6 +90,13 @@ class Result {
     protected $paymentDescriptor = null;
 
     /**
+     * identifier of the payment method for this transaction
+     *
+     * @var string|null
+     */
+    protected $paymentMethod = null;
+
+    /**
      * @var ResultData
      */
     protected $returnData = null;
@@ -357,6 +364,23 @@ class Result {
         $this->paymentDescriptor = $paymentDescriptor;
         return $this;
     }
+
+    /**
+     * @return null|string
+     */
+    public function getPaymentMethod() {
+        return $this->paymentMethod;
+    }
+
+    /**
+     * @param null|string $paymentMethod
+     * @return Result
+     */
+    public function setPaymentMethod($paymentMethod) {
+        $this->paymentMethod = $paymentMethod;
+        return $this;
+    }
+
 
     /**
      * contains additional data for your purpose (e.g. credit card information)

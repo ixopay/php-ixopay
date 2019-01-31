@@ -60,6 +60,7 @@ class Parser {
                 case 'redirectUrl':
                 case 'htmlContent':
                 case 'paymentDescriptor':
+                case 'paymentMethod':
                 case 'scheduleId':
                 case 'scheduleStatus':
                     if (method_exists($result, 'set'.ucfirst($child->localName))) {
