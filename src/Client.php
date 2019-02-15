@@ -162,6 +162,20 @@ class Client {
     }
 
     /**
+     * @param string              $transactionMethod
+     * @param AbstractTransaction $transaction
+     *
+     * @return string
+     */
+    public function buildXml($transactionMethod, AbstractTransaction $transaction) {
+        $dom = $this->getGenerator()->generateTransaction(lcfirst($transactionMethod), $transaction, $this->username,
+            $this->password, $this->language);
+        $xml = $dom->saveXML();
+
+        return $xml;
+    }
+
+    /**
      * build the xml out of the Transaction Object and sends it
      *
      * @param                     $transactionMethod
@@ -176,10 +190,7 @@ class Client {
      * @throws RateLimitException
      */
     protected function sendTransaction($transactionMethod, AbstractTransaction $transaction) {
-        $dom = $this->getGenerator()->generateTransaction($transactionMethod, $transaction, $this->username,
-            $this->password, $this->language);
-        $xml = $dom->saveXML();
-        
+        $xml = $this->buildXml($transactionMethod, $transaction);
         $httpResponse= $this->sendRequest($xml, self::$gatewayUrl.self::TRANSACTION_ROUTE);
 
         return $this->getParser()->parseResult($httpResponse->getBody());
