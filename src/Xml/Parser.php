@@ -9,6 +9,7 @@ use Ixopay\Client\Data\Result\CreditcardData;
 use Ixopay\Client\Data\Result\IbanData;
 use Ixopay\Client\Data\Result\PhoneData;
 use Ixopay\Client\Data\Result\ResultData;
+use Ixopay\Client\Data\Result\WalletData;
 use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Schedule\ScheduleResult;
 use Ixopay\Client\Exception\InvalidValueException;
@@ -268,6 +269,7 @@ class Parser {
     /**
      * @param string $xml
      * @return mixed
+     * @throws ClientException
      * @throws InvalidValueException
      */
     public function parseOptionsResult($xml) {
@@ -541,6 +543,34 @@ class Parser {
                 }
             }
             return $ibanData;
+        } elseif ($type->firstChild->nodeValue == 'walletData') {
+            $node = $node->firstChild;
+            while($node->nodeName == '#text') {
+                $node = $node->nextSibling;
+            }
+            if ($node->localName != 'walletData') {
+                throw new InvalidValueException('Expecting element named "walletData"');
+            }
+            $walletData = new WalletData();
+            foreach ($node->childNodes as $child) {
+                /**
+                 * @var \DOMNode $child
+                 */
+                switch ($child->localName) {
+                    case 'walletType':
+                        $walletData->setWalletType($child->nodeValue);
+                        break;
+                    case 'walletReferenceId':
+                        $walletData->setWalletReferenceId($child->nodeValue);
+                        break;
+                    case 'walletOwner':
+                        $walletData->setWalletOwner($child->nodeValue);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return $walletData;
         }
         return null;
     }
