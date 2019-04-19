@@ -120,6 +120,11 @@ class Client {
     protected $customRequestHeaders = [];
 
     /**
+     * @var array
+     */
+    protected $customCurlOptions = [];
+
+    /**
      * @var Generator
      */
     protected $generator;
@@ -167,12 +172,22 @@ class Client {
     }
 
     /**
-     * Set customer request headers for the CurlClient
+     * Set custom request headers for the CurlClient
      * @param array $headers
      * @return Client
      */
     public function setCustomRequestHeaders(array $headers = array()) {
         $this->customRequestHeaders = $headers;
+        return $this;
+    }
+
+    /**
+     * Set custom curl options for the CurlClient
+     * @param array $headers
+     * @return Client
+     */
+    public function setCustomCurlOptions(array $curlOptions = array()) {
+        $this->customCurlOptions = $curlOptions;
         return $this;
     }
 
@@ -442,7 +457,9 @@ class Client {
 
         $curl = new CurlClient();
         $response = $curl
-        	->sign($apiKey, $sharedSecret, $url, $xml)
+            ->setCustomHeaders($this->customRequestHeaders)
+            ->setCustomCurlOptions($this->customCurlOptions)
+            ->sign($apiKey, $sharedSecret, $url, $xml)
             ->post($url, $xml);
 
 		$this->log(LogLevel::DEBUG, "RESPONSE: " . $response->getBody(),
@@ -482,6 +499,7 @@ class Client {
         $curl = new CurlClient();
         $response = $curl
             ->setCustomHeaders($this->customRequestHeaders)
+            ->setCustomCurlOptions($this->customCurlOptions)
             ->signJson($sharedSecret, $url, $jsonBody)
             ->setAuthentication($username, $password)
             ->post($url, $jsonBody);

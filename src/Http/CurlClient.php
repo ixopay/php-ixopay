@@ -45,6 +45,11 @@ class CurlClient implements ClientInterface {
     protected $customHeaders = array();
 
     /**
+     * @var array
+     */
+    protected $customOptions = array();
+
+    /**
      *
      */
     public function __construct() {
@@ -120,6 +125,15 @@ class CurlClient implements ClientInterface {
     }
 
     /**
+     * @param array $customOptions
+     * @return $this
+     */
+    public function setCustomCurlOptions(array $customOptions){
+        $this->customOptions = $customOptions;
+        return $this;
+    }
+
+    /**
      *
      */
     public function __destruct() {
@@ -153,6 +167,10 @@ class CurlClient implements ClientInterface {
 
         if (!empty($allHeaders)) {
             $this->setOption(CURLOPT_HTTPHEADER, $allHeaders);
+        }
+
+        if($this->customOptions){
+            $this->setOptionArray($this->customOptions);
         }
 
         $exec = CurlExec::getInstance($this->handle)->exec();
