@@ -115,6 +115,11 @@ class Client {
     protected $logger;
 
     /**
+     * @var array
+     */
+    protected $customRequestHeaders = [];
+
+    /**
      * @var Generator
      */
     protected $generator;
@@ -159,6 +164,16 @@ class Client {
     		$this->logger->log($level, $message, $context);
     	}
     	//dev/null
+    }
+
+    /**
+     * Set customer request headers for the CurlClient
+     * @param array $headers
+     * @return Client
+     */
+    public function setCustomRequestHeaders(array $headers = array()) {
+        $this->customRequestHeaders = $headers;
+        return $this;
     }
 
     /**
@@ -466,6 +481,7 @@ class Client {
 
         $curl = new CurlClient();
         $response = $curl
+            ->setCustomHeaders($this->customRequestHeaders)
             ->signJson($sharedSecret, $url, $jsonBody)
             ->setAuthentication($username, $password)
             ->post($url, $jsonBody);

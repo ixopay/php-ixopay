@@ -40,6 +40,11 @@ class CurlClient implements ClientInterface {
     protected $additionalHeaders = array();
 
     /**
+     * @var array
+     */
+    protected $customHeaders = array();
+
+    /**
      *
      */
     public function __construct() {
@@ -106,6 +111,15 @@ class CurlClient implements ClientInterface {
     }
 
     /**
+     * @param array $customHeaders
+     * @return $this
+     */
+    public function setCustomHeaders(array $customHeaders){
+        $this->customHeaders = $customHeaders;
+        return $this;
+    }
+
+    /**
      *
      */
     public function __destruct() {
@@ -129,6 +143,12 @@ class CurlClient implements ClientInterface {
         $allHeaders = array();
         foreach ($this->mergeHeaders($headers, $this->additionalHeaders) as $k => $v) {
             $allHeaders[] = $k . ': ' . $v;
+        }
+
+        if($this->customHeaders){
+            foreach ($this->mergeHeaders($headers, $this->customHeaders) as $k => $v) {
+                $allHeaders[] = $k . ': ' . $v;
+            }
         }
 
         if (!empty($allHeaders)) {
