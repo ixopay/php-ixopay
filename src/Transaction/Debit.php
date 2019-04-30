@@ -30,6 +30,7 @@ class Debit extends AbstractTransactionWithReference implements AmountableInterf
     const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';
     const TRANSACTION_INDICATOR_RECURRING = 'RECURRING';
     const TRANSACTION_INDICATOR_CARDONFILE = 'CARDONFILE';
+    const TRANSACTION_INDICATOR_CARDONFILE_MERCHANT = 'CARDONFILE_MERCHANT';
 
     /**
      * @var bool
