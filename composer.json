@@ -5,7 +5,7 @@
         "ixopay"
     ],
     "license": "MIT",
-    "type": "project",
+    "type": "library",
     "require": {
         "php": ">=5.6",
         "ext-curl": "*",
