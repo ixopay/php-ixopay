@@ -1,4 +1,4 @@
-Ixopay Client
+IXOPAY PHP Client
 ==============
 
 [![Packagist](https://img.shields.io/packagist/v/ixopay/ixopay-php-client.svg)](https://packagist.org/packages/ixopay/ixopay-php-client)
