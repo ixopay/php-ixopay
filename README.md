@@ -1,11 +1,19 @@
 Ixopay Client
 ==============
 
+[![Packagist](https://img.shields.io/packagist/v/ixopay/ixopay-php-client.svg)](https://packagist.org/packages/ixopay/ixopay-php-client)
+[![PHP Version](https://img.shields.io/packagist/php-v/ixopay/ixopay-php-client.svg)](https://packagist.org/packages/ixopay/ixopay-php-client)
+[![License](https://img.shields.io/github/license/ixopay/php-ixopay.svg)](LICENSE)
+
 ## Installation via composer:
 
 ```sh
-composer require ixolit/ixopay-php-client
+composer require ixopay/ixopay-php-client
 ```
+
+## Documentation
+
+Learn more about IXOPAY by reading its [Documentation](https://gateway.ixopay.com/documentation)
 
 ## Usage:
 
@@ -70,3 +78,7 @@ if ($result->isSuccess()) {
         //finishCart();
     }
 }
+
+## License
+
+The MIT License (MIT). Please see [LICENSE](LICENSE) for more information.
