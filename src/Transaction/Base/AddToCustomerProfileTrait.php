@@ -2,8 +2,11 @@
 
 namespace Ixopay\Client\Transaction\Base;
 
+use Ixopay\Client\Data\CustomerProfileData;
+
 /**
  * Trait AddToCustomerProfileTrait
+ *
  * @package Ixopay\Client\Transaction\Base
  */
 trait AddToCustomerProfileTrait {
@@ -14,19 +17,9 @@ trait AddToCustomerProfileTrait {
     protected $addToCustomerProfile = false;
 
     /**
-     * @var string
+     * @var CustomerProfileData
      */
-    protected $customerProfileGuid;
-
-    /**
-     * @var string
-     */
-    protected $customerProfileIdentification;
-
-    /**
-     * @var string
-     */
-    protected $markAsPreferred;
+    protected $customerProfileData;
 
     /**
      * @return bool
@@ -45,18 +38,36 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
-     * @return string
+     * @return CustomerProfileData
      */
-    public function getCustomerProfileGuid() {
-        return $this->customerProfileGuid;
+    public function getCustomerProfileData() {
+        return $this->customerProfileData;
     }
 
     /**
-     * @param string $customerProfileGuid
+     * @param CustomerProfileData $customerProfileData
+     *
      * @return AddToCustomerProfileTrait
      */
-    public function setCustomerProfileGuid($customerProfileGuid) {
-        $this->customerProfileGuid = $customerProfileGuid;
+    public function setCustomerProfileData($customerProfileData) {
+        $this->customerProfileData = $customerProfileData;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerProfileGuid(){
+        return $this->customerProfileData->getProfileGuid();
+    }
+
+    /**
+     * @param string $profileGuid
+     *
+     * @return AddToCustomerProfileTrait
+     */
+    public function setCustomerProfileGuid($profileGuid){
+        $this->customerProfileData->setProfileGuid($profileGuid);
         return $this;
     }
 
@@ -64,32 +75,33 @@ trait AddToCustomerProfileTrait {
      * @return string
      */
     public function getCustomerProfileIdentification() {
-        return $this->customerProfileIdentification;
+        return $this->customerProfileData->getCustomerIdentification();
     }
 
     /**
-     * @param string $customerProfileIdentification
+     * @param string $identification
+     *
      * @return AddToCustomerProfileTrait
      */
-    public function setCustomerProfileIdentification($customerProfileIdentification) {
-        $this->customerProfileIdentification = $customerProfileIdentification;
+    public function setCustomerProfileIdentification($identification) {
+        $this->customerProfileData->setCustomerIdentification($identification);
         return $this;
     }
 
     /**
-     * @return string
+     * @return bool
      */
     public function getMarkAsPreferred() {
-        return $this->markAsPreferred;
+        return $this->customerProfileData->getMarkAsPreferred();
     }
 
     /**
-     * @param string $markAsPrefrred
+     * @param bool $markAsPreferred
+     *
      * @return AddToCustomerProfileTrait
      */
     public function setMarkAsPreferred($markAsPreferred) {
-        $this->markAsPreferred = $markAsPreferred;
+        $this->customerProfileData->setMarkAsPreferred($markAsPreferred);
         return $this;
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace Ixopay\Client\Transaction\Base;
 
-use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\Request;
 
 /**
@@ -11,11 +10,6 @@ use Ixopay\Client\Data\Request;
  * @package Ixopay\Client\Transaction
  */
 class AbstractTransaction {
-
-    /**
-     * @var string
-     */
-    protected $transactionToken;
 
     /**
      * @var string
@@ -33,11 +27,6 @@ class AbstractTransaction {
     protected $additionalId2;
 
     /**
-     * @var Customer
-     */
-    protected $customer;
-
-    /**
      * @var array
      */
     protected $extraData = array();
@@ -48,28 +37,10 @@ class AbstractTransaction {
     protected $merchantMetaData;
 
     /**
+     * @deprecated
      * @var Request
      */
     protected $request;
-
-    /**
-     * @return string
-     */
-    public function getTransactionToken() {
-        return $this->transactionToken;
-    }
-
-    /**
-     * set a required transaction token (if described by the documentation of a payment method)
-     *
-     * @param string $transactionToken
-     *
-     * @return $this
-     */
-    public function setTransactionToken($transactionToken) {
-        $this->transactionToken = $transactionToken;
-        return $this;
-    }
 
     /**
      * @return string
@@ -130,25 +101,6 @@ class AbstractTransaction {
     }
 
     /**
-     * @return Customer
-     */
-    public function getCustomer() {
-        return $this->customer;
-    }
-
-    /**
-     * customer information
-     *
-     * @param Customer $customer
-     *
-     * @return $this
-     */
-    public function setCustomer($customer) {
-        $this->customer = $customer;
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public function getExtraData() {
@@ -197,25 +149,6 @@ class AbstractTransaction {
     }
 
     /**
-     * @return Request
-     */
-    public function getRequest() {
-        return $this->request;
-    }
-
-    /**
-     * provider request information here (if required by the payment method)
-     *
-     * @param Request $request
-     *
-     * @return $this
-     */
-    public function setRequest($request) {
-        $this->request = $request;
-        return $this;
-    }
-
-    /**
      * get data from extra data
      *
      * @param string $key
@@ -228,4 +161,40 @@ class AbstractTransaction {
         }
         return null;
     }
+
+    /**
+     * alternative to magic method
+     *
+     * @param $key
+     *
+     * @return mixed|null
+     */
+    public function getExtraDataValue($key) {
+        if (array_key_exists($key, $this->extraData)) {
+            return $this->extraData[$key];
+        }
+        return null;
+    }
+
+    /**
+     * @deprecated
+     * @return Request
+     */
+    public function getRequest() {
+        return $this->request;
+    }
+
+    /**
+     * provider request information here (if required by the payment method)
+     *
+     * @deprecated
+     * @param Request $request
+     *
+     * @return $this
+     */
+    public function setRequest($request) {
+        $this->request = $request;
+        return $this;
+    }
+
 }

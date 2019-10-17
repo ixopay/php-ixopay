@@ -5,10 +5,16 @@ namespace Ixopay\Client\Transaction;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Base\AddToCustomerProfileInterface;
 use Ixopay\Client\Transaction\Base\AddToCustomerProfileTrait;
+use Ixopay\Client\Transaction\Base\CustomerInterface;
+use Ixopay\Client\Transaction\Base\CustomerTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
+use Ixopay\Client\Transaction\Base\PaymentDataInterface;
+use Ixopay\Client\Transaction\Base\PaymentDataTrait;
 use Ixopay\Client\Transaction\Base\ScheduleInterface;
 use Ixopay\Client\Transaction\Base\ScheduleTrait;
+use Ixopay\Client\Transaction\Base\ThreeDSecureInterface;
+use Ixopay\Client\Transaction\Base\ThreeDSecureTrait;
 
 /**
  * Register: Register the customer's payment data for recurring charges.
@@ -17,8 +23,58 @@ use Ixopay\Client\Transaction\Base\ScheduleTrait;
  *
  * @package Ixopay\Client\Transaction
  */
-class Register extends AbstractTransaction implements OffsiteInterface, ScheduleInterface, AddToCustomerProfileInterface {
-    use OffsiteTrait;
-    use ScheduleTrait;
+class Register extends AbstractTransaction
+               implements AddToCustomerProfileInterface,
+                          CustomerInterface,
+                          OffsiteInterface,
+                          PaymentDataInterface,
+                          ScheduleInterface,
+                          ThreeDSecureInterface
+{
+
     use AddToCustomerProfileTrait;
+    use CustomerTrait;
+    use OffsiteTrait;
+    use PaymentDataTrait;
+    use ScheduleTrait;
+    use ThreeDSecureTrait;
+
+    /** @var string */
+    protected $language;
+
+    /** @var string */
+    protected $transactionToken;
+
+    /**
+     * @return string
+     */
+    public function getTransactionToken()
+    {
+        return $this->transactionToken;
+    }
+
+    /**
+     * @param string $transactionToken
+     */
+    public function setTransactionToken($transactionToken)
+    {
+        $this->transactionToken = $transactionToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param string $language
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+
 }

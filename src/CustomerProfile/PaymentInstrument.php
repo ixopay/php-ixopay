@@ -2,7 +2,7 @@
 
 namespace Ixopay\Client\CustomerProfile;
 
-use Ixopay\Client\CustomerProfile\PaymentData\PaymentData;
+use Ixopay\Client\Data\PaymentData\PaymentData;
 use Ixopay\Client\Json\DataObject;
 
 /**
@@ -25,7 +25,9 @@ class PaymentInstrument extends DataObject {
 
     /**
      * @param \DateTime $createdAt
+     *
      * @return PaymentInstrument
+     * @throws \Exception
      */
     public function setCreatedAt($createdAt) {
         if (is_string($createdAt) && $createdAt) {

@@ -15,21 +15,25 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     protected $referenceTransactionId;
 
     /**
+     * @deprecated
      * @var string
      */
     protected $referenceCustomerId;
 
     /**
+     * @deprecated
      * @var string
      */
     protected $referenceId2;
 
     /**
+     * @deprecated
      * @var string
      */
     protected $referenceId3;
 
     /**
+     * @deprecated
      * @var string
      */
     protected $referenceId4;
@@ -55,6 +59,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated
      * @return string
      */
     public function getReferenceCustomerId() {
@@ -62,6 +67,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated
      * set a reference customer if (if instructed by documentation)
      *
      * @param string $referenceCustomerId
@@ -74,6 +80,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated
      * @return string
      */
     public function getReferenceId2() {
@@ -81,6 +88,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated
      * @param string $referenceId2
      *
      * @return $this
@@ -91,6 +99,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated
      * @return string
      */
     public function getReferenceId3() {
@@ -98,6 +107,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated
      * @param string $referenceId3
      *
      * @return $this
@@ -108,6 +118,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated
      * @return string
      */
     public function getReferenceId4() {
@@ -115,6 +126,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated
      * @param string $referenceId4
      *
      * @return $this

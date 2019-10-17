@@ -9,6 +9,7 @@ use Ixopay\Client\CustomerProfile\PaymentInstrument;
 use Ixopay\Client\CustomerProfile\UpdateProfileResponse;
 use Ixopay\Client\Json\ErrorResponse;
 use Ixopay\Client\Exception\RateLimitException;
+use Ixopay\Client\Json\JsonParser;
 use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Exception\InvalidValueException;
@@ -26,8 +27,9 @@ use Ixopay\Client\Transaction\Refund;
 use Ixopay\Client\Transaction\Register;
 use Ixopay\Client\Transaction\Result;
 use Ixopay\Client\Transaction\VoidTransaction;
-use Ixopay\Client\Xml\Generator;
-use Ixopay\Client\Xml\Parser;
+use Ixopay\Client\Json\JsonGenerator;
+use Ixopay\Client\Json\Parser;
+use Ixopay\Client\Xml\XmlGenerator;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -60,6 +62,8 @@ class Client {
     const CUSTOMER_PROFILE_GET = 'api/v3/customerProfiles/[API_KEY]/getProfile';
     const CUSTOMER_PROFILE_UPDATE = 'api/v3/customerProfiles/[API_KEY]/updateProfile';
     const CUSTOMER_PROFILE_DELETE = 'api/v3/customerProfiles/[API_KEY]/deleteProfile';
+
+    const GENERATOR_TYPE = 'json';
 
     /**
      * @var string
@@ -115,7 +119,7 @@ class Client {
     protected $logger;
 
     /**
-     * @var Generator
+     * @var JsonGenerator
      */
     protected $generator;
 
@@ -176,6 +180,16 @@ class Client {
     }
 
     /**
+     * @param                     $transactionMethod
+     * @param AbstractTransaction $transaction
+     *
+     * @return mixed
+     */
+    public function buildJson($transactionMethod, AbstractTransaction $transaction) {
+        return $this->getGenerator()->generateTransaction(lcfirst($transactionMethod), $transaction, $this->language);
+    }
+
+    /**
      * build the xml out of the Transaction Object and sends it
      *
      * @param                     $transactionMethod
@@ -185,14 +199,29 @@ class Client {
      *
      * @throws ClientException
      * @throws Http\Exception\ClientException
-     * @throws InvalidValueException
      * @throws TimeoutException
      * @throws RateLimitException
      */
     protected function sendTransaction($transactionMethod, AbstractTransaction $transaction) {
         $xml = $this->buildXml($transactionMethod, $transaction);
-        $httpResponse= $this->sendRequest($xml, self::$gatewayUrl.self::TRANSACTION_ROUTE);
+        $httpResponse = $this->sendXmlRequest($xml, self::$gatewayUrl.self::TRANSACTION_ROUTE);
 
+        return $this->getParser()->parseResult($httpResponse->getBody());
+    }
+
+    /**
+     * @param                     $transactionMethod
+     * @param AbstractTransaction $transaction
+     *
+     * @return Result
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws TimeoutException
+     */
+    protected function sendJsonTransaction($transactionMethod, AbstractTransaction $transaction){
+        $json = $this->buildJson($transactionMethod, $transaction);
+        $httpResponse = $this->sendJsonApiRequest($json, self::$gatewayUrl.self::TRANSACTION_ROUTE);
         return $this->getParser()->parseResult($httpResponse->getBody());
     }
 
@@ -287,9 +316,9 @@ class Client {
 
         $scheduleXml = $this->getGenerator()->generateScheduleXml($scheduleAction, $schedule, $this->username, $this->password);
 
-        $httpResponse = $this->sendRequest($scheduleXml, self::$gatewayUrl.self::SCHEDULE_ROUTE);
+        $httpResponse = $this->sendXmlRequest($scheduleXml, self::$gatewayUrl.self::SCHEDULE_ROUTE);
 
-        return $this->getParser()->parseScheduleResult($httpResponse->getBody());
+        return $this->getParser()->JsonResponse($httpResponse->getBody());
     }
 
     /**
@@ -307,7 +336,7 @@ class Client {
 
         $statusRequestXml = $this->getGenerator()->generateStatusRequestXml($statusRequestData, $this->username, $this->password);
 
-        $httpResponse = $this->sendRequest($statusRequestXml, self::$gatewayUrl.self::STATUS_ROUTE);
+        $httpResponse = $this->sendXmlRequest($statusRequestXml, self::$gatewayUrl.self::STATUS_ROUTE);
 
         return $this->getParser()->parseStatusResult($httpResponse->getBody());
     }
@@ -321,7 +350,7 @@ class Client {
      * @throws TimeoutException
      * @throws RateLimitException
      */
-    protected function sendRequest($xml, $url) {
+    protected function sendXmlRequest($xml, $url) {
         
         $httpResponse = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, $url);
 
@@ -492,7 +521,7 @@ class Client {
      * @throws Http\Exception\ClientException
      */
     public function register(Register $transactionData) {
-        return $this->sendTransaction('register', $transactionData);
+        return $this->sendJsonTransaction('register', $transactionData);
     }
 
     /**
@@ -508,7 +537,7 @@ class Client {
      * @throws Http\Exception\ClientException
      */
     public function completeRegister(Register $transactionData) {
-        return $this->sendTransaction('completeRegister', $transactionData);
+        return $this->sendJsonTransaction('completeRegister', $transactionData);
     }
 
     /**
@@ -524,7 +553,7 @@ class Client {
      * @throws Http\Exception\ClientException
      */
     public function deregister(Deregister $transactionData) {
-        return $this->sendTransaction('deregister', $transactionData);
+        return $this->sendJsonTransaction('deregister', $transactionData);
     }
 
     /**
@@ -540,7 +569,7 @@ class Client {
      * @throws Http\Exception\ClientException
      */
     public function preauthorize(Preauthorize $transactionData) {
-        return $this->sendTransaction('preauthorize', $transactionData);
+        return $this->sendJsonTransaction('preauthorize', $transactionData);
     }
 
     /**
@@ -554,7 +583,7 @@ class Client {
      * @throws Http\Exception\ClientException
      */
     public function completePreauthorize(Preauthorize $transactionData) {
-        return $this->sendTransaction('completePreauthorize', $transactionData);
+        return $this->sendJsonTransaction('completePreauthorize', $transactionData);
     }
 
     /**
@@ -568,7 +597,7 @@ class Client {
      * @throws Http\Exception\ClientException
      */
     public function void(VoidTransaction $transactionData) {
-        return $this->sendTransaction('void', $transactionData);
+        return $this->sendJsonTransaction('void', $transactionData);
     }
 
     /**
@@ -582,7 +611,7 @@ class Client {
      * @throws Http\Exception\ClientException
      */
     public function capture(Capture $transactionData) {
-        return $this->sendTransaction('capture', $transactionData);
+        return $this->sendJsonTransaction('capture', $transactionData);
     }
 
     /**
@@ -596,7 +625,7 @@ class Client {
      * @throws Http\Exception\ClientException
      */
     public function refund(Refund $transactionData) {
-        return $this->sendTransaction('refund', $transactionData);
+        return $this->sendJsonTransaction('refund', $transactionData);
     }
 
     /**
@@ -610,7 +639,7 @@ class Client {
      * @throws Http\Exception\ClientException
      */
     public function debit(Debit $transactionData) {
-        return $this->sendTransaction('debit', $transactionData);
+        return $this->sendJsonTransaction('debit', $transactionData);
     }
 
     /**
@@ -625,7 +654,7 @@ class Client {
      * @throws TimeoutException
      */
     public function completeDebit(Debit $transactionData) {
-        return $this->sendTransaction('completeDebit', $transactionData);
+        return $this->sendJsonTransaction('completeDebit', $transactionData);
     }
 
     /**
@@ -640,7 +669,7 @@ class Client {
      * @throws TimeoutException
      */
     public function payout(Payout $transactionData) {
-        return $this->sendTransaction('payout', $transactionData);
+        return $this->sendJsonTransaction('payout', $transactionData);
     }
 
     /**
@@ -1061,11 +1090,20 @@ class Client {
     }
 
     /**
-     * @return Generator
+     * @return JsonGenerator
      */
     public function getGenerator() {
         if (!$this->generator) {
-            $this->generator = new Generator();
+            switch(self::GENERATOR_TYPE){
+                case 'xml':
+                    $this->generator = new XmlGenerator();
+                    break;
+                case 'json':
+                    $this->generator = new JsonGenerator();
+                    break;
+                default:
+                    $this->generator = new JsonGenerator();
+            }
         }
         return $this->generator;
     }
@@ -1078,10 +1116,10 @@ class Client {
     }
 
     /**
-     * @return Parser
+     * @return JsonParser
      */
     protected function getParser() {
-        return new Parser();
+        return new JsonParser();
     }
 
     /**

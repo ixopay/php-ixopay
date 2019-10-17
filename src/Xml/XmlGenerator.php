@@ -26,11 +26,11 @@ use Ixopay\Client\Transaction\VoidTransaction;
 use Ixopay\Client\Transaction\Base\AddToCustomerProfileInterface;
 
 /**
- * Class Generator
+ * Class XmlGenerator
  *
  * @package Ixopay\Client\Xml
  */
-class Generator {
+class XmlGenerator {
 
     /**
      * @var \DOMDocument
