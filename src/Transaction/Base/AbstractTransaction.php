@@ -37,7 +37,7 @@ class AbstractTransaction {
     protected $merchantMetaData;
 
     /**
-     * @deprecated
+     * @deprecated not in use anymore
      * @var Request
      */
     protected $request;
@@ -177,7 +177,7 @@ class AbstractTransaction {
     }
 
     /**
-     * @deprecated
+     * @deprecated not in use anymore
      * @return Request
      */
     public function getRequest() {
@@ -187,7 +187,7 @@ class AbstractTransaction {
     /**
      * provider request information here (if required by the payment method)
      *
-     * @deprecated
+     * @deprecated not in use anymore
      * @param Request $request
      *
      * @return $this

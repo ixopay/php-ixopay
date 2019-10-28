@@ -5,6 +5,7 @@ namespace Ixopay\Client\Data;
 /**
  * Specialized class to represent a customer with credit card data.
  *
+ * @deprecated see CardData
  * @package Ixopay\Client\Data
  */
 class CreditCardCustomer extends Customer {
