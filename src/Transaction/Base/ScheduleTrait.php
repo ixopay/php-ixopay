@@ -2,7 +2,7 @@
 
 namespace Ixopay\Client\Transaction\Base;
 
-use Ixopay\Client\Schedule\ScheduleData;
+use Ixopay\Client\Schedule\Schedule;
 
 /**
  * Trait ScheduleTrait
@@ -12,23 +12,23 @@ use Ixopay\Client\Schedule\ScheduleData;
 trait ScheduleTrait {
 
     /**
-     * @var ScheduleData
+     * @var Schedule
      */
     protected $schedule;
 
     /**
-     * @return ScheduleData|null
+     * @return Schedule|null
      */
     public function getSchedule() {
         return $this->schedule;
     }
 
     /**
-     * @param ScheduleData|null $schedule
+     * @param Schedule|null $schedule
      *
      * @return $this
      */
-    public function setSchedule(ScheduleData $schedule = null) {
+    public function setSchedule(Schedule $schedule = null) {
         $this->schedule = $schedule;
 
         return $this;
