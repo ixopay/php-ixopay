@@ -22,9 +22,9 @@ namespace Ixopay\Client\Data\PaymentData;
  * @method $this setFirstSixDigits($value)
  * @method string getLastFourDigits()
  * @method $this setLastFourDigits($value)
- * @method string getExpiryMonth()
+ * @method int getExpiryMonth()
  * @method $this setExpiryMonth($value)
- * @method string getExpiryYear()
+ * @method int getExpiryYear()
  * @method $this setExpiryYear($value)
  */
 class CardData extends PaymentData {
