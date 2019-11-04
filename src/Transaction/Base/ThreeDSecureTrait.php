@@ -24,10 +24,13 @@ trait ThreeDSecureTrait {
 
     /**
      * @param ThreeDSecureData $threeDSecureData
+     *
+     * @return $this
      */
     public function setThreeDSecureData($threeDSecureData)
     {
         $this->threeDSecureData = $threeDSecureData;
+        return $this;
     }
 
 }

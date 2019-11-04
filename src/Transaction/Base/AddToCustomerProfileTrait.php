@@ -12,6 +12,7 @@ use Ixopay\Client\Data\CustomerProfileData;
 trait AddToCustomerProfileTrait {
 
     /**
+     * @deprecated is not needed anymore
      * @var bool
      */
     protected $addToCustomerProfile = false;
@@ -20,22 +21,6 @@ trait AddToCustomerProfileTrait {
      * @var CustomerProfileData
      */
     protected $customerProfileData;
-
-    /**
-     * @return bool
-     */
-    public function getAddToCustomerProfile() {
-        return $this->addToCustomerProfile;
-    }
-
-    /**
-     * @param bool $addToCustomerProfile
-     * @return AddToCustomerProfileTrait
-     */
-    public function setAddToCustomerProfile($addToCustomerProfile) {
-        $this->addToCustomerProfile = $addToCustomerProfile;
-        return $this;
-    }
 
     /**
      * @return CustomerProfileData
@@ -47,14 +32,38 @@ trait AddToCustomerProfileTrait {
     /**
      * @param CustomerProfileData $customerProfileData
      *
-     * @return AddToCustomerProfileTrait
+     * @return $this
      */
-    public function setCustomerProfileData($customerProfileData) {
+    public function setCustomerProfileData(CustomerProfileData $customerProfileData) {
         $this->customerProfileData = $customerProfileData;
         return $this;
     }
 
     /**
+     * @deprecated is not needed anymore
+     *             sending customerProfileData will automatically add it to the customerProfile
+     *
+     * @return bool
+     */
+    public function getAddToCustomerProfile() {
+        return $this->addToCustomerProfile;
+    }
+
+    /**
+     * @deprecated is not needed anymore
+     *             sending customerProfileData will automatically add it to the customerProfile
+     *
+     * @param bool $addToCustomerProfile
+     * @return $this
+     */
+    public function setAddToCustomerProfile($addToCustomerProfile) {
+        $this->addToCustomerProfile = $addToCustomerProfile;
+        return $this;
+    }
+
+    /**
+     * @deprecated use CustomerProfileData instead
+     *
      * @return string
      */
     public function getCustomerProfileGuid(){
@@ -62,9 +71,11 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
-     * @param string $profileGuid
+     * backwards compatibility
+     * @deprecated use CustomerProfileData instead
      *
-     * @return AddToCustomerProfileTrait
+     * @param string $profileGuid
+     * @return $this
      */
     public function setCustomerProfileGuid($profileGuid){
         $this->customerProfileData->setProfileGuid($profileGuid);
@@ -72,6 +83,8 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
+     * @deprecated use CustomerProfileData instead
+     *
      * @return string
      */
     public function getCustomerProfileIdentification() {
@@ -79,9 +92,11 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
+     * @deprecated use CustomerProfileData instead
+     *
      * @param string $identification
      *
-     * @return AddToCustomerProfileTrait
+     * @return $this
      */
     public function setCustomerProfileIdentification($identification) {
         $this->customerProfileData->setCustomerIdentification($identification);
@@ -89,6 +104,8 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
+     * @deprecated use CustomerProfileData instead
+     *
      * @return bool
      */
     public function getMarkAsPreferred() {
@@ -96,9 +113,11 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
+     * @deprecated use CustomerProfileData instead
+     *
      * @param bool $markAsPreferred
      *
-     * @return AddToCustomerProfileTrait
+     * @return $this
      */
     public function setMarkAsPreferred($markAsPreferred) {
         $this->customerProfileData->setMarkAsPreferred($markAsPreferred);

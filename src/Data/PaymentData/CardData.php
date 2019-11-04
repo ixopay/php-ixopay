@@ -6,27 +6,134 @@ namespace Ixopay\Client\Data\PaymentData;
  * Class CardData
  *
  * @package Ixopay\Client\CustomerProfile\PaymentData
- *
- * @property string $brand
- * @property string $cardHolder
- * @property string $firstSixDigits
- * @property string $lastFourDigits
- * @property int $expiryMonth
- * @property int $expiryYear
- *
- * @method string getBrand()
- * @method $this setBrand($value)
- * @method string getCardHolder()
- * @method $this setCardHolder($value)
- * @method string getFirstSixDigits()
- * @method $this setFirstSixDigits($value)
- * @method string getLastFourDigits()
- * @method $this setLastFourDigits($value)
- * @method int getExpiryMonth()
- * @method $this setExpiryMonth($value)
- * @method int getExpiryYear()
- * @method $this setExpiryYear($value)
  */
 class CardData extends PaymentData {
+
+    /** @var string */
+    protected $brand;
+    /** @var string */
+    protected $cardHolder;
+    /** @var string */
+    protected $firstSixDigits;
+    /** @var string */
+    protected $lastFourDigits;
+    /** @var int */
+    protected $expiryMonth;
+    /** @var int */
+    protected $expiryYear;
+
+    /**
+     * @return string
+     */
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    /**
+     * @param string $brand
+     *
+     * @return CardData
+     */
+    public function setBrand($brand)
+    {
+        $this->brand = $brand;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCardHolder()
+    {
+        return $this->cardHolder;
+    }
+
+    /**
+     * @param string $cardHolder
+     *
+     * @return CardData
+     */
+    public function setCardHolder($cardHolder)
+    {
+        $this->cardHolder = $cardHolder;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstSixDigits()
+    {
+        return $this->firstSixDigits;
+    }
+
+    /**
+     * @param string $firstSixDigits
+     *
+     * @return CardData
+     */
+    public function setFirstSixDigits($firstSixDigits)
+    {
+        $this->firstSixDigits = $firstSixDigits;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastFourDigits()
+    {
+        return $this->lastFourDigits;
+    }
+
+    /**
+     * @param string $lastFourDigits
+     *
+     * @return CardData
+     */
+    public function setLastFourDigits($lastFourDigits)
+    {
+        $this->lastFourDigits = $lastFourDigits;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExpiryMonth()
+    {
+        return $this->expiryMonth;
+    }
+
+    /**
+     * @param int $expiryMonth
+     *
+     * @return CardData
+     */
+    public function setExpiryMonth($expiryMonth)
+    {
+        $this->expiryMonth = $expiryMonth;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExpiryYear()
+    {
+        return $this->expiryYear;
+    }
+
+    /**
+     * @param int $expiryYear
+     *
+     * @return CardData
+     */
+    public function setExpiryYear($expiryYear)
+    {
+        $this->expiryYear = $expiryYear;
+        return $this;
+    }
 
 }

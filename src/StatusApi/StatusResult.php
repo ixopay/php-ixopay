@@ -2,10 +2,14 @@
 
 namespace Ixopay\Client\StatusApi;
 
-use Ixopay\Client\Callback\ChargebackData;
-use Ixopay\Client\Callback\ChargebackReversalData;
+use Ixopay\Client\Data\ChargebackData;
+use Ixopay\Client\Data\ChargebackReversalData;
 use Ixopay\Client\Data\Customer;
+use Ixopay\Client\Data\PaymentData\PaymentData;
 use Ixopay\Client\Data\Result\ResultData;
+use Ixopay\Client\Data\Result\ScheduleResultData;
+use Ixopay\Client\Schedule\ScheduleData;
+use Ixopay\Client\Schedule\ScheduleResult;
 use Ixopay\Client\Transaction\Error;
 
 /**
@@ -32,9 +36,15 @@ class StatusResult {
     const TYPE_PAYOUT = 'PAYOUT';
 
     /**
+     * @deprecated use success
      * @var bool
      */
     protected $operationSuccess;
+
+    /**
+     * @var bool
+     */
+    protected $success;
 
     /**
      * @var string
@@ -42,11 +52,17 @@ class StatusResult {
     protected $transactionStatus;
 
     /**
+     * @deprecated use uuid
      * reference id from the payment gateway
      *
      * @var string
      */
     protected $transactionUuid;
+
+    /**
+     * @var string
+     */
+    protected $uuid;
 
     /**
      * your transaction id from the initial transaction (if returned by adapter)
@@ -85,9 +101,19 @@ class StatusResult {
     protected $currency;
 
     /**
+     * @var ScheduleResultData[]
+     */
+    protected $schedules = array();
+
+    /**
      * @var Error[]
      */
     protected $errors = array();
+
+    /**
+     * @var ChargebackData
+     */
+    protected $chargebackData = array();
 
     /**
      * for your internal use
@@ -100,13 +126,6 @@ class StatusResult {
      * @var string
      */
     protected $merchantMetaData;
-
-    /**
-     * chargeback data (if transactionType = CHARGEBACK)
-     *
-     * @var ChargebackData
-     */
-    protected $chargebackData = null;
 
     /**
      * Chargeback reversal data (if transactionType = CHARGEBACK-REVERSAL)
@@ -126,19 +145,45 @@ class StatusResult {
     protected $customer = null;
 
     /**
+     * @var PaymentData
+     */
+    protected $paymentData = null;
+
+    /**
      * @return bool
      */
-    public function isOperationSuccess() {
-        return $this->operationSuccess;
+    public function isSuccess()
+    {
+        return $this->success;
     }
 
     /**
+     * @param bool $success
+     *
+     * @return $this
+     */
+    public function setSuccess($success)
+    {
+        $this->success = $success;
+        return $this;
+    }
+
+    /**
+     * @deprecated use isSuccess
+     * @return bool
+     */
+    public function isOperationSuccess() {
+        return $this->success;
+    }
+
+    /**
+     * @deprecated use setSuccess
      * @param bool $operationSuccess
      *
-     * @return StatusResult
+     * @return $this
      */
     public function setOperationSuccess($operationSuccess) {
-        $this->operationSuccess = $operationSuccess;
+        $this->success = $operationSuccess;
 
         return $this;
     }
@@ -153,7 +198,7 @@ class StatusResult {
     /**
      * @param string $transactionStatus
      *
-     * @return StatusResult
+     * @return $this
      */
     public function setTransactionStatus($transactionStatus) {
         $this->transactionStatus = $transactionStatus;
@@ -162,20 +207,41 @@ class StatusResult {
     }
 
     /**
+     * @deprecated use getUuid
      * @return string
      */
     public function getTransactionUuid() {
-        return $this->transactionUuid;
+        return $this->uuid;
     }
 
     /**
+     * @deprecated use setUuid
      * @param string $transactionUuid
      *
-     * @return StatusResult
+     * @return $this
      */
     public function setTransactionUuid($transactionUuid) {
-        $this->transactionUuid = $transactionUuid;
+        $this->uuid = $transactionUuid;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     *
+     * @return $this
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
         return $this;
     }
 
@@ -189,7 +255,7 @@ class StatusResult {
     /**
      * @param string $merchantTransactionId
      *
-     * @return StatusResult
+     * @return $this
      */
     public function setMerchantTransactionId($merchantTransactionId) {
         $this->merchantTransactionId = $merchantTransactionId;
@@ -214,6 +280,25 @@ class StatusResult {
      */
     public function addError(Error $error) {
         $this->errors[] = $error;
+        return $this;
+    }
+
+     /**
+     * @return ScheduleResultData[]
+     */
+    public function getSchedules()
+    {
+        return $this->schedules;
+    }
+
+    /**
+     * @param ScheduleResultData[] $schedules
+     *
+     * @return $this
+     */
+    public function setSchedules($schedules)
+    {
+        $this->schedules = $schedules;
         return $this;
     }
 
@@ -409,11 +494,30 @@ class StatusResult {
     /**
      * @param Customer $customer
      *
-     * @return StatusResult
+     * @return $this
      */
     public function setCustomer($customer) {
         $this->customer = $customer;
 
+        return $this;
+    }
+
+    /**
+     * @return PaymentData
+     */
+    public function getPaymentData()
+    {
+        return $this->paymentData;
+    }
+
+    /**
+     * @param PaymentData $paymentData
+     *
+     * @return $this
+     */
+    public function setPaymentData($paymentData)
+    {
+        $this->paymentData = $paymentData;
         return $this;
     }
 

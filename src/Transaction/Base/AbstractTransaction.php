@@ -129,7 +129,7 @@ class AbstractTransaction {
 
     /**
      * @param string $merchantMetaData
-     * @return AbstractTransaction
+     * @return $this
      */
     public function setMerchantMetaData($merchantMetaData)
     {

@@ -189,6 +189,13 @@ class Customer extends Data {
     }
 
     /**
+     * @return string|null
+     */
+    public function getBirthDateFormatted() {
+        return $this->birthDate ? $this->birthDate->format('Y-m-d') : null;
+    }
+
+    /**
      * @param \DateTime $birthDate
      *
      * @return $this

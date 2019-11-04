@@ -135,7 +135,7 @@ class Error {
      * @param string|null $adapterMessage
      * @param string|null $adapterCode
      */
-    public function __construct($message, $code=null, $adapterMessage=null, $adapterCode=null) {
+    public function __construct($message="", $code=null, $adapterMessage=null, $adapterCode=null) {
         $this->message = $message;
         $this->code = $code ?: self::UNKNOWN;
         $this->adapterMessage = $adapterMessage;
@@ -151,11 +151,27 @@ class Error {
     }
 
     /**
+     * @param string $message
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+    }
+
+    /**
      * @return int
      */
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * @param int $code
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
     }
 
     /**
@@ -167,6 +183,14 @@ class Error {
     }
 
     /**
+     * @param string $adapterCode
+     */
+    public function setAdapterCode($adapterCode)
+    {
+        $this->adapterCode = $adapterCode;
+    }
+
+    /**
      * @return string
      */
     public function getAdapterMessage()
@@ -174,4 +198,11 @@ class Error {
         return $this->adapterMessage;
     }
 
+    /**
+     * @param string $adapterMessage
+     */
+    public function setAdapterMessage($adapterMessage)
+    {
+        $this->adapterMessage = $adapterMessage;
+    }
 }

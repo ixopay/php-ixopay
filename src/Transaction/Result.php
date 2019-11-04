@@ -3,7 +3,10 @@
 namespace Ixopay\Client\Transaction;
 
 use Ixopay\Client\Data\Customer;
+use Ixopay\Client\Data\CustomerProfileData;
 use Ixopay\Client\Data\Result\ResultData;
+use Ixopay\Client\Data\Result\ScheduleResultData;
+use Ixopay\Client\Data\RiskCheckData;
 
 /**
  * Class Result
@@ -40,9 +43,16 @@ class Result {
     /**
      * reference id from the payment gateway
      *
+     * @deprecated use $referenceUuid
      * @var string
      */
     protected $referenceId;
+
+    /**
+     * reference id from the payment gateway
+     * @var string
+     */
+    protected $referenceUuid;
 
     /**
      * purchase id from gateway (can be used for any subsequent action on this transaction)
@@ -53,7 +63,7 @@ class Result {
 
     /**
      * id for vault registration (if applicable)
-     *
+     * @deprecated not in use anymore
      * @var string
      */
     protected $registrationId;
@@ -107,19 +117,19 @@ class Result {
     protected $customer = null;
 
     /**
-     * @var string
+     * @var CustomerProfileData
      */
-    protected $scheduleId = null;
+    protected $customerProfileData = null;
 
     /**
-     * @var string
+     * @var RiskCheckData
      */
-    protected $scheduleStatus = null;
+    protected $riskCheckData = null;
 
     /**
-     * @var string|null - e.g. '2019-12-31 23:59:00 UTC'
+     * @var ScheduleResultData
      */
-    protected $scheduledAt = null;
+    protected $scheduleData = null;
 
     /**
      * @var Error[]
@@ -132,15 +142,24 @@ class Result {
     protected $extraData = array();
 
     /**
+     * @deprecated use setReferenceUuid()
      * @param string $referenceId
-     *
      * @return $this
      */
     public function setReferenceId($referenceId) {
-        $this->referenceId = $referenceId;
+        $this->setReferenceUuid($referenceId);
         return $this;
     }
 
+    /**
+     * @param $referenceUuid
+     *
+     * @return $this
+     */
+    public function setReferenceUuid($referenceUuid) {
+        $this->referenceUuid = $referenceUuid;
+        return $this;
+    }
 
     /**
      * @param string $redirectUrl
@@ -224,11 +243,18 @@ class Result {
 
     /**
      * contains IxoPay's transaction id
-     *
+     * @deprecated use getReferenceUuid()
      * @return string
      */
     public function getReferenceId() {
-        return $this->referenceId;
+        return $this->getReferenceUuid();
+    }
+
+    /**
+     * @return string
+     */
+    public function getReferenceUuid() {
+        return $this->referenceUuid;
     }
 
     /**
@@ -402,10 +428,29 @@ class Result {
     }
 
     /**
+     * @return ScheduleResultData
+     */
+    public function getScheduleData()
+    {
+        return $this->scheduleData;
+    }
+
+    /**
+     * @param ScheduleResultData $scheduleData
+     *
+     * @return Result
+     */
+    public function setScheduleData($scheduleData)
+    {
+        $this->scheduleData = $scheduleData;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getScheduleId() {
-        return $this->scheduleId;
+        return $this->scheduleData->getScheduleId();
     }
 
     /**
@@ -414,7 +459,7 @@ class Result {
      * @return Result
      */
     public function setScheduleId($scheduleId) {
-        $this->scheduleId = $scheduleId;
+        $this->scheduleData->setScheduleId($scheduleId);
 
         return $this;
     }
@@ -423,7 +468,7 @@ class Result {
      * @return string
      */
     public function getScheduleStatus() {
-        return $this->scheduleStatus;
+        return $this->scheduleData->set;
     }
 
     /**
@@ -434,6 +479,44 @@ class Result {
     public function setScheduleStatus($scheduleStatus) {
         $this->scheduleStatus = $scheduleStatus;
 
+        return $this;
+    }
+
+    /**
+     * @return CustomerProfileData
+     */
+    public function getCustomerProfileData()
+    {
+        return $this->customerProfileData;
+    }
+
+    /**
+     * @param CustomerProfileData $customerProfileData
+     *
+     * @return Result
+     */
+    public function setCustomerProfileData($customerProfileData)
+    {
+        $this->customerProfileData = $customerProfileData;
+        return $this;
+    }
+
+    /**
+     * @return RiskCheckData
+     */
+    public function getRiskCheckData()
+    {
+        return $this->riskCheckData;
+    }
+
+    /**
+     * @param RiskCheckData $riskCheckData
+     *
+     * @return Result
+     */
+    public function setRiskCheckData($riskCheckData)
+    {
+        $this->riskCheckData = $riskCheckData;
         return $this;
     }
 

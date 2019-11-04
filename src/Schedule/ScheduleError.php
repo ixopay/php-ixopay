@@ -5,7 +5,7 @@ namespace Ixopay\Client\Schedule;
 /**
  * Class ScheduleError
  *
- * @package Ixopay\Client\Schedule
+ * @package Ixopay\Client\ScheduleResultData
  */
 class ScheduleError {
 
@@ -30,7 +30,7 @@ class ScheduleError {
     /** schedule request failed */
     const SCHEDULE_REQUEST_FAILED = 7002;
 
-    /** Schedule not enabled for the connector */
+    /** ScheduleResultData not enabled for the connector */
     const SCHEDULE_NOT_ENABLED = 7003;
 
     /** scheduleAction is not valid */

@@ -1,15 +1,16 @@
 <?php
 
-namespace Ixopay\Client\Callback;
+namespace Ixopay\Client\Data;
 
 /**
  * Class ChargebackData
  *
- * @package Ixopay\Client\Callback
+ * @package Ixopay\Client\Data
  */
 class ChargebackData {
 
     /**
+     * @deprecated use originalUuid
      * @var string
      */
     protected $originalTransactionId;
@@ -17,7 +18,18 @@ class ChargebackData {
     /**
      * @var string
      */
+    protected $originalUuid;
+
+    /**
+     * @deprecated use originalReferenceUuid
+     * @var string
+     */
     protected $originalReferenceId;
+
+    /**
+     * @var string
+     */
+    protected $originalReferenceUuid;
 
     /**
      * @var float
@@ -40,31 +52,73 @@ class ChargebackData {
     protected $chargebackDateTime;
 
     /**
+     * @deprecated use getOriginalUuid
      * @return string
      */
     public function getOriginalTransactionId() {
-        return $this->originalTransactionId;
+        return $this->originalUuid;
     }
 
     /**
+     * @deprecated use setOriginalUuid
      * @param string $originalTransactionId
      */
     public function setOriginalTransactionId($originalTransactionId) {
-        $this->originalTransactionId = $originalTransactionId;
+        $this->originalUuid = $originalTransactionId;
+    }
+
+    /**
+     * @deprecated use getOriginalReferenceUuid
+     * @return string
+     */
+    public function getOriginalReferenceId() {
+        return $this->originalReferenceUuid;
+    }
+
+    /**
+     * @deprecated use setOriginalReferenceUuid
+     * @param string $originalReferenceId
+     */
+    public function setOriginalReferenceId($originalReferenceId) {
+        $this->originalReferenceUuid = $originalReferenceId;
     }
 
     /**
      * @return string
      */
-    public function getOriginalReferenceId() {
-        return $this->originalReferenceId;
+    public function getOriginalUuid()
+    {
+        return $this->originalUuid;
     }
 
     /**
-     * @param string $originalReferenceId
+     * @param string $originalUuid
+     *
+     * @return $this
      */
-    public function setOriginalReferenceId($originalReferenceId) {
-        $this->originalReferenceId = $originalReferenceId;
+    public function setOriginalUuid($originalUuid)
+    {
+        $this->originalUuid = $originalUuid;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOriginalReferenceUuid()
+    {
+        return $this->originalReferenceUuid;
+    }
+
+    /**
+     * @param string $originalReferenceUuid
+     *
+     * @return $this
+     */
+    public function setOriginalReferenceUuid($originalReferenceUuid)
+    {
+        $this->originalReferenceUuid = $originalReferenceUuid;
+        return $this;
     }
 
     /**

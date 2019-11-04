@@ -2,19 +2,20 @@
 
 namespace Ixopay\Client\Transaction\Base;
 
-use Ixopay\Client\Schedule\Schedule;
+use Ixopay\Client\Schedule\ScheduleData;
+use Ixopay\Client\Schedule\ScheduleWithTransaction;
 
 interface ScheduleInterface {
 
     /**
-     * @return Schedule
+     * @return ScheduleData|ScheduleWithTransaction
      */
     public function getSchedule();
 
     /**
-     * @param Schedule $schedule |null
+     * @param ScheduleData|ScheduleWithTransaction $schedule |null
      *
      * @return $this
      */
-    public function setSchedule(Schedule $schedule = null);
+    public function setSchedule($schedule = null);
 }
