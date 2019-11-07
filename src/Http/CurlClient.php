@@ -212,6 +212,7 @@ class CurlClient implements ClientInterface {
      * @param array  $headers
      *
      * @return $this
+     * @throws \Exception
      */
     public function sign($apiId, $sharedSecret, $url, $body, $headers = array()) {
         $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s T');
@@ -242,12 +243,13 @@ class CurlClient implements ClientInterface {
      * @param string $sharedSecret
      * @param string $url
      * @param string $body
+     * @param string $type
      * @param array  $headers
      *
      * @return $this
      * @throws \Exception
      */
-    public function signJson($sharedSecret, $url, $body, $headers = array()) {
+    public function signJson($sharedSecret, $url, $body, $type, $headers = array()) {
         $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s T');
 
         $path = parse_url($url, PHP_URL_PATH);
@@ -258,7 +260,7 @@ class CurlClient implements ClientInterface {
 
         $contentType = 'application/json; charset=utf-8';
 
-        $parts = array('POST', md5($body), $contentType, $timestamp, $requestUri);
+        $parts = array($type, md5($body), $contentType, $timestamp, $requestUri);
 
         $str = implode("\n", $parts);
         $digest = hash_hmac('sha512', $str, $sharedSecret, true);
