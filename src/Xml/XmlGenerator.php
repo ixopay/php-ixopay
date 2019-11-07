@@ -7,7 +7,7 @@ use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\IbanCustomer;
 use Ixopay\Client\Data\Request;
 use Ixopay\Client\Exception\InvalidValueException;
-use Ixopay\Client\Schedule\Schedule;
+use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\TypeException;
 use Ixopay\Client\StatusApi\StatusRequestData;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
@@ -127,19 +127,19 @@ class XmlGenerator {
     }
 
     /**
-     * @param string   $scheduleAction
-     * @param Schedule $schedule
-     * @param string   $username
-     * @param string   $password
+     * @param string       $scheduleAction
+     * @param ScheduleData $schedule
+     * @param string       $username
+     * @param string       $password
      *
      * @return string
      * @throws TypeException
      */
-    public function generateScheduleXml($scheduleAction, Schedule $schedule, $username, $password) {
+    public function generateScheduleXml($scheduleAction, ScheduleData $schedule, $username, $password) {
 
         $this->document = new \DOMDocument('1.0', 'utf-8');
         $this->document->formatOutput = true;
-        $root = $this->document->createElementNS($this->namespaceRoot . '/Schema/V2/Schedule', 'schedule');
+        $root = $this->document->createElementNS($this->namespaceRoot . '/Schema/V2/ScheduleResultData', 'schedule');
 
         $this->_appendTextNode($root, 'username', $username);
         $this->_appendTextNode($root, 'password', $password);
@@ -290,12 +290,12 @@ class XmlGenerator {
     }
 
     /**
-     * @param \DOMNode $parentNode
-     * @param Schedule $scheduleData
+     * @param \DOMNode     $parentNode
+     * @param ScheduleData $scheduleData
      *
      * @throws TypeException
      */
-    protected function appendScheduleNode(\DOMNode $parentNode, Schedule $scheduleData) {
+    protected function appendScheduleNode(\DOMNode $parentNode, ScheduleData $scheduleData) {
 
         $scheduleNode = $this->document->createElement('startSchedule');
 
@@ -759,8 +759,8 @@ class XmlGenerator {
      * @throws TypeException
      */
     private function verifyPeriodUnitType($value, $elementName) {
-        if (!in_array($value, Schedule::getValidPeriodUnits())) {
-            throw new TypeException('Value of '.$elementName.' must match one of the following values: "'.implode('", "', Schedule::getValidPeriodUnits()).'"');
+        if (!in_array($value, ScheduleData::getValidPeriodUnits())) {
+            throw new TypeException('Value of '.$elementName.' must match one of the following values: "'.implode('", "', ScheduleData::getValidPeriodUnits()).'"');
         }
     }
 

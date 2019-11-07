@@ -12,11 +12,19 @@ use Ixopay\Client\Exception\TypeException;
 class StatusRequestData {
 
     /**
+     * @deprecated use uuid
      * the referenceId received by the transaction response
      *
      * @var string -
      */
     protected $transactionUuid;
+
+    /**
+     * the referenceId received by the transaction response
+     *
+     * @var string
+     */
+    protected $uuid;
 
     /**
      * the transactionId sent with the transaction request
@@ -28,27 +36,48 @@ class StatusRequestData {
     /**
      * StatusRequestData constructor.
      *
-     * @param string $transactionUuid
+     * @param null $uuid
      */
-    public function __construct($transactionUuid = null) {
-        $this->transactionUuid = $transactionUuid;
+    public function __construct($uuid = null) {
+        $this->uuid = $uuid;
     }
 
     /**
+     * @deprecated use getUuid
      * @return string
      */
     public function getTransactionUuid() {
-        return $this->transactionUuid;
+        return $this->uuid;
     }
 
     /**
+     * @deprecated use setUuid
      * @param string $transactionUuid
      *
      * @return StatusRequestData
      */
     public function setTransactionUuid($transactionUuid) {
-        $this->transactionUuid = $transactionUuid;
+        $this->uuid = $transactionUuid;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     *
+     * @return StatusRequestData
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
         return $this;
     }
 

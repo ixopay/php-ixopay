@@ -16,9 +16,15 @@ class ScheduleResult {
     const STATUS_CREATE_PENDING = 'CREATE-PENDING'; // create process of a schedule not yet finished
 
     /**
+     * @deprecated use success
      * @var bool
      */
     protected $operationSuccess;
+
+    /**
+     * @var bool
+     */
+    protected $success;
 
     /**
      * @var string
@@ -26,11 +32,17 @@ class ScheduleResult {
     protected $scheduleId;
 
     /**
+     * @deprecated use registrationUuid
      * referenceId or UUID from the register
      *
      * @var string
      */
     protected $registrationId;
+
+    /**
+     * @var string
+     */
+    protected $registrationUuid;
 
     /**
      * @var string
@@ -53,20 +65,60 @@ class ScheduleResult {
     protected $errors = [];
 
     /**
+     * @deprecated use isSuccess
      * @return bool
      */
     public function getOperationSuccess() {
-        return $this->operationSuccess;
+        return $this->success;
     }
 
     /**
+     * @deprecated use setSuccess
      * @param bool $operationSuccess
      *
      * @return ScheduleResult
      */
     public function setOperationSuccess($operationSuccess) {
-        $this->operationSuccess = $operationSuccess;
+        $this->success = $operationSuccess;
 
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuccess()
+    {
+        return $this->success;
+    }
+
+    /**
+     * @param bool $success
+     *
+     * @return ScheduleResult
+     */
+    public function setSuccess($success)
+    {
+        $this->success = $success;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegistrationUuid()
+    {
+        return $this->registrationUuid;
+    }
+
+    /**
+     * @param string $registrationUuid
+     *
+     * @return ScheduleResult
+     */
+    public function setRegistrationUuid($registrationUuid)
+    {
+        $this->registrationUuid = $registrationUuid;
         return $this;
     }
 
@@ -89,19 +141,21 @@ class ScheduleResult {
     }
 
     /**
+     * @deprecated use getRegistrationUuid
      * @return string
      */
     public function getRegistrationId() {
-        return $this->registrationId;
+        return $this->registrationUuid;
     }
 
     /**
+     * @deprecated use setRegistrationUuid
      * @param string $registrationId
      *
      * @return ScheduleResult
      */
     public function setRegistrationId($registrationId) {
-        $this->registrationId = $registrationId;
+        $this->registrationUuid = $registrationId;
 
         return $this;
     }
