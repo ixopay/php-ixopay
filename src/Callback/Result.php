@@ -2,8 +2,12 @@
 
 namespace Ixopay\Client\Callback;
 
+use Ixopay\Client\Data\ChargebackData;
+use Ixopay\Client\Data\ChargebackReversalData;
 use Ixopay\Client\Data\Customer;
+use Ixopay\Client\Data\CustomerProfileData;
 use Ixopay\Client\Data\Result\ResultData;
+use Ixopay\Client\Data\Result\ScheduleResultData;
 use Ixopay\Client\Transaction\Error;
 
 /**
@@ -39,6 +43,8 @@ class Result {
     protected $result;
 
     /**
+     * @deprecated use uuid
+     *
      * reference id from the payment gateway
      *
      * @var string
@@ -46,11 +52,26 @@ class Result {
     protected $referenceId;
 
     /**
+     * reference id from the payment gateway
+     *
+     * @var string
+     */
+    protected $uuid;
+
+    /**
+     * @deprecated use merchantTransactionId
+     *
      * your transaction id from the initial transaction (if returned by adapter)
      *
      * @var string
      */
     protected $transactionId;
+
+    /**
+     * your transaction id from the initial transaction (if returned by adapter)
+     * @var string
+     */
+    protected $merchantTransactionId;
 
     /**
      * purchase id from gateway (can be used for any subsequent action on this transaction)
@@ -82,14 +103,28 @@ class Result {
     protected $currency;
 
     /**
+     * @deprecated use scheduleData
+     *
      * @var string
      */
     protected $scheduleId;
 
     /**
+     * @deprecated use scheduleData
+     *
      * @var string
      */
     protected $scheduleStatus;
+
+    /**
+     * @var ScheduleResultData
+     */
+    protected $scheduleData;
+
+    /**
+     * @var CustomerProfileData
+     */
+    protected $customerProfileData;
 
     /**
      * @var Error[]
@@ -183,7 +218,8 @@ class Result {
 
     /**
      * @param string $merchantMetaData
-     * @return Result
+     *
+     * @return $this
      */
     public function setMerchantMetaData($merchantMetaData)
     {
@@ -242,36 +278,82 @@ class Result {
     }
 
     /**
+     * @deprecated use getUuid()
+     *
      * @return string
      */
     public function getReferenceId() {
-        return $this->referenceId;
+        return $this->uuid;
     }
 
     /**
+     * @deprecated use setUuid()
+     *
      * @param string $referenceId
      *
      * @return $this
      */
     public function setReferenceId($referenceId) {
-        $this->referenceId = $referenceId;
+        $this->uuid = $referenceId;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getTransactionId() {
-        return $this->transactionId;
+    public function getUuid()
+    {
+        return $this->uuid;
     }
 
     /**
+     * @param string $uuid
+     *
+     * @return $this
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
+        return $this;
+    }
+
+    /**
+     * @deprecated use getMerchantTransactionId()
+     *
+     * @return string
+     */
+    public function getTransactionId() {
+        return $this->merchantTransactionId;
+    }
+
+    /**
+     * @deprecated use setMerchantTransactionId()
+     *
      * @param string $transactionId
      *
      * @return $this
      */
     public function setTransactionId($transactionId) {
-        $this->transactionId = $transactionId;
+        $this->merchantTransactionId = $transactionId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantTransactionId()
+    {
+        return $this->merchantTransactionId;
+    }
+
+    /**
+     * @param string $merchantTransactionId
+     *
+     * @return $this
+     */
+    public function setMerchantTransactionId($merchantTransactionId)
+    {
+        $this->merchantTransactionId = $merchantTransactionId;
         return $this;
     }
 
@@ -284,9 +366,12 @@ class Result {
 
     /**
      * @param string $purchaseId
+     *
+     * @return $this
      */
     public function setPurchaseId($purchaseId) {
         $this->purchaseId = $purchaseId;
+        return $this;
     }
 
     /**
@@ -298,9 +383,12 @@ class Result {
 
     /**
      * @param string $transactionType
+     *
+     * @return $this
      */
     public function setTransactionType($transactionType) {
         $this->transactionType = $transactionType;
+        return $this;
     }
 
     /**
@@ -312,7 +400,8 @@ class Result {
 
     /**
      * @param string $paymentMethod
-     * @return Result
+     *
+     * @return $this
      */
     public function setPaymentMethod($paymentMethod) {
         $this->paymentMethod = $paymentMethod;
@@ -328,9 +417,12 @@ class Result {
 
     /**
      * @param float $amount
+     *
+     * @return $this
      */
     public function setAmount($amount) {
         $this->amount = $amount;
+        return $this;
     }
 
     /**
@@ -342,43 +434,90 @@ class Result {
 
     /**
      * @param string $currency
+     *
+     * @return $this
      */
     public function setCurrency($currency) {
         $this->currency = $currency;
+        return $this;
     }
 
     /**
+     * @return ScheduleResultData
+     */
+    public function getScheduleData() {
+        return $this->scheduleData;
+    }
+
+    /**
+     * @param ScheduleResultData $scheduleData
+     *
+     * @return $this
+     */
+    public function setScheduleData($scheduleData) {
+        $this->scheduleData = $scheduleData;
+        return $this;
+    }
+
+    /**
+     * @deprecated use getScheduleData()
+     *
      * @return string
      */
     public function getScheduleId() {
-        return $this->scheduleId;
+        return $this->scheduleData->getScheduleId();
     }
 
     /**
+     * @deprecated use setScheduleData()
+     *
      * @param string $scheduleId
-     * @return Result
+     * @return $this
      */
     public function setScheduleId($scheduleId) {
-        $this->scheduleId = $scheduleId;
+        $this->scheduleData->setScheduleId($scheduleId);
         return $this;
     }
 
     /**
+     * @deprecated use getScheduleData()
+     *
      * @return string
      */
     public function getScheduleStatus() {
-        return $this->scheduleStatus;
+        return $this->scheduleData->getScheduleStatus();
     }
 
     /**
+     * @deprecated use setScheduleData()
+     *
      * @param string $scheduleStatus
-     * @return Result
+     * @return $this
      */
     public function setScheduleStatus($scheduleStatus) {
-        $this->scheduleStatus = $scheduleStatus;
+        $this->scheduleData->setScheduleStatus($scheduleStatus);
         return $this;
     }
-    
+
+    /**
+     * @return CustomerProfileData
+     */
+    public function getCustomerProfileData()
+    {
+        return $this->customerProfileData;
+    }
+
+    /**
+     * @param CustomerProfileData $customerProfileData
+     *
+     * @return $this
+     */
+    public function setCustomerProfileData($customerProfileData)
+    {
+        $this->customerProfileData = $customerProfileData;
+        return $this;
+    }
+
     /**
      * @return ChargebackData
      */
@@ -388,9 +527,12 @@ class Result {
 
     /**
      * @param ChargebackData $chargebackData
+     *
+     * @return $this
      */
     public function setChargebackData(ChargebackData $chargebackData) {
         $this->chargebackData = $chargebackData;
+        return $this;
     }
 
     /**
@@ -402,9 +544,12 @@ class Result {
 
     /**
      * @param ChargebackReversalData $chargebackReversalData
+     *
+     * @return $this
      */
     public function setChargebackReversalData($chargebackReversalData) {
         $this->chargebackReversalData = $chargebackReversalData;
+        return $this;
     }
 
     /**
@@ -416,9 +561,30 @@ class Result {
 
     /**
      * @param ResultData $returnData
+     *
+     * @return $this
      */
     public function setReturnData($returnData) {
         $this->returnData = $returnData;
+        return $this;
+    }
+
+    /**
+     * @return Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param Customer $customer
+     *
+     * @return $this
+     */
+    public function setCustomer($customer) {
+        $this->customer = $customer;
+        return $this;
     }
 
 	/**
@@ -438,22 +604,4 @@ class Result {
 		return $properties;
     }
 
-    /**
-     * @return Customer
-     */
-    public function getCustomer()
-    {
-        return $this->customer;
-    }
-
-    /**
-     * @param Customer $customer
-     *
-     * @return Customer
-     */
-    public function setCustomer($customer)
-    {
-        $this->customer = $customer;
-        return $customer;
-    }
 }

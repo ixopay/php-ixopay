@@ -2,13 +2,11 @@
 
 namespace Ixopay\Client\Json;
 
+use Ixopay\Client\Callback\Result as CallbackResult;
 use Ixopay\Client\Data\ChargebackData;
 use Ixopay\Client\Data\ChargebackReversalData;
 use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\CustomerProfileData;
-use Ixopay\Client\Data\PaymentData\CardData as PaymentCardData;
-use Ixopay\Client\Data\PaymentData\IbanData as PaymentIbanData;
-use Ixopay\Client\Data\PaymentData\WalletData as PaymentWalletData;
 use Ixopay\Client\Data\Result\CreditcardData as ReturnCardData;
 use Ixopay\Client\Data\Result\IbanData as ReturnIbanData;
 use Ixopay\Client\Data\Result\PhoneData as ReturnPhoneData;
@@ -17,14 +15,11 @@ use Ixopay\Client\Data\Result\ScheduleResultData;
 use Ixopay\Client\Data\Result\WalletData as ReturnWalletData;
 use Ixopay\Client\Data\RiskCheckData;
 use Ixopay\Client\Exception\ClientException;
-use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Schedule\ScheduleResult;
-use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Schedule\ScheduleError;
 use Ixopay\Client\StatusApi\StatusResult;
 use Ixopay\Client\Transaction\Error;
 use Ixopay\Client\Transaction\Result;
-use Ixopay\Client\Callback\Result as CallbackResult;
 
 /**
  * Class JsonParser
@@ -40,6 +35,7 @@ class JsonParser {
      * @param $jsonString
      *
      * @return Result
+     * @throws \Exception
      */
     public function parseTransactionResult($jsonString) {
 
@@ -57,6 +53,7 @@ class JsonParser {
             $result->setHtmlContent($this->arrGet($json, 'htmlContent'));
             $result->setPaymentDescriptor($this->arrGet($json, 'paymentDescriptor'));
             $result->setPaymentMethod($this->arrGet($json, 'paymentMethod'));
+            $result->setExtraData($this->arrGet($json, 'extraData'));
 
             // process object data
             if( isset($json['returnData']) ){
@@ -64,24 +61,16 @@ class JsonParser {
                 $result->setReturnData($returnData);
             }
 
-            // process schedule data
             if( isset($json['scheduleData']) ){
                 $scheduleData = $this->parseScheduleData($json['scheduleData']);
                 $result->setScheduleData($scheduleData);
             }
 
-            // process customer profile data
             if( isset($json['customerProfileData']) ) {
-                $data = $json['customerProfileData'];
-                $customerProfileData = new CustomerProfileData();
-                $customerProfileData->setProfileGuid($this->arrGet($data, 'profileGuid'));
-                $customerProfileData->setCustomerIdentification($this->arrGet($data, 'customerIdentification'));
-                $customerProfileData->setMarkAsPreferred($this->arrGet($data, 'markAsPreferred'));
-
+                $customerProfileData = $this->parseCustomerProfileData($json['customerProfileData']);
                 $result->setCustomerProfileData($customerProfileData);
             }
 
-            // process risk check data
             if ( isset($json['riskCheckData']) ){
                 $data = $json['riskCheckData'];
                 $riskCheckData = new RiskCheckData();
@@ -92,19 +81,9 @@ class JsonParser {
                 $result->setRiskCheckData($riskCheckData);
             }
 
-            // process error data
             if ( isset($json['errors']) ){
-                $data = $json['errors'];
-                $errors = [];
-                foreach($data as $error){
-                    $errors[] = $this->parseError($error);
-                }
-
+                $errors = $this->parseErrors($json['errors']);
                 $result->setErrors($errors);
-            }
-
-            if (isset($json['extraData']) ){
-                $result->setExtraData($json['extraData']);
             }
 
         } else{
@@ -125,7 +104,9 @@ class JsonParser {
 
     /**
      * @param string $jsonString
+     *
      * @return StatusResult
+     * @throws \Exception
      */
     public function parseStatusResult($jsonString) {
 
@@ -145,51 +126,28 @@ class JsonParser {
         $result->setExtraData($this->arrGet($json, 'extraData'));
         $result->setMerchantMetaData($this->arrGet($json, 'merchantMetaData'));
 
-        // process schedule data
+        // process objects
         if(isset($json['schedules'])) {
             $schedules = [];
             foreach($json['schedules'] as $schedule){
-                $schedules[] = $this->parseScheduleResult($schedule);
+                $schedules[] = $this->parseScheduleData($schedule);
             }
 
             $result->setSchedules($schedules);
         }
 
-        // process errors
         if(isset($json['errors'])) {
-            $errors = [];
-            foreach($json['errors'] as $error){
-                $errors[] = $this->parseError($error);
-            }
-
+            $errors = $this->parseErrors($json['errors']);
             $result->setErrors($errors);
         }
 
-        // process chargebackData
         if(isset($json['chargebackData'])) {
-            $cbd = $json['chargebackData'];
-            $cbData = new ChargebackData();
-            $cbData->setOriginalUuid($this->arrGet($cbd, 'originalUuid'));
-            $cbData->setOriginalReferenceUuid($this->arrGet($cbd, 'originalReferenceUuid'));
-            $cbData->setAmount($this->arrGet($cbd, 'amount'));
-            $cbData->setCurrency($this->arrGet($cbd, 'currency'));
-            $cbData->setReason($this->arrGet($cbd, 'reason'));
-            $cbData->setChargebackDateTime($this->arrGet($cbd, 'chargebackDateTime'));
-
+            $cbData = $this->parseChargebackData($json['chargebackData']);
             $result->setChargebackData($cbData);
         }
 
         if(isset($json['chargebackReversalData'])) {
-            $cbr = $json['chargebackReversalData'];
-            $cbrData = new ChargebackReversalData();
-            $cbrData->setOriginalUuid($this->arrGet($cbr, 'originalUuid'));
-            $cbrData->setOriginalReferenceUuid($this->arrGet($cbr, 'originalReferenceUuid'));
-            $cbrData->setChargebackReferenceUuid($this->arrGet($cbr, 'chargebackReferenceUuid'));
-            $cbrData->setAmount($this->arrGet($cbr, 'amount'));
-            $cbrData->setCurrency($this->arrGet($cbr, 'currency'));
-            $cbrData->setReason($this->arrGet($cbr, 'reason'));
-            $cbrData->setReversalDateTime($this->arrGet($cbr, 'reversalDateTime'));
-
+            $cbrData = $this->parseChargebackReversalData($json['chargebackReversalData']);
             $result->setChargebackReversalData($cbrData);
         }
 
@@ -201,6 +159,11 @@ class JsonParser {
         if(isset($json['customer'])) {
             $customer = $this->parseCustomer($json['customer']);
             $result->setCustomer($customer);
+        }
+
+        if(isset($json['customerProfileData'])) {
+            $customerProfileData = $this->parseCustomerProfileData($json['customerProfileData']);
+            $result->setCustomerProfileData($customerProfileData);
         }
 
         return $result;
@@ -259,10 +222,71 @@ class JsonParser {
 
         if( $this->arrGet($json, 'success') ){
             return $json['options'];
-        } else{
-            throw new ClientException($json['error']);
         }
 
+        throw new ClientException($json['error']);
+
+    }
+
+    /**
+     * @param $jsonString
+     *
+     * @return CallbackResult
+     * @throws \Exception
+     */
+    public function parseCallback($jsonString){
+
+        $json = json_decode($jsonString, true);
+
+        $result = new CallbackResult();
+        $result->setResult($this->arrGet($json, 'result'));
+        $result->setUuid($this->arrGet($json, 'uuid'));
+        $result->setMerchantTransactionId($this->arrGet($json, 'merchantTransactionId'));
+        $result->setPurchaseId($this->arrGet($json, 'purchaseId'));
+        $result->setTransactionType($this->arrGet($json, 'transactionType'));
+        $result->setPaymentMethod($this->arrGet($json, 'paymentMethod'));
+        $result->setAmount($this->arrGet($json, 'amount'));
+        $result->setCurrency($this->arrGet($json, 'currency'));
+        $result->setMerchantMetaData($this->arrGet($json, 'merchantMetaData'));
+        $result->setExtraData($this->arrGet($json, 'extraData'));
+
+        // process objects
+        if(isset($json['scheduleData'])) {
+            $schedule = $this->parseScheduleData($json['scheduleData']);
+            $result->setScheduleData($schedule);
+        }
+
+        if(isset($json['errors'])) {
+            $errors = $this->parseErrors($json['errors']);
+            $result->setErrors($errors);
+        }
+
+        if(isset($json['chargebackData'])) {
+            $cbData = $this->parseChargebackData($json['chargebackData']);
+            $result->setChargebackData($cbData);
+        }
+
+        if(isset($json['chargebackReversalData'])) {
+            $cbrData = $this->parseChargebackReversalData($json['chargebackReversalData']);
+            $result->setChargebackReversalData($cbrData);
+        }
+
+        if(isset($json['returnData'])) {
+            $returnData = $this->parseReturnData($json['returnData']);
+            $result->setReturnData($returnData);
+        }
+
+        if(isset($json['customer'])) {
+            $customer = $this->parseCustomer($json['customer']);
+            $result->setCustomer($customer);
+        }
+
+        if(isset($json['customerProfileData'])) {
+            $customerProfileData = $this->parseCustomerProfileData($json['customerProfileData']);
+            $result->setCustomerProfileData($customerProfileData);
+        }
+
+        return $result;
     }
 
     /* data parsers */
@@ -335,12 +359,13 @@ class JsonParser {
      * @param $data
      *
      * @return ScheduleResultData
+     * @throws \Exception
      */
     protected function parseScheduleData($data){
         $scheduleData = new ScheduleResultData();
         $scheduleData->setScheduleId($this->arrGet($data, 'scheduleId'));
         $scheduleData->setScheduleStatus($this->arrGet($data, 'scheduleStatus'));
-        $scheduleData->setScheduledAt($this->arrGet($data, 'scheduledAt'));
+        $scheduleData->setScheduledAt($this->arrGet($data, 'scheduledAt') ? new \DateTime($this->arrGet($data, 'scheduledAt')) : null);
 
         return $scheduleData;
     }
@@ -397,7 +422,67 @@ class JsonParser {
         return $error;
     }
 
+    /**
+     * @param $data
+     *
+     * @return array
+     */
+    protected function parseErrors($data){
+        $errors = [];
+        foreach($data as $error){
+            $errors[] = $this->parseError($error);
+        }
+        return $errors;
+    }
 
+    /**
+     * @param $data
+     *
+     * @return ChargebackData
+     */
+    protected function parseChargebackData($data){
+        $cbData = new ChargebackData();
+        $cbData->setOriginalUuid($this->arrGet($data, 'originalUuid'));
+        $cbData->setOriginalReferenceUuid($this->arrGet($data, 'originalReferenceUuid'));
+        $cbData->setAmount($this->arrGet($data, 'amount'));
+        $cbData->setCurrency($this->arrGet($data, 'currency'));
+        $cbData->setReason($this->arrGet($data, 'reason'));
+        $cbData->setChargebackDateTime($this->arrGet($data, 'chargebackDateTime'));
+
+        return $cbData;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return ChargebackReversalData
+     */
+    protected function parseChargebackReversalData($data){
+        $cbrData = new ChargebackReversalData();
+        $cbrData->setOriginalUuid($this->arrGet($data, 'originalUuid'));
+        $cbrData->setOriginalReferenceUuid($this->arrGet($data, 'originalReferenceUuid'));
+        $cbrData->setChargebackReferenceUuid($this->arrGet($data, 'chargebackReferenceUuid'));
+        $cbrData->setAmount($this->arrGet($data, 'amount'));
+        $cbrData->setCurrency($this->arrGet($data, 'currency'));
+        $cbrData->setReason($this->arrGet($data, 'reason'));
+        $cbrData->setReversalDateTime($this->arrGet($data, 'reversalDateTime'));
+
+        return $cbrData;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return CustomerProfileData
+     */
+    protected function parseCustomerProfileData($data){
+        $customerProfileData = new CustomerProfileData();
+        $customerProfileData->setProfileGuid($this->arrGet($data, 'profileGuid'));
+        $customerProfileData->setCustomerIdentification($this->arrGet($data, 'customerIdentification'));
+        $customerProfileData->setMarkAsPreferred($this->arrGet($data, 'markAsPreferred'));
+
+        return $customerProfileData;
+    }
     /**
      * helper function: array get
      * -> returns value at given key if exists

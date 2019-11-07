@@ -8,7 +8,7 @@ use Ixopay\Client\Transaction\Base\AmountableInterface;
  * Class ScheduleResultData
  *   Should be deprecated in the future as it contains properties
  *   not used by other schedule actions. Additionally it's not
- *   possible to clearly specify which actions require which properties.
+ *   clear which actions require which properties.
  *
  * @package Ixopay\Client\Data
  */
