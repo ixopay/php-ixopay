@@ -483,6 +483,7 @@ class JsonParser {
 
         return $customerProfileData;
     }
+    
     /**
      * helper function: array get
      * -> returns value at given key if exists

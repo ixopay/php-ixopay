@@ -181,7 +181,6 @@ class Client {
      * @param mixed $level
      * @param string $message
      * @param array $context
-     * @return null
      */
     public function log($level, $message, array $context = array()) {
     	if ($this->logger && $this->logger instanceof LoggerInterface) {
@@ -241,6 +240,77 @@ class Client {
     }
 
     /**
+     * either pass ScheduleData object OR StartSchedule object
+     *
+     * @param ScheduleData|StartSchedule $scheduleData
+     *
+     * @return Schedule\ScheduleResult
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
+    public function startSchedule($scheduleData) {
+        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_START, $scheduleData);
+    }
+
+    /**
+     * either pass ScheduleData OR scheduleId
+     *
+     * @param ScheduleData|string $scheduleData
+     *
+     * @return Schedule\ScheduleResult
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
+    public function showSchedule($scheduleData) {
+        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_SHOW, $scheduleData);
+    }
+
+    /**
+     * either pass ScheduleData OR scheduleId
+     *
+     * @param ScheduleData|string $scheduleData
+     *
+     * @return Schedule\ScheduleResult
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
+    public function pauseSchedule($scheduleData) {
+        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_PAUSE, $scheduleData);
+    }
+
+    /**
+     * either pass ScheduleData object OR scheduleId + continueDateTime
+     *
+     * @param ScheduleData|string $scheduleData
+     * @param \DateTime|null      $continueDateTime
+     *
+     * @return Schedule\ScheduleResult
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
+    public function continueSchedule($scheduleData, \DateTime $continueDateTime=null) {
+        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_CONTINUE, [$scheduleData, $continueDateTime]);
+    }
+
+    /**
+     * either pass ScheduleData OR scheduleId
+     *
+     * @param ScheduleData|string $scheduleData
+     *
+     * @return Schedule\ScheduleResult
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws TimeoutException
+     */
+    public function cancelSchedule($scheduleData) {
+        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_CANCEL, $scheduleData);
+    }
+
+    /**
      * backwards compatible via ScheduleResultData
      * => in future only the new params should be supported:
      *  - StartSchedule (obj): used to start a schedule
@@ -255,7 +325,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      */
-    public function sendJsonSchedule($action, $scheduleData){
+    public function sendScheduleRequest($action, $scheduleData) {
         $json = $this->getGenerator()->generateSchedule($action, $scheduleData);
 
         switch($action){
@@ -300,112 +370,6 @@ class Client {
         }
 
         return $this->getParser()->parseScheduleResult($httpResponse->getBody());
-
-    }
-
-    /**
-     * @param       $identifier
-     * @param array $parameters
-     *
-     * @return array
-     * @throws ClientException
-     * @throws Http\Exception\ClientException
-     * @throws TimeoutException
-     */
-    public function sendJsonOptions($identifier, $parameters=[]){
-
-        $endpoint = self::OPTIONS_REQUEST;
-        $endpoint = str_replace('{optionsName}', $identifier, $endpoint);
-
-        $httpResponse = $this->sendJsonApiRequest($endpoint, ['parameters' => $parameters]);
-
-        return $this->getParser()->parseOptionsResult($httpResponse->getBody());
-
-    }
-
-    /**
-     * either pass ScheduleData object OR StartSchedule object
-     *
-     * @param ScheduleData|StartSchedule $scheduleData
-     *
-     * @return Schedule\ScheduleResult
-     * @throws ClientException
-     * @throws Http\Exception\ClientException
-     * @throws TimeoutException
-     */
-    public function startSchedule($scheduleData) {
-        return $this->sendJsonSchedule(self::SCHEDULE_ACTION_START, $scheduleData);
-    }
-
-    /**
-     * either pass ScheduleData OR scheduleId
-     *
-     * @param ScheduleData|string $scheduleData
-     *
-     * @return Schedule\ScheduleResult
-     * @throws ClientException
-     * @throws Http\Exception\ClientException
-     * @throws TimeoutException
-     */
-    public function showSchedule($scheduleData) {
-        return $this->sendJsonSchedule(self::SCHEDULE_ACTION_SHOW, $scheduleData);
-    }
-
-    /**
-     * either pass ScheduleData OR scheduleId
-     *
-     * @param ScheduleData|string $scheduleData
-     *
-     * @return Schedule\ScheduleResult
-     * @throws ClientException
-     * @throws Http\Exception\ClientException
-     * @throws TimeoutException
-     */
-    public function pauseSchedule($scheduleData) {
-        return $this->sendJsonSchedule(self::SCHEDULE_ACTION_PAUSE, $scheduleData);
-    }
-
-    /**
-     * either pass ScheduleData object OR scheduleId + continueDateTime
-     *
-     * @param ScheduleData|string $scheduleData
-     * @param \DateTime|null      $continueDateTime
-     *
-     * @return Schedule\ScheduleResult
-     * @throws ClientException
-     * @throws Http\Exception\ClientException
-     * @throws TimeoutException
-     */
-    public function continueSchedule($scheduleData, \DateTime $continueDateTime=null) {
-        return $this->sendJsonSchedule(self::SCHEDULE_ACTION_CONTINUE, [$scheduleData, $continueDateTime]);
-    }
-
-    /**
-     * either pass ScheduleData OR scheduleId
-     *
-     * @param ScheduleData|string $scheduleData
-     *
-     * @return Schedule\ScheduleResult
-     * @throws ClientException
-     * @throws Http\Exception\ClientException
-     * @throws TimeoutException
-     */
-    public function cancelSchedule($scheduleData) {
-        return $this->sendJsonSchedule(self::SCHEDULE_ACTION_CANCEL, $scheduleData);
-    }
-
-    /**
-     * @param              $scheduleAction
-     * @param ScheduleData $schedule
-     *
-     * @deprecated use sendJsonSchedule
-     * @return Schedule\ScheduleResult
-     * @throws ClientException
-     * @throws Http\Exception\ClientException
-     * @throws TimeoutException
-     */
-    public function sendScheduleRequest($scheduleAction, ScheduleData $schedule) {
-        return $this->sendJsonSchedule($scheduleAction, $schedule);
     }
 
     /**
@@ -733,7 +697,12 @@ class Client {
      * @throws Http\Exception\ClientException
      */
     public function getOptions($identifier, $parameters = [], $_ = null) {
-        return $this->sendJsonOptions($identifier, $parameters);
+        $endpoint = self::OPTIONS_REQUEST;
+        $endpoint = str_replace('{optionsName}', $identifier, $endpoint);
+
+        $httpResponse = $this->sendJsonApiRequest($endpoint, ['parameters' => $parameters]);
+
+        return $this->getParser()->parseOptionsResult($httpResponse->getBody());
     }
 
     /**
@@ -743,7 +712,7 @@ class Client {
      * @param string $requestBody
      *
      * @return Callback\Result
-     * @throws Exception\InvalidValueException
+     * @throws \Exception
      */
     public function readCallback($requestBody) {
         return $this->getParser()->parseCallback($requestBody);
