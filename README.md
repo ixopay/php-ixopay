@@ -25,59 +25,66 @@ use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Result;
 
-// Include the autoloader (if not already done via Composer autoloader)
-require_once('path/to/initClientAutoload.php');
+// include the autoloader
+require_once('path/to/vendor/autoload.php');
 
-// Instantiate the "Ixopay\Client\Client" with your credentials
+// instantiate the "Ixopay\Client\Client" with your credentials
 $client = new Client("username", "password", "apiKey", "sharedSecret");
 
+// define relevant objects
 $customer = new Customer();
 $customer->setBillingCountry("AT")
-	->setEmail("customer@email.test");
+         ->setEmail("customer@email.test");
+
+// define your unique transaction ID, e.g. 
+$merchantTransactionId = uniqid('myId', true) . '-' . date('YmdHis');
 
 $debit = new Debit();
-
-// define your transaction ID: e.g. 'myId-'.date('Y-m-d').'-'.uniqid()
-$merchantTransactionId = 'your_transaction_id'; // must be unique
-
 $debit->setTransactionId($merchantTransactionId)
-	->setSuccessUrl($redirectUrl)
-	->setCancelUrl($redirectUrl)
-	->setCallbackUrl($callbackUrl)
-	->setAmount(10.00)
-	->setCurrency('EUR')
-	->setCustomer($customer);
+	  ->setSuccessUrl($redirectUrl)
+	  ->setCancelUrl($redirectUrl)
+	  ->setCallbackUrl($callbackUrl)
+	  ->setAmount(10.00)
+	  ->setCurrency('EUR')
+	  ->setCustomer($customer);
 
 // send the transaction
 $result = $client->debit($debit);
 
-// now handle the result
+// handle the result
 if ($result->isSuccess()) {
-	//act depending on $result->getReturnType()
+
+    // store the referenceUuid you receive from the gateway for future references
+    $gatewayReferenceId = $result->getReferenceUuid(); 
 	
-    $gatewayReferenceId = $result->getReferenceId(); //store it in your database
-    
+    // handle result based on it's returnType    
     if ($result->getReturnType() == Result::RETURN_TYPE_ERROR) {
-        //error handling
+
+        // read errors on error handling
         $errors = $result->getErrors();
-        //cancelCart();
+
+        // handle the error
+        // e.g. cancelCart();
     
     } elseif ($result->getReturnType() == Result::RETURN_TYPE_REDIRECT) {
-        //redirect the user
+
+        // redirect the user
         header('Location: '.$result->getRedirectUrl());
-        die;
         
     } elseif ($result->getReturnType() == Result::RETURN_TYPE_PENDING) {
-        //payment is pending, wait for callback to complete
+        
+        // payment is pending: wait for callback to complete
     
-        //setCartToPending();
+        // handle pending
+        // e.g. setCartToPending();
     
     } elseif ($result->getReturnType() == Result::RETURN_TYPE_FINISHED) {
+        
         //payment is finished, update your cart/payment transaction
-    
-        //finishCart();
+        // e.g. finishCart();
     }
 }
+```
 
 ## License
 
