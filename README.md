@@ -20,13 +20,13 @@ Learn more about IXOPAY by reading its [Documentation](https://gateway.ixopay.co
 ```php
 <?php
 
+// include the autoloader
+require_once('path/to/vendor/autoload.php');
+
 use Ixopay\Client\Client;
 use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Result;
-
-// include the autoloader
-require_once('path/to/vendor/autoload.php');
 
 // instantiate the "Ixopay\Client\Client" with your credentials
 $client = new Client("username", "password", "apiKey", "sharedSecret");
