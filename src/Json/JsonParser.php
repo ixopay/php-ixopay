@@ -479,11 +479,10 @@ class JsonParser {
         $customerProfileData = new CustomerProfileData();
         $customerProfileData->setProfileGuid($this->arrGet($data, 'profileGuid'));
         $customerProfileData->setCustomerIdentification($this->arrGet($data, 'customerIdentification'));
-        $customerProfileData->setMarkAsPreferred($this->arrGet($data, 'markAsPreferred'));
 
         return $customerProfileData;
     }
-    
+
     /**
      * helper function: array get
      * -> returns value at given key if exists
