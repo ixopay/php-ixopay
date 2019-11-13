@@ -12,9 +12,15 @@ use Ixopay\Client\Data\Request;
 class AbstractTransaction {
 
     /**
+     * @deprecated use $merchantTransactionId
      * @var string
      */
     protected $transactionId;
+
+    /**
+     * @var string
+     */
+    protected $merchantTransactionId;
 
     /**
      * @var string
@@ -43,13 +49,15 @@ class AbstractTransaction {
     protected $request;
 
     /**
+     * @deprecated use getMerchantTransactionId()
      * @return string
      */
     public function getTransactionId() {
-        return $this->transactionId;
+        return $this->merchantTransactionId;
     }
 
     /**
+     * @deprecated use setMerchantTransactionId()
      * this is your own transaction id
      * NOTE: your transaction ids MUST be unique
      *
@@ -58,7 +66,26 @@ class AbstractTransaction {
      * @return $this
      */
     public function setTransactionId($transactionId) {
-        $this->transactionId = $transactionId;
+        $this->merchantTransactionId = $transactionId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantTransactionId()
+    {
+        return $this->merchantTransactionId;
+    }
+
+    /**
+     * @param string $merchantTransactionId
+     *
+     * @return $this
+     */
+    public function setMerchantTransactionId($merchantTransactionId)
+    {
+        $this->merchantTransactionId = $merchantTransactionId;
         return $this;
     }
 

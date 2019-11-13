@@ -104,6 +104,7 @@ class StatusResult {
     protected $schedules = array();
 
     /**
+     * transaction errors
      * @var Error[]
      */
     protected $errors = array();
@@ -146,6 +147,20 @@ class StatusResult {
      * @var CustomerProfileData
      */
     protected $customerProfileData = null;
+
+    /**
+     * request error message
+     *
+     * @var string
+     */
+    protected $errorMessage = null;
+
+    /**
+     * request error code
+     *
+     * @var int
+     */
+    protected $errorCode = 0;
 
     /**
      * @return bool
@@ -262,6 +277,8 @@ class StatusResult {
     }
 
     /**
+     * set transaction errors
+     *
      * @param Error[] $errors
      *
      * @return $this
@@ -272,6 +289,8 @@ class StatusResult {
     }
 
     /**
+     * add transaction error
+     *
      * @param Error $error
      *
      * @return $this
@@ -340,6 +359,8 @@ class StatusResult {
     }
 
     /**
+     * get transaction errors
+     *
      * @return Error[]
      */
     public function getErrors() {
@@ -347,6 +368,8 @@ class StatusResult {
     }
 
     /**
+     * check if transaction has errors
+     *
      * @return bool
      */
     public function hasErrors() {
@@ -354,6 +377,8 @@ class StatusResult {
     }
 
     /**
+     * return first transaction error
+     *
      * @return Error|null
      */
     public function getFirstError() {
@@ -516,6 +541,51 @@ class StatusResult {
     public function setCustomerProfileData($customerProfileData)
     {
         $this->customerProfileData = $customerProfileData;
+        return $this;
+    }
+
+    /**
+     * get request error
+     *
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
+    }
+
+    /**
+     * set request error
+     * @param string $errorMessage
+     *
+     * @return StatusResult
+     */
+    public function setErrorMessage($errorMessage)
+    {
+        $this->errorMessage = $errorMessage;
+        return $this;
+    }
+
+    /**
+     * get error code
+     *
+     * @return int
+     */
+    public function getErrorCode()
+    {
+        return $this->errorCode;
+    }
+
+    /**
+     * set error code
+     *
+     * @param int $errorCode
+     *
+     * @return StatusResult
+     */
+    public function setErrorCode($errorCode)
+    {
+        $this->errorCode = $errorCode;
         return $this;
     }
 

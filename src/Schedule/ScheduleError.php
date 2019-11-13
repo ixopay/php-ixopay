@@ -4,7 +4,7 @@ namespace Ixopay\Client\Schedule;
 
 /**
  * Class ScheduleError
- *
+ * @deprecated not used anymore
  * @package Ixopay\Client\ScheduleResultData
  */
 class ScheduleError {

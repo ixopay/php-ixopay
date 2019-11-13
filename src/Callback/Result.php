@@ -127,6 +127,28 @@ class Result {
     protected $customerProfileData;
 
     /**
+     * @var string
+     */
+    protected $errorMessage = null;
+
+    /**
+     * @var int
+     */
+    protected $errorCode = null;
+
+    /**
+     * @var string
+     */
+    protected $adapterMessage = null;
+
+    /**
+     * @var int
+     */
+    protected $adapterCode = null;
+
+    /**
+     * @deprecated
+     *
      * @var Error[]
      */
     protected $errors = array();
@@ -228,6 +250,8 @@ class Result {
     }
 
     /**
+     * @deprecated use getErrorMessage(), getErrorCode(), getAdapterMessage(), getAdapterCode();
+     *
      * @return Error[]
      */
     public function getErrors() {
@@ -235,6 +259,8 @@ class Result {
     }
 
     /**
+     * @deprecated
+     *
      * @return bool
      */
     public function hasErrors() {
@@ -584,6 +610,82 @@ class Result {
      */
     public function setCustomer($customer) {
         $this->customer = $customer;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
+    }
+
+    /**
+     * @param string $errorMessage
+     *
+     * @return Result
+     */
+    public function setErrorMessage($errorMessage)
+    {
+        $this->errorMessage = $errorMessage;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getErrorCode()
+    {
+        return $this->errorCode;
+    }
+
+    /**
+     * @param int $errorCode
+     *
+     * @return Result
+     */
+    public function setErrorCode($errorCode)
+    {
+        $this->errorCode = $errorCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdapterMessage()
+    {
+        return $this->adapterMessage;
+    }
+
+    /**
+     * @param string $adapterMessage
+     *
+     * @return Result
+     */
+    public function setAdapterMessage($adapterMessage)
+    {
+        $this->adapterMessage = $adapterMessage;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAdapterCode()
+    {
+        return $this->adapterCode;
+    }
+
+    /**
+     * @param int $adapterCode
+     *
+     * @return Result
+     */
+    public function setAdapterCode($adapterCode)
+    {
+        $this->adapterCode = $adapterCode;
         return $this;
     }
 

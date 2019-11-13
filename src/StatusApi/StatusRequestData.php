@@ -103,10 +103,10 @@ class StatusRequestData {
      * @throws TypeException
      */
     public function validate() {
-        if (empty($this->transactionUuid) && empty($this->merchantTransactionId)) {
+        if (empty($this->uuid) && empty($this->merchantTransactionId)) {
             throw new TypeException('Either transactionUuid or merchantTransactionId must be set.');
         }
-        if (!empty($this->transactionUuid) && !empty($this->merchantTransactionId)) {
+        if (!empty($this->uuid) && !empty($this->merchantTransactionId)) {
             throw new TypeException('Either transactionUuid or merchantTransactionId must be set but not both.');
         }
     }

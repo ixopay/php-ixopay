@@ -43,7 +43,7 @@ class Result {
     /**
      * reference id from the payment gateway
      *
-     * @deprecated use $referenceUuid
+     * @deprecated use $uuid
      * @var string
      */
     protected $referenceId;
@@ -52,7 +52,7 @@ class Result {
      * reference id from the payment gateway
      * @var string
      */
-    protected $referenceUuid;
+    protected $uuid;
 
     /**
      * purchase id from gateway (can be used for any subsequent action on this transaction)
@@ -132,6 +132,8 @@ class Result {
     protected $scheduleData = null;
 
     /**
+     * @deprecated use $errorMessage, $errorCode, $adapterMessage, $adapterCode
+     *
      * @var Error[]
      */
     protected $errors = array();
@@ -142,22 +144,42 @@ class Result {
     protected $extraData = array();
 
     /**
-     * @deprecated use setReferenceUuid()
+     * @var string
+     */
+    protected $errorMessage = null;
+
+    /**
+     * @var int
+     */
+    protected $errorCode = null;
+
+    /**
+     * @var string
+     */
+    protected $adapterMessage = null;
+
+    /**
+     * @var int
+     */
+    protected $adapterCode = null;
+
+    /**
+     * @deprecated use setUuid()
      * @param string $referenceId
      * @return $this
      */
     public function setReferenceId($referenceId) {
-        $this->setReferenceUuid($referenceId);
+        $this->setUuid($referenceId);
         return $this;
     }
 
     /**
-     * @param $referenceUuid
+     * @param $uuid
      *
      * @return $this
      */
-    public function setReferenceUuid($referenceUuid) {
-        $this->referenceUuid = $referenceUuid;
+    public function setUuid($uuid) {
+        $this->uuid = $uuid;
         return $this;
     }
 
@@ -182,6 +204,8 @@ class Result {
     }
 
     /**
+     * @deprecated
+     *
      * @param Error[] $errors
      *
      * @return $this
@@ -192,6 +216,8 @@ class Result {
     }
 
     /**
+     * @deprecated
+     *
      * @param Error $error
      *
      * @return $this
@@ -243,18 +269,18 @@ class Result {
 
     /**
      * contains IxoPay's transaction id
-     * @deprecated use getReferenceUuid()
+     * @deprecated use getUuid()
      * @return string
      */
     public function getReferenceId() {
-        return $this->getReferenceUuid();
+        return $this->getUuid();
     }
 
     /**
      * @return string
      */
-    public function getReferenceUuid() {
-        return $this->referenceUuid;
+    public function getUuid() {
+        return $this->uuid;
     }
 
     /**
@@ -276,6 +302,8 @@ class Result {
     }
 
     /**
+     * @deprecated use getErrorMessage(), getErrorCode(), getAdapterMessage(), getAdapterCode();
+     *
      * @return Error[]
      */
     public function getErrors() {
@@ -283,6 +311,8 @@ class Result {
     }
 
     /**
+     * @deprecated
+     *
      * @return bool
      */
     public function hasErrors() {
@@ -574,6 +604,82 @@ class Result {
     public function setCustomer($customer)
     {
         $this->customer = $customer;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
+    }
+
+    /**
+     * @param string $errorMessage
+     *
+     * @return Result
+     */
+    public function setErrorMessage($errorMessage)
+    {
+        $this->errorMessage = $errorMessage;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getErrorCode()
+    {
+        return $this->errorCode;
+    }
+
+    /**
+     * @param int $errorCode
+     *
+     * @return Result
+     */
+    public function setErrorCode($errorCode)
+    {
+        $this->errorCode = $errorCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdapterMessage()
+    {
+        return $this->adapterMessage;
+    }
+
+    /**
+     * @param string $adapterMessage
+     *
+     * @return Result
+     */
+    public function setAdapterMessage($adapterMessage)
+    {
+        $this->adapterMessage = $adapterMessage;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAdapterCode()
+    {
+        return $this->adapterCode;
+    }
+
+    /**
+     * @param int $adapterCode
+     *
+     * @return Result
+     */
+    public function setAdapterCode($adapterCode)
+    {
+        $this->adapterCode = $adapterCode;
+        return $this;
     }
 
 }

@@ -11,6 +11,7 @@ use Ixopay\Client\Exception\TypeException;
 use Ixopay\Client\Json\ErrorResponse;
 use Ixopay\Client\Exception\RateLimitException;
 use Ixopay\Client\Json\JsonParser;
+use Ixopay\Client\Options\OptionsResult;
 use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Exception\InvalidValueException;
@@ -414,20 +415,13 @@ class Client {
 
         $httpResponse = $this->signAndSendJson($body, $url, $this->username, $this->password, $this->apiKey, $this->sharedSecret);
 
-        if ($httpResponse->getErrorCode() || $httpResponse->getErrorMessage()) {
-            throw new ClientException('Request failed: ' . $httpResponse->getErrorCode() . ' ' . $httpResponse->getErrorMessage());
-        }
-        if ($httpResponse->getStatusCode() == 504 || $httpResponse->getStatusCode() == 522) {
+        $statusCode = $httpResponse->getStatusCode();
+
+        if ($statusCode === 504 || $statusCode === 522) {
             throw new TimeoutException('Request timed-out');
         }
-        if ($httpResponse->getStatusCode() !== 200){
-            $error = json_decode($httpResponse->getBody(), true);
-
-            if($error){
-                throw new ClientException('Request failed: Error code ' . $error['errorCode'] . ' - ' . $error['errorMessage']);
-            } else{
-                throw new ClientException('Request failed: Status code ' . $httpResponse->getStatusCode() . ' - ' . $httpResponse->getErrorMessage());
-            }
+        if ($httpResponse->getErrorCode() || $httpResponse->getErrorMessage()) {
+            throw new ClientException('Request failed: ' . $httpResponse->getErrorCode() . ' ' . $httpResponse->getErrorMessage());
         }
 
         return $httpResponse;
@@ -524,45 +518,6 @@ class Client {
         } else{
             $response = $curl->get($url);
         }
-
-        $this->log(LogLevel::DEBUG, "RESPONSE: " . $response->getBody(),
-            array(
-                'response' => $response
-            )
-        );
-
-        return $response;
-    }
-
-    /**
-     * signs and send a json GET request
-     *
-     * @param string $url
-     *
-     * @param string $username
-     * @param string $password
-     * @param string $apiKey
-     * @param string $sharedSecret
-     *
-     * @return Response
-     * @throws \Exception
-     */
-    public function signAndSendJsonGet($url, $username, $password, $apiKey, $sharedSecret) {
-        $url = str_replace('[API_KEY]', $apiKey, $url);
-
-        $this->log(LogLevel::DEBUG, "GET $url ",
-            array(
-                'url' => $url,
-                'apiKey' => $apiKey,
-                'sharedSecret' => $sharedSecret,
-            )
-        );
-
-        $curl = new CurlClient();
-        $response = $curl
-            ->signJson($sharedSecret, $url, null)
-            ->setAuthentication($username, $password)
-            ->get($url);
 
         $this->log(LogLevel::DEBUG, "RESPONSE: " . $response->getBody(),
             array(
@@ -692,7 +647,7 @@ class Client {
      * @param array  $parameters [optional]
      * @param        $_ [deprecated]
      *
-     * @return array
+     * @return OptionsResult
      * @throws ClientException
      * @throws Http\Exception\ClientException
      */

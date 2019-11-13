@@ -43,7 +43,7 @@ class JsonGenerator {
 
         // common
         $json = [
-            'merchantTransactionId' => $transaction->getTransactionId(),
+            'merchantTransactionId' => $transaction->getMerchantTransactionId(),
             'additionalId1' => $transaction->getAdditionalId1(),
             'additionalId2' => $transaction->getAdditionalId2(),
             'extraData' => $transaction->getExtraData(),
@@ -147,7 +147,7 @@ class JsonGenerator {
     protected function createDebit($transaction, $language){
         /** @var Debit $transaction */
         $data = [
-            'referenceUuid' => $transaction->getReferenceTransactionId(),
+            'referenceUuid' => $transaction->getReferenceUuid(),
             'amount' => (string)$transaction->getAmount(),
             'currency' => $transaction->getCurrency(),
             'successUrl' => $transaction->getSuccessUrl(),
@@ -193,7 +193,7 @@ class JsonGenerator {
     protected function createCapture($transaction){
         /** @var Capture $transaction */
         $data = [
-            'referenceUuid' => $transaction->getReferenceTransactionId(),
+            'referenceUuid' => $transaction->getReferenceUuid(),
             'amount' => (string)$transaction->getAmount(),
             'currency' => $transaction->getCurrency(),
             'items' => $this->createItems($transaction->getItems()),
@@ -212,7 +212,7 @@ class JsonGenerator {
     protected function createVoid($transaction){
         /** @var VoidTransaction $transaction */
         $data = [
-            'referenceUuid' => $transaction->getReferenceTransactionId(),
+            'referenceUuid' => $transaction->getReferenceUuid(),
         ];
 
         return $data;
@@ -256,7 +256,7 @@ class JsonGenerator {
     protected function createDeregister($transaction){
         /** @var Deregister $transaction */
         $data = [
-            'referenceUuid' => $transaction->getReferenceTransactionId(),
+            'referenceUuid' => $transaction->getReferenceUuid(),
         ];
 
         return $data;
@@ -272,7 +272,7 @@ class JsonGenerator {
     protected function createRefund($transaction){
         /** @var Refund $transaction */
         $data = [
-            'referenceUuid' => $transaction->getReferenceTransactionId(),
+            'referenceUuid' => $transaction->getReferenceUuid(),
             'amount' => (string)$transaction->getAmount(),
             'currency' => $transaction->getCurrency(),
             'callbackUrl' => $transaction->getCallbackUrl(),
@@ -295,7 +295,7 @@ class JsonGenerator {
     protected function createPayout($transaction, $language){
         /** @var Payout $transaction */
         $data = [
-            'referenceUuid' => $transaction->getReferenceTransactionId(),
+            'referenceUuid' => $transaction->getReferenceUuid(),
             'amount' => (string)$transaction->getAmount(),
             'currency' => $transaction->getCurrency(),
             'callbackUrl' => $transaction->getCallbackUrl(),

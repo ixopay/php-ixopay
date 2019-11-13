@@ -10,9 +10,16 @@ namespace Ixopay\Client\Transaction\Base;
 abstract class AbstractTransactionWithReference extends AbstractTransaction {
 
     /**
+     * @deprecated use $referenceUuid
      * @var string
      */
     protected $referenceTransactionId;
+
+    /**
+     * provide a reference uuid if necessary (for void/capture/refund or recurring debits)
+     * @var string
+     */
+    protected $referenceUuid;
 
     /**
      * @deprecated not in use anymore
@@ -39,13 +46,15 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     protected $referenceId4;
 
     /**
+     * @deprecated use getReferenceUuid()
      * @return string
      */
     public function getReferenceTransactionId() {
-        return $this->referenceTransactionId;
+        return $this->referenceUuid;
     }
 
     /**
+     * @deprecated use setReferenceUuid()
      * provide a reference transaction id (or registration id) here if necessary (i.e. for void/capture/refund or
      * recurring debits)
      *
@@ -54,7 +63,26 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
      * @return $this
      */
     public function setReferenceTransactionId($referenceTransactionId) {
-        $this->referenceTransactionId = $referenceTransactionId;
+        $this->referenceUuid = $referenceTransactionId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReferenceUuid()
+    {
+        return $this->referenceUuid;
+    }
+
+    /**
+     * @param string $referenceUuid
+     *
+     * @return AbstractTransactionWithReference
+     */
+    public function setReferenceUuid($referenceUuid)
+    {
+        $this->referenceUuid = $referenceUuid;
         return $this;
     }
 

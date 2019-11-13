@@ -60,9 +60,20 @@ class ScheduleResult {
     protected $scheduledAt; // next scheduled payment
 
     /**
+     * @deprecated not in use anymore
      * @var ScheduleError[]
      */
     protected $errors = [];
+
+    /**
+     * @var string
+     */
+    protected $errorMessage;
+
+    /**
+     * @var int
+     */
+    protected $errorCode;
 
     /**
      * @deprecated use isSuccess
@@ -197,6 +208,7 @@ class ScheduleResult {
     }
 
     /**
+     * @deprecated not in use anymore
      * @return ScheduleError[]
      */
     public function getErrors() {
@@ -204,6 +216,7 @@ class ScheduleResult {
     }
 
     /**
+     * @deprecated not in use anymore
      * @return bool
      */
     public function hasErrors() {
@@ -211,6 +224,7 @@ class ScheduleResult {
     }
 
     /**
+     * @deprecated not in use anymore
      * @return ScheduleError|null
      */
     public function getFirstError() {
@@ -221,6 +235,7 @@ class ScheduleResult {
     }
 
     /**
+     * @deprecated not in use anymore
      * @param ScheduleError[] $errors
      *
      * @return $this
@@ -231,6 +246,7 @@ class ScheduleResult {
     }
 
     /**
+     * @deprecated not in use anymore
      * @param ScheduleError $error
      *
      * @return $this
@@ -262,4 +278,43 @@ class ScheduleResult {
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
+    }
+
+    /**
+     * @param string $errorMessage
+     *
+     * @return ScheduleResult
+     */
+    public function setErrorMessage($errorMessage)
+    {
+        $this->errorMessage = $errorMessage;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getErrorCode()
+    {
+        return $this->errorCode;
+    }
+
+    /**
+     * @param int $errorCode
+     *
+     * @return ScheduleResult
+     */
+    public function setErrorCode($errorCode)
+    {
+        $this->errorCode = $errorCode;
+        return $this;
+    }
+
 }
