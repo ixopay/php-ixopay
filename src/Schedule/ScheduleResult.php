@@ -16,7 +16,8 @@ class ScheduleResult {
     const STATUS_CREATE_PENDING = 'CREATE-PENDING'; // create process of a schedule not yet finished
 
     /**
-     * @deprecated use success
+     * @deprecated use $success
+     *
      * @var bool
      */
     protected $operationSuccess;
@@ -32,7 +33,8 @@ class ScheduleResult {
     protected $scheduleId;
 
     /**
-     * @deprecated use registrationUuid
+     * @deprecated use $registrationUuid
+     *
      * referenceId or UUID from the register
      *
      * @var string
@@ -60,7 +62,8 @@ class ScheduleResult {
     protected $scheduledAt; // next scheduled payment
 
     /**
-     * @deprecated not in use anymore
+     * @deprecated use $errorMessage, $errorCode
+     *
      * @var ScheduleError[]
      */
     protected $errors = [];
@@ -76,7 +79,7 @@ class ScheduleResult {
     protected $errorCode;
 
     /**
-     * @deprecated use isSuccess
+     * @deprecated use isSuccess()
      * @return bool
      */
     public function getOperationSuccess() {
@@ -84,7 +87,8 @@ class ScheduleResult {
     }
 
     /**
-     * @deprecated use setSuccess
+     * @deprecated use setSuccess()
+     *
      * @param bool $operationSuccess
      *
      * @return ScheduleResult
@@ -152,7 +156,8 @@ class ScheduleResult {
     }
 
     /**
-     * @deprecated use getRegistrationUuid
+     * @deprecated use $getRegistrationUuid
+     *
      * @return string
      */
     public function getRegistrationId() {
@@ -160,7 +165,8 @@ class ScheduleResult {
     }
 
     /**
-     * @deprecated use setRegistrationUuid
+     * @deprecated use setRegistrationUuid()
+     *
      * @param string $registrationId
      *
      * @return ScheduleResult
@@ -208,7 +214,8 @@ class ScheduleResult {
     }
 
     /**
-     * @deprecated not in use anymore
+     * @deprecated use getErrorMessage(), getErrorCode()
+     *
      * @return ScheduleError[]
      */
     public function getErrors() {
@@ -216,7 +223,7 @@ class ScheduleResult {
     }
 
     /**
-     * @deprecated not in use anymore
+     * @deprecated
      * @return bool
      */
     public function hasErrors() {
@@ -224,7 +231,7 @@ class ScheduleResult {
     }
 
     /**
-     * @deprecated not in use anymore
+     * @deprecated
      * @return ScheduleError|null
      */
     public function getFirstError() {
@@ -235,7 +242,8 @@ class ScheduleResult {
     }
 
     /**
-     * @deprecated not in use anymore
+     * @deprecated
+     *
      * @param ScheduleError[] $errors
      *
      * @return $this
@@ -246,7 +254,8 @@ class ScheduleResult {
     }
 
     /**
-     * @deprecated not in use anymore
+     * @deprecated
+     *
      * @param ScheduleError $error
      *
      * @return $this

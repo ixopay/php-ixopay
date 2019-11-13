@@ -12,7 +12,8 @@ use Ixopay\Client\Data\CustomerProfileData;
 trait AddToCustomerProfileTrait {
 
     /**
-     * @deprecated is not needed anymore
+     * @deprecated not in use anymore
+     *
      * @var bool
      */
     protected $addToCustomerProfile = false;
@@ -40,7 +41,7 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
-     * @deprecated is not needed anymore
+     * @deprecated not in use anymore
      *             sending customerProfileData will automatically add it to the customerProfile
      *
      * @return bool
@@ -50,7 +51,7 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
-     * @deprecated is not needed anymore
+     * @deprecated not in use anymore
      *             sending customerProfileData will automatically add it to the customerProfile
      *
      * @param bool $addToCustomerProfile

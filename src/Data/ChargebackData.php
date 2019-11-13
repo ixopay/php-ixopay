@@ -10,7 +10,8 @@ namespace Ixopay\Client\Data;
 class ChargebackData {
 
     /**
-     * @deprecated use originalUuid
+     * @deprecated use $originalUuid
+     *
      * @var string
      */
     protected $originalTransactionId;
@@ -21,7 +22,8 @@ class ChargebackData {
     protected $originalUuid;
 
     /**
-     * @deprecated use originalReferenceUuid
+     * @deprecated use $originalReferenceUuid
+     *
      * @var string
      */
     protected $originalReferenceId;
@@ -52,7 +54,8 @@ class ChargebackData {
     protected $chargebackDateTime;
 
     /**
-     * @deprecated use getOriginalUuid
+     * @deprecated use getOriginalUuid()
+     *
      * @return string
      */
     public function getOriginalTransactionId() {
@@ -60,7 +63,8 @@ class ChargebackData {
     }
 
     /**
-     * @deprecated use setOriginalUuid
+     * @deprecated use setOriginalUuid()
+     *
      * @param string $originalTransactionId
      */
     public function setOriginalTransactionId($originalTransactionId) {
@@ -68,7 +72,8 @@ class ChargebackData {
     }
 
     /**
-     * @deprecated use getOriginalReferenceUuid
+     * @deprecated use getOriginalReferenceUuid()
+     *
      * @return string
      */
     public function getOriginalReferenceId() {
@@ -76,7 +81,8 @@ class ChargebackData {
     }
 
     /**
-     * @deprecated use setOriginalReferenceUuid
+     * @deprecated use setOriginalReferenceUuid()
+     *
      * @param string $originalReferenceId
      */
     public function setOriginalReferenceId($originalReferenceId) {

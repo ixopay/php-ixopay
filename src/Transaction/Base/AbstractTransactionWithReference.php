@@ -11,6 +11,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
 
     /**
      * @deprecated use $referenceUuid
+     *
      * @var string
      */
     protected $referenceTransactionId;
@@ -23,30 +24,35 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
 
     /**
      * @deprecated not in use anymore
+     *
      * @var string
      */
     protected $referenceCustomerId;
 
     /**
      * @deprecated not in use anymore
+     *
      * @var string
      */
     protected $referenceId2;
 
     /**
      * @deprecated not in use anymore
+     *
      * @var string
      */
     protected $referenceId3;
 
     /**
      * @deprecated not in use anymore
+     *
      * @var string
      */
     protected $referenceId4;
 
     /**
      * @deprecated use getReferenceUuid()
+     *
      * @return string
      */
     public function getReferenceTransactionId() {
@@ -55,6 +61,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
 
     /**
      * @deprecated use setReferenceUuid()
+     *
      * provide a reference transaction id (or registration id) here if necessary (i.e. for void/capture/refund or
      * recurring debits)
      *
@@ -88,6 +95,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
 
     /**
      * @deprecated not in use anymore
+     *
      * @return string
      */
     public function getReferenceCustomerId() {
@@ -98,6 +106,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
      * set a reference customer if (if instructed by documentation)
      *
      * @deprecated not in use anymore
+     *
      * @param string $referenceCustomerId
      * @return $this
      */
@@ -108,6 +117,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
 
     /**
      * @deprecated not in use anymore
+     *
      * @return string
      */
     public function getReferenceId2() {
@@ -116,6 +126,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
 
     /**
      * @deprecated not in use anymore
+     *
      * @param string $referenceId2
      *
      * @return $this
@@ -127,6 +138,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
 
     /**
      * @deprecated not in use anymore
+     *
      * @return string
      */
     public function getReferenceId3() {
@@ -135,6 +147,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
 
     /**
      * @deprecated not in use anymore
+     *
      * @param string $referenceId3
      *
      * @return $this
@@ -146,6 +159,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
 
     /**
      * @deprecated not in use anymore
+     *
      * @return string
      */
     public function getReferenceId4() {
@@ -154,6 +168,7 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
 
     /**
      * @deprecated not in use anymore
+     *
      * @param string $referenceId4
      *
      * @return $this

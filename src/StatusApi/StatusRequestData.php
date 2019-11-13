@@ -12,7 +12,8 @@ use Ixopay\Client\Exception\TypeException;
 class StatusRequestData {
 
     /**
-     * @deprecated use uuid
+     * @deprecated use $uuid
+     *
      * the referenceId received by the transaction response
      *
      * @var string -
@@ -43,7 +44,8 @@ class StatusRequestData {
     }
 
     /**
-     * @deprecated use getUuid
+     * @deprecated use getUuid()
+     *
      * @return string
      */
     public function getTransactionUuid() {
@@ -51,7 +53,8 @@ class StatusRequestData {
     }
 
     /**
-     * @deprecated use setUuid
+     * @deprecated use setUuid()
+     *
      * @param string $transactionUuid
      *
      * @return StatusRequestData

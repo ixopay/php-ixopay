@@ -132,9 +132,10 @@ class Client {
     protected $language;
 
     /**
+     * @deprecated not in use anymore
+     *
      * set to true if you want to perform a test transaction
      *
-     * @deprecated
      * @var bool
      */
     protected $testMode;
@@ -445,7 +446,8 @@ class Client {
     }
 
     /**
-     * @deprecated use signAndSendJson
+     * @deprecated use signAndSendJson()
+     *
      * signs and send a well-formed transaction xml
      *
      * @param string $xml

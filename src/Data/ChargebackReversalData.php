@@ -10,7 +10,8 @@ namespace Ixopay\Client\Data;
 class ChargebackReversalData {
 
     /**
-     * @deprecated use originalUuid
+     * @deprecated use $originalUuid
+     *
      * @var string
      */
     protected $originalTransactionId;
@@ -21,7 +22,8 @@ class ChargebackReversalData {
     protected $originalUuid;
 
     /**
-     * @deprecated use originalReferenceUuid
+     * @deprecated use $originalReferenceUuid
+     *
      * @var string
      */
     protected $originalReferenceId;
@@ -32,7 +34,8 @@ class ChargebackReversalData {
     protected $originalReferenceUuid;
 
     /**
-     * @deprecated use chargebackReferenceUuid
+     * @deprecated use $chargebackReferenceUuid
+     *
      * @var string
      */
     protected $chargebackReferenceId;
@@ -120,7 +123,8 @@ class ChargebackReversalData {
     }
 
     /**
-     * @deprecated use getOriginalUuid
+     * @deprecated use getOriginalUuid()
+     *
      * @return string
      */
     public function getOriginalTransactionId() {
@@ -128,7 +132,8 @@ class ChargebackReversalData {
     }
 
     /**
-     * @deprecated use setOriginalUuid
+     * @deprecated use setOriginalUuid()
+     *
      * @param string $originalTransactionId
      */
     public function setOriginalTransactionId($originalTransactionId) {
@@ -136,7 +141,8 @@ class ChargebackReversalData {
     }
 
     /**
-     * @deprecated use getOriginalReferenceUuid
+     * @deprecated use getOriginalReferenceUuid()
+     *
      * @return string
      */
     public function getOriginalReferenceId() {
@@ -144,7 +150,8 @@ class ChargebackReversalData {
     }
 
     /**
-     * @deprecated use setOriginalReferenceUuid
+     * @deprecated use setOriginalReferenceUuid()
+     *
      * @param string $originalReferenceId
      */
     public function setOriginalReferenceId($originalReferenceId) {
@@ -152,7 +159,8 @@ class ChargebackReversalData {
     }
 
     /**
-     * @deprecated use getChargebackReferenceUuid
+     * @deprecated use getChargebackReferenceUuid()
+     *
      * @return string
      */
     public function getChargebackReferenceId() {
@@ -160,7 +168,8 @@ class ChargebackReversalData {
     }
 
     /**
-     * @deprecated use setChargebackReferenceUuid
+     * @deprecated use setChargebackReferenceUuid()
+     *
      * @param string $chargebackReferenceId
      */
     public function setChargebackReferenceId($chargebackReferenceId) {

@@ -93,6 +93,7 @@ class ScheduleData implements AmountableInterface {
 
     /**
      * @deprecated use getRegistrationUuid()
+     *
      * @return string
      */
     public function getRegistrationId() {
@@ -100,10 +101,11 @@ class ScheduleData implements AmountableInterface {
     }
 
     /**
+     * @deprecated use setRegistrationUuid()
+     *
      * @param string $registrationId
      *
      * @return ScheduleData
-     * @deprecated use setRegistrationUuid()
      */
     public function setRegistrationId($registrationId) {
         $this->setRegistrationUuid($registrationId);

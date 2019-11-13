@@ -43,7 +43,7 @@ class Result {
     protected $result;
 
     /**
-     * @deprecated use uuid
+     * @deprecated use $uuid
      *
      * reference id from the payment gateway
      *
@@ -59,7 +59,7 @@ class Result {
     protected $uuid;
 
     /**
-     * @deprecated use merchantTransactionId
+     * @deprecated use $merchantTransactionId
      *
      * your transaction id from the initial transaction (if returned by adapter)
      *
@@ -103,14 +103,14 @@ class Result {
     protected $currency;
 
     /**
-     * @deprecated use scheduleData
+     * @deprecated use $scheduleData
      *
      * @var string
      */
     protected $scheduleId;
 
     /**
-     * @deprecated use scheduleData
+     * @deprecated use $scheduleData
      *
      * @var string
      */
@@ -147,7 +147,7 @@ class Result {
     protected $adapterCode = null;
 
     /**
-     * @deprecated
+     * @deprecated use $errorMessage, $errorCode, $adapterMessage, $adapterCode
      *
      * @var Error[]
      */
@@ -250,7 +250,7 @@ class Result {
     }
 
     /**
-     * @deprecated use getErrorMessage(), getErrorCode(), getAdapterMessage(), getAdapterCode();
+     * @deprecated use getErrorMessage(), getErrorCode(), getAdapterMessage(), getAdapterCode()
      *
      * @return Error[]
      */

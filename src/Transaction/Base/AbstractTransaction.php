@@ -13,6 +13,7 @@ class AbstractTransaction {
 
     /**
      * @deprecated use $merchantTransactionId
+     *
      * @var string
      */
     protected $transactionId;
@@ -50,6 +51,7 @@ class AbstractTransaction {
 
     /**
      * @deprecated use getMerchantTransactionId()
+     *
      * @return string
      */
     public function getTransactionId() {
@@ -58,6 +60,7 @@ class AbstractTransaction {
 
     /**
      * @deprecated use setMerchantTransactionId()
+     *
      * this is your own transaction id
      * NOTE: your transaction ids MUST be unique
      *
@@ -212,9 +215,10 @@ class AbstractTransaction {
     }
 
     /**
+     * @deprecated not in use anymore
+     *
      * provider request information here (if required by the payment method)
      *
-     * @deprecated not in use anymore
      * @param Request $request
      *
      * @return $this

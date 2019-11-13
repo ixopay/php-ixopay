@@ -34,7 +34,8 @@ class StatusResult {
     const TYPE_PAYOUT = 'PAYOUT';
 
     /**
-     * @deprecated use success
+     * @deprecated use $success
+     *
      * @var bool
      */
     protected $operationSuccess;
@@ -50,7 +51,8 @@ class StatusResult {
     protected $transactionStatus;
 
     /**
-     * @deprecated use uuid
+     * @deprecated use $uuid
+     *
      * reference id from the payment gateway
      *
      * @var string
@@ -105,6 +107,7 @@ class StatusResult {
 
     /**
      * transaction errors
+     *
      * @var Error[]
      */
     protected $errors = array();
@@ -182,7 +185,8 @@ class StatusResult {
     }
 
     /**
-     * @deprecated use isSuccess
+     * @deprecated use $isSuccess
+     *
      * @return bool
      */
     public function isOperationSuccess() {
@@ -190,7 +194,8 @@ class StatusResult {
     }
 
     /**
-     * @deprecated use setSuccess
+     * @deprecated use setSuccess()
+     *
      * @param bool $operationSuccess
      *
      * @return $this

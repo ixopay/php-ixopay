@@ -41,9 +41,10 @@ class Result {
     protected $success;
 
     /**
+     * @deprecated use $uuid
+     *
      * reference id from the payment gateway
      *
-     * @deprecated use $uuid
      * @var string
      */
     protected $referenceId;
@@ -62,8 +63,10 @@ class Result {
     protected $purchaseId;
 
     /**
-     * id for vault registration (if applicable)
      * @deprecated not in use anymore
+     *
+     * id for vault registration (if applicable)
+     *
      * @var string
      */
     protected $registrationId;
@@ -165,6 +168,7 @@ class Result {
 
     /**
      * @deprecated use setUuid()
+     *
      * @param string $referenceId
      * @return $this
      */
@@ -268,8 +272,10 @@ class Result {
     }
 
     /**
-     * contains IxoPay's transaction id
      * @deprecated use getUuid()
+     *
+     * contains IxoPay's transaction id
+     *
      * @return string
      */
     public function getReferenceId() {
