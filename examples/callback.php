@@ -36,7 +36,10 @@ if ($status === Result::RESULT_OK) {
 } elseif ($status === Result::RESULT_ERROR) {
 
     //payment failed, handle errors
-    $errors = $callbackResult->getErrors();
+    // $callbackResult->getErrorMessage();
+    // $callbackResult->getErrorCode();
+    // $callbackResult->getAdapterMessage();
+    // $callbackResult->getAdapterCode();
 
 }
 

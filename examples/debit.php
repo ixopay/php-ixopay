@@ -25,7 +25,7 @@ $merchantTransactionId = $merchantTransactionId = uniqid('myId', true) . '-' . d
 
 // define transaction relevant object
 $debit = new Debit();
-$debit->setTransactionId($merchantTransactionId)
+$debit->setMerchantTransactionId($merchantTransactionId)
 	  ->setSuccessUrl('http://example.com/success')
 	  ->setCancelUrl('http://example.com/cancel')
 	  ->setCallbackUrl('http://example.com/callback')
@@ -39,11 +39,11 @@ $result = $client->debit($debit);
 // handle the result
 if ($result->isSuccess()) {
 
-    // store the referenceUuid you receive from the gateway for future references
-    $gatewayReferenceId = $result->getReferenceUuid();
+    // store the uuid you receive from the gateway for future references
+    $gatewayReferenceId = $result->getUuid();
 
     // handle result based on it's returnType
-    if ($result->getReturnType() == Result::RETURN_TYPE_ERROR) {
+    if ($result->getReturnType() === Result::RETURN_TYPE_ERROR) {
 
         // read errors on error handling
         $errors = $result->getErrors();
@@ -51,22 +51,30 @@ if ($result->isSuccess()) {
         // handle the error
         // e.g. cancelCart();
 
-    } elseif ($result->getReturnType() == Result::RETURN_TYPE_REDIRECT) {
+    } elseif ($result->getReturnType() === Result::RETURN_TYPE_REDIRECT) {
 
         // redirect the user
         header('Location: '.$result->getRedirectUrl());
 
-    } elseif ($result->getReturnType() == Result::RETURN_TYPE_PENDING) {
+    } elseif ($result->getReturnType() === Result::RETURN_TYPE_PENDING) {
 
         // payment is pending: wait for callback to complete
 
         // handle pending
         // e.g. setCartToPending();
 
-    } elseif ($result->getReturnType() == Result::RETURN_TYPE_FINISHED) {
+    } elseif ($result->getReturnType() === Result::RETURN_TYPE_FINISHED) {
 
         //payment is finished, update your cart/payment transaction
         // e.g. finishCart();
     }
+
+} else{
+
+    // handle error
+    // $result->getErrorMessage()
+    // $result->getErrorCode()
+    // $result->getAdapterMessage()
+    // $result->getAdapterCode()
 
 }

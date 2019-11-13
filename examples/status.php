@@ -20,3 +20,11 @@ $statusData->setUuid('uuid_of_transaction_here');
 $result = $client->sendStatusRequest($statusData);
 
 // handle result
+if($result->isSuccess()){
+    // $result->getUuid();
+    // $result->getTransactionStatus();
+    // etc
+} else{
+    // $result->getErrorMessage();
+    // $result->getErrorCode();
+}

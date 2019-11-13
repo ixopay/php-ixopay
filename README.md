@@ -40,7 +40,7 @@ $customer->setBillingCountry("AT")
 $merchantTransactionId = uniqid('myId', true) . '-' . date('YmdHis');
 
 $debit = new Debit();
-$debit->setTransactionId($merchantTransactionId)
+$debit->setMerchantTransactionId($merchantTransactionId)
 	  ->setSuccessUrl($redirectUrl)
 	  ->setCancelUrl($redirectUrl)
 	  ->setCallbackUrl($callbackUrl)
@@ -54,8 +54,8 @@ $result = $client->debit($debit);
 // handle the result
 if ($result->isSuccess()) {
 
-    // store the referenceUuid you receive from the gateway for future references
-    $gatewayReferenceId = $result->getReferenceUuid(); 
+    // store the uuid you receive from the gateway for future references
+    $gatewayReferenceId = $result->getUuid(); 
 	
     // handle result based on it's returnType    
     if ($result->getReturnType() == Result::RETURN_TYPE_ERROR) {

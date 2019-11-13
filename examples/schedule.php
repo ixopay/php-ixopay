@@ -23,7 +23,12 @@ $startSchedule->setRegistrationUuid('uuid_of_initial_register_here')
 $result = $client->startSchedule($startSchedule);
 
 // handle result here
-
+if($result->isSuccess()){
+    // $result->getScheduleId();
+} else{
+    // $result->getErrorMessage();
+    // $result->getErrorCode();
+}
 
 /*
 // other schedule handling examples

@@ -15,3 +15,8 @@ $parameters = ['param1' => 'someValue'];
 $result = $client->getOptions('options_identifier_here', $parameters);
 
 // handle result
+if($result->isSuccess()){
+    // $result->getOptions()
+} else{
+    // $result->getErrorMessage()
+}
