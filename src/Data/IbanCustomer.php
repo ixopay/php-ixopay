@@ -8,7 +8,7 @@ use Ixopay\Client\Exception\InvalidValueException;
 /**
  * Class IbanCustomer
  *
- * @deprecated see IbanData
+ * @deprecated see Ixopay\Client\Data\PaymentData\IbanData
  * @package Ixopay\Client\Data
  */
 class IbanCustomer extends Customer {

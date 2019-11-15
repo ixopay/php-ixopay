@@ -11,11 +11,19 @@ use Ixopay\Client\Json\DataObject;
  */
 class CustomerProfileData extends DataObject {
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $profileGuid;
-    /** @var string */
+
+    /**
+     * @var string
+     */
     protected $customerIdentification;
-    /** @var boolean */
+
+    /**
+     * @var boolean
+     */
     protected $markAsPreferred;
 
     /**

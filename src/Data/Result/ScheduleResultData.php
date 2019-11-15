@@ -11,11 +11,19 @@ namespace Ixopay\Client\Data\Result;
  */
 class ScheduleResultData extends ResultData {
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $scheduleId;
-    /** @var string */
+
+    /**
+     * @var string
+     */
     protected $scheduleStatus;
-    /** @var \DateTime */
+
+    /**
+     * @var \DateTime
+     */
     protected $scheduledAt;
 
     /**

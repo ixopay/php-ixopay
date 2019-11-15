@@ -14,7 +14,6 @@ use Ixopay\Client\Data\ThreeDSecureData;
 use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Schedule\ScheduleWithTransaction;
 use Ixopay\Client\Schedule\StartSchedule;
-use Ixopay\Client\StatusApi\StatusRequestData;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
@@ -560,7 +559,8 @@ class JsonGenerator {
     }
 
     /**
-     * removes null values
+     * removes unfilled values
+     *   empty() cant be used as it would remove false booleans in the process!!
      *
      * @param $data
      */
@@ -569,11 +569,17 @@ class JsonGenerator {
             if(is_array($value)){
                  $this->purgeNullValues($value);
             }
-            // remove null and empty arrays
-            if($value === null || (is_array($value) && count($value) === 0)){
+            // remove unfilled values
+            if($value === null || $value === '' || (is_array($value) && count($value) === 0)){
                 unset($data[$key]);
             }
         }
     }
+
+    /**
+     * @deprecated not used anymore, only relevant for xml
+     * @param string $namespaceRoot
+     */
+    public function setNamespaceRoot($namespaceRoot) {}
 
 }

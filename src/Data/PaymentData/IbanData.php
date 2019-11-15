@@ -9,13 +9,24 @@ namespace Ixopay\Client\Data\PaymentData;
  */
 class IbanData extends PaymentData {
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $iban;
-    /** @var string */
+
+    /**
+     * @var string
+     */
     protected $bic;
-    /** @var string */
+
+    /**
+     * @var string
+     */
     protected $mandateId;
-    /** @var \DateTime */
+
+    /**
+     * @var \DateTime
+     */
     protected $mandateDate;
 
     /**

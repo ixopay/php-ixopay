@@ -40,83 +40,103 @@ class Customer extends Data {
      * @var string
      */
     protected $billingAddress1;
+
     /**
      * @var string
      */
     protected $billingAddress2;
+
     /**
      * @var string
      */
     protected $billingCity;
+
     /**
      * @var string
      */
     protected $billingPostcode;
+
     /**
      * @var string
      */
     protected $billingState;
+
     /**
      * @var string
      */
     protected $billingCountry;
+
     /**
      * @var string
      */
     protected $billingPhone;
+
     /**
      * @var string
      */
     protected $shippingFirstName;
+
     /**
      * @var string
      */
     protected $shippingLastName;
+
     /**
      * @var string
      */
     protected $shippingCompany;
+
     /**
      * @var string
      */
     protected $shippingAddress1;
+
     /**
      * @var string
      */
     protected $shippingAddress2;
+
     /**
      * @var string
      */
     protected $shippingCity;
+
     /**
      * @var string
      */
     protected $shippingPostcode;
+
     /**
      * @var string
      */
     protected $shippingState;
+
     /**
      * @var string
      */
     protected $shippingCountry;
+
     /**
      * @var string
      */
     protected $shippingPhone;
+
     /**
      * @var string
      */
     protected $company;
+
     /**
      * @var string
      */
     protected $email;
 
+
     /**
      * @var bool
      */
     protected $emailVerified;
+
 
     /**
      * @var string
@@ -196,11 +216,15 @@ class Customer extends Data {
     }
 
     /**
-     * @param \DateTime $birthDate
+     * @param string|\DateTime $birthDate
      *
      * @return $this
+     * @throws \Exception
      */
     public function setBirthDate($birthDate) {
+        if (is_string($birthDate)) {
+            $birthDate = new \DateTime($birthDate);
+        }
         $this->birthDate = $birthDate;
         return $this;
     }

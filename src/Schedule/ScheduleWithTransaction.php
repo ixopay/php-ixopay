@@ -18,7 +18,6 @@ class ScheduleWithTransaction implements AmountableInterface {
     const PERIOD_UNIT_MONTH = 'MONTH';
     const PERIOD_UNIT_YEAR = 'YEAR';
 
-
     /**
      * @var float
      */
@@ -142,12 +141,16 @@ class ScheduleWithTransaction implements AmountableInterface {
     }
 
     /**
-     * @param \DateTime|null $startDateTime
+     * @param string|\DateTime|null $startDateTime
      *
      * @return $this
+     * @throws \Exception
      */
     public function setStartDateTime($startDateTime)
     {
+        if (is_string($startDateTime)) {
+            $startDateTime = new \DateTime($startDateTime);
+        }
         $this->startDateTime = $startDateTime;
         return $this;
     }
