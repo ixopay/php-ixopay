@@ -31,6 +31,7 @@ use Ixopay\Client\Transaction\Register;
 use Ixopay\Client\Transaction\Result;
 use Ixopay\Client\Transaction\VoidTransaction;
 use Ixopay\Client\Json\JsonGenerator;
+use Ixopay\Client\Xml\XmlGenerator;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -1224,7 +1225,12 @@ class Client {
      * @return string
      */
     public function buildXml($transactionMethod, AbstractTransaction $transaction) {
-        $dom = $this->getGenerator()->generateTransaction(lcfirst($transactionMethod), $transaction, $this->username,
+        $host = parse_url(self::$gatewayUrl, PHP_URL_HOST);
+
+        $xmlGenerator = new XmlGenerator();
+        $xmlGenerator->setNamespaceRoot('http://'.$host);
+
+        $dom = $xmlGenerator->generateTransaction(lcfirst($transactionMethod), $transaction, $this->username,
             $this->password, $this->language);
         $xml = $dom->saveXML();
 

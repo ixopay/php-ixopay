@@ -166,6 +166,13 @@ class Result {
      */
     protected $adapterCode = null;
 
+    public function __construct(){
+        $this->customer = new Customer();
+        $this->customerProfileData = new CustomerProfileData();
+        $this->riskCheckData = new RiskCheckData();
+        $this->scheduleData = new ScheduleResultData();
+    }
+
     /**
      * @deprecated use setUuid()
      *

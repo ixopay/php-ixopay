@@ -295,7 +295,7 @@ class XmlGenerator {
      *
      * @throws TypeException
      */
-    protected function appendScheduleNode(\DOMNode $parentNode, ScheduleData $scheduleData) {
+    protected function appendScheduleNode(\DOMNode $parentNode, $scheduleData) {
 
         $scheduleNode = $this->document->createElement('startSchedule');
 
