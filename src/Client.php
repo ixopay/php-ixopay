@@ -12,6 +12,7 @@ use Ixopay\Client\Json\ErrorResponse;
 use Ixopay\Client\Exception\RateLimitException;
 use Ixopay\Client\Json\JsonParser;
 use Ixopay\Client\Options\OptionsResult;
+use Ixopay\Client\Schedule\ContinueSchedule;
 use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Exception\InvalidValueException;
@@ -236,7 +237,6 @@ class Client {
                 break;
         }
 
-        $endpoint = str_replace('[API_KEY]', $this->getApiKey(), $endpoint);
         $httpResponse = $this->sendJsonApiRequest($endpoint, $json);
 
         return $this->getParser()->parseTransactionResult($httpResponse->getBody());
@@ -285,18 +285,17 @@ class Client {
     }
 
     /**
-     * either pass ScheduleData object OR scheduleId + continueDateTime
+     * either pass ScheduleData object OR ContinueSchedule
      *
-     * @param ScheduleData|string $scheduleData
-     * @param \DateTime|null      $continueDateTime
+     * @param ScheduleData|ContinueSchedule $scheduleData
      *
      * @return Schedule\ScheduleResult
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      */
-    public function continueSchedule($scheduleData, \DateTime $continueDateTime=null) {
-        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_CONTINUE, [$scheduleData, $continueDateTime]);
+    public function continueSchedule($scheduleData) {
+        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_CONTINUE, $scheduleData);
     }
 
     /**
@@ -317,11 +316,11 @@ class Client {
      * backwards compatible via ScheduleResultData
      * => in future only the new params should be supported:
      *  - StartSchedule (obj): used to start a schedule
-     *  - array [scheduleId, continueDateTime]: used to continue schedule
+     *  - ContinueSchedule (obj): used to continue schedule
      *  - string [scheduleId]: used to show, pause or cancel a schedule
      *
-     * @param string                                      $action
-     * @param ScheduleData|StartSchedule|string|array     $scheduleData
+     * @param string                                                 $action
+     * @param ScheduleData|StartSchedule|ContinueSchedule|string     $scheduleData
      *
      * @return Schedule\ScheduleResult
      * @throws ClientException
@@ -355,21 +354,19 @@ class Client {
         if($action !== self::SCHEDULE_ACTION_START) {
 
             //backwards compatible
-            if ($scheduleData instanceof ScheduleData) {
+            if ($scheduleData instanceof ScheduleData || $scheduleData instanceof ContinueSchedule) {
                 $endpoint = str_replace('{scheduleId}', $scheduleData->getScheduleId(), $endpoint);
-            } elseif (is_array($scheduleData)) {
-                //continueSchedule [id, datetime]
-                $endpoint = str_replace('{scheduleId}', $scheduleData[0], $endpoint);
             } elseif (is_string($scheduleData)) {
                 $endpoint = str_replace('{scheduleId}', $scheduleData, $endpoint);
             }
 
         }
 
-        if($action !== self::SCHEDULE_ACTION_SHOW) {
-            $httpResponse = $this->sendJsonApiRequest($endpoint, $json);
+        if($action === self::SCHEDULE_ACTION_SHOW) {
+            // GET request only
+            $httpResponse = $this->sendJsonApiRequest($endpoint, [], true);
         } else{
-            $httpResponse = $this->sendJsonApiRequest($endpoint);
+            $httpResponse = $this->sendJsonApiRequest($endpoint, $json);
         }
 
         return $this->getParser()->parseScheduleResult($httpResponse->getBody());
@@ -396,26 +393,28 @@ class Client {
             throw new TypeException('Either transactionUuid or merchantTransactionId is required!');
         }
 
-        $httpResponse = $this->sendJsonApiRequest($endpoint);
+        $httpResponse = $this->sendJsonApiRequest($endpoint, [], true);
 
         return $this->getParser()->parseStatusResult($httpResponse->getBody());
     }
 
     /**
-     * @param array $dataArray
      * @param string $path
+     * @param array  $dataArray
+     * @param bool   $get
+     *
      * @return Response
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      */
-    protected function sendJsonApiRequest($path, $dataArray=null) {
+    protected function sendJsonApiRequest($path, $dataArray=[], $get=false) {
 
         $url = self::$gatewayUrl . $path;
 
-        $body = $dataArray ? json_encode($dataArray) : null;
+        $body = $get ? '' : json_encode($dataArray);
 
-        $httpResponse = $this->signAndSendJson($body, $url, $this->username, $this->password, $this->apiKey, $this->sharedSecret);
+        $httpResponse = $this->signAndSendJson($body, $url, $this->username, $this->password, $this->apiKey, $this->sharedSecret, $get);
 
         $statusCode = $httpResponse->getStatusCode();
 
@@ -486,22 +485,22 @@ class Client {
     /**
      * signs and send a json POST request
      *
-     * @param        $jsonBody
-     * @param string $url
+     * @param         $jsonBody
+     * @param string  $url
      *
-     * @param string $username
-     * @param string $password
-     * @param string $apiKey
-     * @param string $sharedSecret
+     * @param string  $username
+     * @param string  $password
+     * @param string  $apiKey
+     * @param string  $sharedSecret
+     * @param boolean $get
      *
      * @return Response
      * @throws Http\Exception\ClientException
      */
-    public function signAndSendJson($jsonBody, $url, $username, $password, $apiKey, $sharedSecret) {
+    public function signAndSendJson($jsonBody, $url, $username, $password, $apiKey, $sharedSecret, $get) {
         $url = str_replace('[API_KEY]', $apiKey, $url);
 
-        // no body = get
-        $type = $jsonBody ? 'POST' : 'GET';
+        $type = $get ? 'GET' : 'POST';
 
         $this->log(LogLevel::DEBUG, "{$type} $url ",
             array(
@@ -516,10 +515,10 @@ class Client {
         $curl->signJson($sharedSecret, $url, $jsonBody, $type)
              ->setAuthentication($username, $password);
 
-        if($jsonBody){
-            $response = $curl->post($url, $jsonBody);
-        } else{
+        if($get){
             $response = $curl->get($url);
+        } else{
+            $response = $curl->post($url, $jsonBody);
         }
 
         $this->log(LogLevel::DEBUG, "RESPONSE: " . $response->getBody(),

@@ -326,4 +326,16 @@ class ScheduleResult {
         return $this;
     }
 
+    public function toArray(){
+        return [
+            'success' => $this->isSuccess(),
+            'scheduleId' => $this->getScheduleId(),
+            'registrationUuid' => $this->getRegistrationUuid(),
+            'oldStatus' => $this->getOldStatus(),
+            'newStatus' => $this->getNewStatus(),
+            'scheduledAt' => $this->getScheduledAt(),
+            'errorMessage' => $this->getErrorMessage(),
+            'errorCode' => $this->getErrorCode(),
+        ];
+    }
 }

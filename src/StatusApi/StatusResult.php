@@ -163,7 +163,7 @@ class StatusResult {
      *
      * @var int
      */
-    protected $errorCode = 0;
+    protected $errorCode = null;
 
     /**
      * @return bool

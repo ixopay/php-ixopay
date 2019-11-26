@@ -11,6 +11,7 @@ use Ixopay\Client\Data\PaymentData\IbanData;
 use Ixopay\Client\Data\PaymentData\PaymentData;
 use Ixopay\Client\Data\PaymentData\WalletData;
 use Ixopay\Client\Data\ThreeDSecureData;
+use Ixopay\Client\Schedule\ContinueSchedule;
 use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Schedule\ScheduleWithTransaction;
 use Ixopay\Client\Schedule\StartSchedule;
@@ -82,8 +83,8 @@ class JsonGenerator {
     }
 
     /**
-     * @param string                                     $action
-     * @param ScheduleData|StartSchedule|string|array    $scheduleData
+     * @param string                                                $action
+     * @param ScheduleData|StartSchedule|ContinueSchedule|string    $scheduleData
      *
      * @return array|null
      */
@@ -117,16 +118,9 @@ class JsonGenerator {
                 break;
 
             case Client::SCHEDULE_ACTION_CONTINUE:
-                /* backwards compatible */
-                if($scheduleData instanceof ScheduleData) {
-                    $json = [
-                        'continueDateTime' => $scheduleData->getContinueDateTimeFormatted(),
-                    ];
-                } else {
-                    $json = [
-                        'continueDateTime' => $scheduleData[1] ? $scheduleData[1]->format('Y-m-d H:i:s T') : null,
-                    ];
-                }
+                $json = [
+                    'continueDateTime' => $scheduleData->getContinueDateTimeFormatted(),
+                ];
 
                 break;
         }

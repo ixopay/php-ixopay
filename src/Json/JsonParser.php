@@ -14,10 +14,8 @@ use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Data\Result\ScheduleResultData;
 use Ixopay\Client\Data\Result\WalletData as ReturnWalletData;
 use Ixopay\Client\Data\RiskCheckData;
-use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Options\OptionsResult;
 use Ixopay\Client\Schedule\ScheduleResult;
-use Ixopay\Client\Schedule\ScheduleError;
 use Ixopay\Client\StatusApi\StatusResult;
 use Ixopay\Client\Transaction\Error;
 use Ixopay\Client\Transaction\Result;
@@ -353,6 +351,7 @@ class JsonParser {
      * @param $data
      *
      * @return Customer
+     * @throws \Exception
      */
     protected function parseCustomer($data){
         $customer = new Customer();
@@ -383,6 +382,7 @@ class JsonParser {
         $customer->setEmailVerified($this->arrGet($data, 'emailVerified'));
         $customer->setIpAddress($this->arrGet($data, 'ipAddress'));
         $customer->setNationalId($this->arrGet($data, 'nationalId'));
+        $customer->setExtraData($this->arrGet($data, 'extraData'));
 
         return $customer;
     }

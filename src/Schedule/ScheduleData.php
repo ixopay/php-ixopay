@@ -10,6 +10,10 @@ use Ixopay\Client\Transaction\Base\AmountableInterface;
  *   not used by other schedule actions. Additionally it's not
  *   clear which actions require which properties.
  *
+ *  - StartSchedule (obj): used to start a schedule
+ *  - ContinueSchedule (obj): used to continue schedule
+ *  - string [scheduleId]: used to show, pause or cancel a schedule
+ *
  * @package Ixopay\Client\Data
  */
 class ScheduleData implements AmountableInterface {

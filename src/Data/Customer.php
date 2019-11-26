@@ -151,6 +151,11 @@ class Customer extends Data {
     protected $nationalId;
 
     /**
+     * @var array
+     */
+    protected $extraData = array();
+
+    /**
      * @return string
      */
     public function getIdentification() {
@@ -613,6 +618,25 @@ class Customer extends Data {
      */
     public function setShippingCompany($shippingCompany) {
         $this->shippingCompany = $shippingCompany;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtraData()
+    {
+        return $this->extraData;
+    }
+
+    /**
+     * @param array $extraData
+     *
+     * @return Customer
+     */
+    public function setExtraData($extraData)
+    {
+        $this->extraData = $extraData;
         return $this;
     }
 
