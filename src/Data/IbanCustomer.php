@@ -90,8 +90,9 @@ class IbanCustomer extends Customer {
     }
 
     /**
-     * @param \DateTime $mandateDate
+     * @param \DateTime|string $mandateDate
      *
+     * @return IbanCustomer
      * @throws InvalidValueException
      */
     public function setMandateDate($mandateDate) {

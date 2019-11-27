@@ -186,11 +186,15 @@ class ScheduleData implements AmountableInterface {
     }
 
     /**
-     * @param null|\DateTime
+     * @param \DateTime|string
      *
      * @return ScheduleData
+     * @throws \Exception
      */
     public function setStartDateTime($startDateTime) {
+        if (!empty($startDateTime) && is_string($startDateTime)) {
+            $startDateTime = new \DateTime($startDateTime);
+        }
         $this->startDateTime = $startDateTime;
 
         return $this;

@@ -177,10 +177,17 @@ class ChargebackData {
     }
 
     /**
-     * @param \DateTime $chargebackDateTime
+     * @param \DateTime|string $chargebackDateTime
+     *
+     * @return $this
+     * @throws \Exception
      */
-    public function setChargebackDateTime(\DateTime $chargebackDateTime) {
+    public function setChargebackDateTime($chargebackDateTime) {
+        if (!empty($chargebackDateTime) && is_string($chargebackDateTime)) {
+            $chargebackDateTime = new \DateTime($chargebackDateTime);
+        }
         $this->chargebackDateTime = $chargebackDateTime;
+        return $this;
     }
 
     /**

@@ -227,7 +227,7 @@ class Customer extends Data {
      * @throws \Exception
      */
     public function setBirthDate($birthDate) {
-        if (is_string($birthDate)) {
+        if (!empty($birthDate) && is_string($birthDate)) {
             $birthDate = new \DateTime($birthDate);
         }
         $this->birthDate = $birthDate;

@@ -58,12 +58,16 @@ class ContinueSchedule {
     }
 
     /**
-     * @param \DateTime $continueDateTime
+     * @param \DateTime|string $continueDateTime
      *
      * @return ContinueSchedule
+     * @throws \Exception
      */
     public function setContinueDateTime($continueDateTime)
     {
+        if (!empty($continueDateTime) && is_string($continueDateTime)) {
+            $continueDateTime = new \DateTime($continueDateTime);
+        }
         $this->continueDateTime = $continueDateTime;
         return $this;
     }

@@ -141,14 +141,14 @@ class ScheduleWithTransaction implements AmountableInterface {
     }
 
     /**
-     * @param string|\DateTime|null $startDateTime
+     * @param string|\DateTime $startDateTime
      *
      * @return $this
      * @throws \Exception
      */
     public function setStartDateTime($startDateTime)
     {
-        if (is_string($startDateTime)) {
+        if (!empty($startDateTime) && is_string($startDateTime)) {
             $startDateTime = new \DateTime($startDateTime);
         }
         $this->startDateTime = $startDateTime;

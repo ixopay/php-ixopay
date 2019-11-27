@@ -73,12 +73,16 @@ class ScheduleResultData extends ResultData {
     }
 
     /**
-     * @param \DateTime $scheduledAt
+     * @param \DateTime|string $scheduledAt
      *
      * @return ScheduleResultData
+     * @throws \Exception
      */
     public function setScheduledAt($scheduledAt)
     {
+        if (!empty($scheduledAt) && is_string($scheduledAt)) {
+            $scheduledAt = new \DateTime($scheduledAt);
+        }
         $this->scheduledAt = $scheduledAt;
         return $this;
     }

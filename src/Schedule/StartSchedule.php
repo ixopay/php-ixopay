@@ -141,12 +141,16 @@ class StartSchedule {
     }
 
     /**
-     * @param \DateTime $startDateTime
+     * @param \DateTime|string $startDateTime
      *
      * @return StartSchedule
+     * @throws \Exception
      */
     public function setStartDateTime($startDateTime)
     {
+        if (!empty($startDateTime) && is_string($startDateTime)) {
+            $startDateTime = new \DateTime($startDateTime);
+        }
         $this->startDateTime = $startDateTime;
         return $this;
     }

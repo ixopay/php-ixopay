@@ -169,7 +169,6 @@ class ChargebackReversalData {
 
     /**
      * @deprecated use setChargebackReferenceUuid()
-     *
      * @param string $chargebackReferenceId
      */
     public function setChargebackReferenceId($chargebackReferenceId) {
@@ -185,9 +184,12 @@ class ChargebackReversalData {
 
     /**
      * @param float $amount
+     *
+     * @return $this
      */
     public function setAmount($amount) {
         $this->amount = $amount;
+        return $this;
     }
 
     /**
@@ -199,9 +201,12 @@ class ChargebackReversalData {
 
     /**
      * @param string $currency
+     *
+     * @return $this
      */
     public function setCurrency($currency) {
         $this->currency = $currency;
+        return $this;
     }
 
     /**
@@ -213,9 +218,12 @@ class ChargebackReversalData {
 
     /**
      * @param string $reason
+     *
+     * @return $this
      */
     public function setReason($reason) {
         $this->reason = $reason;
+        return $this;
     }
 
     /**
@@ -226,10 +234,17 @@ class ChargebackReversalData {
     }
 
     /**
-     * @param \DateTime $reversalDateTime
+     * @param \DateTime|string $reversalDateTime
+     *
+     * @return $this
+     * @throws \Exception
      */
     public function setReversalDateTime($reversalDateTime) {
+        if (!empty($reversalDateTime) && is_string($reversalDateTime)) {
+            $reversalDateTime = new \DateTime($reversalDateTime);
+        }
         $this->reversalDateTime = $reversalDateTime;
+        return $this;
     }
 
     /**

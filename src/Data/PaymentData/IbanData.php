@@ -109,7 +109,7 @@ class IbanData extends PaymentData {
      * @throws \Exception
      */
     public function setMandateDate($mandateDate) {
-        if (is_string($mandateDate)) {
+        if (!empty($mandateDate) && is_string($mandateDate)) {
             $mandateDate = new \DateTime($mandateDate);
         }
         $this->mandateDate = $mandateDate;

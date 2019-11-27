@@ -302,12 +302,16 @@ class ThreeDSecureData extends DataObject {
     }
 
     /**
-     * @param \DateTime $cardholderAuthenticationDateTime
+     * @param \DateTime|string $cardholderAuthenticationDateTime
      *
      * @return ThreeDSecureData
+     * @throws \Exception
      */
     public function setCardholderAuthenticationDateTime($cardholderAuthenticationDateTime)
     {
+        if (is_string($cardholderAuthenticationDateTime) && !empty($cardholderAuthenticationDateTime)) {
+            $cardholderAuthenticationDateTime = new \DateTime($cardholderAuthenticationDateTime);
+        }
         $this->cardholderAuthenticationDateTime = $cardholderAuthenticationDateTime;
         return $this;
     }
@@ -405,12 +409,16 @@ class ThreeDSecureData extends DataObject {
     }
 
     /**
-     * @param \DateTime $priorAuthenticationDateTime
+     * @param \DateTime|string $priorAuthenticationDateTime
      *
      * @return ThreeDSecureData
+     * @throws \Exception
      */
     public function setPriorAuthenticationDateTime($priorAuthenticationDateTime)
     {
+        if (is_string($priorAuthenticationDateTime) && !empty($priorAuthenticationDateTime)) {
+            $priorAuthenticationDateTime = new \DateTime($priorAuthenticationDateTime);
+        }
         $this->priorAuthenticationDateTime = $priorAuthenticationDateTime;
         return $this;
     }
@@ -470,12 +478,16 @@ class ThreeDSecureData extends DataObject {
     }
 
     /**
-     * @param \DateTime $cardholderAccountDate
+     * @param \DateTime|string $cardholderAccountDate
      *
      * @return ThreeDSecureData
+     * @throws \Exception
      */
     public function setCardholderAccountDate($cardholderAccountDate)
     {
+        if (is_string($cardholderAccountDate) && !empty($cardholderAccountDate)) {
+            $cardholderAccountDate = new \DateTime($cardholderAccountDate);
+        }
         $this->cardholderAccountDate = $cardholderAccountDate;
         return $this;
     }
@@ -518,12 +530,16 @@ class ThreeDSecureData extends DataObject {
     }
 
     /**
-     * @param \DateTime $cardholderAccountLastChange
+     * @param \DateTime|string $cardholderAccountLastChange
      *
      * @return ThreeDSecureData
+     * @throws \Exception
      */
     public function setCardholderAccountLastChange($cardholderAccountLastChange)
     {
+        if (is_string($cardholderAccountLastChange) && !empty($cardholderAccountLastChange)) {
+            $cardholderAccountLastChange = new \DateTime($cardholderAccountLastChange);
+        }
         $this->cardholderAccountLastChange = $cardholderAccountLastChange;
         return $this;
     }
@@ -564,12 +580,16 @@ class ThreeDSecureData extends DataObject {
     }
 
     /**
-     * @param \DateTime $cardholderAccountLastPasswordChange
+     * @param \DateTime|string $cardholderAccountLastPasswordChange
      *
      * @return ThreeDSecureData
+     * @throws \Exception
      */
     public function setCardholderAccountLastPasswordChange($cardholderAccountLastPasswordChange)
     {
+        if (is_string($cardholderAccountLastPasswordChange) && !empty($cardholderAccountLastPasswordChange)) {
+            $cardholderAccountLastPasswordChange = new \DateTime($cardholderAccountLastPasswordChange);
+        }
         $this->cardholderAccountLastPasswordChange = $cardholderAccountLastPasswordChange;
         return $this;
     }
@@ -610,12 +630,16 @@ class ThreeDSecureData extends DataObject {
     }
 
     /**
-     * @param \DateTime $shippingAddressFirstUsage
+     * @param \DateTime|string $shippingAddressFirstUsage
      *
      * @return ThreeDSecureData
+     * @throws \Exception
      */
     public function setShippingAddressFirstUsage($shippingAddressFirstUsage)
     {
+        if (is_string($shippingAddressFirstUsage) && !empty($shippingAddressFirstUsage)) {
+            $shippingAddressFirstUsage = new \DateTime($shippingAddressFirstUsage);
+        }
         $this->shippingAddressFirstUsage = $shippingAddressFirstUsage;
         return $this;
     }
@@ -770,12 +794,16 @@ class ThreeDSecureData extends DataObject {
     }
 
     /**
-     * @param \DateTime $paymentAccountAgeDate
+     * @param \DateTime|string $paymentAccountAgeDate
      *
      * @return ThreeDSecureData
+     * @throws \Exception
      */
     public function setPaymentAccountAgeDate($paymentAccountAgeDate)
     {
+        if (is_string($paymentAccountAgeDate) && !empty($paymentAccountAgeDate)) {
+            $paymentAccountAgeDate = new \DateTime($paymentAccountAgeDate);
+        }
         $this->paymentAccountAgeDate = $paymentAccountAgeDate;
         return $this;
     }
@@ -1044,12 +1072,16 @@ class ThreeDSecureData extends DataObject {
     }
 
     /**
-     * @param \DateTime $preOrderDate
+     * @param \DateTime|string $preOrderDate
      *
      * @return ThreeDSecureData
+     * @throws \Exception
      */
     public function setPreOrderDate($preOrderDate)
     {
+        if (is_string($preOrderDate) && !empty($preOrderDate)) {
+            $preOrderDate = new \DateTime($preOrderDate);
+        }
         $this->preOrderDate = $preOrderDate;
         return $this;
     }
@@ -1128,12 +1160,16 @@ class ThreeDSecureData extends DataObject {
     }
 
     /**
-     * @param \DateTime $purchaseDate
+     * @param \DateTime|string $purchaseDate
      *
      * @return ThreeDSecureData
+     * @throws \Exception
      */
     public function setPurchaseDate($purchaseDate)
     {
+        if (is_string($purchaseDate) && !empty($purchaseDate)) {
+            $purchaseDate = new \DateTime($purchaseDate);
+        }
         $this->purchaseDate = $purchaseDate;
         return $this;
     }
@@ -1155,12 +1191,16 @@ class ThreeDSecureData extends DataObject {
     }
 
     /**
-     * @param \DateTime $recurringExpiry
+     * @param \DateTime|string $recurringExpiry
      *
      * @return ThreeDSecureData
+     * @throws \Exception
      */
     public function setRecurringExpiry($recurringExpiry)
     {
+        if (is_string($recurringExpiry) && !empty($recurringExpiry)) {
+            $recurringExpiry = new \DateTime($recurringExpiry);
+        }
         $this->recurringExpiry = $recurringExpiry;
         return $this;
     }
