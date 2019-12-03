@@ -1117,8 +1117,14 @@ class Client {
             throw new InvalidValueException('The URL to the IxoPay Gateway can not be empty!');
         }
 
-        if (!\filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)) {
-            throw new InvalidValueException('The URL to the IxoPay Gateway should be a valid URL!');
+        if (PHP_MAJOR_VERSION < 7 || (PHP_MAJOR_VERSION === 7 && PHP_MINOR_VERSION < 3)) {
+            if (!\filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)) {
+                throw new InvalidValueException('The URL to the IxoPay Gateway should be a valid URL!');
+            }
+        } else {
+            if (!\filter_var($url, FILTER_VALIDATE_URL)) {
+                throw new InvalidValueException('The URL to the IxoPay Gateway should be a valid URL!');
+            }
         }
 
         static::$gatewayUrl = $url;
