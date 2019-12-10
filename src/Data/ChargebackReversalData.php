@@ -22,7 +22,7 @@ class ChargebackReversalData {
     protected $originalUuid;
 
     /**
-     * @deprecated use $originalReferenceUuid
+     * @deprecated use $originalMerchantTransactionId
      *
      * @var string
      */
@@ -31,10 +31,10 @@ class ChargebackReversalData {
     /**
      * @var string
      */
-    protected $originalReferenceUuid;
+    protected $originalMerchantTransactionId;
 
     /**
-     * @deprecated use $chargebackReferenceUuid
+     * @deprecated use $chargebackUuid
      *
      * @var string
      */
@@ -43,7 +43,7 @@ class ChargebackReversalData {
     /**
      * @var string
      */
-    protected $chargebackReferenceUuid;
+    protected $chargebackUuid;
 
     /**
      * @var float
@@ -87,38 +87,38 @@ class ChargebackReversalData {
     /**
      * @return string
      */
-    public function getOriginalReferenceUuid()
+    public function getOriginalMerchantTransactionId()
     {
-        return $this->originalReferenceUuid;
+        return $this->originalMerchantTransactionId;
     }
 
     /**
-     * @param string $originalReferenceUuid
+     * @param string $originalMerchantTransactionId
      *
      * @return $this
      */
-    public function setOriginalReferenceUuid($originalReferenceUuid)
+    public function setOriginalMerchantTransactionId($originalMerchantTransactionId)
     {
-        $this->originalReferenceUuid = $originalReferenceUuid;
+        $this->originalMerchantTransactionId = $originalMerchantTransactionId;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getChargebackReferenceUuid()
+    public function getChargebackUuid()
     {
-        return $this->chargebackReferenceUuid;
+        return $this->chargebackUuid;
     }
 
     /**
-     * @param string $chargebackReferenceUuid
+     * @param string $chargebackUuid
      *
      * @return $this
      */
-    public function setChargebackReferenceUuid($chargebackReferenceUuid)
+    public function setChargebackUuid($chargebackUuid)
     {
-        $this->chargebackReferenceUuid = $chargebackReferenceUuid;
+        $this->chargebackUuid = $chargebackUuid;
         return $this;
     }
 
@@ -141,38 +141,38 @@ class ChargebackReversalData {
     }
 
     /**
-     * @deprecated use getOriginalReferenceUuid()
+     * @deprecated use getOriginalMerchantTransactionId()
      *
      * @return string
      */
     public function getOriginalReferenceId() {
-        return $this->originalReferenceUuid;
+        return $this->originalMerchantTransactionId;
     }
 
     /**
-     * @deprecated use setOriginalReferenceUuid()
+     * @deprecated use setOriginalMerchantTransactionId()
      *
      * @param string $originalReferenceId
      */
     public function setOriginalReferenceId($originalReferenceId) {
-        $this->originalReferenceUuid = $originalReferenceId;
+        $this->originalMerchantTransactionId = $originalReferenceId;
     }
 
     /**
-     * @deprecated use getChargebackReferenceUuid()
+     * @deprecated use getChargebackUuid()
      *
      * @return string
      */
     public function getChargebackReferenceId() {
-        return $this->chargebackReferenceUuid;
+        return $this->chargebackUuid;
     }
 
     /**
-     * @deprecated use setChargebackReferenceUuid()
+     * @deprecated use setChargebackUuid()
      * @param string $chargebackReferenceId
      */
     public function setChargebackReferenceId($chargebackReferenceId) {
-        $this->chargebackReferenceUuid = $chargebackReferenceId;
+        $this->chargebackUuid = $chargebackReferenceId;
     }
 
     /**

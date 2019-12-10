@@ -22,7 +22,7 @@ class ChargebackData {
     protected $originalUuid;
 
     /**
-     * @deprecated use $originalReferenceUuid
+     * @deprecated use $originalMerchantTransactionId
      *
      * @var string
      */
@@ -31,7 +31,7 @@ class ChargebackData {
     /**
      * @var string
      */
-    protected $originalReferenceUuid;
+    protected $originalMerchantTransactionId;
 
     /**
      * @var float
@@ -72,21 +72,21 @@ class ChargebackData {
     }
 
     /**
-     * @deprecated use getOriginalReferenceUuid()
+     * @deprecated use getOriginalMerchantTransactionId()
      *
      * @return string
      */
     public function getOriginalReferenceId() {
-        return $this->originalReferenceUuid;
+        return $this->originalMerchantTransactionId;
     }
 
     /**
-     * @deprecated use setOriginalReferenceUuid()
+     * @deprecated use setOriginalMerchantTransactionId()
      *
      * @param string $originalReferenceId
      */
     public function setOriginalReferenceId($originalReferenceId) {
-        $this->originalReferenceUuid = $originalReferenceId;
+        $this->originalMerchantTransactionId = $originalReferenceId;
     }
 
     /**
@@ -111,19 +111,19 @@ class ChargebackData {
     /**
      * @return string
      */
-    public function getOriginalReferenceUuid()
+    public function getOriginalMerchantTransactionId()
     {
-        return $this->originalReferenceUuid;
+        return $this->originalMerchantTransactionId;
     }
 
     /**
-     * @param string $originalReferenceUuid
+     * @param string $originalMerchantTransactionId
      *
      * @return $this
      */
-    public function setOriginalReferenceUuid($originalReferenceUuid)
+    public function setOriginalMerchantTransactionId($originalMerchantTransactionId)
     {
-        $this->originalReferenceUuid = $originalReferenceUuid;
+        $this->originalMerchantTransactionId = $originalMerchantTransactionId;
         return $this;
     }
 

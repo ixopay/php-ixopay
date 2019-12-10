@@ -422,7 +422,7 @@ class JsonParser {
     protected function parseChargebackData($data){
         $cbData = new ChargebackData();
         $cbData->setOriginalUuid($this->arrGet($data, 'originalUuid'));
-        $cbData->setOriginalReferenceUuid($this->arrGet($data, 'originalReferenceUuid'));
+        $cbData->setOriginalMerchantTransactionId($this->arrGet($data, 'originalMerchantTransactionId'));
         $cbData->setAmount($this->arrGet($data, 'amount'));
         $cbData->setCurrency($this->arrGet($data, 'currency'));
         $cbData->setReason($this->arrGet($data, 'reason'));
@@ -439,8 +439,8 @@ class JsonParser {
     protected function parseChargebackReversalData($data){
         $cbrData = new ChargebackReversalData();
         $cbrData->setOriginalUuid($this->arrGet($data, 'originalUuid'));
-        $cbrData->setOriginalReferenceUuid($this->arrGet($data, 'originalReferenceUuid'));
-        $cbrData->setChargebackReferenceUuid($this->arrGet($data, 'chargebackReferenceUuid'));
+        $cbrData->setOriginalMerchantTransactionId($this->arrGet($data, 'originalMerchantTransactionId'));
+        $cbrData->setChargebackUuid($this->arrGet($data, 'chargebackUuid'));
         $cbrData->setAmount($this->arrGet($data, 'amount'));
         $cbrData->setCurrency($this->arrGet($data, 'currency'));
         $cbrData->setReason($this->arrGet($data, 'reason'));
