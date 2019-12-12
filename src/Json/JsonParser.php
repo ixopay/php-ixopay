@@ -276,56 +276,53 @@ class JsonParser {
      * @return ResultData|null
      */
     protected function parseReturnData($returnData) {
-        $type = array_keys($returnData)[0];
-        $data = $returnData[$type];
-        $rData = null;
 
-        switch($type){
-            case 'returnCardData':
+        switch($returnData['_TYPE']){
+            case 'cardData':
                 $creditcardData = new ReturnCardData();
-                $creditcardData->setType($this->arrGet($data, 'type'));
-                $creditcardData->setFirstName($this->arrGet($data, 'firstName'));
-                $creditcardData->setLastName($this->arrGet($data, 'lastName'));
-                $creditcardData->setCountry($this->arrGet($data, 'country'));
-                $creditcardData->setCardHolder($this->arrGet($data, 'cardHolder'));
-                $creditcardData->setExpiryMonth($this->arrGet($data, 'expiryMonth'));
-                $creditcardData->setExpiryYear($this->arrGet($data, 'expiryYear'));
-                $creditcardData->setFirstSixDigits($this->arrGet($data, 'firstSixDigits'));
-                $creditcardData->setLastFourDigits($this->arrGet($data, 'lastFourDigits'));
-                $creditcardData->setFingerprint($this->arrGet($data, 'fingerprint'));
-                $creditcardData->setBinBrand($this->arrGet($data, 'binBrand'));
-                $creditcardData->setBinBank($this->arrGet($data, 'binBank'));
-                $creditcardData->setBinType($this->arrGet($data, 'binType'));
-                $creditcardData->setBinLevel($this->arrGet($data, 'binLevel'));
-                $creditcardData->setBinCountry($this->arrGet($data, 'binCountry'));
-                $creditcardData->setThreeDSecure($this->arrGet($data, 'threeDSecure'));
-                $creditcardData->setEci($this->arrGet($data, 'eci'));
+                $creditcardData->setType($this->arrGet($returnData, 'type'));
+                $creditcardData->setFirstName($this->arrGet($returnData, 'firstName'));
+                $creditcardData->setLastName($this->arrGet($returnData, 'lastName'));
+                $creditcardData->setCountry($this->arrGet($returnData, 'country'));
+                $creditcardData->setCardHolder($this->arrGet($returnData, 'cardHolder'));
+                $creditcardData->setExpiryMonth($this->arrGet($returnData, 'expiryMonth'));
+                $creditcardData->setExpiryYear($this->arrGet($returnData, 'expiryYear'));
+                $creditcardData->setFirstSixDigits($this->arrGet($returnData, 'firstSixDigits'));
+                $creditcardData->setLastFourDigits($this->arrGet($returnData, 'lastFourDigits'));
+                $creditcardData->setFingerprint($this->arrGet($returnData, 'fingerprint'));
+                $creditcardData->setBinBrand($this->arrGet($returnData, 'binBrand'));
+                $creditcardData->setBinBank($this->arrGet($returnData, 'binBank'));
+                $creditcardData->setBinType($this->arrGet($returnData, 'binType'));
+                $creditcardData->setBinLevel($this->arrGet($returnData, 'binLevel'));
+                $creditcardData->setBinCountry($this->arrGet($returnData, 'binCountry'));
+                $creditcardData->setThreeDSecure($this->arrGet($returnData, 'threeDSecure'));
+                $creditcardData->setEci($this->arrGet($returnData, 'eci'));
 
                 return $creditcardData;
 
-            case 'returnPhoneData':
+            case 'phoneData':
                 $phoneData = new ReturnPhoneData();
-                $phoneData->setPhoneNumber($this->arrGet($data, 'phoneNumber'));
-                $phoneData->setCountry($this->arrGet($data, 'country'));
-                $phoneData->setOperator($this->arrGet($data, 'operator'));
+                $phoneData->setPhoneNumber($this->arrGet($returnData, 'phoneNumber'));
+                $phoneData->setCountry($this->arrGet($returnData, 'country'));
+                $phoneData->setOperator($this->arrGet($returnData, 'operator'));
 
                 return $phoneData;
 
-            case 'returnIbanData':
+            case 'ibanData':
                 $ibanData = new ReturnIbanData();
-                $ibanData->setAccountOwner($this->arrGet($data, 'accountOwner'));
-                $ibanData->setIban($this->arrGet($data, 'iban'));
-                $ibanData->setBic($this->arrGet($data, 'bic'));
-                $ibanData->setBankName($this->arrGet($data, 'bankName'));
-                $ibanData->setCountry($this->arrGet($data, 'country'));
+                $ibanData->setAccountOwner($this->arrGet($returnData, 'accountOwner'));
+                $ibanData->setIban($this->arrGet($returnData, 'iban'));
+                $ibanData->setBic($this->arrGet($returnData, 'bic'));
+                $ibanData->setBankName($this->arrGet($returnData, 'bankName'));
+                $ibanData->setCountry($this->arrGet($returnData, 'country'));
 
                 return $ibanData;
 
-            case 'returnWalletData':
+            case 'walletData':
                 $walletData = new ReturnWalletData();
-                $walletData->setWalletOwner($this->arrGet($data, 'walletOwner'));
-                $walletData->setWalletReferenceId($this->arrGet($data, 'walletReferenceId'));
-                $walletData->setWalletType($this->arrGet($data, 'walletType'));
+                $walletData->setWalletOwner($this->arrGet($returnData, 'walletOwner'));
+                $walletData->setWalletReferenceId($this->arrGet($returnData, 'walletReferenceId'));
+                $walletData->setWalletType($this->arrGet($returnData, 'walletType'));
 
                 return $walletData;
 
