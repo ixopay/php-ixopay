@@ -7,9 +7,11 @@ use Ixopay\Client\CustomerProfile\DeleteProfileResponse;
 use Ixopay\Client\CustomerProfile\GetProfileResponse;
 use Ixopay\Client\CustomerProfile\PaymentInstrument;
 use Ixopay\Client\CustomerProfile\UpdateProfileResponse;
+use Ixopay\Client\Exception\GeneralErrorException;
 use Ixopay\Client\Exception\TypeException;
 use Ixopay\Client\Json\ErrorResponse;
 use Ixopay\Client\Exception\RateLimitException;
+use Ixopay\Client\Json\GeneralErrorResponse;
 use Ixopay\Client\Json\JsonParser;
 use Ixopay\Client\Options\OptionsResult;
 use Ixopay\Client\Schedule\ContinueSchedule;
@@ -205,6 +207,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     protected function sendTransaction($transactionMethod, AbstractTransaction $transaction) {
         $json = $this->getGenerator()->generateTransaction($transactionMethod, $transaction, $this->language);
@@ -253,6 +256,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function startSchedule($scheduleData) {
         return $this->sendScheduleRequest(self::SCHEDULE_ACTION_START, $scheduleData);
@@ -268,6 +272,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function showSchedule($scheduleData) {
         return $this->sendScheduleRequest(self::SCHEDULE_ACTION_SHOW, $scheduleData);
@@ -283,6 +288,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function pauseSchedule($scheduleData) {
         return $this->sendScheduleRequest(self::SCHEDULE_ACTION_PAUSE, $scheduleData);
@@ -298,6 +304,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function continueSchedule($scheduleData) {
         return $this->sendScheduleRequest(self::SCHEDULE_ACTION_CONTINUE, $scheduleData);
@@ -313,6 +320,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function cancelSchedule($scheduleData) {
         return $this->sendScheduleRequest(self::SCHEDULE_ACTION_CANCEL, $scheduleData);
@@ -333,6 +341,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function sendScheduleRequest($action, $scheduleData) {
         $json = $this->getGenerator()->generateSchedule($action, $scheduleData);
@@ -388,6 +397,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function sendStatusRequest(StatusRequestData $statusRequestData) {
 
@@ -416,6 +426,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     protected function sendJsonApiRequest($path, $dataArray=[], $get=false) {
 
@@ -426,6 +437,11 @@ class Client {
         $httpResponse = $this->signAndSendJson($body, $url, $this->username, $this->password, $this->apiKey, $this->sharedSecret, $get);
 
         $statusCode = $httpResponse->getStatusCode();
+
+        if ($statusCode === 400) {
+            $json = json_decode($httpResponse->getBody(), true);
+            throw new GeneralErrorException($json['errorMessage'], $json['errorCode']);
+        }
 
         if ($statusCode === 504 || $statusCode === 522) {
             throw new TimeoutException('Request timed-out');
@@ -569,6 +585,7 @@ class Client {
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function register(Register $transactionData) {
         return $this->sendTransaction('register', $transactionData);
@@ -585,6 +602,7 @@ class Client {
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function deregister(Deregister $transactionData) {
         return $this->sendTransaction('deregister', $transactionData);
@@ -601,6 +619,7 @@ class Client {
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function preauthorize(Preauthorize $transactionData) {
         return $this->sendTransaction('preauthorize', $transactionData);
@@ -615,6 +634,7 @@ class Client {
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function void(VoidTransaction $transactionData) {
         return $this->sendTransaction('void', $transactionData);
@@ -629,6 +649,7 @@ class Client {
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function capture(Capture $transactionData) {
         return $this->sendTransaction('capture', $transactionData);
@@ -643,6 +664,7 @@ class Client {
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function refund(Refund $transactionData) {
         return $this->sendTransaction('refund', $transactionData);
@@ -657,6 +679,7 @@ class Client {
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function debit(Debit $transactionData) {
         return $this->sendTransaction('debit', $transactionData);
@@ -672,6 +695,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function payout(Payout $transactionData) {
         return $this->sendTransaction('payout', $transactionData);
@@ -689,6 +713,7 @@ class Client {
      * @throws ClientException
      * @throws Http\Exception\ClientException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function getOptions($identifier, $parameters = [], $_ = null) {
         $endpoint = self::OPTIONS_REQUEST;
@@ -781,6 +806,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function getCustomerProfileByProfileGuid($profileGuid) {
         $requestData = array(
@@ -812,6 +838,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function getCustomerProfileByIdentification($customerIdentification) {
         $requestData = array(
@@ -845,6 +872,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function updateCustomerProfileByProfileGuid($profileGuid, CustomerData $customerData, $preferredInstrument = null) {
         $requestData = array(
@@ -888,6 +916,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function updateCustomerProfileByIdentification($customerIdentification, CustomerData $customerData, $preferredInstrument = null) {
         $requestData = array(
@@ -928,6 +957,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function deleteCustomerProfileByProfileGuid($profileGuid) {
         $requestData = array(
@@ -961,6 +991,7 @@ class Client {
      * @throws Http\Exception\ClientException
      * @throws TimeoutException#
      * @throws RateLimitException
+     * @throws GeneralErrorException
      */
     public function deleteCustomerProfileByIdentification($customerIdentification) {
         $requestData = array(

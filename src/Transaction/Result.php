@@ -135,8 +135,6 @@ class Result {
     protected $scheduleData = null;
 
     /**
-     * @deprecated use $errorMessage, $errorCode, $adapterMessage, $adapterCode
-     *
      * @var Error[]
      */
     protected $errors = array();
@@ -147,25 +145,8 @@ class Result {
     protected $extraData = array();
 
     /**
-     * @var string
+     * Result constructor.
      */
-    protected $errorMessage = null;
-
-    /**
-     * @var int
-     */
-    protected $errorCode = null;
-
-    /**
-     * @var string
-     */
-    protected $adapterMessage = null;
-
-    /**
-     * @var int
-     */
-    protected $adapterCode = null;
-
     public function __construct(){
         $this->customer = new Customer();
         $this->customerProfileData = new CustomerProfileData();
@@ -215,8 +196,6 @@ class Result {
     }
 
     /**
-     * @deprecated
-     *
      * @param Error[] $errors
      *
      * @return $this
@@ -227,8 +206,6 @@ class Result {
     }
 
     /**
-     * @deprecated
-     *
      * @param Error $error
      *
      * @return $this
@@ -315,8 +292,6 @@ class Result {
     }
 
     /**
-     * @deprecated use getErrorMessage(), getErrorCode(), getAdapterMessage(), getAdapterCode();
-     *
      * @return Error[]
      */
     public function getErrors() {
@@ -617,44 +592,6 @@ class Result {
     public function setCustomer($customer)
     {
         $this->customer = $customer;
-    }
-
-    /**
-     * @return string
-     */
-    public function getErrorMessage()
-    {
-        return $this->errorMessage;
-    }
-
-    /**
-     * @param string $errorMessage
-     *
-     * @return Result
-     */
-    public function setErrorMessage($errorMessage)
-    {
-        $this->errorMessage = $errorMessage;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getErrorCode()
-    {
-        return $this->errorCode;
-    }
-
-    /**
-     * @param int $errorCode
-     *
-     * @return Result
-     */
-    public function setErrorCode($errorCode)
-    {
-        $this->errorCode = $errorCode;
-        return $this;
     }
 
     /**

@@ -52,12 +52,14 @@ class JsonParser {
         $result->setPaymentDescriptor($this->arrGet($json, 'paymentDescriptor'));
         $result->setPaymentMethod($this->arrGet($json, 'paymentMethod'));
         $result->setExtraData($this->arrGet($json, 'extraData'));
-        $result->setErrorMessage($this->arrGet($json, 'errorMessage'));
-        $result->setErrorCode($this->arrGet($json, 'errorCode'));
         $result->setAdapterMessage($this->arrGet($json, 'adapterMessage'));
         $result->setAdapterCode($this->arrGet($json, 'adapterCode'));
 
         // process object data
+        if (isset($json['errors'])){
+            $errors = $this->parseErrors($json['errors']);
+            $result->setErrors($errors);
+        }
         if (isset($json['returnData'])) {
             $returnData = $this->parseReturnData($json['returnData']);
             $result->setReturnData($returnData);
@@ -393,8 +395,8 @@ class JsonParser {
      * @return Error
      */
     protected function parseError($data){
-        $error = new Error($this->arrGet($data, 'message'));
-        $error->setCode($this->arrGet($data, 'code'));
+        $error = new Error($this->arrGet($data, 'errorMessage'));
+        $error->setCode($this->arrGet($data, 'errorCode'));
         $error->setAdapterMessage($this->arrGet($data, 'adapterMessage'));
         $error->setAdapterCode($this->arrGet($data, 'adapterCode'));
 

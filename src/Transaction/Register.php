@@ -9,8 +9,6 @@ use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
-use Ixopay\Client\Transaction\Base\PaymentDataInterface;
-use Ixopay\Client\Transaction\Base\PaymentDataTrait;
 use Ixopay\Client\Transaction\Base\ScheduleInterface;
 use Ixopay\Client\Transaction\Base\ScheduleTrait;
 use Ixopay\Client\Transaction\Base\ThreeDSecureInterface;
@@ -27,7 +25,6 @@ class Register extends AbstractTransaction
                implements AddToCustomerProfileInterface,
                           CustomerInterface,
                           OffsiteInterface,
-                          PaymentDataInterface,
                           ScheduleInterface,
                           ThreeDSecureInterface
 {
@@ -35,7 +32,6 @@ class Register extends AbstractTransaction
     use AddToCustomerProfileTrait;
     use CustomerTrait;
     use OffsiteTrait;
-    use PaymentDataTrait;
     use ScheduleTrait;
     use ThreeDSecureTrait;
 

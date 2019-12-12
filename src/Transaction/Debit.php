@@ -13,8 +13,6 @@ use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
-use Ixopay\Client\Transaction\Base\PaymentDataInterface;
-use Ixopay\Client\Transaction\Base\PaymentDataTrait;
 use Ixopay\Client\Transaction\Base\ScheduleInterface;
 use Ixopay\Client\Transaction\Base\ScheduleTrait;
 use Ixopay\Client\Transaction\Base\ThreeDSecureInterface;
@@ -31,7 +29,6 @@ class Debit extends AbstractTransactionWithReference
                        CustomerInterface,
                        ItemsInterface,
                        OffsiteInterface,
-                       PaymentDataInterface,
                        ScheduleInterface,
                        ThreeDSecureInterface
 {
@@ -41,7 +38,6 @@ class Debit extends AbstractTransactionWithReference
     use CustomerTrait;
     use ItemsTrait;
     use OffsiteTrait;
-    use PaymentDataTrait;
     use ScheduleTrait;
     use ThreeDSecureTrait;
 

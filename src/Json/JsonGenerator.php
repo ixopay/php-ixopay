@@ -16,6 +16,7 @@ use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Schedule\ScheduleWithTransaction;
 use Ixopay\Client\Schedule\StartSchedule;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
+use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Deregister;
@@ -153,7 +154,6 @@ class JsonGenerator {
             'withRegister' => $transaction->isWithRegister(),
             'transactionIndicator' => $transaction->getTransactionIndicator(),
             'customer' => $this->createCustomer($transaction->getCustomer()),
-            'paymentData' => $this->createPaymentData($transaction->getPaymentData()),
             'schedule' => $this->createSchedule($transaction->getSchedule()),
             'customerProfileData' => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
             'threeDSecureData' => $this->createThreeDSecureData($transaction->getThreeDSecureData()),
@@ -229,7 +229,6 @@ class JsonGenerator {
             'transactionToken' => $transaction->getTransactionToken(),
             'description' => $transaction->getDescription(),
             'customer' => $this->createCustomer($transaction->getCustomer()),
-            'paymentData' => $this->createPaymentData($transaction->getPaymentData()),
             'schedule' => $this->createSchedule($transaction->getSchedule()),
             'addToCustomerProfile' => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
             'threeDSecureData' => $this->createThreeDSecureData($transaction->getThreeDSecureData()),
@@ -296,7 +295,6 @@ class JsonGenerator {
             'description' => $transaction->getDescription(),
             'items' => $this->createItems($transaction->getItems()),
             'customer' => $this->createCustomer($transaction->getCustomer()),
-            'paymentData' => $this->createPaymentData($transaction->getPaymentData()),
             'language' => $language,
         ];
 
@@ -336,6 +334,7 @@ class JsonGenerator {
 
     /**
      * customer data
+     * - includes paymentData
      *
      * @param Customer|null $customer
      *
@@ -376,6 +375,7 @@ class JsonGenerator {
             'ipAddress' => $customer->getIpAddress(),
             'nationalId' => $customer->getNationalId(),
             'extraData' => $customer->getExtraData(),
+            'paymentData' => $this->createPaymentData($customer->getPaymentData()),
         ];
 
         return $data;

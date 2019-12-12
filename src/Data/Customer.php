@@ -2,6 +2,8 @@
 
 namespace Ixopay\Client\Data;
 
+use Ixopay\Client\Data\PaymentData\PaymentData;
+
 /**
  * Represents a generic customer without any specific data.
  *
@@ -131,12 +133,10 @@ class Customer extends Data {
      */
     protected $email;
 
-
     /**
      * @var bool
      */
     protected $emailVerified;
-
 
     /**
      * @var string
@@ -154,6 +154,11 @@ class Customer extends Data {
      * @var array
      */
     protected $extraData = array();
+
+    /**
+     * @var PaymentData
+     */
+    protected $paymentData;
 
     /**
      * @return string
@@ -640,4 +645,21 @@ class Customer extends Data {
         return $this;
     }
 
+        /**
+     * @return PaymentData
+     */
+    public function getPaymentData()
+    {
+        return $this->paymentData;
+    }
+
+    /**
+     * @param PaymentData $paymentData
+     * @return $this
+     */
+    public function setPaymentData($paymentData)
+    {
+        $this->paymentData = $paymentData;
+        return $this;
+    }
 }
