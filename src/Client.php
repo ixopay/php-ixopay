@@ -438,35 +438,31 @@ class Client {
 
         $statusCode = $httpResponse->getStatusCode();
 
-        if ($statusCode === 400) {
-            $json = json_decode($httpResponse->getBody(), true);
-            throw new GeneralErrorException($json['errorMessage'], $json['errorCode']);
-        }
+        switch($statusCode){
+            case 504:
+            case 522:
+                throw new TimeoutException('Request timed-out');
+            case 429:
+                $rateLimitMsg = 'Too many requests';
 
-        if ($statusCode === 504 || $statusCode === 522) {
-            throw new TimeoutException('Request timed-out');
-        }
+                if (is_array($httpResponse->getHeaders())) {
 
-        if ($httpResponse->getStatusCode() == 504 || $httpResponse->getStatusCode() == 522) {
-            throw new TimeoutException('Request timed-out');
-        }
+                    $headers = array_change_key_case($httpResponse->getHeaders(), CASE_LOWER);
+                    $rateLimitMsg .= !empty($headers['x-ratelimit-limit']) ? ' | Rate Limit: '.$headers['x-ratelimit-limit'] : '';
+                    $rateLimitMsg .= !empty($headers['retry-after']) ? ' | Retry-After: '.$headers['retry-after'].' seconds' : '';
 
-        if ($httpResponse->getStatusCode() == 429) {
-            $rateLimitMsg = 'Too many requests';
+                }
 
-            if (is_array($httpResponse->getHeaders())) {
-
-                $headers = array_change_key_case($httpResponse->getHeaders(), CASE_LOWER);
-                $rateLimitMsg .= !empty($headers['x-ratelimit-limit']) ? ' | Rate Limit: '.$headers['x-ratelimit-limit'] : '';
-                $rateLimitMsg .= !empty($headers['retry-after']) ? ' | Retry-After: '.$headers['retry-after'].' seconds' : '';
-
-            }
-
-            throw new RateLimitException($rateLimitMsg);
-        }
-
-        if ($httpResponse->getErrorCode() || $httpResponse->getErrorMessage()) {
-            throw new ClientException('Request failed: ' . $httpResponse->getErrorCode() . ' ' . $httpResponse->getErrorMessage());
+                throw new RateLimitException($rateLimitMsg);
+            default:
+                if ($httpResponse->getErrorCode() || $httpResponse->getErrorMessage()) {
+                    throw new ClientException('Request failed: ' . $httpResponse->getErrorCode() . ' ' . $httpResponse->getErrorMessage());
+                }
+                if ($statusCode >= 400) {
+                    $json = json_decode($httpResponse->getBody(), true);
+                    throw new GeneralErrorException($json['errorMessage'], $json['errorCode']);
+                }
+                break;
         }
 
         return $httpResponse;

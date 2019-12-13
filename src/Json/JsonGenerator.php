@@ -3,8 +3,10 @@
 namespace Ixopay\Client\Json;
 
 use Ixopay\Client\Client;
+use Ixopay\Client\Data\CreditCardCustomer;
 use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\CustomerProfileData;
+use Ixopay\Client\Data\IbanCustomer;
 use Ixopay\Client\Data\Item;
 use Ixopay\Client\Data\PaymentData\CardData;
 use Ixopay\Client\Data\PaymentData\IbanData;
@@ -375,8 +377,30 @@ class JsonGenerator {
             'ipAddress' => $customer->getIpAddress(),
             'nationalId' => $customer->getNationalId(),
             'extraData' => $customer->getExtraData(),
-            'paymentData' => $this->createPaymentData($customer->getPaymentData()),
+            // uncomment below upon removing backwards compatibility
+//             'paymentData' => $this->createPaymentData($customer->getPaymentData()),
         ];
+
+        // backwards compatible part
+        if($customer instanceof IbanCustomer){
+            $data['paymentData']['ibanData'] = [
+                'iban' => $customer->getIban(),
+                'bic' => $customer->getBic(),
+                'mandateId' => $customer->getMandateId(),
+                'mandateDate' => $customer->getMandateDate(),
+            ];
+        } elseif($customer instanceof CreditCardCustomer){
+            $data['paymentData']['cardData'] = [
+                'brand' => $customer->getBrand(),
+                'cardHolder' => $customer->getCardHolder(),
+                'firstSixDigits' => $customer->getFirstSixDigits(),
+                'lastFourDigits' => $customer->getLastFourDigits(),
+                'expiryMonth' => $customer->getExpiryMonth(),
+                'expiryYear' => $customer->getExpiryYear(),
+            ];
+        } else {
+            $data['paymentData'] = $this->createPaymentData($customer->getPaymentData());
+        }
 
         return $data;
     }

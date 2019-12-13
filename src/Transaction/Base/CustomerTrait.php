@@ -2,7 +2,9 @@
 
 namespace Ixopay\Client\Transaction\Base;
 
+use Ixopay\Client\Data\CreditCardCustomer;
 use Ixopay\Client\Data\Customer;
+use Ixopay\Client\Data\IbanCustomer;
 
 /**
  * Class ThreeDSecureTrait
@@ -23,7 +25,8 @@ trait CustomerTrait {
     }
 
     /**
-     * @param Customer $customer
+     * with backward compatibility for IbanCustomer/CreditCardCustomer
+     * @param IbanCustomer|CreditCardCustomer|Customer $customer
      *
      * @return $this
      */
