@@ -42,6 +42,16 @@ class JsonParser {
 
         $result = new Result();
 
+        if(!$result->isSuccess() && isset($json['errorMessage'])){
+            // handle general errors
+            $result->setSuccess(false);
+            $error = new Error();
+            $error->setMessage($this->arrGet($json, 'errorMessage'));
+            $error->setCode($this->arrGet($json, 'errorCode'));
+            $result->addError($error);
+            return $result;
+        }
+
         $result->setSuccess($json['success']);
         $result->setUuid($this->arrGet($json, 'uuid'));
         $result->setPurchaseId($this->arrGet($json, 'purchaseId'));
