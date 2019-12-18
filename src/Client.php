@@ -460,7 +460,15 @@ class Client {
                 }
                 if ($statusCode >= 400) {
                     $json = json_decode($httpResponse->getBody(), true);
-                    throw new GeneralErrorException($json['errorMessage'], $json['errorCode']);
+                    if (isset($json['errorMessage'])) {
+                        $message = $json['errorMessage'];
+                    } elseif (isset($json['message'])) {
+                        $message = $json['message'];
+                    } else{
+                        $message = 'Request failed';
+                    }
+                    $code = isset($json['errorCode']) ? $json['errorCode'] : 0;
+                    throw new GeneralErrorException($message, $code);
                 }
                 break;
         }
