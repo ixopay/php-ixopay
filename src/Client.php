@@ -9,6 +9,7 @@ use Ixopay\Client\CustomerProfile\PaymentInstrument;
 use Ixopay\Client\CustomerProfile\UpdateProfileResponse;
 use Ixopay\Client\Json\ErrorResponse;
 use Ixopay\Client\Exception\RateLimitException;
+use Ixopay\Client\Json\JsonParser;
 use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Exception\ClientException;
 use Ixopay\Client\Exception\InvalidValueException;
@@ -352,7 +353,7 @@ class Client {
      * @throws RateLimitException
      */
     protected function sendRequest($xml, $url) {
-        
+
         $httpResponse = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, $url);
 
         if ($httpResponse->getErrorCode() || $httpResponse->getErrorMessage()) {
@@ -401,10 +402,10 @@ class Client {
      * @throws TimeoutException
      */
     protected function sendJsonApiRequest($dataArray, $path) {
-        
+
         $url = self::$gatewayUrl.$path;
         $body = json_encode($dataArray);
-        
+
         $httpResponse = $this->signAndSendJson($body, $url, $this->username, $this->password, $this->apiKey, $this->sharedSecret);
 
         if ($httpResponse->getErrorCode() || $httpResponse->getErrorMessage()) {
@@ -486,7 +487,7 @@ class Client {
      */
     public function signAndSendJson($jsonBody, $url, $username, $password, $apiKey, $sharedSecret) {
         $url = str_replace('[API_KEY]', $apiKey, $url);
-        
+
         $this->log(LogLevel::DEBUG, "POST $url ",
             array(
                 'url' => $url,
@@ -687,7 +688,15 @@ class Client {
      * @throws Exception\InvalidValueException
      */
     public function readCallback($requestBody) {
-        return $this->getParser()->parseCallback($requestBody);
+        if (strpos($requestBody, '<callback') !== false) {
+            return $this->getParser()->parseCallback($requestBody);
+        } elseif (!($json = json_decode($requestBody, true))) {
+            return $this->getParser()->parseCallback($requestBody);
+        } else {
+            $jsonParser = new JsonParser();
+            return $jsonParser->parseCallback($requestBody);
+        }
+
     }
 
     /**
