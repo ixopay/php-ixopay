@@ -248,7 +248,7 @@ class JsonParser {
         $cbData->setAmount($this->arrGet($data, 'amount'));
         $cbData->setCurrency($this->arrGet($data, 'currency'));
         $cbData->setReason($this->arrGet($data, 'reason'));
-        $cbData->setChargebackDateTime($this->arrGet($data, 'chargebackDateTime'));
+        $cbData->setChargebackDateTime(new \DateTime($this->arrGet($data, 'chargebackDateTime')));
 
         return $cbData;
     }
@@ -266,7 +266,7 @@ class JsonParser {
         $cbrData->setAmount($this->arrGet($data, 'amount'));
         $cbrData->setCurrency($this->arrGet($data, 'currency'));
         $cbrData->setReason($this->arrGet($data, 'reason'));
-        $cbrData->setReversalDateTime($this->arrGet($data, 'reversalDateTime'));
+        $cbrData->setReversalDateTime(new \DateTime($this->arrGet($data, 'reversalDateTime')));
 
         return $cbrData;
     }
