@@ -34,6 +34,7 @@ use Ixopay\Client\Transaction\Register;
 use Ixopay\Client\Transaction\Result;
 use Ixopay\Client\Transaction\VoidTransaction;
 use Ixopay\Client\Json\JsonGenerator;
+use Ixopay\Client\Xml\Parser;
 use Ixopay\Client\Xml\XmlGenerator;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -738,7 +739,16 @@ class Client {
      * @throws \Exception
      */
     public function readCallback($requestBody) {
-        return $this->getParser()->parseCallback($requestBody);
+        if (strpos($requestBody, '<callback') !== false) {
+            $parser = new Parser();
+            $parser->parseCallback($requestBody);
+        } elseif (!($json = json_decode($requestBody, true))) {
+            $parser = new Parser();
+            $parser->parseCallback($requestBody);
+        } else {
+            $jsonParser = new JsonParser();
+            return $jsonParser->parseCallback($requestBody);
+        }
     }
 
     /**
