@@ -2,23 +2,16 @@
 
 namespace Ixopay\Client\Json;
 
+use Ixopay\Client\Callback\ChargebackData;
+use Ixopay\Client\Callback\ChargebackReversalData;
 use Ixopay\Client\Callback\Result as CallbackResult;
-use Ixopay\Client\Data\ChargebackData;
-use Ixopay\Client\Data\ChargebackReversalData;
 use Ixopay\Client\Data\Customer;
-use Ixopay\Client\Data\CustomerProfileData;
 use Ixopay\Client\Data\Result\CreditcardData as ReturnCardData;
 use Ixopay\Client\Data\Result\IbanData as ReturnIbanData;
 use Ixopay\Client\Data\Result\PhoneData as ReturnPhoneData;
 use Ixopay\Client\Data\Result\ResultData;
-use Ixopay\Client\Data\Result\ScheduleResultData;
 use Ixopay\Client\Data\Result\WalletData as ReturnWalletData;
-use Ixopay\Client\Data\RiskCheckData;
-use Ixopay\Client\Options\OptionsResult;
-use Ixopay\Client\Schedule\ScheduleResult;
-use Ixopay\Client\StatusApi\StatusResult;
 use Ixopay\Client\Transaction\Error;
-use Ixopay\Client\Transaction\Result;
 
 /**
  * Class JsonParser
@@ -26,197 +19,6 @@ use Ixopay\Client\Transaction\Result;
  * @package Ixopay\Client\Json
  */
 class JsonParser {
-
-    /** @deprecated */
-    public function parseResult($json){}
-
-    /**
-     * @param $jsonString
-     *
-     * @return Result
-     * @throws \Exception
-     */
-    public function parseTransactionResult($jsonString) {
-
-        $json = json_decode($jsonString, true);
-
-        $result = new Result();
-
-        if(!$result->isSuccess() && isset($json['errorMessage'])){
-            // handle general errors
-            $result->setSuccess(false);
-            $error = new Error();
-            $error->setMessage($this->arrGet($json, 'errorMessage'));
-            $error->setCode($this->arrGet($json, 'errorCode'));
-            $result->addError($error);
-            return $result;
-        }
-
-        $result->setSuccess($json['success']);
-        $result->setUuid($this->arrGet($json, 'uuid'));
-        $result->setPurchaseId($this->arrGet($json, 'purchaseId'));
-        $result->setReturnType($this->arrGet($json, 'returnType'));
-        $result->setRedirectType($this->arrGet($json, 'redirectType'));
-        $result->setRedirectUrl($this->arrGet($json, 'redirectUrl'));
-        $result->setHtmlContent($this->arrGet($json, 'htmlContent'));
-        $result->setPaymentDescriptor($this->arrGet($json, 'paymentDescriptor'));
-        $result->setPaymentMethod($this->arrGet($json, 'paymentMethod'));
-        $result->setExtraData($this->arrGet($json, 'extraData'));
-        $result->setAdapterMessage($this->arrGet($json, 'adapterMessage'));
-        $result->setAdapterCode($this->arrGet($json, 'adapterCode'));
-
-        // process object data
-        if (isset($json['errors'])){
-            $errors = $this->parseErrors($json['errors']);
-            $result->setErrors($errors);
-        }
-        if (isset($json['returnData'])) {
-            $returnData = $this->parseReturnData($json['returnData']);
-            $result->setReturnData($returnData);
-        }
-
-        if (isset($json['scheduleData'])) {
-            $scheduleData = $this->parseScheduleData($json['scheduleData']);
-            $result->setScheduleData($scheduleData);
-        }
-
-        if (isset($json['customerProfileData'])) {
-            $customerProfileData = $this->parseCustomerProfileData($json['customerProfileData']);
-            $result->setCustomerProfileData($customerProfileData);
-        }
-
-        if (isset($json['riskCheckData'])) {
-            $data = $json['riskCheckData'];
-            $riskCheckData = new RiskCheckData();
-            $riskCheckData->setRiskCheckResult($this->arrGet($data, 'riskCheckResult'));
-            $riskCheckData->setRiskScore($this->arrGet($data, 'riskScore'));
-            $riskCheckData->setThreeDSecureRequired($this->arrGet($data, 'threeDSecureRequired'));
-
-            $result->setRiskCheckData($riskCheckData);
-        }
-
-        return $result;
-
-    }
-
-    /**
-     * @param string $jsonString
-     *
-     * @return StatusResult
-     * @throws \Exception
-     */
-    public function parseStatusResult($jsonString) {
-
-        $result = new StatusResult();
-
-        $json = json_decode($jsonString, true);
-
-        if($this->arrGet($json, 'success') === false){
-            $result->setSuccess(false);
-            $result->setErrorMessage($this->arrGet($json, 'errorMessage'));
-            $result->setErrorCode($this->arrGet($json, 'errorCode'));
-            return $result;
-        }
-
-        $result->setSuccess(true);
-        $result->setTransactionStatus($this->arrGet($json, 'transactionStatus'));
-        $result->setUuid($this->arrGet($json, 'uuid'));
-        $result->setMerchantTransactionId($this->arrGet($json, 'merchantTransactionId'));
-        $result->setPurchaseId($this->arrGet($json, 'purchaseId'));
-        $result->setTransactionType($this->arrGet($json, 'transactionType'));
-        $result->setPaymentMethod($this->arrGet($json, 'paymentMethod'));
-        $result->setAmount($this->arrGet($json, 'amount'));
-        $result->setCurrency($this->arrGet($json, 'currency'));
-        $result->setExtraData($this->arrGet($json, 'extraData'));
-        $result->setMerchantMetaData($this->arrGet($json, 'merchantMetaData'));
-
-        // process objects
-        if(isset($json['schedules'])) {
-            $schedules = [];
-            foreach($json['schedules'] as $schedule){
-                $schedules[] = $this->parseScheduleData($schedule);
-            }
-
-            $result->setSchedules($schedules);
-        }
-
-        if(isset($json['errors'])) {
-            $errors = $this->parseErrors($json['errors']);
-            $result->setErrors($errors);
-        }
-
-        if(isset($json['chargebackData'])) {
-            $cbData = $this->parseChargebackData($json['chargebackData']);
-            $result->setChargebackData($cbData);
-        }
-
-        if(isset($json['chargebackReversalData'])) {
-            $cbrData = $this->parseChargebackReversalData($json['chargebackReversalData']);
-            $result->setChargebackReversalData($cbrData);
-        }
-
-        if(isset($json['returnData'])) {
-            $returnData = $this->parseReturnData($json['returnData']);
-            $result->setReturnData($returnData);
-        }
-
-        if(isset($json['customer'])) {
-            $customer = $this->parseCustomer($json['customer']);
-            $result->setCustomer($customer);
-        }
-
-        if(isset($json['customerProfileData'])) {
-            $customerProfileData = $this->parseCustomerProfileData($json['customerProfileData']);
-            $result->setCustomerProfileData($customerProfileData);
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param $jsonString
-     *
-     * @return ScheduleResult
-     */
-    public function parseScheduleResult($jsonString){
-
-        $result = new ScheduleResult();
-
-        $json = json_decode($jsonString, true);
-
-        if ($json['success']) {
-            $result->setSuccess(true);
-            $result->setScheduleId($this->arrGet($json, 'scheduleId'));
-            $result->setRegistrationUuid($this->arrGet($json, 'registrationUuid'));
-            $result->setOldStatus($this->arrGet($json, 'oldStatus'));
-            $result->setNewStatus($this->arrGet($json, 'newStatus'));
-            $result->setScheduledAt($this->arrGet($json, 'scheduledAt'));
-        } else {
-            $result->setSuccess(false);
-            $result->setErrorMessage($this->arrGet($json, 'errorMessage'));
-            $result->setErrorCode($this->arrGet($json, 'errorCode'));
-        }
-
-        return $result;
-
-    }
-
-    /**
-     * @param $jsonString
-     *
-     * @return OptionsResult
-     */
-    public function parseOptionsResult($jsonString){
-
-        $json = json_decode($jsonString, true);
-
-        $result = new OptionsResult();
-        $result->setSuccess($json['success']);
-        $result->setOptions($this->arrGet($json, 'options'));
-        $result->setErrorMessage($this->arrGet($json, 'errorMessage'));
-
-        return $result;
-    }
 
     /**
      * @param $jsonString
@@ -230,8 +32,8 @@ class JsonParser {
 
         $result = new CallbackResult();
         $result->setResult($this->arrGet($json, 'result'));
-        $result->setUuid($this->arrGet($json, 'uuid'));
-        $result->setMerchantTransactionId($this->arrGet($json, 'merchantTransactionId'));
+        $result->setReferenceId($this->arrGet($json, 'uuid'));
+        $result->setTransactionId($this->arrGet($json, 'merchantTransactionId'));
         $result->setPurchaseId($this->arrGet($json, 'purchaseId'));
         $result->setTransactionType($this->arrGet($json, 'transactionType'));
         $result->setPaymentMethod($this->arrGet($json, 'paymentMethod'));
@@ -239,15 +41,23 @@ class JsonParser {
         $result->setCurrency($this->arrGet($json, 'currency'));
         $result->setMerchantMetaData($this->arrGet($json, 'merchantMetaData'));
         $result->setExtraData($this->arrGet($json, 'extraData'));
-        $result->setErrorMessage($this->arrGet($json, 'errorMessage'));
-        $result->setErrorCode($this->arrGet($json, 'errorCode'));
-        $result->setAdapterMessage($this->arrGet($json, 'adapterMessage'));
-        $result->setAdapterCode($this->arrGet($json, 'adapterCode'));
+        if ($this->arrGet($json, 'errorMessage') || $this->arrGet($json, 'errorCode')) {
+            $result->addError(
+                new Error(
+                    $this->arrGet($json, 'errorMessage'),
+                    $this->arrGet($json, 'errorCode'),
+                    $this->arrGet($json, 'adapterMessage'),
+                    $this->arrGet($json, 'adapterCode')
+                )
+            );
+        }
+
 
         // process objects
         if(isset($json['scheduleData'])) {
-            $schedule = $this->parseScheduleData($json['scheduleData']);
-            $result->setScheduleData($schedule);
+            //not yet available
+            /*$schedule = $this->parseScheduleData($json['scheduleData']);
+            $result->setScheduleData($schedule);*/
         }
 
         if(isset($json['chargebackData'])) {
@@ -271,8 +81,9 @@ class JsonParser {
         }
 
         if(isset($json['customerProfileData'])) {
-            $customerProfileData = $this->parseCustomerProfileData($json['customerProfileData']);
-            $result->setCustomerProfileData($customerProfileData);
+            //not yet available
+            /*$customerProfileData = $this->parseCustomerProfileData($json['customerProfileData']);
+            $result->setCustomerProfileData($customerProfileData);*/
         }
 
         return $result;
@@ -348,12 +159,12 @@ class JsonParser {
      * @throws \Exception
      */
     protected function parseScheduleData($data){
-        $scheduleData = new ScheduleResultData();
+        /*$scheduleData = new ScheduleResultData();
         $scheduleData->setScheduleId($this->arrGet($data, 'scheduleId'));
         $scheduleData->setScheduleStatus($this->arrGet($data, 'scheduleStatus'));
         $scheduleData->setScheduledAt($this->arrGet($data, 'scheduledAt') ? new \DateTime($this->arrGet($data, 'scheduledAt')) : null);
 
-        return $scheduleData;
+        return $scheduleData;*/
     }
 
     /**
@@ -402,10 +213,12 @@ class JsonParser {
      * @return Error
      */
     protected function parseError($data){
-        $error = new Error($this->arrGet($data, 'errorMessage'));
-        $error->setCode($this->arrGet($data, 'errorCode'));
-        $error->setAdapterMessage($this->arrGet($data, 'adapterMessage'));
-        $error->setAdapterCode($this->arrGet($data, 'adapterCode'));
+        $error = new Error(
+            $this->arrGet($data, 'errorMessage'),
+            $this->arrGet($data, 'errorCode'),
+            $this->arrGet($data, 'adapterMessage'),
+            $this->arrGet($data, 'adapterCode')
+        );
 
         return $error;
     }
@@ -430,8 +243,8 @@ class JsonParser {
      */
     protected function parseChargebackData($data){
         $cbData = new ChargebackData();
-        $cbData->setOriginalUuid($this->arrGet($data, 'originalUuid'));
-        $cbData->setOriginalMerchantTransactionId($this->arrGet($data, 'originalMerchantTransactionId'));
+        $cbData->setOriginalReferenceId($this->arrGet($data, 'originalUuid'));
+        $cbData->setOriginalTransactionId($this->arrGet($data, 'originalMerchantTransactionId'));
         $cbData->setAmount($this->arrGet($data, 'amount'));
         $cbData->setCurrency($this->arrGet($data, 'currency'));
         $cbData->setReason($this->arrGet($data, 'reason'));
@@ -447,9 +260,9 @@ class JsonParser {
      */
     protected function parseChargebackReversalData($data){
         $cbrData = new ChargebackReversalData();
-        $cbrData->setOriginalUuid($this->arrGet($data, 'originalUuid'));
-        $cbrData->setOriginalMerchantTransactionId($this->arrGet($data, 'originalMerchantTransactionId'));
-        $cbrData->setChargebackUuid($this->arrGet($data, 'chargebackUuid'));
+        $cbrData->setOriginalReferenceId($this->arrGet($data, 'originalUuid'));
+        $cbrData->setOriginalTransactionId($this->arrGet($data, 'originalMerchantTransactionId'));
+        $cbrData->setChargebackReferenceId($this->arrGet($data, 'chargebackUuid'));
         $cbrData->setAmount($this->arrGet($data, 'amount'));
         $cbrData->setCurrency($this->arrGet($data, 'currency'));
         $cbrData->setReason($this->arrGet($data, 'reason'));
@@ -464,11 +277,11 @@ class JsonParser {
      * @return CustomerProfileData
      */
     protected function parseCustomerProfileData($data){
-        $customerProfileData = new CustomerProfileData();
+        /*$customerProfileData = new CustomerProfileData();
         $customerProfileData->setProfileGuid($this->arrGet($data, 'profileGuid'));
         $customerProfileData->setCustomerIdentification($this->arrGet($data, 'customerIdentification'));
 
-        return $customerProfileData;
+        return $customerProfileData;*/
     }
 
     /**
