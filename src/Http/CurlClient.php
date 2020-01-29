@@ -251,8 +251,12 @@ class CurlClient implements ClientInterface {
      *
      * @return $this
      */
-    public function sign($apiId, $sharedSecret, $url, $body, $headers = array()) {
-        $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s T');
+    public function sign($apiId, $sharedSecret, $url, $body, $headers = array(), $rfcCompliantTimezone = false) {
+        if ($rfcCompliantTimezone) {
+            $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s \G\M\T');
+        } else {
+            $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s T');
+        }
 
         $path = parse_url($url, PHP_URL_PATH);
         $query = parse_url($url, PHP_URL_QUERY);
