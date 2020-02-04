@@ -144,41 +144,63 @@ class Generator {
         $this->_appendTextNode($root, 'username', $username);
         $this->_appendTextNode($root, 'password', $password);
 
-        if (!in_array($scheduleAction, ['startSchedule', 'showSchedule', 'pauseSchedule', 'continueSchedule', 'cancelSchedule'])) {
-            throw new TypeException('One of the following nodes is required: startSchedule, showSchedule, pauseSchedule, continueSchedule, cancelSchedule');
+        if (!in_array($scheduleAction, ['startSchedule', 'updateSchedule', 'showSchedule', 'pauseSchedule', 'continueSchedule', 'cancelSchedule'])) {
+            throw new TypeException('One of the following nodes is required: startSchedule, updateSchedule, showSchedule, pauseSchedule, continueSchedule, cancelSchedule');
         }
 
         $scheduleNode = $this->document->createElement($scheduleAction);
 
-        if ($scheduleAction === 'startSchedule') {
-            $this->_appendTextNode($scheduleNode, 'registrationId', $schedule->getRegistrationId());
-
-            $this->appendAmountableNodes($scheduleNode, $schedule);
-
-            $this->verifyPeriodLengthType($schedule->getPeriodLength(), 'periodLength');
-            $this->_appendTextNode($scheduleNode, 'periodLength', $schedule->getPeriodLength());
-
-            $this->verifyPeriodUnitType($schedule->getPeriodUnit(), 'periodUnit');
-            $this->_appendTextNode($scheduleNode, 'periodUnit', $schedule->getPeriodUnit());
-
-            $this->verifyFutureDateTime($schedule->getStartDateTime(), 'startDateTime');
-            $this->_appendTextNode($scheduleNode, 'startDateTime', $schedule->getStartDateTime()->format('Y-m-d H:i:s T'));
-
-        } else {
+        if ($scheduleAction !== 'startSchedule') {
             $this->_appendTextNode($scheduleNode, 'scheduleId', $schedule->getScheduleId());
-
         }
 
-        if ($scheduleAction === 'continueSchedule') {
-            $this->verifyFutureDateTime($schedule->getStartDateTime(), 'continueDateTime');
-            $this->_appendTextNode($scheduleNode, 'continueDateTime', $schedule->getContinueDateTime()->format('Y-m-d H:i:s T'));
+        switch ($scheduleAction) {
+            case 'startSchedule':
+                $this->setScheduleData($scheduleNode, $schedule, false);
+                break;
+            case 'updateSchedule':
+                $this->setScheduleData($scheduleNode, $schedule, true);
+                break;
+            case 'continueSchedule':
+                $this->verifyFutureDateTime($schedule->getStartDateTime(), 'continueDateTime');
+                $this->_appendTextNode($scheduleNode, 'continueDateTime', $schedule->getContinueDateTime()->format('Y-m-d H:i:s T'));
+                break;
         }
+
 
         $root->appendChild($scheduleNode);
         $this->document->appendChild($root);
 
         return $this->document->saveXML();
     }
+
+    /**
+     * @param DOMElement $scheduleNode
+     * @param ScheduleData $schedule
+     * @param boolean $allowEmpty
+     * @throws TypeException
+     */
+    private function setScheduleData(DOMElement $scheduleNode, ScheduleData $schedule, boolean $allowEmpty) {
+        $this->_appendTextNode($scheduleNode, 'registrationId', $schedule->getRegistrationId());
+
+        if (!$allowEmpty || $schedule->getAmount()) {
+            $this->appendAmountableNodes($scheduleNode, $schedule);
+        }
+        if (!$allowEmpty || $schedule->getPeriodLength()) {
+            $this->verifyPeriodLengthType($schedule->getPeriodLength(), 'periodLength');
+            $this->_appendTextNode($scheduleNode, 'periodLength', $schedule->getPeriodLength());
+        }
+        if (!$allowEmpty || $schedule->getPeriodUnit()) {
+            $this->verifyPeriodUnitType($schedule->getPeriodUnit(), 'periodUnit');
+            $this->_appendTextNode($scheduleNode, 'periodUnit', $schedule->getPeriodUnit());
+        }
+
+        if (!$allowEmpty || $schedule->getStartDateTime()) {
+            $this->verifyFutureDateTime($schedule->getStartDateTime(), 'startDateTime');
+            $this->_appendTextNode($scheduleNode, 'startDateTime', $schedule->getStartDateTime()->format('Y-m-d H:i:s T'));
+        }
+    }
+
 
     /**
      * @param StatusRequestData $statusRequestData

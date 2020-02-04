@@ -52,6 +52,7 @@ class Client {
     const OPTIONS_ROUTE = 'options';
 
     const SCHEDULE_ACTION_START = 'startSchedule';
+    const SCHEDULE_ACTION_UPDATE = 'updateSchedule';
     const SCHEDULE_ACTION_SHOW = 'showSchedule';
     const SCHEDULE_ACTION_PAUSE = 'pauseSchedule';
     const SCHEDULE_ACTION_CONTINUE = 'continueSchedule';
@@ -240,6 +241,21 @@ class Client {
     public function startSchedule(ScheduleData $schedule) {
         return $this->sendScheduleRequest(self::SCHEDULE_ACTION_START, $schedule);
     }
+
+    /**
+     * @param ScheduleData $schedule
+     * @return Schedule\ScheduleResult
+     * @throws ClientException
+     * @throws Exception\TypeException
+     * @throws Http\Exception\ClientException
+     * @throws InvalidValueException
+     * @throws RateLimitException
+     * @throws TimeoutException
+     */
+    public function updateSchedule(ScheduleData $schedule) {
+        return $this->sendScheduleRequest(self::SCHEDULE_ACTION_UPDATE, $schedule);
+    }
+
 
     /**
      * @param ScheduleData $schedule
