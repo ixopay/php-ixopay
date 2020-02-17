@@ -105,7 +105,7 @@ class JsonGenerator {
                         'currency' => $scheduleData->getCurrency(),
                         'periodLength' => $scheduleData->getPeriodLength(),
                         'periodUnit' => $scheduleData->getPeriodUnit(),
-                        'startDateTime' => $scheduleData->getStartDateTimeFormatted(),
+                        'startDateTime' => $scheduleData->getStartDateTimeFormatted(\DateTime::ATOM),
                     ];
                 } else {
                     /** @var StartSchedule $scheduleData */
@@ -122,7 +122,7 @@ class JsonGenerator {
 
             case Client::SCHEDULE_ACTION_CONTINUE:
                 $json = [
-                    'continueDateTime' => $scheduleData->getContinueDateTimeFormatted(),
+                    'continueDateTime' => $scheduleData->getContinueDateTimeFormatted(\DateTime::ATOM),
                 ];
 
                 break;

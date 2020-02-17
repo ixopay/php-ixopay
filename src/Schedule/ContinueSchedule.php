@@ -52,9 +52,9 @@ class ContinueSchedule {
     /**
      * @return string
      */
-    public function getContinueDateTimeFormatted()
+    public function getContinueDateTimeFormatted($format = null)
     {
-        return $this->continueDateTime ? $this->continueDateTime->format('Y-m-d H:i:s T') : null;
+        return $this->continueDateTime ? $this->continueDateTime->format($format ? $format : 'Y-m-d H:i:s T') : null;
     }
 
     /**

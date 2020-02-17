@@ -181,8 +181,8 @@ class ScheduleData implements AmountableInterface {
     /**
      * @return string|null
      */
-    public function getStartDateTimeFormatted() {
-        return $this->startDateTime ? $this->startDateTime->format('Y-m-d H:i:s T') : null;
+    public function getStartDateTimeFormatted($format = null) {
+        return $this->startDateTime ? $this->startDateTime->format($format ? $format : 'Y-m-d H:i:s T') : null;
     }
 
     /**
@@ -210,8 +210,8 @@ class ScheduleData implements AmountableInterface {
     /**
      * @return string|null
      */
-    public function getContinueDateTimeFormatted() {
-        return $this->continueDateTime ? $this->continueDateTime->format('Y-m-d H:i:s T') : null;
+    public function getContinueDateTimeFormatted($format = null) {
+        return $this->continueDateTime ? $this->continueDateTime->format($format ? $format : 'Y-m-d H:i:s T') : null;
     }
 
     /**
