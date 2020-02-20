@@ -59,6 +59,11 @@ class ScheduleData implements AmountableInterface {
     protected $periodUnit;
 
     /**
+     * @var string
+     */
+    protected $merchantMetaData;
+
+    /**
      * @return string[]
      */
     public static function getValidPeriodUnits() {
@@ -213,4 +218,22 @@ class ScheduleData implements AmountableInterface {
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getMerchantMetaData() {
+        return $this->merchantMetaData;
+    }
+
+    /**
+     * @param string $merchantMetaData
+     * @return ScheduleData
+     */
+    public function setMerchantMetaData($merchantMetaData) {
+        $this->merchantMetaData = $merchantMetaData;
+        return $this;
+    }
+    
+    
 }

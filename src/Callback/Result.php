@@ -92,6 +92,11 @@ class Result {
     protected $scheduleStatus;
 
     /**
+     * @var string
+     */
+    protected $scheduleMerchantMetaData;
+    
+    /**
      * @var Error[]
      */
     protected $errors = array();
@@ -376,6 +381,21 @@ class Result {
      */
     public function setScheduleStatus($scheduleStatus) {
         $this->scheduleStatus = $scheduleStatus;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScheduleMerchantMetaData() {
+        return $this->scheduleMerchantMetaData;
+    }
+
+    /**
+     * @param string $scheduleMerchantMetaData
+     */
+    public function setScheduleMerchantMetaData($scheduleMerchantMetaData) {
+        $this->scheduleMerchantMetaData = $scheduleMerchantMetaData;
         return $this;
     }
     

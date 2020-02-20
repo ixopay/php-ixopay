@@ -177,6 +177,9 @@ class Parser {
                 case 'scheduleStatus':
                     $result->setScheduleStatus($child->nodeValue);
                     break;
+                case 'scheduleMerchantMetaData':
+                    $result->setScheduleMerchantMetaData($child->nodeValue);
+                    break;
                 default:
                     break;
             }
@@ -367,6 +370,7 @@ class Parser {
                 case 'oldStatus':
                 case 'newStatus':
                 case 'scheduledAt':
+                case 'merchantMetaData':
                     if (method_exists($scheduleResult, 'set'.ucfirst($childNode->localName))) {
                         $scheduleResult->{'set' . ucfirst($childNode->localName)}($childNode->nodeValue);
                     }

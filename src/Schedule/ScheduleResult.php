@@ -53,6 +53,11 @@ class ScheduleResult {
     protected $errors = [];
 
     /**
+     * @var string
+     */
+    protected $merchantMetaData;
+
+    /**
      * @return bool
      */
     public function getOperationSuccess() {
@@ -206,6 +211,25 @@ class ScheduleResult {
 
         $this->scheduledAt = $scheduledAt;
 
+        return $this;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getMerchantMetaData()
+    {
+        return $this->merchantMetaData;
+    }
+
+    /**
+     * @param string $merchantMetaData
+     * @return ScheduleResult
+     */
+    public function setMerchantMetaData($merchantMetaData)
+    {
+        $this->merchantMetaData = $merchantMetaData;
         return $this;
     }
 }
