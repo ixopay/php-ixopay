@@ -147,6 +147,11 @@ class Result {
     protected $adapterCode = null;
 
     /**
+     * @var string
+     */
+    protected $scheduleMerchantMetaData;
+    
+    /**
      * @deprecated use $errorMessage, $errorCode, $adapterMessage, $adapterCode
      *
      * @var Error[]
@@ -544,6 +549,21 @@ class Result {
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getScheduleMerchantMetaData() {
+        return $this->scheduleMerchantMetaData;
+    }
+
+    /**
+     * @param string $scheduleMerchantMetaData
+     */
+    public function setScheduleMerchantMetaData($scheduleMerchantMetaData) {
+        $this->scheduleMerchantMetaData = $scheduleMerchantMetaData;
+        return $this;
+    }
+    
     /**
      * @return ChargebackData
      */

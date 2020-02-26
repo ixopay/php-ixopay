@@ -11,7 +11,6 @@ use Ixopay\Client\Exception\GeneralErrorException;
 use Ixopay\Client\Exception\TypeException;
 use Ixopay\Client\Json\ErrorResponse;
 use Ixopay\Client\Exception\RateLimitException;
-use Ixopay\Client\Json\GeneralErrorResponse;
 use Ixopay\Client\Json\JsonParser;
 use Ixopay\Client\Options\OptionsResult;
 use Ixopay\Client\Schedule\ContinueSchedule;
@@ -151,6 +150,16 @@ class Client {
     protected $logger;
 
     /**
+     * @var array
+     */
+    protected $customRequestHeaders = [];
+
+    /**
+     * @var array
+     */
+    protected $customCurlOptions = [];
+
+    /**
      * @var JsonGenerator
      */
     protected $generator;
@@ -194,6 +203,26 @@ class Client {
     		$this->logger->log($level, $message, $context);
     	}
     	//dev/null
+    }
+
+    /**
+     * Set custom request headers for the CurlClient
+     * @param array $headers
+     * @return Client
+     */
+    public function setCustomRequestHeaders(array $headers = array()) {
+        $this->customRequestHeaders = $headers;
+        return $this;
+    }
+
+    /**
+     * Set custom curl options for the CurlClient
+     * @param array $headers
+     * @return Client
+     */
+    public function setCustomCurlOptions(array $curlOptions = array()) {
+        $this->customCurlOptions = $curlOptions;
+        return $this;
     }
 
     /**
@@ -519,7 +548,9 @@ class Client {
 
         $curl = new CurlClient();
         $response = $curl
-        	->sign($apiKey, $sharedSecret, $url, $xml)
+            ->setCustomHeaders($this->customRequestHeaders)
+            ->setCustomCurlOptions($this->customCurlOptions)
+            ->sign($apiKey, $sharedSecret, $url, $xml)
             ->post($url, $xml);
 
 		$this->log(LogLevel::DEBUG, "RESPONSE: " . $response->getBody(),
@@ -561,6 +592,8 @@ class Client {
         );
 
         $curl = new CurlClient();
+        $curl ->setCustomHeaders($this->customRequestHeaders)
+            ->setCustomCurlOptions($this->customCurlOptions);
         $curl->signJson($sharedSecret, $url, $jsonBody, $type)
              ->setAuthentication($username, $password);
 
@@ -1181,8 +1214,14 @@ class Client {
             throw new InvalidValueException('The URL to the IxoPay Gateway can not be empty!');
         }
 
-        if (!\filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)) {
-            throw new InvalidValueException('The URL to the IxoPay Gateway should be a valid URL!');
+        if (PHP_MAJOR_VERSION < 7 || (PHP_MAJOR_VERSION === 7 && PHP_MINOR_VERSION < 3)) {
+            if (!\filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)) {
+                throw new InvalidValueException('The URL to the IxoPay Gateway should be a valid URL!');
+            }
+        } else {
+            if (!\filter_var($url, FILTER_VALIDATE_URL)) {
+                throw new InvalidValueException('The URL to the IxoPay Gateway should be a valid URL!');
+            }
         }
 
         static::$gatewayUrl = $url;

@@ -40,6 +40,16 @@ class CurlClient implements ClientInterface {
     protected $additionalHeaders = array();
 
     /**
+     * @var array
+     */
+    protected $customHeaders = array();
+
+    /**
+     * @var array
+     */
+    protected $customOptions = array();
+
+    /**
      *
      */
     public function __construct() {
@@ -106,6 +116,24 @@ class CurlClient implements ClientInterface {
     }
 
     /**
+     * @param array $customHeaders
+     * @return $this
+     */
+    public function setCustomHeaders(array $customHeaders){
+        $this->customHeaders = $customHeaders;
+        return $this;
+    }
+
+    /**
+     * @param array $customOptions
+     * @return $this
+     */
+    public function setCustomCurlOptions(array $customOptions){
+        $this->customOptions = $customOptions;
+        return $this;
+    }
+
+    /**
      *
      */
     public function __destruct() {
@@ -131,8 +159,18 @@ class CurlClient implements ClientInterface {
             $allHeaders[] = $k . ': ' . $v;
         }
 
+        if($this->customHeaders){
+            foreach ($this->mergeHeaders($headers, $this->customHeaders) as $k => $v) {
+                $allHeaders[] = $k . ': ' . $v;
+            }
+        }
+
         if (!empty($allHeaders)) {
             $this->setOption(CURLOPT_HTTPHEADER, $allHeaders);
+        }
+
+        if($this->customOptions){
+            $this->setOptionArray($this->customOptions);
         }
 
         $exec = CurlExec::getInstance($this->handle)->exec();

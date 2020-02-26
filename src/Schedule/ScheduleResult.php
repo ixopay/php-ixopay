@@ -79,6 +79,11 @@ class ScheduleResult {
     protected $errorCode;
 
     /**
+     * @var string
+     */
+    protected $merchantMetaData;
+
+    /**
      * @deprecated use isSuccess()
      * @return bool
      */
@@ -337,5 +342,23 @@ class ScheduleResult {
             'errorMessage' => $this->getErrorMessage(),
             'errorCode' => $this->getErrorCode(),
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantMetaData()
+    {
+        return $this->merchantMetaData;
+    }
+
+    /**
+     * @param string $merchantMetaData
+     * @return ScheduleResult
+     */
+    public function setMerchantMetaData($merchantMetaData)
+    {
+        $this->merchantMetaData = $merchantMetaData;
+        return $this;
     }
 }
