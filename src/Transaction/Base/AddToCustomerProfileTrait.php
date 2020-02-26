@@ -27,18 +27,15 @@ trait AddToCustomerProfileTrait {
      * @return CustomerProfileData
      */
     public function getCustomerProfileData() {
-        if (!$this->customerProfileData) {
-            $this->customerProfileData = new CustomerProfileData();
-        }
         return $this->customerProfileData;
     }
 
     /**
-     * @param CustomerProfileData $customerProfileData
+     * @param CustomerProfileData|null $customerProfileData
      *
      * @return $this
      */
-    public function setCustomerProfileData(CustomerProfileData $customerProfileData) {
+    public function setCustomerProfileData(CustomerProfileData $customerProfileData = null) {
         $this->customerProfileData = $customerProfileData;
         return $this;
     }
@@ -71,7 +68,7 @@ trait AddToCustomerProfileTrait {
      * @return string
      */
     public function getCustomerProfileGuid(){
-        return $this->getCustomerProfileData()->getProfileGuid();
+        return $this->customerProfileData ? $this->customerProfileData->getProfileGuid() : null;
     }
 
     /**
@@ -82,7 +79,10 @@ trait AddToCustomerProfileTrait {
      * @return $this
      */
     public function setCustomerProfileGuid($profileGuid){
-        $this->getCustomerProfileData()->setProfileGuid($profileGuid);
+        if ($profileGuid && !$this->customerProfileData) {
+            $this->customerProfileData = new CustomerProfileData();
+            $this->customerProfileData->setProfileGuid($profileGuid);
+        }
         return $this;
     }
 
@@ -92,7 +92,7 @@ trait AddToCustomerProfileTrait {
      * @return string
      */
     public function getCustomerProfileIdentification() {
-        return $this->getCustomerProfileData()->getCustomerIdentification();
+        return $this->customerProfileData ? $this->customerProfileData->getCustomerIdentification() : null;
     }
 
     /**
@@ -103,7 +103,10 @@ trait AddToCustomerProfileTrait {
      * @return $this
      */
     public function setCustomerProfileIdentification($identification) {
-        $this->getCustomerProfileData()->setCustomerIdentification($identification);
+        if ($identification && !$this->customerProfileData) {
+            $this->customerProfileData = new CustomerProfileData();
+            $this->customerProfileData->setCustomerIdentification($identification);
+        }
         return $this;
     }
 
@@ -113,7 +116,7 @@ trait AddToCustomerProfileTrait {
      * @return bool
      */
     public function getMarkAsPreferred() {
-        return $this->getCustomerProfileData()->getMarkAsPreferred();
+        return $this->customerProfileData ? $this->customerProfileData->getMarkAsPreferred() : false;
     }
 
     /**
@@ -124,7 +127,10 @@ trait AddToCustomerProfileTrait {
      * @return $this
      */
     public function setMarkAsPreferred($markAsPreferred) {
-        $this->getCustomerProfileData()->setMarkAsPreferred($markAsPreferred);
+        if ($markAsPreferred !== null && !$this->customerProfileData) {
+            $this->customerProfileData = new CustomerProfileData();
+            $this->customerProfileData->setMarkAsPreferred($markAsPreferred);
+        }
         return $this;
     }
 }
