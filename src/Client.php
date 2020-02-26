@@ -482,7 +482,6 @@ class Client {
                     $rateLimitMsg .= !empty($headers['retry-after']) ? ' | Retry-After: '.$headers['retry-after'].' seconds' : '';
 
                 }
-
                 throw new RateLimitException($rateLimitMsg);
             default:
                 if ($httpResponse->getErrorCode() || $httpResponse->getErrorMessage()) {

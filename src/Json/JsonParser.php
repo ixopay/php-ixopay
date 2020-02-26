@@ -250,6 +250,17 @@ class JsonParser {
             $result->setScheduleData($schedule);
         }
 
+        if ($this->arrGet($json, 'errorMessage') || $this->arrGet($json, 'errorCode')) {
+            $result->addError(
+                new Error(
+                    $this->arrGet($json, 'errorMessage'),
+                    $this->arrGet($json, 'errorCode'),
+                    $this->arrGet($json, 'adapterMessage'),
+                    $this->arrGet($json, 'adapterCode')
+                )
+            );
+        }
+
         if(isset($json['chargebackData'])) {
             $cbData = $this->parseChargebackData($json['chargebackData']);
             $result->setChargebackData($cbData);
@@ -402,10 +413,12 @@ class JsonParser {
      * @return Error
      */
     protected function parseError($data){
-        $error = new Error($this->arrGet($data, 'errorMessage'));
-        $error->setCode($this->arrGet($data, 'errorCode'));
-        $error->setAdapterMessage($this->arrGet($data, 'adapterMessage'));
-        $error->setAdapterCode($this->arrGet($data, 'adapterCode'));
+        $error = new Error(
+            $this->arrGet($data, 'errorMessage'),
+            $this->arrGet($data, 'errorCode'),
+            $this->arrGet($data, 'adapterMessage'),
+            $this->arrGet($data, 'adapterCode')
+        );
 
         return $error;
     }
