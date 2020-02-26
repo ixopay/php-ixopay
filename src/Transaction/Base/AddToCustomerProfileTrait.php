@@ -27,6 +27,9 @@ trait AddToCustomerProfileTrait {
      * @return CustomerProfileData
      */
     public function getCustomerProfileData() {
+        if (!$this->customerProfileData) {
+            $this->customerProfileData = new CustomerProfileData();
+        }
         return $this->customerProfileData;
     }
 
@@ -68,7 +71,7 @@ trait AddToCustomerProfileTrait {
      * @return string
      */
     public function getCustomerProfileGuid(){
-        return $this->customerProfileData->getProfileGuid();
+        return $this->getCustomerProfileData()->getProfileGuid();
     }
 
     /**
@@ -79,7 +82,7 @@ trait AddToCustomerProfileTrait {
      * @return $this
      */
     public function setCustomerProfileGuid($profileGuid){
-        $this->customerProfileData->setProfileGuid($profileGuid);
+        $this->getCustomerProfileData()->setProfileGuid($profileGuid);
         return $this;
     }
 
@@ -89,7 +92,7 @@ trait AddToCustomerProfileTrait {
      * @return string
      */
     public function getCustomerProfileIdentification() {
-        return $this->customerProfileData->getCustomerIdentification();
+        return $this->getCustomerProfileData()->getCustomerIdentification();
     }
 
     /**
@@ -100,7 +103,7 @@ trait AddToCustomerProfileTrait {
      * @return $this
      */
     public function setCustomerProfileIdentification($identification) {
-        $this->customerProfileData->setCustomerIdentification($identification);
+        $this->getCustomerProfileData()->setCustomerIdentification($identification);
         return $this;
     }
 
@@ -110,7 +113,7 @@ trait AddToCustomerProfileTrait {
      * @return bool
      */
     public function getMarkAsPreferred() {
-        return $this->customerProfileData->getMarkAsPreferred();
+        return $this->getCustomerProfileData()->getMarkAsPreferred();
     }
 
     /**
@@ -121,7 +124,7 @@ trait AddToCustomerProfileTrait {
      * @return $this
      */
     public function setMarkAsPreferred($markAsPreferred) {
-        $this->customerProfileData->setMarkAsPreferred($markAsPreferred);
+        $this->getCustomerProfileData()->setMarkAsPreferred($markAsPreferred);
         return $this;
     }
 }
