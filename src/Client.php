@@ -773,10 +773,10 @@ class Client {
     public function readCallback($requestBody) {
         if (strpos($requestBody, '<callback') !== false) {
             $parser = new Parser();
-            $parser->parseCallback($requestBody);
+            return $parser->parseCallback($requestBody);
         } elseif (!($json = json_decode($requestBody, true))) {
             $parser = new Parser();
-            $parser->parseCallback($requestBody);
+            return $parser->parseCallback($requestBody);
         } else {
             $jsonParser = new JsonParser();
             return $jsonParser->parseCallback($requestBody);
