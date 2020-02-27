@@ -31,11 +31,11 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
-     * @param CustomerProfileData $customerProfileData
+     * @param CustomerProfileData|null $customerProfileData
      *
      * @return $this
      */
-    public function setCustomerProfileData(CustomerProfileData $customerProfileData) {
+    public function setCustomerProfileData(CustomerProfileData $customerProfileData = null) {
         $this->customerProfileData = $customerProfileData;
         return $this;
     }
@@ -68,7 +68,7 @@ trait AddToCustomerProfileTrait {
      * @return string
      */
     public function getCustomerProfileGuid(){
-        return $this->customerProfileData->getProfileGuid();
+        return $this->customerProfileData ? $this->customerProfileData->getProfileGuid() : null;
     }
 
     /**
@@ -79,7 +79,10 @@ trait AddToCustomerProfileTrait {
      * @return $this
      */
     public function setCustomerProfileGuid($profileGuid){
-        $this->customerProfileData->setProfileGuid($profileGuid);
+        if ($profileGuid && !$this->customerProfileData) {
+            $this->customerProfileData = new CustomerProfileData();
+            $this->customerProfileData->setProfileGuid($profileGuid);
+        }
         return $this;
     }
 
@@ -89,7 +92,7 @@ trait AddToCustomerProfileTrait {
      * @return string
      */
     public function getCustomerProfileIdentification() {
-        return $this->customerProfileData->getCustomerIdentification();
+        return $this->customerProfileData ? $this->customerProfileData->getCustomerIdentification() : null;
     }
 
     /**
@@ -100,7 +103,10 @@ trait AddToCustomerProfileTrait {
      * @return $this
      */
     public function setCustomerProfileIdentification($identification) {
-        $this->customerProfileData->setCustomerIdentification($identification);
+        if ($identification && !$this->customerProfileData) {
+            $this->customerProfileData = new CustomerProfileData();
+            $this->customerProfileData->setCustomerIdentification($identification);
+        }
         return $this;
     }
 
@@ -110,7 +116,7 @@ trait AddToCustomerProfileTrait {
      * @return bool
      */
     public function getMarkAsPreferred() {
-        return $this->customerProfileData->getMarkAsPreferred();
+        return $this->customerProfileData ? $this->customerProfileData->getMarkAsPreferred() : false;
     }
 
     /**
@@ -121,7 +127,10 @@ trait AddToCustomerProfileTrait {
      * @return $this
      */
     public function setMarkAsPreferred($markAsPreferred) {
-        $this->customerProfileData->setMarkAsPreferred($markAsPreferred);
+        if ($markAsPreferred !== null && !$this->customerProfileData) {
+            $this->customerProfileData = new CustomerProfileData();
+            $this->customerProfileData->setMarkAsPreferred($markAsPreferred);
+        }
         return $this;
     }
 }
