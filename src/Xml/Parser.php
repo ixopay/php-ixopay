@@ -2,8 +2,8 @@
 
 namespace Ixopay\Client\Xml;
 
-use Ixopay\Client\Callback\ChargebackData;
-use Ixopay\Client\Callback\ChargebackReversalData;
+use Ixopay\Client\Data\ChargebackData;
+use Ixopay\Client\Data\ChargebackReversalData;
 use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\Result\CreditcardData;
 use Ixopay\Client\Data\Result\IbanData;
