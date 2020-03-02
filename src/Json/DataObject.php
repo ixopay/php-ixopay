@@ -125,7 +125,7 @@ class DataObject implements \ArrayAccess, \JsonSerializable {
     }
 
     /**
-     * @param string $data
+     * @param array $data
      */
     public function _populateFromResponse($data) {
         foreach ($data as $k=>$v) {

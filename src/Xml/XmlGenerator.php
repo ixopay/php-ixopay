@@ -261,12 +261,16 @@ class XmlGenerator {
      * @param AbstractTransaction $transaction
      */
     protected function appendAbstractTransactionNodes(\DOMNode $parentNode, AbstractTransaction $transaction) {
-        $this->_appendTextNode($parentNode, 'transactionToken', $transaction->getTransactionToken());
+        if (method_exists($transaction, 'getTransactionToken')) {
+            $this->_appendTextNode($parentNode, 'transactionToken', $transaction->getTransactionToken());
+        }
         $this->_appendTextNode($parentNode, 'transactionId', $transaction->getTransactionId());
         $this->_appendTextNode($parentNode, 'additionalId1', $transaction->getAdditionalId1());
         $this->_appendTextNode($parentNode, 'additionalId2', $transaction->getAdditionalId2());
-        if ($transaction->getCustomer()) {
-            $this->appendCustomerNode($parentNode, $transaction->getCustomer());
+        if (method_exists($transaction, 'getCustomer')) {
+            if ($transaction->getCustomer()) {
+                $this->appendCustomerNode($parentNode, $transaction->getCustomer());
+            }
         }
         if ($transaction->getExtraData()) {
             $this->appendExtraDataNodes($parentNode, 'extraData', $transaction->getExtraData());

@@ -79,8 +79,6 @@ class ScheduleError {
     /**
      * @param string $message
      * @param int|null $code
-     * @param string|null $adapterMessage
-     * @param string|null $adapterCode
      */
     public function __construct($message, $code = null) {
         $this->message = $message;

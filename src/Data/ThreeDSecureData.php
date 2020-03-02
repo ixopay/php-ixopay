@@ -520,8 +520,6 @@ class ThreeDSecureData extends DataObject {
     }
 
     /**
-     * @param $cardholderAccountLastChange
-     *
      * @return string
      */
     public function getCardholderAccountLastChangeFormatted()

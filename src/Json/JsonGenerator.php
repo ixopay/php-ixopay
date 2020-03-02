@@ -18,7 +18,6 @@ use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Schedule\ScheduleWithTransaction;
 use Ixopay\Client\Schedule\StartSchedule;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
-use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Deregister;
@@ -417,6 +416,7 @@ class JsonGenerator {
         if(!$paymentData){
             return null;
         }
+        $data = null;
 
         if($paymentData instanceof CardData){
             /** @var CardData $paymentData */

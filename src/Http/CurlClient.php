@@ -243,12 +243,12 @@ class CurlClient implements ClientInterface {
     }
 
     /**
-     * @param int    $apiId @todo int?
+     * @param int $apiId
      * @param string $sharedSecret
      * @param string $url
      * @param string $body
-     * @param array  $headers
-     *
+     * @param array $headers
+     * @param bool $rfcCompliantTimezone
      * @return $this
      * @throws \Exception
      */
@@ -285,9 +285,8 @@ class CurlClient implements ClientInterface {
      * @param string $sharedSecret
      * @param string $url
      * @param string $body
-     * @param string $type
-     * @param array  $headers
-     *
+     * @param string $method
+     * @param bool $rfcCompliantTimezone
      * @return $this
      * @throws \Exception
      */

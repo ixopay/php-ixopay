@@ -50,6 +50,7 @@ class ContinueSchedule {
     }
 
     /**
+     * @param string $format
      * @return string
      */
     public function getContinueDateTimeFormatted($format = null)

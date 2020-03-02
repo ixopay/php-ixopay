@@ -217,7 +217,7 @@ class Client {
 
     /**
      * Set custom curl options for the CurlClient
-     * @param array $headers
+     * @param array $curlOptions
      * @return Client
      */
     public function setCustomCurlOptions(array $curlOptions = array()) {
@@ -1298,6 +1298,7 @@ class Client {
     /**
      * @deprecated use sendJsonApiRequest
      * @param string $xml
+     * @param string $url
      *
      * @return Response
      * @throws ClientException

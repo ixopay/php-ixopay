@@ -558,6 +558,7 @@ class Result {
 
     /**
      * @param string $scheduleMerchantMetaData
+     * @return Result
      */
     public function setScheduleMerchantMetaData($scheduleMerchantMetaData) {
         $this->scheduleMerchantMetaData = $scheduleMerchantMetaData;

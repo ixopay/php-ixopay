@@ -76,6 +76,7 @@ class IbanCustomer extends Customer {
 
     /**
      * @param string $mandateId
+     * @return IbanCustomer
      */
     public function setMandateId($mandateId) {
         $this->mandateId = $mandateId;

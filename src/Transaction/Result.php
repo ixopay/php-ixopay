@@ -468,7 +468,7 @@ class Result {
      * @return string
      */
     public function getScheduleId() {
-        return $this->scheduleData->getScheduleId();
+        return $this->scheduleData ? $this->scheduleData->getScheduleId() : null;
     }
 
     /**
@@ -486,7 +486,7 @@ class Result {
      * @return string
      */
     public function getScheduleStatus() {
-        return $this->scheduleData->set;
+        return $this->scheduleData ? $this->scheduleData->getScheduleStatus() : null;
     }
 
     /**
@@ -495,7 +495,7 @@ class Result {
      * @return Result
      */
     public function setScheduleStatus($scheduleStatus) {
-        $this->scheduleStatus = $scheduleStatus;
+        $this->scheduleData->setScheduleStatus($scheduleStatus);
 
         return $this;
     }
@@ -556,10 +556,14 @@ class Result {
     }
 
     /**
+     * Note: returns string due to backwards compatibility
+     * use direct access to $this->getScheduleData()->getScheduledAt() for \DateTime type
      * @return string
      */
     public function getScheduledAt() {
-        return $this->scheduledAt;
+        return $this->getScheduleData() && $this->getScheduleData()->getScheduledAt()
+            ? $this->getScheduleData()->getScheduledAt()->format('Y-m-d H:i:s')
+            : null;
     }
 
     /**
@@ -573,7 +577,7 @@ class Result {
             $scheduledAt = $scheduledAt->format('Y-m-d H:i:s T');
         }
 
-        $this->scheduledAt = $scheduledAt;
+        $this->scheduleData->setScheduledAt($scheduledAt);
 
         return $this;
     }
@@ -592,44 +596,6 @@ class Result {
     public function setCustomer($customer)
     {
         $this->customer = $customer;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAdapterMessage()
-    {
-        return $this->adapterMessage;
-    }
-
-    /**
-     * @param string $adapterMessage
-     *
-     * @return Result
-     */
-    public function setAdapterMessage($adapterMessage)
-    {
-        $this->adapterMessage = $adapterMessage;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAdapterCode()
-    {
-        return $this->adapterCode;
-    }
-
-    /**
-     * @param int $adapterCode
-     *
-     * @return Result
-     */
-    public function setAdapterCode($adapterCode)
-    {
-        $this->adapterCode = $adapterCode;
-        return $this;
     }
 
 }

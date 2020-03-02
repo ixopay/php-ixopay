@@ -184,6 +184,7 @@ class ScheduleData implements AmountableInterface {
     }
 
     /**
+     * @param string|null $format
      * @return string|null
      */
     public function getStartDateTimeFormatted($format = null) {
@@ -213,6 +214,7 @@ class ScheduleData implements AmountableInterface {
     }
 
     /**
+     * @param string|null
      * @return string|null
      */
     public function getContinueDateTimeFormatted($format = null) {

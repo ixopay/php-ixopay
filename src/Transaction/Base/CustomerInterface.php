@@ -2,7 +2,6 @@
 
 namespace Ixopay\Client\Transaction\Base;
 use Ixopay\Client\Data\Customer;
-use Ixopay\Client\Data\ThreeDSecureData;
 
 /**
  * Interface CustomerInterface

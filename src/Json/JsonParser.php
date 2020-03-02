@@ -27,7 +27,9 @@ use Ixopay\Client\Transaction\Result;
  */
 class JsonParser {
 
-    /** @deprecated */
+    /** @deprecated
+     * @param string $json
+     */
     public function parseResult($json){}
 
     /**
@@ -62,8 +64,6 @@ class JsonParser {
         $result->setPaymentDescriptor($this->arrGet($json, 'paymentDescriptor'));
         $result->setPaymentMethod($this->arrGet($json, 'paymentMethod'));
         $result->setExtraData($this->arrGet($json, 'extraData'));
-        $result->setAdapterMessage($this->arrGet($json, 'adapterMessage'));
-        $result->setAdapterCode($this->arrGet($json, 'adapterCode'));
 
         // process object data
         if (isset($json['errors'])){
