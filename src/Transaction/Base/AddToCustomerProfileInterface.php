@@ -2,6 +2,8 @@
 
 namespace Ixopay\Client\Transaction\Base;
 
+use Ixopay\Client\Data\CustomerProfileData;
+
 /**
  * Interface AddToCustomerProfileInterface
  * @package Ixopay\Client\Transaction\Base
