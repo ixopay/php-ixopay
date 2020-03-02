@@ -10,23 +10,9 @@ namespace Ixopay\Client\Data;
 class ChargebackData {
 
     /**
-     * @deprecated use $originalUuid
-     *
-     * @var string
-     */
-    protected $originalTransactionId;
-
-    /**
      * @var string
      */
     protected $originalUuid;
-
-    /**
-     * @deprecated use $originalMerchantTransactionId
-     *
-     * @var string
-     */
-    protected $originalReferenceId;
 
     /**
      * @var string
@@ -54,39 +40,39 @@ class ChargebackData {
     protected $chargebackDateTime;
 
     /**
-     * @deprecated use getOriginalUuid()
+     * @deprecated use setOriginalMerchantTransactionId()
      *
      * @return string
      */
     public function getOriginalTransactionId() {
-        return $this->originalUuid;
-    }
-
-    /**
-     * @deprecated use setOriginalUuid()
-     *
-     * @param string $originalTransactionId
-     */
-    public function setOriginalTransactionId($originalTransactionId) {
-        $this->originalUuid = $originalTransactionId;
-    }
-
-    /**
-     * @deprecated use getOriginalMerchantTransactionId()
-     *
-     * @return string
-     */
-    public function getOriginalReferenceId() {
         return $this->originalMerchantTransactionId;
     }
 
     /**
      * @deprecated use setOriginalMerchantTransactionId()
      *
+     * @param string $originalTransactionId
+     */
+    public function setOriginalTransactionId($originalTransactionId) {
+        $this->originalMerchantTransactionId = $originalTransactionId;
+    }
+
+    /**
+     * @deprecated use getOriginalUuid()
+     *
+     * @return string
+     */
+    public function getOriginalReferenceId() {
+        return $this->originalUuid;
+    }
+
+    /**
+     * @deprecated use setOriginalUuid()
+     *
      * @param string $originalReferenceId
      */
     public function setOriginalReferenceId($originalReferenceId) {
-        $this->originalMerchantTransactionId = $originalReferenceId;
+        $this->originalUuid = $originalReferenceId;
     }
 
     /**
