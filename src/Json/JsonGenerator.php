@@ -48,7 +48,7 @@ class JsonGenerator {
             'merchantTransactionId' => $transaction->getMerchantTransactionId(),
             'additionalId1' => $transaction->getAdditionalId1(),
             'additionalId2' => $transaction->getAdditionalId2(),
-            'extraData' => $transaction->getExtraData(),
+            'extraData' => $this->stringifyExtraData($transaction->getExtraData()),
             'merchantMetaData' => $transaction->getMerchantMetaData(),
         ];
 
@@ -326,7 +326,7 @@ class JsonGenerator {
                 'quantity' => $item->getQuantity(),
                 'price' => $item->getPrice(),
                 'currency' => $item->getCurrency(),
-                'extraData' => $item->getExtraData(),
+                'extraData' => $this->stringifyExtraData($item->getExtraData()),
             ];
         }
 
@@ -375,7 +375,7 @@ class JsonGenerator {
             'emailVerified' => $customer->isEmailVerified(),
             'ipAddress' => $customer->getIpAddress(),
             'nationalId' => $customer->getNationalId(),
-            'extraData' => $customer->getExtraData(),
+            'extraData' => $this->stringifyExtraData($customer->getExtraData()),
             // uncomment below upon removing backwards compatibility
 //             'paymentData' => $this->createPaymentData($customer->getPaymentData()),
         ];
@@ -600,4 +600,16 @@ class JsonGenerator {
      */
     public function setNamespaceRoot($namespaceRoot) {}
 
+    /**
+     * @param array $extraData
+     * @return array
+     */
+    protected function stringifyExtraData($extraData) {
+        if (is_array($extraData)) {
+            array_walk($extraData, function(&$v) {
+                $v = (string)$v;
+            });
+        }
+        return $extraData;
+    }
 }
