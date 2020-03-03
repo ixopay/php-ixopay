@@ -44,6 +44,11 @@ class ScheduleWithTransaction implements AmountableInterface {
     protected $startDateTime;
 
     /**
+     * @var string
+     */
+    protected $merchantMetaData;
+
+    /**
      * @return float
      */
     public function getAmount()
@@ -152,6 +157,23 @@ class ScheduleWithTransaction implements AmountableInterface {
             $startDateTime = new \DateTime($startDateTime);
         }
         $this->startDateTime = $startDateTime;
+        return $this;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getMerchantMetaData() {
+        return $this->merchantMetaData;
+    }
+
+    /**
+     * @param string $merchantMetaData
+     * @return $this
+     */
+    public function setMerchantMetaData($merchantMetaData) {
+        $this->merchantMetaData = $merchantMetaData;
         return $this;
     }
 
