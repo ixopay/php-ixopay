@@ -105,6 +105,7 @@ class JsonGenerator {
                         'periodLength' => $scheduleData->getPeriodLength(),
                         'periodUnit' => $scheduleData->getPeriodUnit(),
                         'startDateTime' => $scheduleData->getStartDateTimeFormatted(\DateTime::ATOM),
+                        'merchantMetaData' => $scheduleData->getMerchantMetaData()
                     ];
                 } else {
                     /** @var StartSchedule $scheduleData */
@@ -464,6 +465,7 @@ class JsonGenerator {
             'periodLength' => $schedule->getPeriodLength(),
             'periodUnit' => $schedule->getPeriodUnit(),
             'startDateTime' => $schedule->getStartDateTimeFormatted(),
+            'merchantMetaData' => $schedule->getMerchantMetaData()
         ];
 
         return $data;

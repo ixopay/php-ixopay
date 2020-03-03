@@ -191,6 +191,7 @@ class JsonParser {
             $result->setOldStatus($this->arrGet($json, 'oldStatus'));
             $result->setNewStatus($this->arrGet($json, 'newStatus'));
             $result->setScheduledAt($this->arrGet($json, 'scheduledAt'));
+            $result->setMerchantMetaData($this->arrGet($json, 'merchantMetaData'));
         } else {
             $result->setSuccess(false);
             $result->setErrorMessage($this->arrGet($json, 'errorMessage'));
@@ -363,6 +364,7 @@ class JsonParser {
         $scheduleData->setScheduleId($this->arrGet($data, 'scheduleId'));
         $scheduleData->setScheduleStatus($this->arrGet($data, 'scheduleStatus'));
         $scheduleData->setScheduledAt($this->arrGet($data, 'scheduledAt') ? new \DateTime($this->arrGet($data, 'scheduledAt')) : null);
+        $scheduleData->setMerchantMetaData($this->arrGet($data, 'merchantMetaData'));
 
         return $scheduleData;
     }

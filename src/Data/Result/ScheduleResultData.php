@@ -27,6 +27,11 @@ class ScheduleResultData extends ResultData {
     protected $scheduledAt;
 
     /**
+     * @var string
+     */
+    protected $merchantMetaData;
+
+    /**
      * @return string
      */
     public function getScheduleId()
@@ -87,7 +92,24 @@ class ScheduleResultData extends ResultData {
         return $this;
     }
 
-        /**
+
+    /**
+     * @return string
+     */
+    public function getMerchantMetaData() {
+        return $this->merchantMetaData;
+    }
+
+    /**
+     * @param string $merchantMetaData
+     * @return $this
+     */
+    public function setMerchantMetaData($merchantMetaData) {
+        $this->merchantMetaData = $merchantMetaData;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray() {
