@@ -231,7 +231,7 @@ class JsonGenerator {
             'description' => $transaction->getDescription(),
             'customer' => $this->createCustomer($transaction->getCustomer()),
             'schedule' => $this->createSchedule($transaction->getSchedule()),
-            'addToCustomerProfile' => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
+            'customerProfileData' => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
             'threeDSecureData' => $this->createThreeDSecureData($transaction->getThreeDSecureData()),
             'language' => $language,
         ];
