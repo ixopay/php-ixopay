@@ -2,6 +2,7 @@
 
 namespace Ixopay\Client\Http;
 
+use Ixopay\Client\Client;
 use Ixopay\Client\Http\Exception\ClientException;
 
 /**
@@ -163,6 +164,11 @@ class CurlClient implements ClientInterface {
             foreach ($this->mergeHeaders($headers, $this->customHeaders) as $k => $v) {
                 $allHeaders[] = $k . ': ' . $v;
             }
+        }
+        $allHeaders[] = 'X-SDK-Type: IXOPAY PHP Client';
+        $allHeaders[] = 'X-SDK-Version: '.Client::VERSION;
+        if (phpversion()) {
+            $allHeaders[] = 'X-SDK-PlatformVersion: ' . phpversion();
         }
 
         if (!empty($allHeaders)) {
