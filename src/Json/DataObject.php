@@ -4,7 +4,6 @@ namespace Ixopay\Client\Json;
 
 use Ixopay\Client\CustomerProfile\CustomerData;
 use Ixopay\Client\CustomerProfile\PaymentInstrument;
-use Ixopay\Client\Data\PaymentData\CardData;
 use Ixopay\Client\Data\PaymentData\IbanData;
 use Ixopay\Client\Data\PaymentData\WalletData;
 use Ixopay\Client\Data\ThreeDSecureData;
@@ -24,7 +23,6 @@ class DataObject implements \ArrayAccess, \JsonSerializable {
     protected static $_typeMap = array(
         'customerData' => CustomerData::class,
         'paymentInstrument' => PaymentInstrument::class,
-        'paymentData.card' => CardData::class,
         'paymentData.iban' => IbanData::class,
         'paymentData.wallet' => WalletData::class,
         'threeDSecureData' => ThreeDSecureData::class,

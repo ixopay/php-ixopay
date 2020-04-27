@@ -419,17 +419,7 @@ class JsonGenerator {
         }
         $data = null;
 
-        if($paymentData instanceof CardData){
-            /** @var CardData $paymentData */
-            $data['cardData'] = [
-                'brand' => $paymentData->getBrand(),
-                'cardHolder' => $paymentData->getCardHolder(),
-                'firstSixDigits' => $paymentData->getFirstSixDigits(),
-                'lastFourDigits' => $paymentData->getLastFourDigits(),
-                'expiryMonth' => $paymentData->getExpiryMonth(),
-                'expiryYear' => $paymentData->getExpiryYear(),
-            ];
-        } elseif($paymentData instanceof IbanData){
+        if($paymentData instanceof IbanData){
             $data['ibanData'] = [
                 'iban' => $paymentData->getIban(),
                 'bic' => $paymentData->getBic(),
