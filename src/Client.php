@@ -803,7 +803,10 @@ class Client {
             $dateHeader, $requestQuery);
         $expectedSig = 'IxoPay ' . $this->getApiKey() . ':' . $digest;
         $expectedSig2 = 'Gateway '.$this->getApiKey() . ':' . $digest;
-        $expectedSigJson = $digest;
+
+
+        $expectedSigJson = $curl->createSignature($this->getSharedSecret(), 'POST', $requestBody, 'application/json; charset=utf-8',
+            $dateHeader, $requestQuery, true);
 
         if ($authorizationHeader == $expectedSigJson) {
             return true;

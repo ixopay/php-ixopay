@@ -337,8 +337,12 @@ class CurlClient implements ClientInterface {
      *
      * @return string
      */
-    public function createSignature($sharedSecret, $method, $body, $contentType, $timestamp, $requestUri) {
-        $parts = array($method, md5($body), $contentType, $timestamp, '', $requestUri);
+    public function createSignature($sharedSecret, $method, $body, $contentType, $timestamp, $requestUri, $forJsonApi = false) {
+        if ($forJsonApi) {
+            $parts = array($method, md5($body), $contentType, $timestamp, $requestUri);
+        } else {
+            $parts = array($method, md5($body), $contentType, $timestamp, '', $requestUri);
+        }
 
         $str = implode("\n", $parts);
         $digest = hash_hmac('sha512', $str, $sharedSecret, true);
