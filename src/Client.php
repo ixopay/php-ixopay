@@ -803,7 +803,11 @@ class Client {
             $dateHeader, $requestQuery);
         $expectedSig = 'IxoPay ' . $this->getApiKey() . ':' . $digest;
         $expectedSig2 = 'Gateway '.$this->getApiKey() . ':' . $digest;
+        $expectedSigJson = $digest;
 
+        if ($authorizationHeader == $expectedSigJson) {
+            return true;
+        }
 
         if (strpos($authorizationHeader, 'Authorization:') !== false) {
             $authorizationHeader = trim(str_replace('Authorization:', '', $authorizationHeader));
@@ -832,6 +836,18 @@ class Client {
             $dateHeader = null;
         }
 
+        //new JSON validation
+        $signature = null;
+        if (!empty($_SERVER['HTTP_X_SIGNATURE'])) {
+            $signature = $_SERVER['HTTP_X_SIGNATURE'];
+        } elseif (!empty($_SERVER['X_SIGNATURE'])) {
+            $signature = $_SERVER['X_SIGNATURE'];
+        }
+        if ($signature) {
+            return $this->validateCallback($requestBody, $requestQuery, $dateHeader, $signature);
+        }
+
+        //old XML validation
         if (!empty($_SERVER['HTTP_AUTHORIZATION'])) {
             $authorizationHeader = $_SERVER['HTTP_AUTHORIZATION'];
         } elseif (!empty($_SERVER['HTTP_X_AUTHORIZATION'])) {
