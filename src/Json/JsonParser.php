@@ -251,11 +251,11 @@ class JsonParser {
             $result->setScheduleData($schedule);
         }
 
-        if ($this->arrGet($json, 'errorMessage') || $this->arrGet($json, 'errorCode')) {
+        if ($this->arrGet($json, 'message') || $this->arrGet($json, 'code')) {
             $result->addError(
                 new Error(
-                    $this->arrGet($json, 'errorMessage'),
-                    $this->arrGet($json, 'errorCode'),
+                    $this->arrGet($json, 'message'),
+                    $this->arrGet($json, 'code'),
                     $this->arrGet($json, 'adapterMessage'),
                     $this->arrGet($json, 'adapterCode')
                 )
