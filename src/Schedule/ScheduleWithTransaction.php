@@ -142,7 +142,7 @@ class ScheduleWithTransaction implements AmountableInterface {
      */
     public function getStartDateTimeFormatted()
     {
-        return $this->startDateTime ? $this->startDateTime->format('Y-m-d H:i:s T') : null;
+        return $this->startDateTime ? $this->startDateTime->format('c') : null; //ISO 8601
     }
 
     /**

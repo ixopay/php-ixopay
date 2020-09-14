@@ -387,7 +387,7 @@ class JsonGenerator {
                 'iban' => $customer->getIban(),
                 'bic' => $customer->getBic(),
                 'mandateId' => $customer->getMandateId(),
-                'mandateDate' => $customer->getMandateDate(),
+                'mandateDate' => $customer->getMandateDate() ? ($customer->getMandateDate())->format('Y-m-d') : null,
             ];
         } elseif($customer instanceof CreditCardCustomer){
             $data['paymentData']['cardData'] = [
