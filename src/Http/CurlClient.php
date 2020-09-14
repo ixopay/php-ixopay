@@ -2,6 +2,7 @@
 
 namespace Ixopay\Client\Http;
 
+use Ixopay\Client\Client;
 use Ixopay\Client\Http\Exception\ClientException;
 
 /**
@@ -163,6 +164,11 @@ class CurlClient implements ClientInterface {
             foreach ($this->mergeHeaders($headers, $this->customHeaders) as $k => $v) {
                 $allHeaders[] = $k . ': ' . $v;
             }
+        }
+        $allHeaders[] = 'X-SDK-Type: IXOPAY PHP Client';
+        $allHeaders[] = 'X-SDK-Version: '.Client::VERSION;
+        if (phpversion()) {
+            $allHeaders[] = 'X-SDK-PlatformVersion: ' . phpversion();
         }
 
         if (!empty($allHeaders)) {
@@ -331,8 +337,12 @@ class CurlClient implements ClientInterface {
      *
      * @return string
      */
-    public function createSignature($sharedSecret, $method, $body, $contentType, $timestamp, $requestUri) {
-        $parts = array($method, md5($body), $contentType, $timestamp, '', $requestUri);
+    public function createSignature($sharedSecret, $method, $body, $contentType, $timestamp, $requestUri, $forJsonApi = false) {
+        if ($forJsonApi) {
+            $parts = array($method, md5($body), $contentType, $timestamp, $requestUri);
+        } else {
+            $parts = array($method, md5($body), $contentType, $timestamp, '', $requestUri);
+        }
 
         $str = implode("\n", $parts);
         $digest = hash_hmac('sha512', $str, $sharedSecret, true);

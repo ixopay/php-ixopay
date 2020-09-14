@@ -45,6 +45,8 @@ use Psr\Log\LogLevel;
  */
 class Client {
 
+    const VERSION = '3.0.0-rc2';
+
     /**
      * The default url points to the IxoPay Gateway
      */
@@ -803,6 +805,13 @@ class Client {
         $expectedSig2 = 'Gateway '.$this->getApiKey() . ':' . $digest;
 
 
+        $expectedSigJson = $curl->createSignature($this->getSharedSecret(), 'POST', $requestBody, 'application/json; charset=utf-8',
+            $dateHeader, $requestQuery, true);
+
+        if ($authorizationHeader == $expectedSigJson) {
+            return true;
+        }
+
         if (strpos($authorizationHeader, 'Authorization:') !== false) {
             $authorizationHeader = trim(str_replace('Authorization:', '', $authorizationHeader));
         }
@@ -830,6 +839,18 @@ class Client {
             $dateHeader = null;
         }
 
+        //new JSON validation
+        $signature = null;
+        if (!empty($_SERVER['HTTP_X_SIGNATURE'])) {
+            $signature = $_SERVER['HTTP_X_SIGNATURE'];
+        } elseif (!empty($_SERVER['X_SIGNATURE'])) {
+            $signature = $_SERVER['X_SIGNATURE'];
+        }
+        if ($signature) {
+            return $this->validateCallback($requestBody, $requestQuery, $dateHeader, $signature);
+        }
+
+        //old XML validation
         if (!empty($_SERVER['HTTP_AUTHORIZATION'])) {
             $authorizationHeader = $_SERVER['HTTP_AUTHORIZATION'];
         } elseif (!empty($_SERVER['HTTP_X_AUTHORIZATION'])) {

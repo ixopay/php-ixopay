@@ -150,7 +150,7 @@ class Result {
      * @var string
      */
     protected $scheduleMerchantMetaData;
-    
+
     /**
      * @deprecated use $errorMessage, $errorCode, $adapterMessage, $adapterCode
      *
@@ -438,7 +438,7 @@ class Result {
         $this->paymentMethod = $paymentMethod;
         return $this;
     }
-    
+
     /**
      * @return float
      */
@@ -564,7 +564,7 @@ class Result {
         $this->scheduleMerchantMetaData = $scheduleMerchantMetaData;
         return $this;
     }
-    
+
     /**
      * @return ChargebackData
      */
