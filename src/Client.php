@@ -800,15 +800,21 @@ class Client {
     public function validateCallback($requestBody, $requestQuery, $dateHeader, $authorizationHeader) {
         $curl = new CurlClient();
         $digest = $curl->createSignature($this->getSharedSecret(), 'POST', $requestBody, 'text/xml; charset=utf-8',
-            $dateHeader, $requestQuery);
+            $dateHeader, $requestQuery, false, false);
+        $digestNew = $curl->createSignature($this->getSharedSecret(), 'POST', $requestBody, 'text/xml; charset=utf-8',
+            $dateHeader, $requestQuery, false, true);
+
         $expectedSig = 'IxoPay ' . $this->getApiKey() . ':' . $digest;
         $expectedSig2 = 'Gateway '.$this->getApiKey() . ':' . $digest;
+        $expectedSig3 = 'Gateway '.$this->getApiKey() . ':' . $digestNew;
 
 
         $expectedSigJson = $curl->createSignature($this->getSharedSecret(), 'POST', $requestBody, 'application/json; charset=utf-8',
-            $dateHeader, $requestQuery, true);
+            $dateHeader, $requestQuery, true, false);
+        $expectedSigJsonNew = $curl->createSignature($this->getSharedSecret(), 'POST', $requestBody, 'application/json; charset=utf-8',
+            $dateHeader, $requestQuery, true, true);
 
-        if ($authorizationHeader == $expectedSigJson) {
+        if ($authorizationHeader == $expectedSigJson || $authorizationHeader == $expectedSigJsonNew) {
             return true;
         }
 
@@ -816,7 +822,7 @@ class Client {
             $authorizationHeader = trim(str_replace('Authorization:', '', $authorizationHeader));
         }
 
-        if ($authorizationHeader === $expectedSig || $authorizationHeader === $expectedSig2) {
+        if ($authorizationHeader === $expectedSig || $authorizationHeader === $expectedSig2 || $authorizationHeader == $expectedSig3) {
             return true;
         } else {
             return false;
