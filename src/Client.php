@@ -716,16 +716,20 @@ class Client {
     public function validateCallback($requestBody, $requestQuery, $dateHeader, $authorizationHeader) {
         $curl = new CurlClient();
         $digest = $curl->createSignature($this->getSharedSecret(), 'POST', $requestBody, 'text/xml; charset=utf-8',
-            $dateHeader, $requestQuery);
+            $dateHeader, $requestQuery, false);
+        $digestNew = $curl->createSignature($this->getSharedSecret(), 'POST', $requestBody, 'text/xml; charset=utf-8',
+            $dateHeader, $requestQuery, true);
+
         $expectedSig = 'IxoPay ' . $this->getApiKey() . ':' . $digest;
         $expectedSig2 = 'Gateway '.$this->getApiKey() . ':' . $digest;
+        $expectedSig3 = 'Gateway '.$this->getApiKey() . ':' . $digestNew;
 
 
         if (strpos($authorizationHeader, 'Authorization:') !== false) {
             $authorizationHeader = trim(str_replace('Authorization:', '', $authorizationHeader));
         }
 
-        if ($authorizationHeader === $expectedSig || $authorizationHeader === $expectedSig2) {
+        if ($authorizationHeader === $expectedSig || $authorizationHeader === $expectedSig2 || $authorizationHeader == $expectedSig3) {
             return true;
         } else {
             return false;

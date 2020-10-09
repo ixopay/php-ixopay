@@ -257,7 +257,7 @@ class CurlClient implements ClientInterface {
      *
      * @return $this
      */
-    public function sign($apiId, $sharedSecret, $url, $body, $headers = array(), $rfcCompliantTimezone = false) {
+    public function sign($apiId, $sharedSecret, $url, $body, $headers = array(), $rfcCompliantTimezone = false, $newAlgo = false) {
         if ($rfcCompliantTimezone) {
             $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s \G\M\T');
         } else {
@@ -272,7 +272,7 @@ class CurlClient implements ClientInterface {
 
         $contentType = 'text/xml; charset=utf-8';
 
-        $signature = $this->createSignature($sharedSecret, 'POST', $body, $contentType, $timestamp, $requestUri);
+        $signature = $this->createSignature($sharedSecret, 'POST', $body, $contentType, $timestamp, $requestUri, $newAlgo);
         $authHeader = $this->serviceName . ' ' . $apiId . ':' . $signature;
 
         $this->additionalHeaders = array(
@@ -295,7 +295,7 @@ class CurlClient implements ClientInterface {
      *
      * @return $this
      */
-    public function signJson($sharedSecret, $url, $body, $headers = array(), $rfcCompliantTimezone = false) {
+    public function signJson($sharedSecret, $url, $body, $headers = array(), $rfcCompliantTimezone = false, $newAlgo = false) {
         if ($rfcCompliantTimezone) {
             $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s \G\M\T');
         } else {
@@ -311,7 +311,7 @@ class CurlClient implements ClientInterface {
 
         $contentType = 'application/json; charset=utf-8';
 
-        $parts = array('POST', md5($body), $contentType, $timestamp, $requestUri);
+        $parts = array('POST', $newAlgo ? hash('sha512', $body, false) : md5($body), $contentType, $timestamp, $requestUri);
 
         $str = join("\n", $parts);
         $digest = hash_hmac('sha512', $str, $sharedSecret, true);
@@ -337,8 +337,8 @@ class CurlClient implements ClientInterface {
      *
      * @return string
      */
-    public function createSignature($sharedSecret, $method, $body, $contentType, $timestamp, $requestUri) {
-        $parts = array($method, md5($body), $contentType, $timestamp, '', $requestUri);
+    public function createSignature($sharedSecret, $method, $body, $contentType, $timestamp, $requestUri, $newAlgo = false) {
+        $parts = array($method, $newAlgo ? hash('sha512', $body, false) : md5($body), $contentType, $timestamp, '', $requestUri);
 
         $str = join("\n", $parts);
         $digest = hash_hmac('sha512', $str, $sharedSecret, true);
