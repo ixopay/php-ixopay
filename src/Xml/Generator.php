@@ -577,6 +577,9 @@ class Generator {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionNodes($node, $transaction);
         $this->appendOffsiteNodes($node, $transaction);
+        if ($transaction->getTransactionIndicator()) {
+            $this->_appendTextNode($node, 'transactionIndicator', $transaction->getTransactionIndicator());
+        }
 
         if ($transaction->getSchedule()) {
             $this->appendScheduleNode($node, $transaction->getSchedule());

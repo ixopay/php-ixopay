@@ -21,4 +21,24 @@ class Register extends AbstractTransaction implements OffsiteInterface, Schedule
     use OffsiteTrait;
     use ScheduleTrait;
     use AddToCustomerProfileTrait;
+
+
+    /**
+     * @var string
+     */
+    protected $transactionIndicator;
+    
+    /**
+     * @return string
+     */
+    public function getTransactionIndicator() {
+        return $this->transactionIndicator;
+    }
+
+    /**
+     * @param string $transactionIndicator
+     */
+    public function setTransactionIndicator($transactionIndicator) {
+        $this->transactionIndicator = $transactionIndicator;
+    }
 }
