@@ -454,7 +454,7 @@ class JsonGenerator {
             'currency' => $schedule->getCurrency(),
             'periodLength' => $schedule->getPeriodLength(),
             'periodUnit' => $schedule->getPeriodUnit(),
-            'startDateTime' => $schedule->getStartDateTimeFormatted(),
+            'startDateTime' => $schedule->getStartDateTimeFormatted(\DateTime::ATOM),
             'merchantMetaData' => $schedule->getMerchantMetaData()
         ];
 
