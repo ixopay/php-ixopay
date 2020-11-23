@@ -42,6 +42,11 @@ class Register extends AbstractTransaction
     protected $transactionToken;
 
     /**
+     * @var string
+     */
+    protected $transactionIndicator;
+
+    /**
      * @return string
      */
     public function getTransactionToken()
@@ -73,4 +78,18 @@ class Register extends AbstractTransaction
         $this->language = $language;
     }
 
+    
+    /**
+     * @return string
+     */
+    public function getTransactionIndicator() {
+        return $this->transactionIndicator;
+    }
+
+    /**
+     * @param string $transactionIndicator
+     */
+    public function setTransactionIndicator($transactionIndicator) {
+        $this->transactionIndicator = $transactionIndicator;
+    }
 }
