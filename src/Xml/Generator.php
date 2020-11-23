@@ -478,7 +478,7 @@ class Generator {
     protected function appendExtraDataNodes(\DOMNode $parentNode, $nodeName, $extraData) {
         if (is_array($extraData)) {
             foreach ($extraData as $k=>$v) {
-                $node = $this->_appendTextNode($parentNode, $nodeName, $v, false);
+                $node = $this->_appendTextNode($parentNode, $nodeName, $v === false ? 'false' : $v, false);
                 $node->setAttribute('key', $k);
             }
         }
