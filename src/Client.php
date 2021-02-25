@@ -26,6 +26,7 @@ use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Deregister;
+use Ixopay\Client\Transaction\IncrementalAuthorization;
 use Ixopay\Client\Transaction\Payout;
 use Ixopay\Client\Transaction\Preauthorize;
 use Ixopay\Client\Transaction\Refund;
@@ -79,6 +80,7 @@ class Client {
 
     const TRANSACTION_DEBIT = 'api/v3/transaction/[API_KEY]/debit';
     const TRANSACTION_PREAUTHORIZE = 'api/v3/transaction/[API_KEY]/preauthorize';
+    const TRANSACTION_INCREMENTAL_AUTHORIZATION = 'api/v3/transaction/[API_KEY]/incrementalAuthorization';
     const TRANSACTION_CAPTURE = 'api/v3/transaction/[API_KEY]/capture';
     const TRANSACTION_VOID = 'api/v3/transaction/[API_KEY]/void';
     const TRANSACTION_REGISTER = 'api/v3/transaction/[API_KEY]/register';
@@ -255,6 +257,9 @@ class Client {
                 break;
             case 'preauthorize':
                 $endpoint .= self::TRANSACTION_PREAUTHORIZE;
+                break;
+            case 'incrementalAuthorization':
+                $endpoint .= self::TRANSACTION_INCREMENTAL_AUTHORIZATION;
                 break;
             case 'void':
                 $endpoint .= self::TRANSACTION_VOID;
@@ -664,6 +669,23 @@ class Client {
         return $this->sendTransaction('preauthorize', $transactionData);
     }
 
+    /**
+     * increases or prolongs a preauthorization
+     *
+     * NOTE: not all payment methods support this function
+     *
+     * @param IncrementalAuthorization $transactionData
+     *
+     * @return Result
+     * @throws ClientException
+     * @throws Http\Exception\ClientException
+     * @throws RateLimitException
+     * @throws GeneralErrorException
+     */
+    public function incrementalAuthorization(IncrementalAuthorization $transactionData) {
+        return $this->sendTransaction('incrementalAuthorization', $transactionData);
+    }
+    
     /**
      * void a previously preauthorized transaction
      *

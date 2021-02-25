@@ -21,6 +21,7 @@ use Ixopay\Client\Transaction\Base\AbstractTransaction;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Deregister;
+use Ixopay\Client\Transaction\IncrementalAuthorization;
 use Ixopay\Client\Transaction\Payout;
 use Ixopay\Client\Transaction\Preauthorize;
 use Ixopay\Client\Transaction\Refund;
@@ -59,6 +60,9 @@ class JsonGenerator {
                 break;
             case 'preauthorize':
                 $json = array_merge($json, $this->createPreauthorize($transaction, $language));
+                break;
+            case 'incrementalAuthorization':
+                $json = array_merge($json, $this->createIncrementalAuthorization($transaction, $language));
                 break;
             case 'capture':
                 $json = array_merge($json, $this->createCapture($transaction));
@@ -176,6 +180,25 @@ class JsonGenerator {
     protected function createPreauthorize($transaction, $language){
         /** @var Preauthorize $transaction */
         return $this->createDebit($transaction, $language);
+    }
+
+    protected function createIncrementalAuthorization($transaction, $language) {
+        /** @var IncrementalAuthorization $transaction */
+        $data = [
+            'referenceUuid' => $transaction->getReferenceUuid(),
+            'amount' => (string)$transaction->getAmount(),
+            'currency' => $transaction->getCurrency(),
+            'successUrl' => $transaction->getSuccessUrl(),
+            'cancelUrl' => $transaction->getCancelUrl(),
+            'errorUrl' => $transaction->getErrorUrl(),
+            'callbackUrl' => $transaction->getCallbackUrl(),
+            'description' => $transaction->getDescription(),
+            'items' => $this->createItems($transaction->getItems()),
+            'transactionIndicator' => $transaction->getTransactionIndicator(),
+            'language' => $language,
+        ];
+
+        return $data;
     }
 
     /**
