@@ -101,6 +101,11 @@ class StatusResult {
     protected $currency;
 
     /**
+     * @var string
+     */
+    protected $incomingSettlementState;
+
+    /**
      * @var ScheduleResultData[]
      */
     protected $schedules = array();
@@ -281,6 +286,22 @@ class StatusResult {
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getIncomingSettlementState(){
+        return $this->incomingSettlementState;
+    }
+
+    /**
+     * @param string $incomingSettlementState
+     * @return StatusResult
+     */
+    public function setIncomingSettlementState($incomingSettlementState) {
+        $this->incomingSettlementState = $incomingSettlementState;
+        return $this;
+    }
+    
     /**
      * set transaction errors
      *

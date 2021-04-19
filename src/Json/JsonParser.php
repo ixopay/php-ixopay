@@ -122,6 +122,7 @@ class JsonParser {
         $result->setTransactionStatus($this->arrGet($json, 'transactionStatus'));
         $result->setUuid($this->arrGet($json, 'uuid'));
         $result->setMerchantTransactionId($this->arrGet($json, 'merchantTransactionId'));
+        $result->setIncomingSettlementState($this->arrGet($json, 'incomingSettlementState'));
         $result->setPurchaseId($this->arrGet($json, 'purchaseId'));
         $result->setTransactionType($this->arrGet($json, 'transactionType'));
         $result->setPaymentMethod($this->arrGet($json, 'paymentMethod'));
