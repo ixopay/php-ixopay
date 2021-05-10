@@ -7,19 +7,59 @@ use Ixopay\Client\Json\DataObject;
 /**
  * Class RiskCheckData
  *
- * @package Ixopay\Client\Data
  *
  * @property string riskCheckResult
  * @property int riskScore
  * @property boolean threeDSecureRequired
  *
- * @method string getRiskCheckResult()
- * @method void setRiskCheckResult($value)
- * @method int getRiskScore()
- * @method void setRiskScore($value)
- * @method boolean getThreeDSecureRequired()
- * @method void setThreeDSecureRequired($value)
+ *
+ * @package Ixopay\Client\Data
  */
 class RiskCheckData extends DataObject {
+
+    /**
+     * @return string
+     */
+    public function getRiskCheckResult() {
+        return $this->riskCheckResult;
+    }
+
+    /**
+     * @param string $riskCheckResult
+     */
+    public function setRiskCheckResult($riskCheckResult) {
+        $this->riskCheckResult = $riskCheckResult;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRiskScore() {
+        return $this->riskScore;
+    }
+
+    /**
+     * @param int $riskScore
+     */
+    public function setRiskScore($riskScore) {
+        $this->riskScore = $riskScore;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getThreeDSecureRequired() {
+        return $this->threeDSecureRequired;
+    }
+
+    /**
+     * @param bool $threeDSecureRequired
+     */
+    public function setThreeDSecureRequired($threeDSecureRequired) {
+        $this->threeDSecureRequired = $threeDSecureRequired;
+    }
+
+
+
 
 }
