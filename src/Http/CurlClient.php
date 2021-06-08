@@ -165,7 +165,7 @@ class CurlClient implements ClientInterface {
                 $allHeaders[] = $k . ': ' . $v;
             }
         }
-        $allHeaders[] = 'X-SDK-Type: IXOPAY PHP Client';
+        $allHeaders[] = 'X-SDK-Type: Gateway PHP Client';
         $allHeaders[] = 'X-SDK-Version: '.Client::VERSION;
         if (phpversion()) {
             $allHeaders[] = 'X-SDK-PlatformVersion: ' . phpversion();
