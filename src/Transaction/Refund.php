@@ -7,6 +7,8 @@ use Ixopay\Client\Transaction\Base\AmountableInterface;
 use Ixopay\Client\Transaction\Base\AmountableTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
+use Ixopay\Client\Transaction\Base\SplitsInterface;
+use Ixopay\Client\Transaction\Base\SplitsTrait;
 
 /**
  * Refund: Refund money from a previous Debit (or Capture) transaction to the customer.
@@ -15,13 +17,14 @@ use Ixopay\Client\Transaction\Base\ItemsTrait;
  *
  * @package Ixopay\Client\Transaction
  */
-class Refund extends AbstractTransactionWithReference implements AmountableInterface, ItemsInterface {
+class Refund extends AbstractTransactionWithReference implements AmountableInterface, ItemsInterface, SplitsInterface {
     use AmountableTrait;
     use ItemsTrait;
+    use SplitsTrait;
 
     /** @var string */
     protected $callbackUrl;
-    
+
     /** @var string */
     protected $transactionToken;
 

@@ -12,6 +12,7 @@ use Ixopay\Client\Data\PaymentData\CardData;
 use Ixopay\Client\Data\PaymentData\IbanData;
 use Ixopay\Client\Data\PaymentData\PaymentData;
 use Ixopay\Client\Data\PaymentData\WalletData;
+use Ixopay\Client\Data\Split;
 use Ixopay\Client\Data\ThreeDSecureData;
 use Ixopay\Client\Schedule\ContinueSchedule;
 use Ixopay\Client\Schedule\ScheduleData;
@@ -153,6 +154,7 @@ class JsonGenerator {
             'transactionToken' => $transaction->getTransactionToken(),
             'description' => $transaction->getDescription(),
             'items' => $this->createItems($transaction->getItems()),
+            'splits' => $this->createSplits($transaction->getSplits()),
             'withRegister' => $transaction->isWithRegister(),
             'transactionIndicator' => $transaction->getTransactionIndicator(),
             'customer' => $this->createCustomer($transaction->getCustomer()),
@@ -328,6 +330,35 @@ class JsonGenerator {
                 'price' => $item->getPrice(),
                 'currency' => $item->getCurrency(),
                 'extraData' => $this->stringifyExtraData($item->getExtraData()),
+            ];
+        }
+
+        return $data;
+    }
+
+    /**
+     * splits data
+     *
+     * @param $splits
+     *
+     * @return array
+     */
+    protected function createSplits($splits){
+
+        if(!$splits){
+            return null;
+        }
+
+        $data = [];
+
+        /** @var Split $split */
+        foreach($splits as $split){
+            $data[] = [
+                'identification' => $split->getTransactionInternalId(),
+                'amount' => $split->getAmount(),
+                'currency' => $split->getCurrency(),
+                'sellerMerchantGuid' => $split->getSellerMerchantGuid(),
+                'sellerMerchantExternalId' => $split->getSellerMerchantExternalId()
             ];
         }
 

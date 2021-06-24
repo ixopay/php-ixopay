@@ -15,6 +15,8 @@ use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
 use Ixopay\Client\Transaction\Base\ScheduleInterface;
 use Ixopay\Client\Transaction\Base\ScheduleTrait;
+use Ixopay\Client\Transaction\Base\SplitsInterface;
+use Ixopay\Client\Transaction\Base\SplitsTrait;
 use Ixopay\Client\Transaction\Base\ThreeDSecureInterface;
 use Ixopay\Client\Transaction\Base\ThreeDSecureTrait;
 
@@ -28,6 +30,7 @@ class Preauthorize extends AbstractTransactionWithReference
                               AmountableInterface,
                               CustomerInterface,
                               ItemsInterface,
+                              SplitsInterface,
                               OffsiteInterface,
                               ScheduleInterface,
                               ThreeDSecureInterface
@@ -37,10 +40,11 @@ class Preauthorize extends AbstractTransactionWithReference
     use AmountableTrait;
     use CustomerTrait;
     use ItemsTrait;
+    use SplitsTrait;
     use OffsiteTrait;
     use ScheduleTrait;
     use ThreeDSecureTrait;
-    
+
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
     const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';
     const TRANSACTION_INDICATOR_RECURRING = 'RECURRING';

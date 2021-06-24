@@ -9,6 +9,8 @@ use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
+use Ixopay\Client\Transaction\Base\SplitsInterface;
+use Ixopay\Client\Transaction\Base\SplitsTrait;
 
 /**
  * Payout: Payout a certain amount of money to the customer. (Debits the merchant's account, Credits the customer's account)
@@ -18,12 +20,14 @@ use Ixopay\Client\Transaction\Base\ItemsTrait;
 class Payout extends AbstractTransactionWithReference
              implements AmountableInterface,
                         CustomerInterface,
-                        ItemsInterface
+                        ItemsInterface,
+                        SplitsInterface
 {
 
     use AmountableTrait;
     use CustomerTrait;
     use ItemsTrait;
+    use SplitsTrait;
 
     /** @var string */
     protected $callbackUrl;
