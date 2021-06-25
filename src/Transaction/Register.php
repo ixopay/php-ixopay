@@ -40,5 +40,6 @@ class Register extends AbstractTransaction implements OffsiteInterface, Schedule
      */
     public function setTransactionIndicator($transactionIndicator) {
         $this->transactionIndicator = $transactionIndicator;
+        return $this;
     }
 }
