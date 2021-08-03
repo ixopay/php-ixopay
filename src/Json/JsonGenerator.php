@@ -358,7 +358,11 @@ class JsonGenerator {
                 'amount' => $split->getAmount(),
                 'currency' => $split->getCurrency(),
                 'sellerMerchantGuid' => $split->getSellerMerchantGuid(),
-                'sellerMerchantExternalId' => $split->getSellerMerchantExternalId()
+                'sellerMerchantExternalId' => $split->getSellerMerchantExternalId(),
+                'commissionFee' => [
+                    'amount' => $split->getCommissionFeeAmount(),
+                    'currency' => $split->getCommissionFeeCurrency()
+                ]
             ];
         }
 

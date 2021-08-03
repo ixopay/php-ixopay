@@ -36,6 +36,12 @@ class Split
      */
     private $sellerMerchantExternalId;
 
+    /** @var string */
+    private $commissionFeeAmount;
+
+    /** @var string */
+    private $commissionFeeCurrency;
+
     /**
      * @return int
      */
@@ -130,5 +136,37 @@ class Split
     public function setSellerMerchantExternalId($sellerMerchantExternalId)
     {
         $this->sellerMerchantExternalId = $sellerMerchantExternalId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCommissionFeeAmount()
+    {
+        return $this->commissionFeeAmount;
+    }
+
+    /**
+     * @param string $commissionFeeAmount
+     */
+    public function setCommissionFeeAmount($commissionFeeAmount)
+    {
+        $this->commissionFeeAmount = $commissionFeeAmount;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCommissionFeeCurrency()
+    {
+        return $this->commissionFeeCurrency;
+    }
+
+    /**
+     * @param string $commissionFeeCurrency
+     */
+    public function setCommissionFeeCurrency($commissionFeeCurrency)
+    {
+        $this->commissionFeeCurrency = $commissionFeeCurrency;
     }
 }
