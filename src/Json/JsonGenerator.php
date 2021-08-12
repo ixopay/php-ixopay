@@ -12,7 +12,7 @@ use Ixopay\Client\Data\PaymentData\CardData;
 use Ixopay\Client\Data\PaymentData\IbanData;
 use Ixopay\Client\Data\PaymentData\PaymentData;
 use Ixopay\Client\Data\PaymentData\WalletData;
-use Ixopay\Client\Data\Split;
+use Ixopay\Client\Data\TransactionSplit;
 use Ixopay\Client\Data\ThreeDSecureData;
 use Ixopay\Client\Schedule\ContinueSchedule;
 use Ixopay\Client\Schedule\ScheduleData;
@@ -342,20 +342,20 @@ class JsonGenerator {
     /**
      * splits data
      *
-     * @param $splits
+     * @param $transactionSplits
      *
      * @return array
      */
-    protected function createSplits($splits){
+    protected function createSplits($transactionSplits){
 
-        if(!$splits){
+        if(!$transactionSplits){
             return null;
         }
 
         $data = [];
 
-        /** @var Split $split */
-        foreach($splits as $split){
+        /** @var TransactionSplit $split */
+        foreach($transactionSplits as $split){
             $data[] = [
                 'identification' => $split->getTransactionInternalId(),
                 'amount' => $split->getAmount(),

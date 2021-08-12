@@ -4,7 +4,7 @@
 namespace Ixopay\Client\Data;
 
 
-class Split
+class TransactionSplit
 {
     /**
      * @var int

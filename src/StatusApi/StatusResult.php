@@ -8,6 +8,7 @@ use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\CustomerProfileData;
 use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Data\Result\ScheduleResultData;
+use Ixopay\Client\Data\TransactionSplit;
 use Ixopay\Client\Transaction\Error;
 
 /**
@@ -164,6 +165,11 @@ class StatusResult {
      * @var int
      */
     protected $errorCode = null;
+
+    /**
+     * @var TransactionSplit[]
+     */
+    protected $transactionSplits = [];
 
     /**
      * @return bool
@@ -592,6 +598,22 @@ class StatusResult {
     {
         $this->errorCode = $errorCode;
         return $this;
+    }
+
+    /**
+     * @return TransactionSplit[]
+     */
+    public function getTransactionSplits()
+    {
+        return $this->transactionSplits;
+    }
+
+    /**
+     * @param TransactionSplit[] $transactionSplits
+     */
+    public function setTransactionSplits($transactionSplits)
+    {
+        $this->transactionSplits = $transactionSplits;
     }
 
     /**
