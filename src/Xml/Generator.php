@@ -174,7 +174,7 @@ class Generator {
         }
 
         if ($scheduleAction === 'continueSchedule') {
-            $this->verifyFutureDateTime($schedule->getStartDateTime(), 'continueDateTime');
+            $this->verifyFutureDateTime($schedule->getContinueDateTime(), 'continueDateTime');
             $this->_appendTextNode($scheduleNode, 'continueDateTime', $schedule->getContinueDateTime()->format('Y-m-d H:i:s T'));
         }
 
