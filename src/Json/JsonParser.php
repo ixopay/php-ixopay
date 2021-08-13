@@ -522,9 +522,11 @@ class JsonParser {
         $split->setSellerMerchantGuid($this->arrGet($data, 'sellerMerchantGuid'));
         $split->setSellerMerchantExternalId($this->arrGet($data, 'sellerMerchantExternalId'));
 
-        $commissionFee = $data['commissionFee'];
-        $split->setCommissionFeeAmount($this->arrGet($commissionFee, 'commissionFeeAmount'));
-        $split->setCommissionFeeCurrency($this->arrGet($commissionFee, 'commissionFeeCurrency'));
+        if (isset($data['commissionFee'])) {
+            $commissionFee = $data['commissionFee'];
+            $split->setCommissionFeeAmount($this->arrGet($commissionFee, 'amount'));
+            $split->setCommissionFeeCurrency($this->arrGet($commissionFee, 'currency'));
+        }
 
         return $split;
     }
