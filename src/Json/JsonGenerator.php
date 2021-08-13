@@ -154,7 +154,7 @@ class JsonGenerator {
             'transactionToken' => $transaction->getTransactionToken(),
             'description' => $transaction->getDescription(),
             'items' => $this->createItems($transaction->getItems()),
-            'splits' => $this->createSplits($transaction->getSplits()),
+            'splits' => $this->createSplits($transaction->getTransactionSplits()),
             'withRegister' => $transaction->isWithRegister(),
             'transactionIndicator' => $transaction->getTransactionIndicator(),
             'customer' => $this->createCustomer($transaction->getCustomer()),
@@ -194,7 +194,7 @@ class JsonGenerator {
             'amount' => (string)$transaction->getAmount(),
             'currency' => $transaction->getCurrency(),
             'items' => $this->createItems($transaction->getItems()),
-            'splits' => $this->createSplits($transaction->getSplits()),
+            'splits' => $this->createSplits($transaction->getTransactionSplits()),
         ];
 
         return $data;
@@ -276,7 +276,7 @@ class JsonGenerator {
             'transactionToken' => $transaction->getTransactionToken(),
             'description' => $transaction->getDescription(),
             'items' => $this->createItems($transaction->getItems()),
-            'splits' => $this->createSplits($transaction->getSplits()),
+            'splits' => $this->createSplits($transaction->getTransactionSplits()),
         ];
 
         return $data;
@@ -300,7 +300,7 @@ class JsonGenerator {
             'transactionToken' => $transaction->getTransactionToken(),
             'description' => $transaction->getDescription(),
             'items' => $this->createItems($transaction->getItems()),
-            'splits' => $this->createSplits($transaction->getSplits()),
+            'splits' => $this->createSplits($transaction->getTransactionSplits()),
             'customer' => $this->createCustomer($transaction->getCustomer()),
             'language' => $language,
         ];
