@@ -165,7 +165,7 @@ class StartSchedule {
             'currency' => $this->getCurrency(),
             'periodLength' => $this->getPeriodLength(),
             'periodUnit' => $this->getPeriodUnit(),
-            'startDateTime' => $this->getStartDateTime()->format('Y-m-d H:i:s T'),
+            'startDateTime' => $this->getStartDateTime()->format(\DateTime::ATOM),
         ];
     }
 
