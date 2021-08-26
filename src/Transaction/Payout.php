@@ -9,6 +9,8 @@ use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
+use Ixopay\Client\Transaction\Base\OffsiteInterface;
+use Ixopay\Client\Transaction\Base\OffsiteTrait;
 
 /**
  * Payout: Payout a certain amount of money to the customer. (Debits the merchant's account, Credits the customer's account)
@@ -18,38 +20,20 @@ use Ixopay\Client\Transaction\Base\ItemsTrait;
 class Payout extends AbstractTransactionWithReference
              implements AmountableInterface,
                         CustomerInterface,
-                        ItemsInterface
+                        ItemsInterface,
+                        OffsiteInterface
 {
 
     use AmountableTrait;
     use CustomerTrait;
     use ItemsTrait;
-
-    /** @var string */
-    protected $callbackUrl;
+    use OffsiteTrait;
 
     /** @var string */
     protected $transactionToken;
 
     /** @var string */
-    protected $description;
-
-    /** @var string */
     protected $language;
-
-    /**
-     * @return string
-     */
-    public function getCallbackUrl() {
-        return $this->callbackUrl;
-    }
-
-    /**
-     * @param string $callbackUrl
-     */
-    public function setCallbackUrl($callbackUrl) {
-        $this->callbackUrl = $callbackUrl;
-    }
 
     /**
      * @return string
@@ -65,20 +49,6 @@ class Payout extends AbstractTransactionWithReference
     public function setTransactionToken($transactionToken)
     {
         $this->transactionToken = $transactionToken;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription() {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription($description) {
-        $this->description = $description;
     }
 
     /**
