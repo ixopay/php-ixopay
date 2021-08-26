@@ -91,5 +91,6 @@ class Register extends AbstractTransaction
      */
     public function setTransactionIndicator($transactionIndicator) {
         $this->transactionIndicator = $transactionIndicator;
+        return $this;
     }
 }
