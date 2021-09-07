@@ -8,7 +8,7 @@ use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\CustomerProfileData;
 use Ixopay\Client\Data\IbanCustomer;
 use Ixopay\Client\Data\Item;
-use Ixopay\Client\Data\PaymentData\CardData;
+use Ixopay\Client\Data\PayByLink;
 use Ixopay\Client\Data\PaymentData\IbanData;
 use Ixopay\Client\Data\PaymentData\PaymentData;
 use Ixopay\Client\Data\PaymentData\WalletData;
@@ -163,6 +163,7 @@ class JsonGenerator {
             'schedule' => $this->createSchedule($transaction->getSchedule()),
             'customerProfileData' => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
             'threeDSecureData' => $this->createThreeDSecureData($transaction->getThreeDSecureData()),
+            'payByLink' => $this->createPayByLink($transaction->getPayByLink()),
             'language' => $language,
         ];
 
@@ -629,5 +630,21 @@ class JsonGenerator {
             });
         }
         return $extraData;
+    }
+
+    /**
+     * @param PayByLink|null $payByLink
+     * @return array
+     */
+    protected function createPayByLink($payByLink)
+    {
+        if (!$payByLink) {
+            return null;
+        }
+
+        return [
+            'sendByEmail' => $payByLink->isSendByEmail(),
+            'expirationInMinute' => $payByLink->getExpirationInMinute()
+        ];
     }
 }
