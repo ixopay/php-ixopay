@@ -30,6 +30,7 @@ class PayByLink
     public function setSendByEmail($sendByEmail)
     {
         $this->sendByEmail = $sendByEmail;
+        return $this;
     }
 
     /**
@@ -46,5 +47,6 @@ class PayByLink
     public function setExpirationInMinute($expirationInMinute)
     {
         $this->expirationInMinute = $expirationInMinute;
+        return $this;
     }
 }
