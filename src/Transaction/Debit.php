@@ -2,7 +2,7 @@
 
 namespace Ixopay\Client\Transaction;
 
-use Ixopay\Client\Data\PayByLink;
+use Ixopay\Client\Data\PayByLinkData;
 use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
 use Ixopay\Client\Transaction\Base\AddToCustomerProfileInterface;
 use Ixopay\Client\Transaction\Base\AddToCustomerProfileTrait;
@@ -61,7 +61,7 @@ class Debit extends AbstractTransactionWithReference
     protected $language;
 
     /**
-     * @var PayByLink
+     * @var PayByLinkData
      */
     protected $payByLink;
 
@@ -134,17 +134,17 @@ class Debit extends AbstractTransactionWithReference
     }
 
     /**
-     * @return PayByLink
+     * @return PayByLinkData
      */
-    public function getPayByLink()
+    public function getPayByLinkData()
     {
         return $this->payByLink;
     }
 
     /**
-     * @param PayByLink $payByLink
+     * @param PayByLinkData $payByLink
      */
-    public function setPayByLink($payByLink)
+    public function setPayByLinkData($payByLink)
     {
         $this->payByLink = $payByLink;
     }
