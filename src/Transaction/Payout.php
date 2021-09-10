@@ -11,6 +11,7 @@ use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
+use Ixopay\Client\Transaction\Base\PayByLinkTrait;
 
 /**
  * Payout: Payout a certain amount of money to the customer. (Debits the merchant's account, Credits the customer's account)
@@ -28,6 +29,7 @@ class Payout extends AbstractTransactionWithReference
     use CustomerTrait;
     use ItemsTrait;
     use OffsiteTrait;
+    use PayByLinkTrait;
 
     /** @var string */
     protected $transactionToken;

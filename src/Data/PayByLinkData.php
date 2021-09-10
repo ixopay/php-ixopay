@@ -9,7 +9,7 @@ class PayByLinkData
     /**
      * @var bool
      */
-    protected $sendByEmail;
+    protected $sendByEmail = false;
 
     /**
      * @var int

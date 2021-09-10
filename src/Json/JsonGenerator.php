@@ -163,9 +163,10 @@ class JsonGenerator {
             'schedule' => $this->createSchedule($transaction->getSchedule()),
             'customerProfileData' => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
             'threeDSecureData' => $this->createThreeDSecureData($transaction->getThreeDSecureData()),
-            'payByLink' => $this->createPayByLinkData($transaction->getPayByLinkData()),
             'language' => $language,
         ];
+
+        $this->updateData($transaction, $data);
 
         return $data;
     }
@@ -198,6 +199,8 @@ class JsonGenerator {
             'transactionIndicator' => $transaction->getTransactionIndicator(),
             'language' => $language,
         ];
+
+        $this->updateData($transaction, $data);
 
         return $data;
     }
@@ -260,6 +263,8 @@ class JsonGenerator {
             'threeDSecureData' => $this->createThreeDSecureData($transaction->getThreeDSecureData()),
             'language' => $language,
         ];
+
+        $this->updateData($transaction, $data);
 
         return $data;
     }
@@ -326,6 +331,8 @@ class JsonGenerator {
             'customer' => $this->createCustomer($transaction->getCustomer()),
             'language' => $language,
         ];
+
+        $this->updateData($transaction, $data);
 
         return $data;
     }
@@ -633,18 +640,28 @@ class JsonGenerator {
     }
 
     /**
-     * @param PayByLinkData|null $payByLink
+     * @param PayByLinkData $payByLinkData
      * @return array
      */
-    protected function createPayByLinkData($payByLink)
+    protected function createPayByLinkData($payByLinkData)
     {
-        if (!$payByLink) {
-            return null;
+        $data['sendByEmail'] = $payByLinkData->isSendByEmail();
+
+        if ($payByLinkData->getExpirationInMinute()) {
+            $data['expirationInMinute'] = $payByLinkData->getExpirationInMinute();
         }
 
-        return [
-            'sendByEmail' => $payByLink->isSendByEmail(),
-            'expirationInMinute' => $payByLink->getExpirationInMinute()
-        ];
+        return $data;
+    }
+
+    /**
+     * @param $transaction
+     * @param $data
+     */
+    protected function updateData($transaction, &$data)
+    {
+        if ($payByLinkData = $transaction->getPayByLinkData()) {
+            $data['payByLink'] = $this->createPayByLinkData($payByLinkData);
+        }
     }
 }

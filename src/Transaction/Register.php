@@ -9,6 +9,7 @@ use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
+use Ixopay\Client\Transaction\Base\PayByLinkTrait;
 use Ixopay\Client\Transaction\Base\ScheduleInterface;
 use Ixopay\Client\Transaction\Base\ScheduleTrait;
 use Ixopay\Client\Transaction\Base\ThreeDSecureInterface;
@@ -34,6 +35,7 @@ class Register extends AbstractTransaction
     use OffsiteTrait;
     use ScheduleTrait;
     use ThreeDSecureTrait;
+    use PayByLinkTrait;
 
     /** @var string */
     protected $language;
@@ -78,7 +80,7 @@ class Register extends AbstractTransaction
         $this->language = $language;
     }
 
-    
+
     /**
      * @return string
      */
