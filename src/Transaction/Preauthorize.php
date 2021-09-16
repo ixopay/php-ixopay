@@ -13,6 +13,7 @@ use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
+use Ixopay\Client\Transaction\Base\PayByLinkTrait;
 use Ixopay\Client\Transaction\Base\ScheduleInterface;
 use Ixopay\Client\Transaction\Base\ScheduleTrait;
 use Ixopay\Client\Transaction\Base\TransactionSplitsInterface;
@@ -44,6 +45,7 @@ class Preauthorize extends AbstractTransactionWithReference
     use OffsiteTrait;
     use ScheduleTrait;
     use ThreeDSecureTrait;
+    use PayByLinkTrait;
 
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
     const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';

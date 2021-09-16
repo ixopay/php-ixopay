@@ -8,7 +8,7 @@ use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\CustomerProfileData;
 use Ixopay\Client\Data\IbanCustomer;
 use Ixopay\Client\Data\Item;
-use Ixopay\Client\Data\PaymentData\CardData;
+use Ixopay\Client\Data\PayByLinkData;
 use Ixopay\Client\Data\PaymentData\IbanData;
 use Ixopay\Client\Data\PaymentData\PaymentData;
 use Ixopay\Client\Data\PaymentData\WalletData;
@@ -168,6 +168,8 @@ class JsonGenerator {
             'language' => $language,
         ];
 
+        $this->updateData($transaction, $data);
+
         return $data;
     }
 
@@ -199,6 +201,8 @@ class JsonGenerator {
             'transactionIndicator' => $transaction->getTransactionIndicator(),
             'language' => $language,
         ];
+
+        $this->updateData($transaction, $data);
 
         return $data;
     }
@@ -262,6 +266,8 @@ class JsonGenerator {
             'threeDSecureData' => $this->createThreeDSecureData($transaction->getThreeDSecureData()),
             'language' => $language,
         ];
+
+        $this->updateData($transaction, $data);
 
         return $data;
     }
@@ -330,6 +336,8 @@ class JsonGenerator {
             'customer' => $this->createCustomer($transaction->getCustomer()),
             'language' => $language,
         ];
+
+        $this->updateData($transaction, $data);
 
         return $data;
     }
@@ -667,5 +675,31 @@ class JsonGenerator {
             });
         }
         return $extraData;
+    }
+
+    /**
+     * @param PayByLinkData $payByLinkData
+     * @return array
+     */
+    protected function createPayByLinkData($payByLinkData)
+    {
+        $data['sendByEmail'] = $payByLinkData->isSendByEmail();
+
+        if ($payByLinkData->getExpirationInMinute()) {
+            $data['expirationInMinute'] = $payByLinkData->getExpirationInMinute();
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param $transaction
+     * @param $data
+     */
+    protected function updateData($transaction, &$data)
+    {
+        if ($payByLinkData = $transaction->getPayByLinkData()) {
+            $data['payByLink'] = $this->createPayByLinkData($payByLinkData);
+        }
     }
 }
