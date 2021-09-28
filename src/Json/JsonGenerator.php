@@ -238,6 +238,7 @@ class JsonGenerator {
         /** @var VoidTransaction $transaction */
         $data = [
             'referenceUuid' => $transaction->getReferenceUuid(),
+            'description' => $transaction->getDescription(),
         ];
 
         return $data;

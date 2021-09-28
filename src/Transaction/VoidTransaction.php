@@ -10,5 +10,20 @@ use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
  * @package Ixopay\Client\Transaction
  */
 class VoidTransaction extends AbstractTransactionWithReference {
+    /** @var string */
+    protected $description;
 
+    /**
+     * @return string
+     */
+    public function getDescription() {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description) {
+        $this->description = $description;
+    }
 }
