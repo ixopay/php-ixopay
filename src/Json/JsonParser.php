@@ -346,6 +346,8 @@ class JsonParser {
                 $walletData->setWalletOwner($this->arrGet($returnData, 'walletOwner'));
                 $walletData->setWalletReferenceId($this->arrGet($returnData, 'walletReferenceId'));
                 $walletData->setWalletType($this->arrGet($returnData, 'walletType'));
+                $walletData->setWalletOwnerFirstName($this->arrGet($returnData, 'walletOwnerFirstName'));
+                $walletData->setWalletOwnerLastName($this->arrGet($returnData, 'walletOwnerLastName'));
 
                 return $walletData;
 

@@ -17,6 +17,10 @@ class WalletData extends PaymentData {
     protected $walletOwner;
     /** @var string */
     protected $walletType;
+    /** @var string */
+    protected $walletOwnerFirstName;
+    /** @var string */
+    protected $walletOwnerLastName;
 
     /**
      * @return string
@@ -73,6 +77,38 @@ class WalletData extends PaymentData {
     {
         $this->walletType = $walletType;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWalletOwnerFirstName()
+    {
+        return $this->walletOwnerFirstName;
+    }
+
+    /**
+     * @param string $walletOwnerFirstName
+     */
+    public function setWalletOwnerFirstName($walletOwnerFirstName)
+    {
+        $this->walletOwnerFirstName = $walletOwnerFirstName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWalletOwnerLastName()
+    {
+        return $this->walletOwnerLastName;
+    }
+
+    /**
+     * @param string $walletOwnerLastName
+     */
+    public function setWalletOwnerLastName($walletOwnerLastName)
+    {
+        $this->walletOwnerLastName = $walletOwnerLastName;
     }
 
 }
