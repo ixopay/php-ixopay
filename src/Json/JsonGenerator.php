@@ -505,6 +505,14 @@ class JsonGenerator {
                 'walletOwner' => $paymentData->getWalletOwner(),
                 'walletType' => $paymentData->getWalletType(),
             ];
+
+            if (!empty($paymentData->getWalletOwnerFirstName())) {
+                $data['walletData']['walletOwnerFirstName'] = $paymentData->getWalletOwnerFirstName();
+            }
+
+            if (!empty($paymentData->getWalletOwnerLastName())) {
+                $data['walletData']['walletOwnerLastName'] = $paymentData->getWalletOwnerLastName();
+            }
         }
 
         return $data;
