@@ -15,7 +15,8 @@ use Ixopay\Client\Data\RiskCheckData;
  */
 class Result {
 
-    /** transaction is finished, no further action required */
+    /** transaction is finished/success, no further action required */
+    const RETURN_TYPE_SUCCESS = 'SUCCESS';
     const RETURN_TYPE_FINISHED = 'FINISHED';
     /** transaction needs a redirect to $redirectUrl */
     const RETURN_TYPE_REDIRECT = 'REDIRECT';
