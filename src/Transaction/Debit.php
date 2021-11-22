@@ -75,6 +75,7 @@ class Debit extends AbstractTransactionWithReference
     public function setTransactionToken($transactionToken)
     {
         $this->transactionToken = $transactionToken;
+        return $this;
     }
 
     /**
@@ -127,5 +128,6 @@ class Debit extends AbstractTransactionWithReference
     public function setLanguage($language)
     {
         $this->language = $language;
+        return $this;
     }
 }
