@@ -36,6 +36,11 @@ class WalletData extends ResultData {
     protected $walletOwnerLastName;
 
     /**
+     * @var string
+     */
+    protected $walletOwnerCountryCode;
+
+    /**
      * @return string
      */
     public function getWalletType() {
@@ -113,6 +118,21 @@ class WalletData extends ResultData {
         $this->walletOwnerLastName = $walletOwnerLastName;
     }
 
+    /**
+     * @return string
+     */
+    public function getWalletOwnerCountryCode()
+    {
+        return $this->walletOwnerCountryCode;
+    }
+
+    /**
+     * @param string $walletOwnerCountryCode
+     */
+    public function setWalletOwnerCountryCode($walletOwnerCountryCode)
+    {
+        $this->walletOwnerCountryCode = $walletOwnerCountryCode;
+    }
 
     /**
      * @return array
@@ -130,6 +150,10 @@ class WalletData extends ResultData {
 
         if (!empty($this->walletOwnerLastName)) {
             $result['walletOwnerLastName'] = $this->walletOwnerLastName;
+        }
+
+        if (!empty($this->walletOwnerCountryCode)) {
+            $result['walletOwnerCountryCode'] = $this->walletOwnerCountryCode;
         }
 
         return $result;
