@@ -576,6 +576,9 @@ class Parser {
                     case 'walletOwnerLastName':
                         $walletData->setWalletOwnerLastName($child->nodeValue);
                         break;
+                    case 'walletOwnerCountryCode':
+                        $walletData->setWalletOwnerCountryCode($child->nodeValue);
+                        break;
                     default:
                         break;
                 }
