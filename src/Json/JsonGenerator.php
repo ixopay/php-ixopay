@@ -474,6 +474,10 @@ class JsonGenerator {
             if (!empty($paymentData->getWalletOwnerLastName())) {
                 $data['walletData']['walletOwnerLastName'] = $paymentData->getWalletOwnerLastName();
             }
+
+            if (!empty($paymentData->getWalletOwnerCountryCode())) {
+                $data['walletData']['walletOwnerCountryCode'] = $paymentData->getWalletOwnerCountryCode();
+            }
         }
 
         return $data;
