@@ -12,6 +12,7 @@ use Ixopay\Client\Data\PayByLinkData;
 use Ixopay\Client\Data\PaymentData\IbanData;
 use Ixopay\Client\Data\PaymentData\PaymentData;
 use Ixopay\Client\Data\PaymentData\WalletData;
+use Ixopay\Client\Data\TransactionSplit;
 use Ixopay\Client\Data\ThreeDSecureData;
 use Ixopay\Client\Schedule\ContinueSchedule;
 use Ixopay\Client\Schedule\ScheduleData;
@@ -157,6 +158,7 @@ class JsonGenerator {
             'transactionToken' => $transaction->getTransactionToken(),
             'description' => $transaction->getDescription(),
             'items' => $this->createItems($transaction->getItems()),
+            'splits' => $this->createSplits($transaction->getTransactionSplits()),
             'withRegister' => $transaction->isWithRegister(),
             'transactionIndicator' => $transaction->getTransactionIndicator(),
             'customer' => $this->createCustomer($transaction->getCustomer()),
@@ -219,6 +221,7 @@ class JsonGenerator {
             'amount' => (string)$transaction->getAmount(),
             'currency' => $transaction->getCurrency(),
             'items' => $this->createItems($transaction->getItems()),
+            'splits' => $this->createSplits($transaction->getTransactionSplits()),
         ];
 
         return $data;
@@ -235,6 +238,7 @@ class JsonGenerator {
         /** @var VoidTransaction $transaction */
         $data = [
             'referenceUuid' => $transaction->getReferenceUuid(),
+            'description' => $transaction->getDescription(),
         ];
 
         return $data;
@@ -302,6 +306,7 @@ class JsonGenerator {
             'transactionToken' => $transaction->getTransactionToken(),
             'description' => $transaction->getDescription(),
             'items' => $this->createItems($transaction->getItems()),
+            'splits' => $this->createSplits($transaction->getTransactionSplits()),
         ];
 
         return $data;
@@ -328,6 +333,7 @@ class JsonGenerator {
             'transactionToken' => $transaction->getTransactionToken(),
             'description' => $transaction->getDescription(),
             'items' => $this->createItems($transaction->getItems()),
+            'splits' => $this->createSplits($transaction->getTransactionSplits()),
             'customer' => $this->createCustomer($transaction->getCustomer()),
             'language' => $language,
         ];
@@ -362,6 +368,39 @@ class JsonGenerator {
                 'price' => $item->getPrice(),
                 'currency' => $item->getCurrency(),
                 'extraData' => $this->stringifyExtraData($item->getExtraData()),
+            ];
+        }
+
+        return $data;
+    }
+
+    /**
+     * splits data
+     *
+     * @param $transactionSplits
+     *
+     * @return array
+     */
+    protected function createSplits($transactionSplits){
+
+        if(!$transactionSplits){
+            return null;
+        }
+
+        $data = [];
+
+        /** @var TransactionSplit $split */
+        foreach($transactionSplits as $split){
+            $data[] = [
+                'identification' => $split->getTransactionInternalId(),
+                'amount' => $split->getAmount(),
+                'currency' => $split->getCurrency(),
+                'sellerMerchantGuid' => $split->getSellerMerchantGuid(),
+                'sellerMerchantExternalId' => $split->getSellerMerchantExternalId(),
+                'commissionFee' => [
+                    'amount' => $split->getCommissionFeeAmount(),
+                    'currency' => $split->getCommissionFeeCurrency()
+                ]
             ];
         }
 

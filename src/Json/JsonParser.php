@@ -14,6 +14,7 @@ use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Data\Result\ScheduleResultData;
 use Ixopay\Client\Data\Result\WalletData as ReturnWalletData;
 use Ixopay\Client\Data\RiskCheckData;
+use Ixopay\Client\Data\TransactionSplit;
 use Ixopay\Client\Options\OptionsResult;
 use Ixopay\Client\Schedule\ScheduleResult;
 use Ixopay\Client\StatusApi\StatusResult;
@@ -169,6 +170,11 @@ class JsonParser {
         if(isset($json['customerProfileData'])) {
             $customerProfileData = $this->parseCustomerProfileData($json['customerProfileData']);
             $result->setCustomerProfileData($customerProfileData);
+        }
+
+        if(isset($json['splits'])) {
+            $splits = $this->parseTransactionSplits($json['splits']);
+            $result->setTransactionSplits($splits);
         }
 
         return $result;
@@ -505,5 +511,40 @@ class JsonParser {
             return $arr[$key];
         }
         return $default;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return TransactionSplit
+     */
+    protected function parseTransactionSplit($data){
+        $split = new TransactionSplit();
+        $split->setTransactionInternalId($this->arrGet($data, 'identification'));
+        $split->setAmount($this->arrGet($data, 'amount'));
+        $split->setCurrency($this->arrGet($data, 'currency'));
+        $split->setSellerMerchantGuid($this->arrGet($data, 'sellerMerchantGuid'));
+        $split->setSellerMerchantExternalId($this->arrGet($data, 'sellerMerchantExternalId'));
+
+        if (isset($data['commissionFee'])) {
+            $commissionFee = $data['commissionFee'];
+            $split->setCommissionFeeAmount($this->arrGet($commissionFee, 'amount'));
+            $split->setCommissionFeeCurrency($this->arrGet($commissionFee, 'currency'));
+        }
+
+        return $split;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return array
+     */
+    protected function parseTransactionSplits($data){
+        $splits = [];
+        foreach($data as $split){
+            $splits[] = $this->parseTransactionSplit($split);
+        }
+        return $splits;
     }
 }

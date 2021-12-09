@@ -9,6 +9,8 @@ use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
+use Ixopay\Client\Transaction\Base\TransactionSplitsInterface;
+use Ixopay\Client\Transaction\Base\TransactionSplitsTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
 use Ixopay\Client\Transaction\Base\PayByLinkTrait;
@@ -22,12 +24,14 @@ class Payout extends AbstractTransactionWithReference
              implements AmountableInterface,
                         CustomerInterface,
                         ItemsInterface,
-                        OffsiteInterface
+                        OffsiteInterface,
+                        TransactionSplitsInterface
 {
 
     use AmountableTrait;
     use CustomerTrait;
     use ItemsTrait;
+    use TransactionSplitsTrait;
     use OffsiteTrait;
     use PayByLinkTrait;
 

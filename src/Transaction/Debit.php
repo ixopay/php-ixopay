@@ -16,6 +16,8 @@ use Ixopay\Client\Transaction\Base\OffsiteTrait;
 use Ixopay\Client\Transaction\Base\PayByLinkTrait;
 use Ixopay\Client\Transaction\Base\ScheduleInterface;
 use Ixopay\Client\Transaction\Base\ScheduleTrait;
+use Ixopay\Client\Transaction\Base\TransactionSplitsInterface;
+use Ixopay\Client\Transaction\Base\TransactionSplitsTrait;
 use Ixopay\Client\Transaction\Base\ThreeDSecureInterface;
 use Ixopay\Client\Transaction\Base\ThreeDSecureTrait;
 
@@ -29,6 +31,7 @@ class Debit extends AbstractTransactionWithReference
                        AmountableInterface,
                        CustomerInterface,
                        ItemsInterface,
+                       TransactionSplitsInterface,
                        OffsiteInterface,
                        ScheduleInterface,
                        ThreeDSecureInterface
@@ -38,6 +41,7 @@ class Debit extends AbstractTransactionWithReference
     use AmountableTrait;
     use CustomerTrait;
     use ItemsTrait;
+    use TransactionSplitsTrait;
     use OffsiteTrait;
     use ScheduleTrait;
     use ThreeDSecureTrait;
