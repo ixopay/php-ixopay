@@ -9,6 +9,8 @@ use Ixopay\Client\Transaction\Base\AmountableInterface;
 use Ixopay\Client\Transaction\Base\AmountableTrait;
 use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
+use Ixopay\Client\Transaction\Base\IndicatorInterface;
+use Ixopay\Client\Transaction\Base\IndicatorTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
@@ -34,7 +36,8 @@ class Debit extends AbstractTransactionWithReference
                        TransactionSplitsInterface,
                        OffsiteInterface,
                        ScheduleInterface,
-                       ThreeDSecureInterface
+                       ThreeDSecureInterface,
+                       IndicatorInterface
 {
 
     use AddToCustomerProfileTrait;
@@ -46,6 +49,7 @@ class Debit extends AbstractTransactionWithReference
     use ScheduleTrait;
     use ThreeDSecureTrait;
     use PayByLinkTrait;
+    use IndicatorTrait;
 
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
     const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';
@@ -58,9 +62,6 @@ class Debit extends AbstractTransactionWithReference
 
     /** @var bool */
     protected $withRegister = false;
-
-    /** @var string */
-    protected $transactionIndicator;
 
     /** @var string */
     protected $language;
@@ -98,23 +99,6 @@ class Debit extends AbstractTransactionWithReference
      */
     public function setWithRegister($withRegister) {
         $this->withRegister = $withRegister;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTransactionIndicator() {
-        return $this->transactionIndicator;
-    }
-
-    /**
-     * @param string $transactionIndicator
-     *
-     * @return $this
-     */
-    public function setTransactionIndicator($transactionIndicator) {
-        $this->transactionIndicator = $transactionIndicator;
         return $this;
     }
 
