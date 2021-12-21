@@ -224,6 +224,10 @@ class JsonGenerator {
             'splits' => $this->createSplits($transaction->getTransactionSplits()),
         ];
 
+        if ($transaction->getDescription()) {
+            $data['description'] = $transaction->getDescription();
+        }
+
         return $data;
     }
 

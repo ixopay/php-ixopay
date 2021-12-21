@@ -19,4 +19,21 @@ class Capture extends AbstractTransactionWithReference implements AmountableInte
     use AmountableTrait;
     use ItemsTrait;
     use TransactionSplitsTrait;
+
+    /** @var string */
+    protected $description;
+
+    /**
+     * @return string
+     */
+    public function getDescription() {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description) {
+        $this->description = $description;
+    }
 }
