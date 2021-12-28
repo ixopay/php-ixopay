@@ -201,9 +201,7 @@ class JsonGenerator {
             'transactionIndicator' => $transaction->getTransactionIndicator(),
             'language' => $language,
         ];
-
-        $this->updateData($transaction, $data);
-
+        
         return $data;
     }
 
