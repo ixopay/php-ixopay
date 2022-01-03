@@ -334,6 +334,7 @@ class JsonGenerator {
             'splits' => $this->createSplits($transaction->getTransactionSplits()),
             'customer' => $this->createCustomer($transaction->getCustomer()),
             'language' => $language,
+            'transactionIndicator' => $transaction->getTransactionIndicator(),
         ];
 
         $this->updateData($transaction, $data);

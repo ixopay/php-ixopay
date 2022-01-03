@@ -7,6 +7,8 @@ use Ixopay\Client\Transaction\Base\AddToCustomerProfileInterface;
 use Ixopay\Client\Transaction\Base\AddToCustomerProfileTrait;
 use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
+use Ixopay\Client\Transaction\Base\IndicatorInterface;
+use Ixopay\Client\Transaction\Base\IndicatorTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
 use Ixopay\Client\Transaction\Base\PayByLinkTrait;
@@ -27,7 +29,8 @@ class Register extends AbstractTransaction
                           CustomerInterface,
                           OffsiteInterface,
                           ScheduleInterface,
-                          ThreeDSecureInterface
+                          ThreeDSecureInterface,
+                          IndicatorInterface
 {
 
     use AddToCustomerProfileTrait;
@@ -36,6 +39,7 @@ class Register extends AbstractTransaction
     use ScheduleTrait;
     use ThreeDSecureTrait;
     use PayByLinkTrait;
+    use IndicatorTrait;
 
     /** @var string */
     protected $language;
@@ -78,21 +82,5 @@ class Register extends AbstractTransaction
     public function setLanguage($language)
     {
         $this->language = $language;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getTransactionIndicator() {
-        return $this->transactionIndicator;
-    }
-
-    /**
-     * @param string $transactionIndicator
-     */
-    public function setTransactionIndicator($transactionIndicator) {
-        $this->transactionIndicator = $transactionIndicator;
-        return $this;
     }
 }
