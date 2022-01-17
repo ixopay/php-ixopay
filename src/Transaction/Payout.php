@@ -7,6 +7,7 @@ use Ixopay\Client\Transaction\Base\AmountableInterface;
 use Ixopay\Client\Transaction\Base\AmountableTrait;
 use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
+use Ixopay\Client\Transaction\Base\IndicatorInterface;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\TransactionSplitsInterface;
@@ -14,6 +15,7 @@ use Ixopay\Client\Transaction\Base\TransactionSplitsTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
 use Ixopay\Client\Transaction\Base\PayByLinkTrait;
+use Ixopay\Client\Transaction\Base\IndicatorTrait;
 
 /**
  * Payout: Payout a certain amount of money to the customer. (Debits the merchant's account, Credits the customer's account)
@@ -25,7 +27,8 @@ class Payout extends AbstractTransactionWithReference
                         CustomerInterface,
                         ItemsInterface,
                         OffsiteInterface,
-                        TransactionSplitsInterface
+                        TransactionSplitsInterface,
+                        IndicatorInterface
 {
 
     use AmountableTrait;
@@ -34,6 +37,7 @@ class Payout extends AbstractTransactionWithReference
     use TransactionSplitsTrait;
     use OffsiteTrait;
     use PayByLinkTrait;
+    use IndicatorTrait;
 
     /** @var string */
     protected $transactionToken;
