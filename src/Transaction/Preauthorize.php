@@ -66,6 +66,9 @@ class Preauthorize extends AbstractTransactionWithReference
     /** @var string */
     protected $language;
 
+    /** @var int */
+    protected $captureInMinutes = 0;
+
     /**
      * @return string
      */
@@ -115,5 +118,35 @@ class Preauthorize extends AbstractTransactionWithReference
     public function setLanguage($language)
     {
         $this->language = $language;
+    }
+
+    /**
+     * Get auto-capture in minutes.
+     *
+     * Returns 0 by default, indicating no auto-capture shall be performed.
+     *
+     * @return int
+     */
+    public function getCaptureInMinutes()
+    {
+        return $this->captureInMinutes;
+    }
+
+    /**
+     * Set auto-capture in minutes.
+     *
+     * Provided value must be an int and equal or greater 0.
+     * A value of 0 means no capture shall be performed automatically.
+     * A value greater zero, requests the gateway to schedule a capture
+     * automatically after n minutes.
+     *
+     * @param  int  $captureInMinutes
+     * @return Preauthorize
+     */
+    public function setCaptureInMinutes($captureInMinutes)
+    {
+        $this->captureInMinutes = $captureInMinutes;
+
+        return $this;
     }
 }
