@@ -205,4 +205,20 @@ class Error {
     {
         $this->adapterMessage = $adapterMessage;
     }
+
+    public function toArray(){
+        $properties = get_object_vars($this);
+        foreach(array_keys($properties) as $prop) {
+            if (is_object($properties[$prop])) {
+                if (method_exists($properties[$prop], 'toArray')) {
+                    $properties[$prop] = $properties[$prop]->toArray();
+                } else {
+                    unset($properties[$prop]);
+                }
+            }
+        }
+        return $properties;
+    }
+
+
 }
