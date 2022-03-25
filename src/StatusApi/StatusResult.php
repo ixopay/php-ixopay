@@ -307,7 +307,7 @@ class StatusResult {
         $this->incomingSettlementState = $incomingSettlementState;
         return $this;
     }
-    
+
     /**
      * set transaction errors
      *
@@ -648,6 +648,12 @@ class StatusResult {
                     $properties[$prop] = $properties[$prop]->toArray();
                 } else {
                     unset($properties[$prop]);
+                }
+            } elseif (is_array($properties[$prop])){
+                foreach ($properties[$prop] as $item){
+                    if(is_object($item) && method_exists($item, 'toArray')){
+                        $properties[$prop] = $item->toArray();
+                    }
                 }
             }
         }
