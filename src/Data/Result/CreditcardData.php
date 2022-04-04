@@ -65,6 +65,11 @@ class CreditcardData extends ResultData {
     /**
      * @var string
      */
+    protected $binDigits;
+
+    /**
+     * @var string
+     */
     protected $firstSixDigits;
 
     /**
@@ -211,6 +216,22 @@ class CreditcardData extends ResultData {
      */
     public function setExpiryYear($expiryYear) {
         $this->expiryYear = $expiryYear;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBinDigits() {
+        return $this->binDigits;
+    }
+
+    /**
+     * @param string $binDigits
+     * @return CreditcardData
+     */
+    public function setBinDigits($binDigits) {
+        $this->binDigits = $binDigits;
         return $this;
     }
 

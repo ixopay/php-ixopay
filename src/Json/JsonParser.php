@@ -316,6 +316,7 @@ class JsonParser {
                 $creditcardData->setCardHolder($this->arrGet($returnData, 'cardHolder'));
                 $creditcardData->setExpiryMonth($this->arrGet($returnData, 'expiryMonth'));
                 $creditcardData->setExpiryYear($this->arrGet($returnData, 'expiryYear'));
+                $creditcardData->setBinDigits($this->arrGet($returnData, 'binDigits'));
                 $creditcardData->setFirstSixDigits($this->arrGet($returnData, 'firstSixDigits'));
                 $creditcardData->setLastFourDigits($this->arrGet($returnData, 'lastFourDigits'));
                 $creditcardData->setFingerprint($this->arrGet($returnData, 'fingerprint'));
