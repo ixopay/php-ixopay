@@ -70,11 +70,6 @@ class CreditcardData extends ResultData {
     /**
      * @var string
      */
-    protected $firstSixDigits;
-
-    /**
-     * @var string
-     */
     protected $lastFourDigits;
 
     /**
@@ -236,20 +231,22 @@ class CreditcardData extends ResultData {
     }
 
     /**
+     * Because of an adjustment from VISA
+     *
+     * @deprecated use getBinDigits
      * @return string
      */
     public function getFirstSixDigits() {
-        return $this->firstSixDigits;
+        return substr($this->getBinDigits(), 0, 6);
     }
 
     /**
      * @param string $firstSixDigits
-     *
+     * @deprecated use setBinDigits
      * @return $this
      */
     public function setFirstSixDigits($firstSixDigits) {
-        $this->firstSixDigits = $firstSixDigits;
-        return $this;
+        return $this->setBinDigits($firstSixDigits);
     }
 
     /**
