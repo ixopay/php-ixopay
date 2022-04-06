@@ -174,7 +174,7 @@ class Generator {
         }
 
         if ($scheduleAction === 'continueSchedule') {
-            $this->verifyFutureDateTime($schedule->getStartDateTime(), 'continueDateTime');
+            $this->verifyFutureDateTime($schedule->getContinueDateTime(), 'continueDateTime');
             $this->_appendTextNode($scheduleNode, 'continueDateTime', $schedule->getContinueDateTime()->format('Y-m-d H:i:s T'));
         }
 
@@ -478,7 +478,7 @@ class Generator {
     protected function appendExtraDataNodes(\DOMNode $parentNode, $nodeName, $extraData) {
         if (is_array($extraData)) {
             foreach ($extraData as $k=>$v) {
-                $node = $this->_appendTextNode($parentNode, $nodeName, $v, false);
+                $node = $this->_appendTextNode($parentNode, $nodeName, $v === false ? 'false' : $v, false);
                 $node->setAttribute('key', $k);
             }
         }
@@ -577,6 +577,9 @@ class Generator {
         $node = $this->document->createElement($method);
         $this->appendAbstractTransactionNodes($node, $transaction);
         $this->appendOffsiteNodes($node, $transaction);
+        if ($transaction->getTransactionIndicator()) {
+            $this->_appendTextNode($node, 'transactionIndicator', $transaction->getTransactionIndicator());
+        }
 
         if ($transaction->getSchedule()) {
             $this->appendScheduleNode($node, $transaction->getSchedule());
