@@ -59,6 +59,7 @@ class Parser {
                 case 'referenceId':
                 case 'registrationId':
                 case 'redirectUrl':
+                case 'redirectQrCode':
                 case 'htmlContent':
                 case 'paymentDescriptor':
                 case 'paymentMethod':

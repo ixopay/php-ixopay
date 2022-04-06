@@ -80,6 +80,11 @@ class Result {
     /**
      * @var string
      */
+    protected $redirectQrCode = null;
+
+    /**
+     * @var string
+     */
     protected $htmlContent = null;
 
     /**
@@ -149,6 +154,16 @@ class Result {
      */
     public function setRedirectUrl($redirectUrl) {
         $this->redirectUrl = $redirectUrl;
+        return $this;
+    }
+
+    /**
+     * @param string $redirectUrl
+     *
+     * @return $this
+     */
+    public function setRedirectQrCode($redirectQrCode) {
+        $this->redirectQrCode = $redirectQrCode;
         return $this;
     }
 
@@ -238,6 +253,15 @@ class Result {
      */
     public function getRedirectUrl() {
         return $this->redirectUrl;
+    }
+
+    /**
+     * contains the QR Code (base64) with the redirect url if returnType = 'REDIRECT'
+     *
+     * @return string
+     */
+    public function getRedirectQrCode() {
+        return $this->redirectQrCode;
     }
 
     /**
