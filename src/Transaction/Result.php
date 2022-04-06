@@ -80,7 +80,7 @@ class Result {
     /**
      * @var string
      */
-    protected $redirectQrCode = null;
+    protected $redirectQRCode = null;
 
     /**
      * @var string
@@ -158,12 +158,12 @@ class Result {
     }
 
     /**
-     * @param string $redirectUrl
+     * @param string $redirectQRCode
      *
      * @return $this
      */
-    public function setRedirectQrCode($redirectQrCode) {
-        $this->redirectQrCode = $redirectQrCode;
+    public function setRedirectQRCode($redirectQRCode) {
+        $this->redirectQRCode = $redirectQRCode;
         return $this;
     }
 
@@ -260,8 +260,8 @@ class Result {
      *
      * @return string
      */
-    public function getRedirectQrCode() {
-        return $this->redirectQrCode;
+    public function getRedirectQRCode() {
+        return $this->redirectQRCode;
     }
 
     /**
