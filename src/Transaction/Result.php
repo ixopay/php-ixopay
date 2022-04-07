@@ -7,13 +7,14 @@ use Ixopay\Client\Data\CustomerProfileData;
 use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Data\Result\ScheduleResultData;
 use Ixopay\Client\Data\RiskCheckData;
+use Ixopay\Client\Transaction\Base\ArrayableInterface;
 
 /**
  * Class Result
  *
  * @package Ixopay\Client\Transaction
  */
-class Result {
+class Result implements ArrayableInterface {
 
     /** transaction is finished, no further action required */
     const RETURN_TYPE_FINISHED = 'FINISHED';

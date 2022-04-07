@@ -9,13 +9,14 @@ use Ixopay\Client\Data\CustomerProfileData;
 use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Data\Result\ScheduleResultData;
 use Ixopay\Client\Data\TransactionSplit;
+use Ixopay\Client\Transaction\Base\ArrayableInterface;
 use Ixopay\Client\Transaction\Error;
 
 /**
  *
  * @package Ixopay\Client\StatusApi
  */
-class StatusResult {
+class StatusResult implements ArrayableInterface {
 
     const TRANSACTION_SUCCESS = 'SUCCESS';
     const TRANSACTION_PENDING = 'PENDING';
@@ -644,7 +645,7 @@ class StatusResult {
         $properties = get_object_vars($this);
         foreach(array_keys($properties) as $prop) {
             if (is_object($properties[$prop])) {
-                if (method_exists($properties[$prop], 'toArray')) {
+                if ($properties[$prop] instanceof ArrayableInterface) {
                     $properties[$prop] = $properties[$prop]->toArray();
                 } else {
                     unset($properties[$prop]);
@@ -652,7 +653,7 @@ class StatusResult {
             } elseif (is_array($properties[$prop])){
                 foreach ($properties[$prop] as $item){
                     if(is_object($item)){
-                        if( method_exists($item, 'toArray')){
+                        if( $item instanceof ArrayableInterface){
                             $properties[$prop] = $item->toArray();
                         }else{
                             unset($properties[$prop]);

@@ -2,12 +2,14 @@
 
 namespace Ixopay\Client\Schedule;
 
+use Ixopay\Client\Transaction\Base\ArrayableInterface;
+
 /**
  * Class Result
  *
  * @package Ixopay\Client\Data
  */
-class ScheduleResult {
+class ScheduleResult implements ArrayableInterface {
 
     const STATUS_ACTIVE = 'ACTIVE';
     const STATUS_PAUSED = 'PAUSED';

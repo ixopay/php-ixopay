@@ -2,11 +2,13 @@
 
 namespace Ixopay\Client\Transaction;
 
+use Ixopay\Client\Transaction\Base\ArrayableInterface;
+
 /**
  * Class Error
  * @package Ixopay\Client\Transaction
  */
-class Error {
+class Error implements ArrayableInterface {
 
     /** The request to the payment provider failed for some reason (e.g. host not reachable) */
     const REQUEST_FAILED = 1000;
