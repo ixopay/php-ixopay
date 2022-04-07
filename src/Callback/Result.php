@@ -8,6 +8,7 @@ use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\CustomerProfileData;
 use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Data\Result\ScheduleResultData;
+use Ixopay\Client\Transaction\Base\ArrayableInterface;
 use Ixopay\Client\Transaction\Error;
 
 /**
@@ -16,7 +17,7 @@ use Ixopay\Client\Transaction\Error;
  *
  * @package Ixopay\Client\Callback
  */
-class Result {
+class Result implements ArrayableInterface {
     /** The callback reports, that the transaction finished successfully. */
     const RESULT_OK = 'OK';
     /** The callback reports that the transaction is pending (an update call is expected, or the status should be pulled) */

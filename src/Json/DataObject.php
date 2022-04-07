@@ -7,13 +7,14 @@ use Ixopay\Client\CustomerProfile\PaymentInstrument;
 use Ixopay\Client\Data\PaymentData\IbanData;
 use Ixopay\Client\Data\PaymentData\WalletData;
 use Ixopay\Client\Data\ThreeDSecureData;
+use Ixopay\Client\Transaction\Base\ArrayableInterface;
 
 /**
  * Class DataObject
  *
  * @package Ixopay\Client\Json
  */
-class DataObject implements \ArrayAccess, \JsonSerializable {
+class DataObject implements \ArrayAccess, \JsonSerializable, ArrayableInterface {
 
     /**
      * @var array

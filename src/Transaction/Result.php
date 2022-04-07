@@ -546,12 +546,23 @@ class Result implements ArrayableInterface {
     	$properties = get_object_vars($this);
     	foreach(array_keys($properties) as $prop) {
     		if (is_object($properties[$prop])) {
-    			if (method_exists($properties[$prop], 'toArray')) {
+    			if ($properties[$prop] instanceof ArrayableInterface) {
 					$properties[$prop] = $properties[$prop]->toArray();
 				} else {
 					unset($properties[$prop]);
 				}
     		}
+            elseif (is_array($properties[$prop])){
+                foreach ($properties[$prop] as $key => $item){
+                    if(is_object($item)){
+                        if( $item instanceof ArrayableInterface){
+                            $properties[$prop][$key] = $item->toArray();
+                        }else{
+                            unset($properties[$prop]);
+                        }
+                    }
+                }
+            }
     	}
 		return $properties;
     }

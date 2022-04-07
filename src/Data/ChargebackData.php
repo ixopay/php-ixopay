@@ -2,12 +2,14 @@
 
 namespace Ixopay\Client\Data;
 
+use Ixopay\Client\Transaction\Base\ArrayableInterface;
+
 /**
  * Class ChargebackData
  *
  * @package Ixopay\Client\Data
  */
-class ChargebackData {
+class ChargebackData implements ArrayableInterface {
 
     /**
      * @var string

@@ -651,10 +651,10 @@ class StatusResult implements ArrayableInterface {
                     unset($properties[$prop]);
                 }
             } elseif (is_array($properties[$prop])){
-                foreach ($properties[$prop] as $item){
+                foreach ($properties[$prop] as $key => $item){
                     if(is_object($item)){
                         if( $item instanceof ArrayableInterface){
-                            $properties[$prop] = $item->toArray();
+                            $properties[$prop][$key] = $item->toArray();
                         }else{
                             unset($properties[$prop]);
                         }

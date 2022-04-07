@@ -2,12 +2,14 @@
 
 namespace Ixopay\Client\Http\Exception;
 
+use Ixopay\Client\Transaction\Base\ArrayableInterface;
+
 /**
  * Class ResponseException
  *
  * @package Ixopay\Client\Http\Exception
  */
-class ResponseException extends ClientException
+class ResponseException extends ClientException implements ArrayableInterface
 {
     /**
      * @var mixed
