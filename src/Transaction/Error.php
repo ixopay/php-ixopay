@@ -212,7 +212,7 @@ class Error implements ArrayableInterface {
         $properties = get_object_vars($this);
         foreach(array_keys($properties) as $prop) {
             if (is_object($properties[$prop])) {
-                if (method_exists($properties[$prop], 'toArray')) {
+                if ($properties[$prop] instanceof ArrayableInterface) {
                     $properties[$prop] = $properties[$prop]->toArray();
                 } else {
                     unset($properties[$prop]);
