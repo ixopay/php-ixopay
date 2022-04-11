@@ -2,12 +2,25 @@
 
 namespace Ixopay\Client\Transaction\Base;
 
+use Ixopay\Client\Data\CustomerProfileData;
+
 /**
  * Interface AddToCustomerProfileInterface
  * @package Ixopay\Client\Transaction\Base
  */
 interface AddToCustomerProfileInterface {
 
+
+    /**
+     * @return CustomerProfileData|null
+     */
+    public function getCustomerProfileData();
+
+    /**
+     * @param CustomerProfileData $customerProfileData
+     */
+    public function setCustomerProfileData(CustomerProfileData $customerProfileData = null);
+    
     /**
      * @param bool $addToCustomerProfile
      */

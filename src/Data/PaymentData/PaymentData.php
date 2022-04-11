@@ -1,6 +1,6 @@
 <?php
 
-namespace Ixopay\Client\CustomerProfile\PaymentData;
+namespace Ixopay\Client\Data\PaymentData;
 
 use Ixopay\Client\Json\DataObject;
 

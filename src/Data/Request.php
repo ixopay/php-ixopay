@@ -43,7 +43,7 @@ class Request {
     }
 
     /**
-     * @return Callback
+     * @return Request
      */
     public static function createFromGlobals() {
 

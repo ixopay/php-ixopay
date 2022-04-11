@@ -2,6 +2,8 @@
 
 namespace Ixopay\Client\Data;
 
+use Ixopay\Client\Data\PaymentData\PaymentData;
+
 /**
  * Represents a generic customer without any specific data.
  *
@@ -40,74 +42,92 @@ class Customer extends Data {
      * @var string
      */
     protected $billingAddress1;
+
     /**
      * @var string
      */
     protected $billingAddress2;
+
     /**
      * @var string
      */
     protected $billingCity;
+
     /**
      * @var string
      */
     protected $billingPostcode;
+
     /**
      * @var string
      */
     protected $billingState;
+
     /**
      * @var string
      */
     protected $billingCountry;
+
     /**
      * @var string
      */
     protected $billingPhone;
+
     /**
      * @var string
      */
     protected $shippingFirstName;
+
     /**
      * @var string
      */
     protected $shippingLastName;
+
     /**
      * @var string
      */
     protected $shippingCompany;
+
     /**
      * @var string
      */
     protected $shippingAddress1;
+
     /**
      * @var string
      */
     protected $shippingAddress2;
+
     /**
      * @var string
      */
     protected $shippingCity;
+
     /**
      * @var string
      */
     protected $shippingPostcode;
+
     /**
      * @var string
      */
     protected $shippingState;
+
     /**
      * @var string
      */
     protected $shippingCountry;
+
     /**
      * @var string
      */
     protected $shippingPhone;
+
     /**
      * @var string
      */
     protected $company;
+
     /**
      * @var string
      */
@@ -129,6 +149,16 @@ class Customer extends Data {
      * @var string
      */
     protected $nationalId;
+
+    /**
+     * @var array
+     */
+    protected $extraData = array();
+
+    /**
+     * @var PaymentData
+     */
+    protected $paymentData;
 
     /**
      * @return string
@@ -189,11 +219,22 @@ class Customer extends Data {
     }
 
     /**
-     * @param \DateTime $birthDate
+     * @return string|null
+     */
+    public function getBirthDateFormatted() {
+        return $this->birthDate ? $this->birthDate->format('Y-m-d') : null;
+    }
+
+    /**
+     * @param string|\DateTime $birthDate
      *
      * @return $this
+     * @throws \Exception
      */
     public function setBirthDate($birthDate) {
+        if (!empty($birthDate) && is_string($birthDate)) {
+            $birthDate = new \DateTime($birthDate);
+        }
         $this->birthDate = $birthDate;
         return $this;
     }
@@ -585,4 +626,40 @@ class Customer extends Data {
         return $this;
     }
 
+    /**
+     * @return array
+     */
+    public function getExtraData()
+    {
+        return $this->extraData;
+    }
+
+    /**
+     * @param array $extraData
+     *
+     * @return Customer
+     */
+    public function setExtraData($extraData)
+    {
+        $this->extraData = $extraData;
+        return $this;
+    }
+
+        /**
+     * @return PaymentData
+     */
+    public function getPaymentData()
+    {
+        return $this->paymentData;
+    }
+
+    /**
+     * @param PaymentData $paymentData
+     * @return $this
+     */
+    public function setPaymentData($paymentData)
+    {
+        $this->paymentData = $paymentData;
+        return $this;
+    }
 }

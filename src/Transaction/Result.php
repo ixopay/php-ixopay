@@ -3,7 +3,10 @@
 namespace Ixopay\Client\Transaction;
 
 use Ixopay\Client\Data\Customer;
+use Ixopay\Client\Data\CustomerProfileData;
 use Ixopay\Client\Data\Result\ResultData;
+use Ixopay\Client\Data\Result\ScheduleResultData;
+use Ixopay\Client\Data\RiskCheckData;
 
 /**
  * Class Result
@@ -38,11 +41,19 @@ class Result {
     protected $success;
 
     /**
+     * @deprecated use $uuid
+     *
      * reference id from the payment gateway
      *
      * @var string
      */
     protected $referenceId;
+
+    /**
+     * reference id from the payment gateway
+     * @var string
+     */
+    protected $uuid;
 
     /**
      * purchase id from gateway (can be used for any subsequent action on this transaction)
@@ -52,6 +63,8 @@ class Result {
     protected $purchaseId;
 
     /**
+     * @deprecated not in use anymore
+     *
      * id for vault registration (if applicable)
      *
      * @var string
@@ -112,19 +125,19 @@ class Result {
     protected $customer = null;
 
     /**
-     * @var string
+     * @var CustomerProfileData
      */
-    protected $scheduleId = null;
+    protected $customerProfileData = null;
 
     /**
-     * @var string
+     * @var RiskCheckData
      */
-    protected $scheduleStatus = null;
+    protected $riskCheckData = null;
 
     /**
-     * @var string|null - e.g. '2019-12-31 23:59:00 UTC'
+     * @var ScheduleResultData
      */
-    protected $scheduledAt = null;
+    protected $scheduleData = null;
 
     /**
      * @var Error[]
@@ -137,15 +150,35 @@ class Result {
     protected $extraData = array();
 
     /**
-     * @param string $referenceId
+     * Result constructor.
+     */
+    public function __construct(){
+        $this->customer = new Customer();
+        $this->customerProfileData = new CustomerProfileData();
+        $this->riskCheckData = new RiskCheckData();
+        $this->scheduleData = new ScheduleResultData();
+    }
+
+    /**
+     * @deprecated use setUuid()
      *
+     * @param string $referenceId
      * @return $this
      */
     public function setReferenceId($referenceId) {
-        $this->referenceId = $referenceId;
+        $this->setUuid($referenceId);
         return $this;
     }
 
+    /**
+     * @param $uuid
+     *
+     * @return $this
+     */
+    public function setUuid($uuid) {
+        $this->uuid = $uuid;
+        return $this;
+    }
 
     /**
      * @param string $redirectUrl
@@ -238,12 +271,21 @@ class Result {
     }
 
     /**
+     * @deprecated use getUuid()
+     *
      * contains IxoPay's transaction id
      *
      * @return string
      */
     public function getReferenceId() {
-        return $this->referenceId;
+        return $this->getUuid();
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid() {
+        return $this->uuid;
     }
 
     /**
@@ -281,6 +323,8 @@ class Result {
     }
 
     /**
+     * @deprecated
+     *
      * @return bool
      */
     public function hasErrors() {
@@ -426,10 +470,29 @@ class Result {
     }
 
     /**
+     * @return ScheduleResultData
+     */
+    public function getScheduleData()
+    {
+        return $this->scheduleData;
+    }
+
+    /**
+     * @param ScheduleResultData $scheduleData
+     *
+     * @return Result
+     */
+    public function setScheduleData($scheduleData)
+    {
+        $this->scheduleData = $scheduleData;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getScheduleId() {
-        return $this->scheduleId;
+        return $this->scheduleData ? $this->scheduleData->getScheduleId() : null;
     }
 
     /**
@@ -438,7 +501,7 @@ class Result {
      * @return Result
      */
     public function setScheduleId($scheduleId) {
-        $this->scheduleId = $scheduleId;
+        $this->scheduleData->setScheduleId($scheduleId);
 
         return $this;
     }
@@ -447,7 +510,7 @@ class Result {
      * @return string
      */
     public function getScheduleStatus() {
-        return $this->scheduleStatus;
+        return $this->scheduleData ? $this->scheduleData->getScheduleStatus() : null;
     }
 
     /**
@@ -456,8 +519,46 @@ class Result {
      * @return Result
      */
     public function setScheduleStatus($scheduleStatus) {
-        $this->scheduleStatus = $scheduleStatus;
+        $this->scheduleData->setScheduleStatus($scheduleStatus);
 
+        return $this;
+    }
+
+    /**
+     * @return CustomerProfileData
+     */
+    public function getCustomerProfileData()
+    {
+        return $this->customerProfileData;
+    }
+
+    /**
+     * @param CustomerProfileData $customerProfileData
+     *
+     * @return Result
+     */
+    public function setCustomerProfileData($customerProfileData)
+    {
+        $this->customerProfileData = $customerProfileData;
+        return $this;
+    }
+
+    /**
+     * @return RiskCheckData
+     */
+    public function getRiskCheckData()
+    {
+        return $this->riskCheckData;
+    }
+
+    /**
+     * @param RiskCheckData $riskCheckData
+     *
+     * @return Result
+     */
+    public function setRiskCheckData($riskCheckData)
+    {
+        $this->riskCheckData = $riskCheckData;
         return $this;
     }
 
@@ -479,10 +580,14 @@ class Result {
     }
 
     /**
+     * Note: returns string due to backwards compatibility
+     * use direct access to $this->getScheduleData()->getScheduledAt() for \DateTime type
      * @return string
      */
     public function getScheduledAt() {
-        return $this->scheduledAt;
+        return $this->getScheduleData() && $this->getScheduleData()->getScheduledAt()
+            ? $this->getScheduleData()->getScheduledAt()->format('Y-m-d H:i:s')
+            : null;
     }
 
     /**
@@ -496,7 +601,7 @@ class Result {
             $scheduledAt = $scheduledAt->format('Y-m-d H:i:s T');
         }
 
-        $this->scheduledAt = $scheduledAt;
+        $this->scheduleData->setScheduledAt($scheduledAt);
 
         return $this;
     }

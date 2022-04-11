@@ -10,38 +10,58 @@ namespace Ixopay\Client\Transaction\Base;
 abstract class AbstractTransactionWithReference extends AbstractTransaction {
 
     /**
+     * @deprecated use $referenceUuid
+     *
      * @var string
      */
     protected $referenceTransactionId;
 
     /**
+     * provide a reference uuid if necessary (for void/capture/refund or recurring debits)
+     * @var string
+     */
+    protected $referenceUuid;
+
+    /**
+     * @deprecated not in use anymore
+     *
      * @var string
      */
     protected $referenceCustomerId;
 
     /**
+     * @deprecated not in use anymore
+     *
      * @var string
      */
     protected $referenceId2;
 
     /**
+     * @deprecated not in use anymore
+     *
      * @var string
      */
     protected $referenceId3;
 
     /**
+     * @deprecated not in use anymore
+     *
      * @var string
      */
     protected $referenceId4;
 
     /**
+     * @deprecated use getReferenceUuid()
+     *
      * @return string
      */
     public function getReferenceTransactionId() {
-        return $this->referenceTransactionId;
+        return $this->referenceUuid;
     }
 
     /**
+     * @deprecated use setReferenceUuid()
+     *
      * provide a reference transaction id (or registration id) here if necessary (i.e. for void/capture/refund or
      * recurring debits)
      *
@@ -50,11 +70,32 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
      * @return $this
      */
     public function setReferenceTransactionId($referenceTransactionId) {
-        $this->referenceTransactionId = $referenceTransactionId;
+        $this->referenceUuid = $referenceTransactionId;
         return $this;
     }
 
     /**
+     * @return string
+     */
+    public function getReferenceUuid()
+    {
+        return $this->referenceUuid;
+    }
+
+    /**
+     * @param string $referenceUuid
+     *
+     * @return AbstractTransactionWithReference
+     */
+    public function setReferenceUuid($referenceUuid)
+    {
+        $this->referenceUuid = $referenceUuid;
+        return $this;
+    }
+
+    /**
+     * @deprecated not in use anymore
+     *
      * @return string
      */
     public function getReferenceCustomerId() {
@@ -64,8 +105,9 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     /**
      * set a reference customer if (if instructed by documentation)
      *
-     * @param string $referenceCustomerId
+     * @deprecated not in use anymore
      *
+     * @param string $referenceCustomerId
      * @return $this
      */
     public function setReferenceCustomerId($referenceCustomerId) {
@@ -74,6 +116,8 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated not in use anymore
+     *
      * @return string
      */
     public function getReferenceId2() {
@@ -81,6 +125,8 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated not in use anymore
+     *
      * @param string $referenceId2
      *
      * @return $this
@@ -91,6 +137,8 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated not in use anymore
+     *
      * @return string
      */
     public function getReferenceId3() {
@@ -98,6 +146,8 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated not in use anymore
+     *
      * @param string $referenceId3
      *
      * @return $this
@@ -108,6 +158,8 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated not in use anymore
+     *
      * @return string
      */
     public function getReferenceId4() {
@@ -115,6 +167,8 @@ abstract class AbstractTransactionWithReference extends AbstractTransaction {
     }
 
     /**
+     * @deprecated not in use anymore
+     *
      * @param string $referenceId4
      *
      * @return $this

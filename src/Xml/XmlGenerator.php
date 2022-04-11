@@ -26,11 +26,11 @@ use Ixopay\Client\Transaction\VoidTransaction;
 use Ixopay\Client\Transaction\Base\AddToCustomerProfileInterface;
 
 /**
- * Class Generator
- *
+ * Class XmlGenerator
+ * @deprecated use Json instead
  * @package Ixopay\Client\Xml
  */
-class Generator {
+class XmlGenerator {
 
     /**
      * @var \DOMDocument
@@ -139,7 +139,7 @@ class Generator {
 
         $this->document = new \DOMDocument('1.0', 'utf-8');
         $this->document->formatOutput = true;
-        $root = $this->document->createElementNS($this->namespaceRoot . '/Schema/V2/Schedule', 'schedule');
+        $root = $this->document->createElementNS($this->namespaceRoot . '/Schema/V2/ScheduleResultData', 'schedule');
 
         $this->_appendTextNode($root, 'username', $username);
         $this->_appendTextNode($root, 'password', $password);
@@ -261,12 +261,16 @@ class Generator {
      * @param AbstractTransaction $transaction
      */
     protected function appendAbstractTransactionNodes(\DOMNode $parentNode, AbstractTransaction $transaction) {
-        $this->_appendTextNode($parentNode, 'transactionToken', $transaction->getTransactionToken());
+        if (method_exists($transaction, 'getTransactionToken')) {
+            $this->_appendTextNode($parentNode, 'transactionToken', $transaction->getTransactionToken());
+        }
         $this->_appendTextNode($parentNode, 'transactionId', $transaction->getTransactionId());
         $this->_appendTextNode($parentNode, 'additionalId1', $transaction->getAdditionalId1());
         $this->_appendTextNode($parentNode, 'additionalId2', $transaction->getAdditionalId2());
-        if ($transaction->getCustomer()) {
-            $this->appendCustomerNode($parentNode, $transaction->getCustomer());
+        if (method_exists($transaction, 'getCustomer')) {
+            if ($transaction->getCustomer()) {
+                $this->appendCustomerNode($parentNode, $transaction->getCustomer());
+            }
         }
         if ($transaction->getExtraData()) {
             $this->appendExtraDataNodes($parentNode, 'extraData', $transaction->getExtraData());
@@ -299,7 +303,7 @@ class Generator {
      *
      * @throws TypeException
      */
-    protected function appendScheduleNode(\DOMNode $parentNode, ScheduleData $scheduleData) {
+    protected function appendScheduleNode(\DOMNode $parentNode, $scheduleData) {
 
         $scheduleNode = $this->document->createElement('startSchedule');
 

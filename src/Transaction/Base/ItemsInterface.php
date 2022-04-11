@@ -12,7 +12,6 @@ interface ItemsInterface {
 
     /**
      * @param Item[] $items
-     * @return void
      */
     public function setItems($items);
 

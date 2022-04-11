@@ -2,33 +2,48 @@
 
 namespace Ixopay\Client\Transaction\Base;
 
+use Ixopay\Client\Data\CustomerProfileData;
+
 /**
  * Trait AddToCustomerProfileTrait
+ *
  * @package Ixopay\Client\Transaction\Base
  */
 trait AddToCustomerProfileTrait {
 
     /**
+     * @deprecated not in use anymore
+     *
      * @var bool
      */
     protected $addToCustomerProfile = false;
 
     /**
-     * @var string
+     * @var CustomerProfileData
      */
-    protected $customerProfileGuid;
+    protected $customerProfileData;
 
     /**
-     * @var string
+     * @return CustomerProfileData
      */
-    protected $customerProfileIdentification;
+    public function getCustomerProfileData() {
+        return $this->customerProfileData;
+    }
 
     /**
-     * @var string
+     * @param CustomerProfileData|null $customerProfileData
+     *
+     * @return $this
      */
-    protected $markAsPreferred;
+    public function setCustomerProfileData(CustomerProfileData $customerProfileData = null) {
+        $this->customerProfileData = $customerProfileData;
+        return $this;
+    }
 
     /**
+     * @deprecated not in use anymore
+     *             sending customerProfileData will automatically add it to the customerProfile
+     *
      * @return bool
      */
     public function getAddToCustomerProfile() {
@@ -36,8 +51,11 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
+     * @deprecated not in use anymore
+     *             sending customerProfileData will automatically add it to the customerProfile
+     *
      * @param bool $addToCustomerProfile
-     * @return AddToCustomerProfileTrait
+     * @return $this
      */
     public function setAddToCustomerProfile($addToCustomerProfile) {
         $this->addToCustomerProfile = $addToCustomerProfile;
@@ -45,51 +63,74 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
+     * @deprecated use CustomerProfileData instead
+     *
      * @return string
      */
-    public function getCustomerProfileGuid() {
-        return $this->customerProfileGuid;
+    public function getCustomerProfileGuid(){
+        return $this->customerProfileData ? $this->customerProfileData->getProfileGuid() : null;
     }
 
     /**
-     * @param string $customerProfileGuid
-     * @return AddToCustomerProfileTrait
+     * backwards compatibility
+     * @deprecated use CustomerProfileData instead
+     *
+     * @param string $profileGuid
+     * @return $this
      */
-    public function setCustomerProfileGuid($customerProfileGuid) {
-        $this->customerProfileGuid = $customerProfileGuid;
+    public function setCustomerProfileGuid($profileGuid){
+        if ($profileGuid && !$this->customerProfileData) {
+            $this->customerProfileData = new CustomerProfileData();
+            $this->customerProfileData->setProfileGuid($profileGuid);
+        }
         return $this;
     }
 
     /**
+     * @deprecated use CustomerProfileData instead
+     *
      * @return string
      */
     public function getCustomerProfileIdentification() {
-        return $this->customerProfileIdentification;
+        return $this->customerProfileData ? $this->customerProfileData->getCustomerIdentification() : null;
     }
 
     /**
-     * @param string $customerProfileIdentification
-     * @return AddToCustomerProfileTrait
+     * @deprecated use CustomerProfileData instead
+     *
+     * @param string $identification
+     *
+     * @return $this
      */
-    public function setCustomerProfileIdentification($customerProfileIdentification) {
-        $this->customerProfileIdentification = $customerProfileIdentification;
+    public function setCustomerProfileIdentification($identification) {
+        if ($identification && !$this->customerProfileData) {
+            $this->customerProfileData = new CustomerProfileData();
+            $this->customerProfileData->setCustomerIdentification($identification);
+        }
         return $this;
     }
 
     /**
-     * @return string
+     * @deprecated use CustomerProfileData instead
+     *
+     * @return bool
      */
     public function getMarkAsPreferred() {
-        return $this->markAsPreferred;
+        return $this->customerProfileData ? $this->customerProfileData->getMarkAsPreferred() : false;
     }
 
     /**
-     * @param string $markAsPrefrred
-     * @return AddToCustomerProfileTrait
+     * @deprecated use CustomerProfileData instead
+     *
+     * @param bool $markAsPreferred
+     *
+     * @return $this
      */
     public function setMarkAsPreferred($markAsPreferred) {
-        $this->markAsPreferred = $markAsPreferred;
+        if ($markAsPreferred !== null && !$this->customerProfileData) {
+            $this->customerProfileData = new CustomerProfileData();
+            $this->customerProfileData->setMarkAsPreferred($markAsPreferred);
+        }
         return $this;
     }
-
 }

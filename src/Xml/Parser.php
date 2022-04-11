@@ -2,8 +2,8 @@
 
 namespace Ixopay\Client\Xml;
 
-use Ixopay\Client\Callback\ChargebackData;
-use Ixopay\Client\Callback\ChargebackReversalData;
+use Ixopay\Client\Data\ChargebackData;
+use Ixopay\Client\Data\ChargebackReversalData;
 use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\Result\CreditcardData;
 use Ixopay\Client\Data\Result\IbanData;
@@ -570,6 +570,15 @@ class Parser {
                         break;
                     case 'walletOwner':
                         $walletData->setWalletOwner($child->nodeValue);
+                        break;
+                    case 'walletOwnerFirstName':
+                        $walletData->setWalletOwnerFirstName($child->nodeValue);
+                        break;
+                    case 'walletOwnerLastName':
+                        $walletData->setWalletOwnerLastName($child->nodeValue);
+                        break;
+                    case 'walletOwnerCountryCode':
+                        $walletData->setWalletOwnerCountryCode($child->nodeValue);
                         break;
                     default:
                         break;

@@ -275,6 +275,7 @@ class CreditcardData extends ResultData {
 
     /**
      * @param string $fingerprint
+     * @return $this
      */
     public function setFingerprint($fingerprint)
     {
@@ -292,6 +293,7 @@ class CreditcardData extends ResultData {
 
     /**
      * @param string $binBrand
+     * @return $this
      */
     public function setBinBrand($binBrand)
     {
@@ -309,6 +311,7 @@ class CreditcardData extends ResultData {
 
     /**
      * @param string $binBank
+     * @return $this
      */
     public function setBinBank($binBank)
     {
@@ -326,6 +329,7 @@ class CreditcardData extends ResultData {
 
     /**
      * @param string $binType
+     * @return $this
      */
     public function setBinType($binType)
     {
@@ -343,6 +347,7 @@ class CreditcardData extends ResultData {
 
     /**
      * @param string $binLevel
+     * @return $this
      */
     public function setBinLevel($binLevel)
     {
@@ -359,6 +364,7 @@ class CreditcardData extends ResultData {
 
     /**
      * @param string $binCountry
+     * @return $this
      */
     public function setBinCountry($binCountry) {
         $this->binCountry = $binCountry;
@@ -374,6 +380,7 @@ class CreditcardData extends ResultData {
 
     /**
      * @param string $threeDSecure
+     * @return $this
      */
     public function setThreeDSecure($threeDSecure) {
         $this->threeDSecure = $threeDSecure;
@@ -390,6 +397,7 @@ class CreditcardData extends ResultData {
 
     /**
      * @param string $eci
+     * @return $this
      */
     public function setEci($eci)
     {

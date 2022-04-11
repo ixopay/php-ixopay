@@ -7,6 +7,8 @@ use Ixopay\Client\Transaction\Base\AmountableInterface;
 use Ixopay\Client\Transaction\Base\AmountableTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
+use Ixopay\Client\Transaction\Base\TransactionSplitsInterface;
+use Ixopay\Client\Transaction\Base\TransactionSplitsTrait;
 
 /**
  * Refund: Refund money from a previous Debit (or Capture) transaction to the customer.
@@ -15,19 +17,49 @@ use Ixopay\Client\Transaction\Base\ItemsTrait;
  *
  * @package Ixopay\Client\Transaction
  */
-class Refund extends AbstractTransactionWithReference implements AmountableInterface, ItemsInterface {
+class Refund extends AbstractTransactionWithReference implements AmountableInterface, ItemsInterface, TransactionSplitsInterface {
     use AmountableTrait;
     use ItemsTrait;
+    use TransactionSplitsTrait;
 
-    /**
-     * @var string
-     */
+    /** @var string */
+    protected $callbackUrl;
+
+    /** @var string */
+    protected $transactionToken;
+
+    /** @var string */
     protected $description;
 
     /**
-     * @var string
+     * @return string
      */
-    protected $callbackUrl;
+    public function getCallbackUrl() {
+        return $this->callbackUrl;
+    }
+
+    /**
+     * @param string $callbackUrl
+     */
+    public function setCallbackUrl($callbackUrl) {
+        $this->callbackUrl = $callbackUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionToken()
+    {
+        return $this->transactionToken;
+    }
+
+    /**
+     * @param string $transactionToken
+     */
+    public function setTransactionToken($transactionToken)
+    {
+        $this->transactionToken = $transactionToken;
+    }
 
     /**
      * @return string
@@ -43,17 +75,4 @@ class Refund extends AbstractTransactionWithReference implements AmountableInter
         $this->description = $description;
     }
 
-    /**
-     * @return string
-     */
-    public function getCallbackUrl() {
-        return $this->callbackUrl;
-    }
-
-    /**
-     * @param string $callbackUrl
-     */
-    public function setCallbackUrl($callbackUrl) {
-        $this->callbackUrl = $callbackUrl;
-    }
 }

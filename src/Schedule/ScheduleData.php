@@ -5,7 +5,14 @@ namespace Ixopay\Client\Schedule;
 use Ixopay\Client\Transaction\Base\AmountableInterface;
 
 /**
- * Class Schedule
+ * Class ScheduleResultData
+ *   Should be deprecated in the future as it contains properties
+ *   not used by other schedule actions. Additionally it's not
+ *   clear which actions require which properties.
+ *
+ *  - StartSchedule (obj): used to start a schedule
+ *  - ContinueSchedule (obj): used to continue schedule
+ *  - string [scheduleId]: used to show, pause or cancel a schedule
  *
  * @package Ixopay\Client\Data
  */
@@ -17,11 +24,11 @@ class ScheduleData implements AmountableInterface {
     const PERIOD_UNIT_YEAR = 'YEAR';
 
     /**
-     * referenceId or UUID from the register
+     * reference UUID of initial register
      *
      * @var string
      */
-    protected $registrationId;
+    protected $registrationUuid;
 
     /**
      * @var string
@@ -94,19 +101,41 @@ class ScheduleData implements AmountableInterface {
     }
 
     /**
+     * @deprecated use getRegistrationUuid()
+     *
      * @return string
      */
     public function getRegistrationId() {
-        return $this->registrationId;
+        return $this->getRegistrationUuid();
     }
 
     /**
+     * @deprecated use setRegistrationUuid()
+     *
      * @param string $registrationId
      *
      * @return ScheduleData
      */
     public function setRegistrationId($registrationId) {
-        $this->registrationId = $registrationId;
+        $this->setRegistrationUuid($registrationId);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegistrationUuid() {
+        return $this->registrationUuid;
+    }
+
+    /**
+     * @param string $registrationUuid
+     *
+     * @return ScheduleData
+     */
+    public function setRegistrationUuid($registrationUuid) {
+        $this->registrationUuid = $registrationUuid;
 
         return $this;
     }
@@ -155,11 +184,23 @@ class ScheduleData implements AmountableInterface {
     }
 
     /**
-     * @param null|\DateTime
+     * @param string|null $format
+     * @return string|null
+     */
+    public function getStartDateTimeFormatted($format = null) {
+        return $this->startDateTime ? $this->startDateTime->format($format ? $format : 'Y-m-d H:i:s T') : null;
+    }
+
+    /**
+     * @param \DateTime|string
      *
      * @return ScheduleData
+     * @throws \Exception
      */
     public function setStartDateTime($startDateTime) {
+        if (!empty($startDateTime) && is_string($startDateTime)) {
+            $startDateTime = new \DateTime($startDateTime);
+        }
         $this->startDateTime = $startDateTime;
 
         return $this;
@@ -170,6 +211,14 @@ class ScheduleData implements AmountableInterface {
      */
     public function getContinueDateTime() {
         return $this->continueDateTime;
+    }
+
+    /**
+     * @param string|null
+     * @return string|null
+     */
+    public function getContinueDateTimeFormatted($format = null) {
+        return $this->continueDateTime ? $this->continueDateTime->format($format ? $format : 'Y-m-d H:i:s T') : null;
     }
 
     /**

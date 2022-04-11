@@ -1,23 +1,23 @@
 <?php
 
-namespace Ixopay\Client\Callback;
+namespace Ixopay\Client\Data;
 
 /**
  * Class ChargebackData
  *
- * @package Ixopay\Client\Callback
+ * @package Ixopay\Client\Data
  */
 class ChargebackData {
 
     /**
      * @var string
      */
-    protected $originalTransactionId;
+    protected $originalUuid;
 
     /**
      * @var string
      */
-    protected $originalReferenceId;
+    protected $originalMerchantTransactionId;
 
     /**
      * @var float
@@ -40,31 +40,77 @@ class ChargebackData {
     protected $chargebackDateTime;
 
     /**
+     * @deprecated use setOriginalMerchantTransactionId()
+     *
      * @return string
      */
     public function getOriginalTransactionId() {
-        return $this->originalTransactionId;
+        return $this->originalMerchantTransactionId;
     }
 
     /**
+     * @deprecated use setOriginalMerchantTransactionId()
+     *
      * @param string $originalTransactionId
      */
     public function setOriginalTransactionId($originalTransactionId) {
-        $this->originalTransactionId = $originalTransactionId;
+        $this->originalMerchantTransactionId = $originalTransactionId;
+    }
+
+    /**
+     * @deprecated use getOriginalUuid()
+     *
+     * @return string
+     */
+    public function getOriginalReferenceId() {
+        return $this->originalUuid;
+    }
+
+    /**
+     * @deprecated use setOriginalUuid()
+     *
+     * @param string $originalReferenceId
+     */
+    public function setOriginalReferenceId($originalReferenceId) {
+        $this->originalUuid = $originalReferenceId;
     }
 
     /**
      * @return string
      */
-    public function getOriginalReferenceId() {
-        return $this->originalReferenceId;
+    public function getOriginalUuid()
+    {
+        return $this->originalUuid;
     }
 
     /**
-     * @param string $originalReferenceId
+     * @param string $originalUuid
+     *
+     * @return $this
      */
-    public function setOriginalReferenceId($originalReferenceId) {
-        $this->originalReferenceId = $originalReferenceId;
+    public function setOriginalUuid($originalUuid)
+    {
+        $this->originalUuid = $originalUuid;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOriginalMerchantTransactionId()
+    {
+        return $this->originalMerchantTransactionId;
+    }
+
+    /**
+     * @param string $originalMerchantTransactionId
+     *
+     * @return $this
+     */
+    public function setOriginalMerchantTransactionId($originalMerchantTransactionId)
+    {
+        $this->originalMerchantTransactionId = $originalMerchantTransactionId;
+        return $this;
     }
 
     /**
@@ -117,10 +163,17 @@ class ChargebackData {
     }
 
     /**
-     * @param \DateTime $chargebackDateTime
+     * @param \DateTime|string $chargebackDateTime
+     *
+     * @return $this
+     * @throws \Exception
      */
-    public function setChargebackDateTime(\DateTime $chargebackDateTime) {
+    public function setChargebackDateTime($chargebackDateTime) {
+        if (!empty($chargebackDateTime) && is_string($chargebackDateTime)) {
+            $chargebackDateTime = new \DateTime($chargebackDateTime);
+        }
         $this->chargebackDateTime = $chargebackDateTime;
+        return $this;
     }
 
     /**

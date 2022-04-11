@@ -39,7 +39,6 @@ abstract class Data {
         return $this;
     }
 
-
     /**
      * get data from extra data
      *

@@ -1,28 +1,28 @@
 <?php
 
-namespace Ixopay\Client\Callback;
+namespace Ixopay\Client\Data;
 
 /**
  * Class ChargebackReversalData
  *
- * @package Ixopay\Client\Callback
+ * @package Ixopay\Client\Data
  */
 class ChargebackReversalData {
 
     /**
      * @var string
      */
-    protected $originalTransactionId;
+    protected $originalUuid;
 
     /**
      * @var string
      */
-    protected $originalReferenceId;
+    protected $originalMerchantTransactionId;
 
     /**
      * @var string
      */
-    protected $chargebackReferenceId;
+    protected $chargebackUuid;
 
     /**
      * @var float
@@ -47,43 +47,111 @@ class ChargebackReversalData {
     /**
      * @return string
      */
-    public function getOriginalTransactionId() {
-        return $this->originalTransactionId;
+    public function getOriginalUuid()
+    {
+        return $this->originalUuid;
     }
 
     /**
+     * @param string $originalUuid
+     *
+     * @return $this
+     */
+    public function setOriginalUuid($originalUuid)
+    {
+        $this->originalUuid = $originalUuid;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOriginalMerchantTransactionId()
+    {
+        return $this->originalMerchantTransactionId;
+    }
+
+    /**
+     * @param string $originalMerchantTransactionId
+     *
+     * @return $this
+     */
+    public function setOriginalMerchantTransactionId($originalMerchantTransactionId)
+    {
+        $this->originalMerchantTransactionId = $originalMerchantTransactionId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChargebackUuid()
+    {
+        return $this->chargebackUuid;
+    }
+
+    /**
+     * @param string $chargebackUuid
+     *
+     * @return $this
+     */
+    public function setChargebackUuid($chargebackUuid)
+    {
+        $this->chargebackUuid = $chargebackUuid;
+        return $this;
+    }
+
+    /**
+     * @deprecated use getOriginalMerchantTransactionId()
+     *
+     * @return string
+     */
+    public function getOriginalTransactionId() {
+        return $this->originalMerchantTransactionId;
+    }
+
+    /**
+     * @deprecated use setOriginalMerchantTransactionId()
+     *
      * @param string $originalTransactionId
      */
     public function setOriginalTransactionId($originalTransactionId) {
-        $this->originalTransactionId = $originalTransactionId;
+        $this->originalMerchantTransactionId = $originalTransactionId;
     }
 
     /**
+     * @deprecated use getOriginalUuid()
+     *
      * @return string
      */
     public function getOriginalReferenceId() {
-        return $this->originalReferenceId;
+        return $this->originalUuid;
     }
 
     /**
+     * @deprecated use setOriginalUuid()
+     *
      * @param string $originalReferenceId
      */
     public function setOriginalReferenceId($originalReferenceId) {
-        $this->originalReferenceId = $originalReferenceId;
+        $this->originalUuid = $originalReferenceId;
     }
 
     /**
+     * @deprecated use getChargebackUuid()
+     *
      * @return string
      */
     public function getChargebackReferenceId() {
-        return $this->chargebackReferenceId;
+        return $this->chargebackUuid;
     }
 
     /**
+     * @deprecated use setChargebackUuid()
      * @param string $chargebackReferenceId
      */
     public function setChargebackReferenceId($chargebackReferenceId) {
-        $this->chargebackReferenceId = $chargebackReferenceId;
+        $this->chargebackUuid = $chargebackReferenceId;
     }
 
     /**
@@ -95,9 +163,12 @@ class ChargebackReversalData {
 
     /**
      * @param float $amount
+     *
+     * @return $this
      */
     public function setAmount($amount) {
         $this->amount = $amount;
+        return $this;
     }
 
     /**
@@ -109,9 +180,12 @@ class ChargebackReversalData {
 
     /**
      * @param string $currency
+     *
+     * @return $this
      */
     public function setCurrency($currency) {
         $this->currency = $currency;
+        return $this;
     }
 
     /**
@@ -123,9 +197,12 @@ class ChargebackReversalData {
 
     /**
      * @param string $reason
+     *
+     * @return $this
      */
     public function setReason($reason) {
         $this->reason = $reason;
+        return $this;
     }
 
     /**
@@ -136,10 +213,17 @@ class ChargebackReversalData {
     }
 
     /**
-     * @param \DateTime $reversalDateTime
+     * @param \DateTime|string $reversalDateTime
+     *
+     * @return $this
+     * @throws \Exception
      */
     public function setReversalDateTime($reversalDateTime) {
+        if (!empty($reversalDateTime) && is_string($reversalDateTime)) {
+            $reversalDateTime = new \DateTime($reversalDateTime);
+        }
         $this->reversalDateTime = $reversalDateTime;
+        return $this;
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace Ixopay\Client\Transaction\Base;
 
-use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\Request;
 
 /**
@@ -13,14 +12,16 @@ use Ixopay\Client\Data\Request;
 class AbstractTransaction {
 
     /**
+     * @deprecated use $merchantTransactionId
+     *
      * @var string
      */
-    protected $transactionToken;
+    protected $transactionId;
 
     /**
      * @var string
      */
-    protected $transactionId;
+    protected $merchantTransactionId;
 
     /**
      * @var string
@@ -33,11 +34,6 @@ class AbstractTransaction {
     protected $additionalId2;
 
     /**
-     * @var Customer
-     */
-    protected $customer;
-
-    /**
      * @var array
      */
     protected $extraData = array();
@@ -48,37 +44,23 @@ class AbstractTransaction {
     protected $merchantMetaData;
 
     /**
+     * @deprecated not in use anymore
      * @var Request
      */
     protected $request;
 
     /**
-     * @return string
-     */
-    public function getTransactionToken() {
-        return $this->transactionToken;
-    }
-
-    /**
-     * set a required transaction token (if described by the documentation of a payment method)
+     * @deprecated use getMerchantTransactionId()
      *
-     * @param string $transactionToken
-     *
-     * @return $this
-     */
-    public function setTransactionToken($transactionToken) {
-        $this->transactionToken = $transactionToken;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getTransactionId() {
-        return $this->transactionId;
+        return $this->merchantTransactionId;
     }
 
     /**
+     * @deprecated use setMerchantTransactionId()
+     *
      * this is your own transaction id
      * NOTE: your transaction ids MUST be unique
      *
@@ -87,7 +69,26 @@ class AbstractTransaction {
      * @return $this
      */
     public function setTransactionId($transactionId) {
-        $this->transactionId = $transactionId;
+        $this->merchantTransactionId = $transactionId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantTransactionId()
+    {
+        return $this->merchantTransactionId;
+    }
+
+    /**
+     * @param string $merchantTransactionId
+     *
+     * @return $this
+     */
+    public function setMerchantTransactionId($merchantTransactionId)
+    {
+        $this->merchantTransactionId = $merchantTransactionId;
         return $this;
     }
 
@@ -130,25 +131,6 @@ class AbstractTransaction {
     }
 
     /**
-     * @return Customer
-     */
-    public function getCustomer() {
-        return $this->customer;
-    }
-
-    /**
-     * customer information
-     *
-     * @param Customer $customer
-     *
-     * @return $this
-     */
-    public function setCustomer($customer) {
-        $this->customer = $customer;
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public function getExtraData() {
@@ -177,7 +159,7 @@ class AbstractTransaction {
 
     /**
      * @param string $merchantMetaData
-     * @return AbstractTransaction
+     * @return $this
      */
     public function setMerchantMetaData($merchantMetaData)
     {
@@ -197,25 +179,6 @@ class AbstractTransaction {
     }
 
     /**
-     * @return Request
-     */
-    public function getRequest() {
-        return $this->request;
-    }
-
-    /**
-     * provider request information here (if required by the payment method)
-     *
-     * @param Request $request
-     *
-     * @return $this
-     */
-    public function setRequest($request) {
-        $this->request = $request;
-        return $this;
-    }
-
-    /**
      * get data from extra data
      *
      * @param string $key
@@ -228,4 +191,41 @@ class AbstractTransaction {
         }
         return null;
     }
+
+    /**
+     * alternative to magic method
+     *
+     * @param $key
+     *
+     * @return mixed|null
+     */
+    public function getExtraDataValue($key) {
+        if (array_key_exists($key, $this->extraData)) {
+            return $this->extraData[$key];
+        }
+        return null;
+    }
+
+    /**
+     * @deprecated not in use anymore
+     * @return Request
+     */
+    public function getRequest() {
+        return $this->request;
+    }
+
+    /**
+     * @deprecated not in use anymore
+     *
+     * provider request information here (if required by the payment method)
+     *
+     * @param Request $request
+     *
+     * @return $this
+     */
+    public function setRequest($request) {
+        $this->request = $request;
+        return $this;
+    }
+
 }

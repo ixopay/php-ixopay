@@ -8,6 +8,7 @@ use Ixopay\Client\Exception\InvalidValueException;
 /**
  * Class IbanCustomer
  *
+ * @deprecated see Ixopay\Client\Data\PaymentData\IbanData
  * @package Ixopay\Client\Data
  */
 class IbanCustomer extends Customer {
@@ -75,6 +76,7 @@ class IbanCustomer extends Customer {
 
     /**
      * @param string $mandateId
+     * @return IbanCustomer
      */
     public function setMandateId($mandateId) {
         $this->mandateId = $mandateId;
@@ -89,8 +91,9 @@ class IbanCustomer extends Customer {
     }
 
     /**
-     * @param \DateTime $mandateDate
+     * @param \DateTime|string $mandateDate
      *
+     * @return IbanCustomer
      * @throws InvalidValueException
      */
     public function setMandateDate($mandateDate) {

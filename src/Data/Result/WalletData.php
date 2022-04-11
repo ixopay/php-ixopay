@@ -25,6 +25,20 @@ class WalletData extends ResultData {
      */
     protected $walletType;
 
+    /**
+     * @var string
+     */
+    protected $walletOwnerFirstName;
+
+    /**
+     * @var string
+     */
+    protected $walletOwnerLastName;
+
+    /**
+     * @var string
+     */
+    protected $walletOwnerCountryCode;
 
     /**
      * @return string
@@ -72,16 +86,77 @@ class WalletData extends ResultData {
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getWalletOwnerFirstName()
+    {
+        return $this->walletOwnerFirstName;
+    }
+
+    /**
+     * @param string $walletOwnerFirstName
+     */
+    public function setWalletOwnerFirstName($walletOwnerFirstName)
+    {
+        $this->walletOwnerFirstName = $walletOwnerFirstName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWalletOwnerLastName()
+    {
+        return $this->walletOwnerLastName;
+    }
+
+    /**
+     * @param string $walletOwnerLastName
+     */
+    public function setWalletOwnerLastName($walletOwnerLastName)
+    {
+        $this->walletOwnerLastName = $walletOwnerLastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWalletOwnerCountryCode()
+    {
+        return $this->walletOwnerCountryCode;
+    }
+
+    /**
+     * @param string $walletOwnerCountryCode
+     */
+    public function setWalletOwnerCountryCode($walletOwnerCountryCode)
+    {
+        $this->walletOwnerCountryCode = $walletOwnerCountryCode;
+    }
 
     /**
      * @return array
      */
     public function toArray() {
-        return array(
+        $result = array(
             'walletType' => $this->walletType,
             'walletOwner' => $this->walletOwner,
             'walletReferenceId' => $this->walletReferenceId
         );
+
+        if (!empty($this->walletOwnerFirstName)) {
+            $result['walletOwnerFirstName'] = $this->walletOwnerFirstName;
+        }
+
+        if (!empty($this->walletOwnerLastName)) {
+            $result['walletOwnerLastName'] = $this->walletOwnerLastName;
+        }
+
+        if (!empty($this->walletOwnerCountryCode)) {
+            $result['walletOwnerCountryCode'] = $this->walletOwnerCountryCode;
+        }
+
+        return $result;
     }
 
 

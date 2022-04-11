@@ -1,22 +1,30 @@
 <?php
 
+// include the autoloader
+require_once('path/to/vendor/autoload.php');
+
 use Ixopay\Client\Client;
 use Ixopay\Client\StatusApi\StatusRequestData;
 
-require_once('../initClientAutoload.php');
+// instantiate the "Ixopay\Client\Client" with your credentials
+$client = new Client("username", "password", "apiKey", "sharedSecret");
 
-$client = new Client('username', 'password', 'apiKey', 'sharedSecret');
+// create StatusRequestData
+$statusData = new StatusRequestData();
 
-$statusRequestData = new StatusRequestData();
+// set EITHER uuid OR merchantTransactionId
+$statusData->setUuid('uuid_of_transaction_here');
+//$statusData->setMerchantTransactionId('merchant_transaction_id_here');
 
-$transactionUuid = '3d3daf01aeb207d827d6'; // the gatewayReferenceId you get by Result->getReferenceId();
-//$merchantTransactionId = 'your_transaction_id';
+// send request
+$result = $client->sendStatusRequest($statusData);
 
-// use either the UUID or your merchantTransactionId but not both
-$statusRequestData->setTransactionUuid($transactionUuid);
-//$statusRequestData->setMerchantTransactionId($merchantTransactionId);
-
-$statusResult = $client->sendStatusRequest($statusRequestData);
-
-var_dump($statusResult);
-die();
+// handle result
+if($result->isSuccess()){
+    // $result->getUuid();
+    // $result->getTransactionStatus();
+    // etc
+} else{
+    // $result->getErrorMessage();
+    // $result->getErrorCode();
+}
