@@ -195,7 +195,7 @@ class JsonGenerator {
 
     protected function createIncrementalAuthorization($transaction, $language) {
         /** @var IncrementalAuthorization $transaction */
-        $data = [
+        return [
             'referenceUuid' => $transaction->getReferenceUuid(),
             'amount' => (string)$transaction->getAmount(),
             'currency' => $transaction->getCurrency(),
@@ -208,8 +208,6 @@ class JsonGenerator {
             'transactionIndicator' => $transaction->getTransactionIndicator(),
             'language' => $language,
         ];
-
-        return $data;
     }
 
     /**
@@ -245,12 +243,12 @@ class JsonGenerator {
      */
     protected function createVoid($transaction){
         /** @var VoidTransaction $transaction */
-        $data = [
+        return [
+            'amount' => (string)$transaction->getAmount(),
+            'currency' => $transaction->getCurrency(),
             'referenceUuid' => $transaction->getReferenceUuid(),
             'description' => $transaction->getDescription(),
         ];
-
-        return $data;
     }
 
     /**
@@ -291,11 +289,9 @@ class JsonGenerator {
      */
     protected function createDeregister($transaction){
         /** @var Deregister $transaction */
-        $data = [
+        return [
             'referenceUuid' => $transaction->getReferenceUuid(),
         ];
-
-        return $data;
     }
 
     /**
@@ -307,7 +303,7 @@ class JsonGenerator {
      */
     protected function createRefund($transaction){
         /** @var Refund $transaction */
-        $data = [
+        return [
             'referenceUuid' => $transaction->getReferenceUuid(),
             'amount' => (string)$transaction->getAmount(),
             'currency' => $transaction->getCurrency(),
@@ -317,8 +313,6 @@ class JsonGenerator {
             'items' => $this->createItems($transaction->getItems()),
             'splits' => $this->createSplits($transaction->getTransactionSplits()),
         ];
-
-        return $data;
     }
 
     /**
