@@ -3,6 +3,7 @@
 namespace Ixopay\Client\Transaction;
 
 use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
+use Ixopay\Client\Transaction\Base\AmountableTrait;
 
 /**
  * Void: Revert a previously preauthorized transaction.
@@ -10,6 +11,8 @@ use Ixopay\Client\Transaction\Base\AbstractTransactionWithReference;
  * @package Ixopay\Client\Transaction
  */
 class VoidTransaction extends AbstractTransactionWithReference {
+    use AmountableTrait;
+
     /** @var string */
     protected $description;
 
