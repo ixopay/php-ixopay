@@ -38,6 +38,11 @@ class StartSchedule {
     protected $startDateTime;
 
     /**
+     * @var string|null
+     */
+    protected $callbackUrl = null;
+
+    /**
      * @return string
      */
     public function getRegistrationUuid()
@@ -156,6 +161,26 @@ class StartSchedule {
     }
 
     /**
+     * @return string|null
+     */
+    public function getCallbackUrl() {
+        return $this->callbackUrl;
+    }
+
+    /**
+     * @param string|null $callbackUrl
+     *
+     * @return StartSchedule
+     */
+    public function setCallbackUrl($callbackUrl) {
+        $this->callbackUrl = $callbackUrl;
+
+        return $this;
+    }
+
+
+
+    /**
      * @return array
      */
     public function toArray(){
@@ -166,6 +191,7 @@ class StartSchedule {
             'periodLength' => $this->getPeriodLength(),
             'periodUnit' => $this->getPeriodUnit(),
             'startDateTime' => $this->getStartDateTime()->format(\DateTime::ATOM),
+            'callbackUrl' => $this->getCallbackUrl()
         ];
     }
 

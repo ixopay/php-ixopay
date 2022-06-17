@@ -49,6 +49,11 @@ class ScheduleWithTransaction implements AmountableInterface {
     protected $merchantMetaData;
 
     /**
+     * @var string|null
+     */
+    protected $callbackUrl = null;
+
+    /**
      * @return float
      */
     public function getAmount()
@@ -174,6 +179,28 @@ class ScheduleWithTransaction implements AmountableInterface {
      */
     public function setMerchantMetaData($merchantMetaData) {
         $this->merchantMetaData = $merchantMetaData;
+        return $this;
+    }
+
+    /**
+     * Get CallbackUrl
+     *
+     * @return string|null
+     */
+    public function getCallbackUrl() {
+        return $this->callbackUrl;
+    }
+
+    /**
+     * Set CallbackUrl
+     *
+     * @param string|null $callbackUrl
+     *
+     * @return ScheduleWithTransaction
+     */
+    public function setCallbackUrl($callbackUrl) {
+        $this->callbackUrl = $callbackUrl;
+
         return $this;
     }
 
