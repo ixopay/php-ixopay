@@ -263,6 +263,7 @@ class JsonGenerator {
             'callbackUrl' => $transaction->getCallbackUrl(),
             'transactionToken' => $transaction->getTransactionToken(),
             'description' => $transaction->getDescription(),
+            'transactionIndicator' => $transaction->getTransactionIndicator(),
             'customer' => $this->createCustomer($transaction->getCustomer()),
             'schedule' => $this->createSchedule($transaction->getSchedule()),
             'customerProfileData' => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
