@@ -71,6 +71,11 @@ class ScheduleData implements AmountableInterface {
     protected $merchantMetaData;
 
     /**
+     * @var string|null
+     */
+    protected $callbackUrl = null;
+
+    /**
      * @return string[]
      */
     public static function getValidPeriodUnits() {
@@ -283,6 +288,27 @@ class ScheduleData implements AmountableInterface {
         $this->merchantMetaData = $merchantMetaData;
         return $this;
     }
-    
-    
+
+    /**
+     * Get CallbackUrl
+     *
+     * @return string|null
+     */
+    public function getCallbackUrl() {
+        return $this->callbackUrl;
+    }
+
+    /**
+     * Set CallbackUrl
+     *
+     * @param string|null $callbackUrl
+     *
+     * @return ScheduleData
+     */
+    public function setCallbackUrl($callbackUrl) {
+        $this->callbackUrl = $callbackUrl;
+
+        return $this;
+    }
+
 }

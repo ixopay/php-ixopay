@@ -101,6 +101,7 @@ class JsonGenerator {
 
         switch($action){
             case Client::SCHEDULE_ACTION_START:
+            case Client::SCHEDULE_ACTION_UPDATE:
                 /* backwards compatible */
                 if($scheduleData instanceof ScheduleData){
                     $json = [
@@ -110,7 +111,8 @@ class JsonGenerator {
                         'periodLength' => $scheduleData->getPeriodLength(),
                         'periodUnit' => $scheduleData->getPeriodUnit(),
                         'startDateTime' => $scheduleData->getStartDateTimeFormatted(\DateTime::ATOM),
-                        'merchantMetaData' => $scheduleData->getMerchantMetaData()
+                        'merchantMetaData' => $scheduleData->getMerchantMetaData(),
+                        'callbackUrl' => $scheduleData->getCallbackUrl(),
                     ];
                 } else {
                     /** @var StartSchedule $scheduleData */
@@ -261,6 +263,7 @@ class JsonGenerator {
             'callbackUrl' => $transaction->getCallbackUrl(),
             'transactionToken' => $transaction->getTransactionToken(),
             'description' => $transaction->getDescription(),
+            'transactionIndicator' => $transaction->getTransactionIndicator(),
             'customer' => $this->createCustomer($transaction->getCustomer()),
             'schedule' => $this->createSchedule($transaction->getSchedule()),
             'customerProfileData' => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
@@ -538,7 +541,8 @@ class JsonGenerator {
             'periodLength' => $schedule->getPeriodLength(),
             'periodUnit' => $schedule->getPeriodUnit(),
             'startDateTime' => $schedule->getStartDateTimeFormatted(\DateTime::ATOM),
-            'merchantMetaData' => $schedule->getMerchantMetaData()
+            'merchantMetaData' => $schedule->getMerchantMetaData(),
+            'callbackUrl'   => $schedule->getCallbackUrl()
         ];
 
         return $data;

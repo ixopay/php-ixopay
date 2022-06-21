@@ -64,6 +64,8 @@ class Client {
 
     const SCHEDULE_ACTION_START = 'startSchedule';
 
+    const SCHEDULE_ACTION_UPDATE = 'updateSchedule';
+
     const SCHEDULE_ACTION_SHOW = 'getSchedule';
 
     const SCHEDULE_ACTION_PAUSE = 'pauseSchedule';
@@ -92,6 +94,7 @@ class Client {
     const STATUS_BY_MERCHANT_TRANSACTION_ID = 'api/v3/status/[API_KEY]/getByMerchantTransactionId/{merchantTransactionId}';
 
     const SCHEDULE_START = 'api/v3/schedule/[API_KEY]/start';
+    const SCHEDULE_UPDATE = 'api/v3/schedule/[API_KEY]/{scheduleId}/update';
     const SCHEDULE_GET = 'api/v3/schedule/[API_KEY]/{scheduleId}/get';
     const SCHEDULE_PAUSE = 'api/v3/schedule/[API_KEY]/{scheduleId}/pause';
     const SCHEDULE_CONTINUE = 'api/v3/schedule/[API_KEY]/{scheduleId}/continue';
@@ -386,6 +389,9 @@ class Client {
         switch($action){
             case self::SCHEDULE_ACTION_START:
                 $endpoint = self::SCHEDULE_START;
+                break;
+            case self::SCHEDULE_ACTION_UPDATE:
+                $endpoint = self::SCHEDULE_UPDATE;
                 break;
             case self::SCHEDULE_ACTION_SHOW:
                 $endpoint = self::SCHEDULE_GET;
@@ -685,7 +691,7 @@ class Client {
     public function incrementalAuthorization(IncrementalAuthorization $transactionData) {
         return $this->sendTransaction('incrementalAuthorization', $transactionData);
     }
-    
+
     /**
      * void a previously preauthorized transaction
      *
