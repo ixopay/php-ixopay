@@ -19,6 +19,7 @@ use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Schedule\ScheduleWithTransaction;
 use Ixopay\Client\Schedule\StartSchedule;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
+use Ixopay\Client\Transaction\Base\RequestDccInterface;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Deregister;
@@ -172,7 +173,7 @@ class JsonGenerator {
 
         $this->updateData($transaction, $data);
 
-        return $data;
+        return $this->addRequestDcc($data, $transaction);
     }
 
     /**
@@ -715,5 +716,14 @@ class JsonGenerator {
         if ($payByLinkData = $transaction->getPayByLinkData()) {
             $data['payByLink'] = $this->createPayByLinkData($payByLinkData);
         }
+    }
+
+    private function addRequestDcc(array $data, RequestDccInterface $transaction)
+    {
+        if ($transaction->isRequestDcc()) {
+            $data['requestDcc'] = true;
+        }
+
+        return $data;
     }
 }
