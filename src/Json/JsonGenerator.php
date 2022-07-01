@@ -19,7 +19,7 @@ use Ixopay\Client\Schedule\ScheduleData;
 use Ixopay\Client\Schedule\ScheduleWithTransaction;
 use Ixopay\Client\Schedule\StartSchedule;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
-use Ixopay\Client\Transaction\Base\RequestDccInterface;
+use Ixopay\Client\Transaction\Base\DccDataInterface;
 use Ixopay\Client\Transaction\Capture;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Deregister;
@@ -718,7 +718,7 @@ class JsonGenerator {
         }
     }
 
-    private function addRequestDcc(array $data, RequestDccInterface $transaction)
+    private function addRequestDcc(array $data, DccDataInterface $transaction)
     {
         if ($transaction->isRequestDcc()) {
             $data['requestDcc'] = true;
