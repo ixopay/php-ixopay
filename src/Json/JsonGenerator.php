@@ -720,8 +720,35 @@ class JsonGenerator {
 
     private function addRequestDcc(array $data, DccDataInterface $transaction)
     {
-        if ($transaction->isRequestDcc()) {
-            $data['requestDcc'] = true;
+        if (!$transaction->getDccData()) {
+            return $data;
+        }
+
+        $dccData = [];
+        if (!empty($transaction->getDccData()->getRemoteIdentifier())) {
+            $dccData['remoteIdentifier'] = $transaction->getDccData()->getRemoteIdentifier();
+        }
+        if (!empty($transaction->getDccData()->getOriginalAmount())) {
+            $dccData['originalAmount'] = $transaction->getDccData()->getOriginalAmount();
+        }
+        if (!empty($transaction->getDccData()->getOriginalCurrency())) {
+            $dccData['originalCurrency'] = $transaction->getDccData()->getOriginalCurrency();
+        }
+        if (!empty($transaction->getDccData()->getConvertedAmount())) {
+            $dccData['convertedAmount'] = $transaction->getDccData()->getConvertedAmount();
+        }
+        if (!empty($transaction->getDccData()->getConvertedCurrency())) {
+            $dccData['convertedCurrency'] = $transaction->getDccData()->getConvertedCurrency();
+        }
+        if (!empty($transaction->getDccData()->getConversionRate())) {
+            $dccData['conversionRate'] = $transaction->getDccData()->getConversionRate();
+        }
+        if (!empty($transaction->getDccData()->getSelectedCurrency())) {
+            $dccData['selectedCurrency'] = $transaction->getDccData()->getSelectedCurrency();
+        }
+
+        if (!empty($dccData)) {
+            $data['dccData'] = $dccData;
         }
 
         return $data;
