@@ -40,6 +40,11 @@ class DccData
     private $conversionRate;
 
     /**
+     * @var float|null
+     */
+    private $markUp;
+
+    /**
      * @var string|null
      */
     private $selectedCurrency;
@@ -182,6 +187,26 @@ class DccData
     public function getConversionRate()
     {
         return $this->conversionRate;
+    }
+
+    /**
+     * @param float|null $markUp
+     *
+     * @return $this
+     */
+    public function setMarkUp($markUp)
+    {
+        $this->markUp = $markUp;
+
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getMarkUp()
+    {
+        return $this->markUp;
     }
 
     /**
