@@ -9,12 +9,12 @@ trait DccDataTrait
     /**
      * @var bool
      */
-    private $requestDcc;
+    private $requestDcc = false;
 
     /**
-     * @var DccData
+     * @var DccData|null
      */
-    private $dccData;
+    private $dccData = null;
 
     /**
      * @param bool $requestDcc

@@ -720,6 +720,10 @@ class JsonGenerator {
 
     private function addRequestDcc(array $data, DccDataInterface $transaction)
     {
+        if ($transaction->getRequestDcc()) {
+            $data['requestDcc'] = true;
+        }
+
         if (!$transaction->getDccData()) {
             return $data;
         }
