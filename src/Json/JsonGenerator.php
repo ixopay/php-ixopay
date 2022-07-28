@@ -750,6 +750,9 @@ class JsonGenerator {
         if (!empty($transaction->getDccData()->getSelectedCurrency())) {
             $dccData['selectedCurrency'] = $transaction->getDccData()->getSelectedCurrency();
         }
+        if (!empty($transaction->getDccData()->getMarkUp())) {
+            $dccData['markUp'] = $transaction->getDccData()->getMarkUp();
+        }
 
         if (!empty($dccData)) {
             $data['dccData'] = $dccData;
