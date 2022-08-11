@@ -19,11 +19,11 @@ interface DccDataInterface
     public function getRequestDcc();
 
     /**
-     * @param DccData $dccData
+     * @param DccData|null $dccData
      *
      * @return $this
      */
-    public function setDccData(DccData $dccData);
+    public function setDccData($dccData);
 
     /**
      * @return DccData|null

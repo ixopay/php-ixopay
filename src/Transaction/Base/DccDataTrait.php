@@ -37,11 +37,11 @@ trait DccDataTrait
     }
 
     /**
-     * @param DccData $dccData
+     * @param DccData|null $dccData
      *
      * @return $this
      */
-    public function setDccData(DccData $dccData)
+    public function setDccData($dccData)
     {
         $this->dccData = $dccData;
 
