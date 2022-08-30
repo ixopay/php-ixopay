@@ -474,6 +474,7 @@ class JsonGenerator {
             $data['paymentData']['cardData'] = [
                 'brand' => $customer->getBrand(),
                 'cardHolder' => $customer->getCardHolder(),
+                'binDigits' => $customer->getBinDigits(),
                 'firstSixDigits' => $customer->getFirstSixDigits(),
                 'lastFourDigits' => $customer->getLastFourDigits(),
                 'expiryMonth' => $customer->getExpiryMonth(),

@@ -67,6 +67,11 @@ class CreditCardCustomer extends Customer {
     /**
      * @var string
      */
+    protected $binDigits;
+
+    /**
+     * @var string
+     */
     protected $lastFourDigits;
 
     /**
@@ -271,6 +276,22 @@ class CreditCardCustomer extends Customer {
     public function setFirstSixDigits($firstSixDigits)
     {
         $this->firstSixDigits = $firstSixDigits;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBinDigits() {
+        return $this->binDigits;
+    }
+
+    /**
+     * @param string $binDigits
+     * @return CreditCardCustomer
+     */
+    public function setBinDigits($binDigits) {
+        $this->binDigits = $binDigits;
         return $this;
     }
 
