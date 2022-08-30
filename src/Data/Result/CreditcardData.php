@@ -433,6 +433,9 @@ class CreditcardData extends ResultData {
         foreach ($this as $field => $value) {
             $resultData[$field] = $value;
         }
+        // Property $firstSixDigits was removed because of the implementation of
+        // binDigits. For backwards compatibility this will be set directly.
+        $resultData['firstSixDigits'] = $this->getFirstSixDigits();
 
         return $resultData;
     }
