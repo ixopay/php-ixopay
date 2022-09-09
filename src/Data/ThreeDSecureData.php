@@ -186,6 +186,9 @@ class ThreeDSecureData extends DataObject {
     protected $browserUserAgent;
 
     /** @var string */
+    protected $browserPlatform;
+
+    /** @var string */
     protected $sdkInterface;
 
     /** @var string */
@@ -1430,6 +1433,24 @@ class ThreeDSecureData extends DataObject {
         $this->browserUserAgent = $browserUserAgent;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getBrowserPlatform() {
+        return $this->browserPlatform;
+    }
+
+    /**
+     * @param string $browserPlatform
+     * @return ThreeDSecureData
+     */
+    public function setBrowserPlatform($browserPlatform) {
+        $this->browserPlatform = $browserPlatform;
+        return $this;
+    }
+
+
 
     /**
      * @return string

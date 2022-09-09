@@ -642,6 +642,7 @@ class JsonGenerator {
             'browserScreenWidth' => $threeDSecureData->getBrowserScreenWidth(),
             'browserTimezone' => $threeDSecureData->getBrowserTimezone(),
             'browserUserAgent' => $threeDSecureData->getBrowserUserAgent(),
+            'browserPlatform' => $threeDSecureData->getBrowserPlatform(),
             'sdkInterface' => $threeDSecureData->getSdkInterface(),
             'sdkUiType' => $threeDSecureData->getSdkUiType(),
             'sdkAppID' => $threeDSecureData->getSdkAppID(),
