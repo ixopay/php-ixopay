@@ -47,6 +47,9 @@ class Item extends Data {
     /** @var  float */
     protected $taxRate;
 
+    /** @var  string */
+    protected $commodityCode;
+
     /**
      * @return string
      */
@@ -241,6 +244,22 @@ class Item extends Data {
      */
     public function setTaxRate($taxRate) {
         $this->taxRate = $taxRate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCommodityCode() {
+        return $this->commodityCode;
+    }
+
+    /**
+     * @param string $commodityCode
+     * @return $this
+     */
+    public function setCommodityCode($commodityCode) {
+        $this->commodityCode = $commodityCode;
         return $this;
     }
 }
