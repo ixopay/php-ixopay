@@ -13,6 +13,8 @@ use Ixopay\Client\Transaction\Base\IndicatorInterface;
 use Ixopay\Client\Transaction\Base\IndicatorTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
+use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataInterface;
+use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
 use Ixopay\Client\Transaction\Base\PayByLinkTrait;
@@ -40,7 +42,8 @@ class Debit extends AbstractTransactionWithReference
                        ScheduleInterface,
                        ThreeDSecureInterface,
                        IndicatorInterface,
-                       DccDataInterface
+                       DccDataInterface,
+                       LevelTwoAndThreeDataInterface
 {
     use AddToCustomerProfileTrait;
     use AmountableTrait;
@@ -53,6 +56,7 @@ class Debit extends AbstractTransactionWithReference
     use PayByLinkTrait;
     use IndicatorTrait;
     use DccDataTrait;
+    use LevelTwoAndThreeDataTrait;
 
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
     const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';

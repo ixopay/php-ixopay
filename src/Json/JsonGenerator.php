@@ -171,6 +171,10 @@ class JsonGenerator {
             'language' => $language,
         ];
 
+        if ($transaction->getTaxAmount()) {
+            $data['taxAmount'] = $transaction->getTaxAmount();
+        }
+
         $this->updateData($transaction, $data);
 
         return $this->addRequestDcc($data, $transaction);
@@ -225,6 +229,10 @@ class JsonGenerator {
 
         if ($transaction->getDescription()) {
             $data['description'] = $transaction->getDescription();
+        }
+
+        if ($transaction->getTaxAmount()) {
+            $data['taxAmount'] = $transaction->getTaxAmount();
         }
 
         return $data;
@@ -369,6 +377,13 @@ class JsonGenerator {
                 'price' => $item->getPrice(),
                 'currency' => $item->getCurrency(),
                 'extraData' => $this->stringifyExtraData($item->getExtraData()),
+                'unit' => $item->getUnit(),
+                'unitPrice' => $item->getUnitPrice(),
+                'discount' => $item->getDiscount(),
+                'shippingAmount' => $item->getShippingAmount(),
+                'taxAmount' => $item->getTaxAmount(),
+                'taxRate' => $item->getTaxRate(),
+                'commodityCode' => $item->getCommodityCode(),
             ];
         }
 
