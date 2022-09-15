@@ -171,7 +171,7 @@ class Item extends Data {
      * @return float
      */
     public function getUnitPrice() {
-        return $this->unit;
+        return $this->unitPrice;
     }
 
     /**
