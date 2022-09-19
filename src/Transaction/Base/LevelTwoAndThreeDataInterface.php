@@ -9,13 +9,13 @@ namespace Ixopay\Client\Transaction\Base;
  */
 interface LevelTwoAndThreeDataInterface {
     /**
-     * @param float $taxAmount
+     * @param array $l2l3Data
      * @return void
      */
-    public function setTaxAmount($taxAmount);
+    public function setL2L3Data($l2l3Data);
 
     /**
-     * @return float
+     * @return array
      */
-    public function getTaxAmount();
+    public function getL2L3Data();
 }

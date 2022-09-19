@@ -8,21 +8,21 @@ namespace Ixopay\Client\Transaction\Base;
  * @package Ixopay\Client\Transaction\Base
  */
 trait LevelTwoAndThreeDataTrait {
-    /** @var float $taxAmount  */
-    protected $taxAmount;
+    /** @var array $l2l3Data  */
+    protected $l2l3Data;
 
     /**
-     * @param float $taxAmount
+     * @param array $l2l3Data
      * @return void
      */
-    public function setTaxAmount($taxAmount) {
-        $this->taxAmount = $taxAmount;
+    public function setL2L3Data($l2l3Data) {
+        $this->l2l3Data = $l2l3Data;
     }
 
     /**
-     * @return float
+     * @return array
      */
-    public function getTaxAmount() {
-        return $this->taxAmount;
+    public function getL2L3Data() {
+        return $this->l2l3Data;
     }
 }

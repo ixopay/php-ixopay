@@ -171,8 +171,8 @@ class JsonGenerator {
             'language' => $language,
         ];
 
-        if ($transaction->getTaxAmount()) {
-            $data['taxAmount'] = $transaction->getTaxAmount();
+        if ($transaction->getL2L3Data()) {
+            $data['l2l3Data'] = $transaction->getL2L3Data();
         }
 
         $this->updateData($transaction, $data);
@@ -195,7 +195,7 @@ class JsonGenerator {
 
     protected function createIncrementalAuthorization($transaction, $language) {
         /** @var IncrementalAuthorization $transaction */
-        return [
+        $data = [
             'referenceUuid' => $transaction->getReferenceUuid(),
             'amount' => (string)$transaction->getAmount(),
             'currency' => $transaction->getCurrency(),
@@ -208,6 +208,12 @@ class JsonGenerator {
             'transactionIndicator' => $transaction->getTransactionIndicator(),
             'language' => $language,
         ];
+
+        if ($transaction->getL2L3Data()) {
+            $data['l2l3Data'] = $transaction->getL2L3Data();
+        }
+
+        return $data;
     }
 
     /**
@@ -231,8 +237,8 @@ class JsonGenerator {
             $data['description'] = $transaction->getDescription();
         }
 
-        if ($transaction->getTaxAmount()) {
-            $data['taxAmount'] = $transaction->getTaxAmount();
+        if ($transaction->getL2L3Data()) {
+            $data['l2l3Data'] = $transaction->getL2L3Data();
         }
 
         return $data;
