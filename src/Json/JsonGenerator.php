@@ -172,7 +172,7 @@ class JsonGenerator {
         ];
 
         if ($transaction->getL2L3Data()) {
-            $data['l2l3Data'] = $transaction->getL2L3Data();
+            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
         }
 
         $this->updateData($transaction, $data);
@@ -711,6 +711,13 @@ class JsonGenerator {
             });
         }
         return $extraData;
+    }
+    /**
+     * @param array $l2l3Data
+     * @return array
+     */
+    protected function stringifyL2L3Data($l2l3Data) {
+        return $this->stringifyExtraData($l2l3Data);
     }
 
     /**
