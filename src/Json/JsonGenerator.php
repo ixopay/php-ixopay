@@ -353,6 +353,10 @@ class JsonGenerator {
             'transactionIndicator' => $transaction->getTransactionIndicator(),
         ];
 
+        if ($transaction->getL2L3Data()) {
+            $data['l2l3Data'] = $transaction->getL2L3Data();
+        }
+
         $this->updateData($transaction, $data);
 
         return $data;
