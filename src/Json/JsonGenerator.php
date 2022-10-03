@@ -169,7 +169,7 @@ class JsonGenerator {
             'customerProfileData'  => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
             'threeDSecureData'     => $this->createThreeDSecureData($transaction->getThreeDSecureData()),
             'language'             => $language,
-            'surcharge'            => $transaction->getSurchargeAmount(),
+            'surchargeAmount'      => $transaction->getSurchargeAmount(),
         ];
 
         $this->updateData($transaction, $data);
