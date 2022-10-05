@@ -286,6 +286,10 @@ class JsonGenerator {
             'language' => $language,
         ];
 
+        if ($transaction->getL2L3Data()) {
+            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+        }
+
         $this->updateData($transaction, $data);
 
         return $data;
@@ -314,7 +318,7 @@ class JsonGenerator {
      */
     protected function createRefund($transaction){
         /** @var Refund $transaction */
-        return [
+        $data = [
             'referenceUuid' => $transaction->getReferenceUuid(),
             'amount' => (string)$transaction->getAmount(),
             'currency' => $transaction->getCurrency(),
@@ -324,6 +328,12 @@ class JsonGenerator {
             'items' => $this->createItems($transaction->getItems()),
             'splits' => $this->createSplits($transaction->getTransactionSplits()),
         ];
+
+        if ($transaction->getL2L3Data()) {
+            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+        }
+
+        return $data;
     }
 
     /**
