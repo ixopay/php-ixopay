@@ -9,6 +9,8 @@ use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
 use Ixopay\Client\Transaction\Base\IndicatorInterface;
 use Ixopay\Client\Transaction\Base\IndicatorTrait;
+use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataInterface;
+use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
 use Ixopay\Client\Transaction\Base\PayByLinkTrait;
@@ -30,7 +32,8 @@ class Register extends AbstractTransaction
                           OffsiteInterface,
                           ScheduleInterface,
                           ThreeDSecureInterface,
-                          IndicatorInterface
+                          IndicatorInterface,
+                          LevelTwoAndThreeDataInterface
 {
 
     use AddToCustomerProfileTrait;
@@ -40,6 +43,7 @@ class Register extends AbstractTransaction
     use ThreeDSecureTrait;
     use PayByLinkTrait;
     use IndicatorTrait;
+    use LevelTwoAndThreeDataTrait;
 
     /** @var string */
     protected $language;

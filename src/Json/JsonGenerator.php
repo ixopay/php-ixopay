@@ -172,6 +172,10 @@ class JsonGenerator {
             'surchargeAmount'      => $transaction->getSurchargeAmount(),
         ];
 
+        if ($transaction->getL2L3Data()) {
+            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+        }
+
         $this->updateData($transaction, $data);
 
         return $this->addRequestDcc($data, $transaction);
@@ -192,7 +196,7 @@ class JsonGenerator {
 
     protected function createIncrementalAuthorization($transaction, $language) {
         /** @var IncrementalAuthorization $transaction */
-        return [
+        $data = [
             'referenceUuid' => $transaction->getReferenceUuid(),
             'amount' => (string)$transaction->getAmount(),
             'currency' => $transaction->getCurrency(),
@@ -205,6 +209,12 @@ class JsonGenerator {
             'transactionIndicator' => $transaction->getTransactionIndicator(),
             'language' => $language,
         ];
+
+        if ($transaction->getL2L3Data()) {
+            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+        }
+
+        return $data;
     }
 
     /**
@@ -226,6 +236,10 @@ class JsonGenerator {
 
         if ($transaction->getDescription()) {
             $data['description'] = $transaction->getDescription();
+        }
+
+        if ($transaction->getL2L3Data()) {
+            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
         }
 
         return $data;
@@ -273,6 +287,10 @@ class JsonGenerator {
             'language' => $language,
         ];
 
+        if ($transaction->getL2L3Data()) {
+            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+        }
+
         $this->updateData($transaction, $data);
 
         return $data;
@@ -301,7 +319,7 @@ class JsonGenerator {
      */
     protected function createRefund($transaction){
         /** @var Refund $transaction */
-        return [
+        $data = [
             'referenceUuid' => $transaction->getReferenceUuid(),
             'amount' => (string)$transaction->getAmount(),
             'currency' => $transaction->getCurrency(),
@@ -311,6 +329,12 @@ class JsonGenerator {
             'items' => $this->createItems($transaction->getItems()),
             'splits' => $this->createSplits($transaction->getTransactionSplits()),
         ];
+
+        if ($transaction->getL2L3Data()) {
+            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+        }
+
+        return $data;
     }
 
     /**
@@ -339,6 +363,10 @@ class JsonGenerator {
             'language' => $language,
             'transactionIndicator' => $transaction->getTransactionIndicator(),
         ];
+
+        if ($transaction->getL2L3Data()) {
+            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+        }
 
         $this->updateData($transaction, $data);
 
@@ -370,6 +398,13 @@ class JsonGenerator {
                 'price' => $item->getPrice(),
                 'currency' => $item->getCurrency(),
                 'extraData' => $this->stringifyExtraData($item->getExtraData()),
+                'unit' => $item->getUnit(),
+                'unitPrice' => $item->getUnitPrice(),
+                'discount' => $item->getDiscount(),
+                'shippingAmount' => $item->getShippingAmount(),
+                'taxAmount' => $item->getTaxAmount(),
+                'taxRate' => $item->getTaxRate(),
+                'commodityCode' => $item->getCommodityCode(),
             ];
         }
 
@@ -692,6 +727,13 @@ class JsonGenerator {
             });
         }
         return $extraData;
+    }
+    /**
+     * @param array $l2l3Data
+     * @return array
+     */
+    protected function stringifyL2L3Data($l2l3Data) {
+        return $this->stringifyExtraData($l2l3Data);
     }
 
     /**
