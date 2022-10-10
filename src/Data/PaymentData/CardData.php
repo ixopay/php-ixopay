@@ -14,6 +14,8 @@ class CardData extends PaymentData {
     /** @var string */
     protected $cardHolder;
     /** @var string */
+    protected $binDigits;
+    /** @var string */
     protected $firstSixDigits;
     /** @var string */
     protected $lastFourDigits;
@@ -57,6 +59,22 @@ class CardData extends PaymentData {
     public function setCardHolder($cardHolder)
     {
         $this->cardHolder = $cardHolder;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBinDigits() {
+        return $this->binDigits;
+    }
+
+    /**
+     * @param string $binDigits
+     * @return CardData
+     */
+    public function setBinDigits($binDigits) {
+        $this->binDigits = $binDigits;
         return $this;
     }
 
