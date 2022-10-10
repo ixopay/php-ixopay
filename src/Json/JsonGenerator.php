@@ -398,13 +398,7 @@ class JsonGenerator {
                 'price' => $item->getPrice(),
                 'currency' => $item->getCurrency(),
                 'extraData' => $this->stringifyExtraData($item->getExtraData()),
-                'unit' => $item->getUnit(),
-                'unitPrice' => $item->getUnitPrice(),
-                'discount' => $item->getDiscount(),
-                'shippingAmount' => $item->getShippingAmount(),
-                'taxAmount' => $item->getTaxAmount(),
-                'taxRate' => $item->getTaxRate(),
-                'commodityCode' => $item->getCommodityCode(),
+                'l2l3Data' => $this->stringifyL2L3Data($item->getL2L3Data()),
             ];
         }
 

@@ -29,26 +29,8 @@ class Item extends Data {
     /** @var  string */
     protected $description;
 
-    /** @var  string */
-    protected $unit;
-
-    /** @var  float */
-    protected $unitPrice;
-
-    /** @var  float */
-    protected $discount;
-
-    /** @var  int */
-    protected $shippingAmount;
-
-    /** @var  float */
-    protected $taxAmount;
-
-    /** @var  float */
-    protected $taxRate;
-
-    /** @var  string */
-    protected $commodityCode;
+    /** @var array */
+    protected $l2l3Data = array();
 
     /**
      * @return string
@@ -152,114 +134,29 @@ class Item extends Data {
     }
 
     /**
-     * @return string
-     */
-    public function getUnit() {
-        return $this->unit;
-    }
-
-    /**
-     * @param string $unit
+     * @param array $l2l3Data
+     *
      * @return $this
      */
-    public function setUnit($unit) {
-        $this->unit = $unit;
+    public function setL2L3Data($l2l3Data) {
+        $this->l2l3Data = $l2l3Data;
         return $this;
     }
 
     /**
-     * @return float
+     * @return array
      */
-    public function getUnitPrice() {
-        return $this->unitPrice;
+    public function getL2L3Data() {
+        return $this->l2l3Data;
     }
 
     /**
-     * @param float $unitPrice
+     * @param string $key
+     * @param mixed $value
      * @return $this
      */
-    public function setUnitPrice($unitPrice) {
-        $this->unitPrice = $unitPrice;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getDiscount() {
-        return $this->discount;
-    }
-
-    /**
-     * @param float $discount
-     * @return $this
-     */
-    public function setDiscount($discount) {
-        $this->discount = $discount;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getShippingAmount() {
-        return $this->shippingAmount;
-    }
-
-    /**
-     * @param int $shippingAmount
-     * @return $this
-     */
-    public function setShippingAmount($shippingAmount) {
-        $this->shippingAmount = $shippingAmount;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getTaxAmount() {
-        return $this->taxAmount;
-    }
-
-    /**
-     * @param float $taxAmount
-     * @return $this
-     */
-    public function setTaxAmount($taxAmount) {
-        $this->taxAmount = $taxAmount;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getTaxRate() {
-        return $this->taxRate;
-    }
-
-    /**
-     * @param float $taxRate
-     * @return $this
-     */
-    public function setTaxRate($taxRate) {
-        $this->taxRate = $taxRate;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCommodityCode() {
-        return $this->commodityCode;
-    }
-
-    /**
-     * @param string $commodityCode
-     * @return $this
-     */
-    public function setCommodityCode($commodityCode) {
-        $this->commodityCode = $commodityCode;
+    public function addL2L3Data($key, $value) {
+        $this->l2l3Data[$key] = $value;
         return $this;
     }
 }
