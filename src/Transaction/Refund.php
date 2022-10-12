@@ -7,6 +7,8 @@ use Ixopay\Client\Transaction\Base\AmountableInterface;
 use Ixopay\Client\Transaction\Base\AmountableTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
+use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataInterface;
+use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataTrait;
 use Ixopay\Client\Transaction\Base\TransactionSplitsInterface;
 use Ixopay\Client\Transaction\Base\TransactionSplitsTrait;
 
@@ -17,10 +19,16 @@ use Ixopay\Client\Transaction\Base\TransactionSplitsTrait;
  *
  * @package Ixopay\Client\Transaction
  */
-class Refund extends AbstractTransactionWithReference implements AmountableInterface, ItemsInterface, TransactionSplitsInterface {
+class Refund extends AbstractTransactionWithReference
+             implements AmountableInterface,
+                        ItemsInterface,
+                        TransactionSplitsInterface,
+                        LevelTwoAndThreeDataInterface
+{
     use AmountableTrait;
     use ItemsTrait;
     use TransactionSplitsTrait;
+    use LevelTwoAndThreeDataTrait;
 
     /** @var string */
     protected $callbackUrl;

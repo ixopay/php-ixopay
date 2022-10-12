@@ -29,6 +29,9 @@ class Item extends Data {
     /** @var  string */
     protected $description;
 
+    /** @var array */
+    protected $l2l3Data = array();
+
     /**
      * @return string
      */
@@ -127,6 +130,33 @@ class Item extends Data {
      */
     public function setDescription($description) {
         $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @param array $l2l3Data
+     *
+     * @return $this
+     */
+    public function setL2L3Data($l2l3Data) {
+        $this->l2l3Data = $l2l3Data;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getL2L3Data() {
+        return $this->l2l3Data;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return $this
+     */
+    public function addL2L3Data($key, $value) {
+        $this->l2l3Data[$key] = $value;
         return $this;
     }
 }
