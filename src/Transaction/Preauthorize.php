@@ -13,6 +13,8 @@ use Ixopay\Client\Transaction\Base\IndicatorInterface;
 use Ixopay\Client\Transaction\Base\IndicatorTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
+use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataInterface;
+use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
 use Ixopay\Client\Transaction\Base\OffsiteTrait;
 use Ixopay\Client\Transaction\Base\PayByLinkTrait;
@@ -43,7 +45,8 @@ class Preauthorize extends AbstractTransactionWithReference
                               ThreeDSecureInterface,
                               IndicatorInterface,
                               DccDataInterface,
-                              SurchargeInterface
+                              SurchargeInterface,
+                              LevelTwoAndThreeDataInterface
 {
 
     use AddToCustomerProfileTrait;
@@ -58,6 +61,7 @@ class Preauthorize extends AbstractTransactionWithReference
     use IndicatorTrait;
     use DccDataTrait;
     use SurchargeTrait;
+    use LevelTwoAndThreeDataTrait;
 
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
     const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';
