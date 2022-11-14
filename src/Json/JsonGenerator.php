@@ -625,6 +625,7 @@ class JsonGenerator {
 
         return [
             '3dsecure' => $threeDSecureData->getThreeDSecure(),
+            'schemeId' => $threeDSecureData->getSchemeId(),
             'channel' => $threeDSecureData->getChannel(),
             'authenticationIndicator' => $threeDSecureData->getAuthenticationIndicator(),
             'cardholderAuthenticationMethod' => $threeDSecureData->getCardholderAuthenticationMethod(),
