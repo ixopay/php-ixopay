@@ -614,7 +614,7 @@ class JsonGenerator {
             return null;
         }
 
-        $data = [
+        return [
             '3dsecure' => $threeDSecureData->getThreeDSecure(),
             'channel' => $threeDSecureData->getChannel(),
             'authenticationIndicator' => $threeDSecureData->getAuthenticationIndicator(),
@@ -681,9 +681,8 @@ class JsonGenerator {
             'sdkMaxTimeout' => $threeDSecureData->getSdkMaxTimeout(),
             'sdkReferenceNumber' => $threeDSecureData->getSdkReferenceNumber(),
             'sdkTransID' => $threeDSecureData->getSdkTransID(),
+            'exemptionIndicator' => $threeDSecureData->getExemptionIndicator(),
         ];
-
-        return $data;
     }
 
     /**
