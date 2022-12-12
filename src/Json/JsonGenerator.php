@@ -732,8 +732,9 @@ class JsonGenerator {
                 if (is_array($v)) {
                     $this->stringifyL2L3Data($v);
                 }
-
-                $v = (string)$v;
+                if (is_string($v)) {
+                    $v = (string)$v;
+                }
             });
         }
         return $l2l3Data;
