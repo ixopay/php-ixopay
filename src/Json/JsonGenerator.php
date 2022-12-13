@@ -735,7 +735,16 @@ class JsonGenerator {
      * @return array
      */
     protected function stringifyL2L3Data($l2l3Data) {
-        return $this->stringifyExtraData($l2l3Data);
+        if (is_array($l2l3Data)) {
+            array_walk($l2l3Data, function(&$v) {
+                if (is_array($v)) {
+                    $this->stringifyL2L3Data($v);
+                } else {
+                    $v = (string)$v;
+                }
+            });
+        }
+        return $l2l3Data;
     }
 
     /**
