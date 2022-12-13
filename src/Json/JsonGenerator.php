@@ -726,7 +726,7 @@ class JsonGenerator {
      * @param array $l2l3Data
      * @return array
      */
-    protected function stringifyL2L3Data($l2l3Data) {
+    protected function stringifyL2L3Data(&$l2l3Data) {
         if (is_array($l2l3Data)) {
             array_walk($l2l3Data, function(&$v) {
                 if (is_array($v)) {
