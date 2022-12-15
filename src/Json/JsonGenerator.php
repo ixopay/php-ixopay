@@ -173,7 +173,8 @@ class JsonGenerator {
         ];
 
         if ($transaction->getL2L3Data()) {
-            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+            $l2l3Data = $transaction->getL2L3Data();
+            $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
         $this->updateData($transaction, $data);
