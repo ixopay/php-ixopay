@@ -209,6 +209,9 @@ class ThreeDSecureData extends DataObject {
     /** @var string */
     protected $sdkTransID;
 
+    /** @var string */
+    protected $exemptionIndicator;
+
     /**
      * @return string
      */
@@ -1581,6 +1584,26 @@ class ThreeDSecureData extends DataObject {
     {
         $this->sdkTransID = $sdkTransID;
         return $this;
+    }
+
+    /**
+     * @param string|null $exemptionIndicator
+     *
+     * @return $this
+     */
+    public function setExemptionIndicator($exemptionIndicator)
+    {
+        $this->exemptionIndicator = $exemptionIndicator;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExemptionIndicator()
+    {
+        return $this->exemptionIndicator;
     }
 
 }
