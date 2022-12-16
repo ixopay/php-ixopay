@@ -210,7 +210,7 @@ class JsonGenerator {
             'transactionIndicator' => $transaction->getTransactionIndicator(),
             'language' => $language,
         ];
-        
+
         if ($transaction->getL2L3Data()) {
             $l2l3Data = $transaction->getL2L3Data();
             $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
@@ -241,7 +241,8 @@ class JsonGenerator {
         }
 
         if ($transaction->getL2L3Data()) {
-            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+            $l2l3Data = $transaction->getL2L3Data();
+            $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
         return $data;
@@ -290,7 +291,8 @@ class JsonGenerator {
         ];
 
         if ($transaction->getL2L3Data()) {
-            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+            $l2l3Data = $transaction->getL2L3Data();
+            $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
         $this->updateData($transaction, $data);
@@ -333,7 +335,8 @@ class JsonGenerator {
         ];
 
         if ($transaction->getL2L3Data()) {
-            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+            $l2l3Data = $transaction->getL2L3Data();
+            $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
         return $data;
@@ -367,7 +370,8 @@ class JsonGenerator {
         ];
 
         if ($transaction->getL2L3Data()) {
-            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+            $l2l3Data = $transaction->getL2L3Data();
+            $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
         $this->updateData($transaction, $data);
@@ -392,6 +396,7 @@ class JsonGenerator {
 
         /** @var Item $item */
         foreach($items as $item){
+            $itemL2L3Data = $item->getL2L3Data();
             $data[] = [
                 'identification' => $item->getIdentification(),
                 'name' => $item->getName(),
@@ -400,7 +405,7 @@ class JsonGenerator {
                 'price' => $item->getPrice(),
                 'currency' => $item->getCurrency(),
                 'extraData' => $this->stringifyExtraData($item->getExtraData()),
-                'l2l3Data' => $this->stringifyL2L3Data($item->getL2L3Data()),
+                'l2l3Data' => $this->stringifyL2L3Data($itemL2L3Data),
             ];
         }
 
