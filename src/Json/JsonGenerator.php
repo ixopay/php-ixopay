@@ -173,7 +173,8 @@ class JsonGenerator {
         ];
 
         if ($transaction->getL2L3Data()) {
-            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+            $l2l3Data = $transaction->getL2L3Data();
+            $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
         $this->updateData($transaction, $data);
@@ -211,7 +212,8 @@ class JsonGenerator {
         ];
 
         if ($transaction->getL2L3Data()) {
-            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+            $l2l3Data = $transaction->getL2L3Data();
+            $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
         return $data;
@@ -239,7 +241,8 @@ class JsonGenerator {
         }
 
         if ($transaction->getL2L3Data()) {
-            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+            $l2l3Data = $transaction->getL2L3Data();
+            $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
         return $data;
@@ -288,7 +291,8 @@ class JsonGenerator {
         ];
 
         if ($transaction->getL2L3Data()) {
-            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+            $l2l3Data = $transaction->getL2L3Data();
+            $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
         $this->updateData($transaction, $data);
@@ -332,7 +336,8 @@ class JsonGenerator {
         ];
 
         if ($transaction->getL2L3Data()) {
-            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+            $l2l3Data = $transaction->getL2L3Data();
+            $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
         return $data;
@@ -366,7 +371,8 @@ class JsonGenerator {
         ];
 
         if ($transaction->getL2L3Data()) {
-            $data['l2l3Data'] = $this->stringifyL2L3Data($transaction->getL2L3Data());
+            $l2l3Data = $transaction->getL2L3Data();
+            $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
         $this->updateData($transaction, $data);
@@ -391,6 +397,7 @@ class JsonGenerator {
 
         /** @var Item $item */
         foreach($items as $item){
+            $itemL2L3Data = $item->getL2L3Data();
             $data[] = [
                 'identification' => $item->getIdentification(),
                 'name' => $item->getName(),
@@ -399,7 +406,7 @@ class JsonGenerator {
                 'price' => $item->getPrice(),
                 'currency' => $item->getCurrency(),
                 'extraData' => $this->stringifyExtraData($item->getExtraData()),
-                'l2l3Data' => $this->stringifyL2L3Data($item->getL2L3Data()),
+                'l2l3Data' => $this->stringifyL2L3Data($itemL2L3Data),
             ];
         }
 
@@ -726,8 +733,17 @@ class JsonGenerator {
      * @param array $l2l3Data
      * @return array
      */
-    protected function stringifyL2L3Data($l2l3Data) {
-        return $this->stringifyExtraData($l2l3Data);
+    protected function stringifyL2L3Data(&$l2l3Data) {
+        if (is_array($l2l3Data)) {
+            array_walk($l2l3Data, function(&$v) {
+                if (is_array($v)) {
+                    $this->stringifyL2L3Data($v);
+                } else {
+                    $v = (string)$v;
+                }
+            });
+        }
+        return $l2l3Data;
     }
 
     /**
