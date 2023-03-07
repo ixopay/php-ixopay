@@ -9,8 +9,8 @@ use Ixopay\Client\Data\ThreeDSecureData;
  *
  * @package Ixopay\Client\Transaction\Base
  */
-trait ThreeDSecureTrait {
-
+trait ThreeDSecureTrait
+{
     /** @var ThreeDSecureData */
     protected $threeDSecureData;
 
@@ -32,5 +32,4 @@ trait ThreeDSecureTrait {
         $this->threeDSecureData = $threeDSecureData;
         return $this;
     }
-
 }
