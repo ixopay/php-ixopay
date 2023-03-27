@@ -312,7 +312,8 @@ class JsonGenerator {
         /** @var Deregister $transaction */
         return [
             'referenceUuid' => $transaction->getReferenceUuid(),
-            'transactionToken' => $transaction->getTransactionToken()
+            'transactionToken' => $transaction->getTransactionToken(),
+            'tokenType' => $transaction->getTokenType()
         ];
     }
 
