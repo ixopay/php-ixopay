@@ -61,6 +61,7 @@ class JsonParser {
         $result->setReturnType($this->arrGet($json, 'returnType'));
         $result->setRedirectType($this->arrGet($json, 'redirectType'));
         $result->setRedirectUrl($this->arrGet($json, 'redirectUrl'));
+        $result->setRedirectQRCode($this->arrGet($json, 'redirectQRCode'));
         $result->setHtmlContent($this->arrGet($json, 'htmlContent'));
         $result->setPaymentDescriptor($this->arrGet($json, 'paymentDescriptor'));
         $result->setPaymentMethod($this->arrGet($json, 'paymentMethod'));
@@ -316,7 +317,6 @@ class JsonParser {
                 $creditcardData->setCardHolder($this->arrGet($returnData, 'cardHolder'));
                 $creditcardData->setExpiryMonth($this->arrGet($returnData, 'expiryMonth'));
                 $creditcardData->setExpiryYear($this->arrGet($returnData, 'expiryYear'));
-                $creditcardData->setFirstSixDigits($this->arrGet($returnData, 'firstSixDigits'));
                 $creditcardData->setLastFourDigits($this->arrGet($returnData, 'lastFourDigits'));
                 $creditcardData->setFingerprint($this->arrGet($returnData, 'fingerprint'));
                 $creditcardData->setBinBrand($this->arrGet($returnData, 'binBrand'));
@@ -326,6 +326,15 @@ class JsonParser {
                 $creditcardData->setBinCountry($this->arrGet($returnData, 'binCountry'));
                 $creditcardData->setThreeDSecure($this->arrGet($returnData, 'threeDSecure'));
                 $creditcardData->setEci($this->arrGet($returnData, 'eci'));
+
+                if($this->arrGet($returnData, 'binDigits')){
+                    $binDigits = $this->arrGet($returnData, 'binDigits');
+                } else {
+                    $binDigits = $this->arrGet($returnData, 'firstSixDigits');
+                }
+
+                $creditcardData->setBinDigits($binDigits);
+
 
                 return $creditcardData;
 

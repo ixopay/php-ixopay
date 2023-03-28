@@ -65,7 +65,7 @@ class CreditcardData extends ResultData {
     /**
      * @var string
      */
-    protected $firstSixDigits;
+    protected $binDigits;
 
     /**
      * @var string
@@ -217,18 +217,36 @@ class CreditcardData extends ResultData {
     /**
      * @return string
      */
+    public function getBinDigits() {
+        return $this->binDigits;
+    }
+
+    /**
+     * @param string $binDigits
+     * @return CreditcardData
+     */
+    public function setBinDigits($binDigits) {
+        $this->binDigits = $binDigits;
+        return $this;
+    }
+
+    /**
+     * Because of an adjustment from VISA
+     *
+     * @deprecated use getBinDigits
+     * @return string
+     */
     public function getFirstSixDigits() {
-        return $this->firstSixDigits;
+        return substr($this->getBinDigits(), 0, 6);
     }
 
     /**
      * @param string $firstSixDigits
-     *
+     * @deprecated use setBinDigits
      * @return $this
      */
     public function setFirstSixDigits($firstSixDigits) {
-        $this->firstSixDigits = $firstSixDigits;
-        return $this;
+        return $this->setBinDigits($firstSixDigits);
     }
 
     /**
@@ -415,6 +433,9 @@ class CreditcardData extends ResultData {
         foreach ($this as $field => $value) {
             $resultData[$field] = $value;
         }
+        // Property $firstSixDigits was removed because of the implementation of
+        // binDigits. For backwards compatibility this will be set directly.
+        $resultData['firstSixDigits'] = $this->getFirstSixDigits();
 
         return $resultData;
     }
