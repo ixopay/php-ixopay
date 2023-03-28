@@ -9,10 +9,15 @@ use Ixopay\Client\Json\DataObject;
  *
  * @package Ixopay\Client\Data
  */
-class ThreeDSecureData extends DataObject {
+class ThreeDSecureData extends DataObject
+{
+    const SCHEME_ID_CB = 'cb';
 
     /** @var string */
     protected $threeDSecure;
+
+    /** @var string */
+    protected $schemeId;
 
     /** @var string */
     protected $channel;
@@ -209,6 +214,9 @@ class ThreeDSecureData extends DataObject {
     /** @var string */
     protected $sdkTransID;
 
+    /** @var string */
+    protected $exemptionIndicator;
+
     /**
      * @return string
      */
@@ -226,6 +234,26 @@ class ThreeDSecureData extends DataObject {
     {
         $this->threeDSecure = $threeDSecure;
         return $this;
+    }
+
+    /**
+     * Pin scheme ID.
+     *
+     * Use self::SCHEME_ID_* constants only!
+     *
+     * @param  string $schemeId
+     * @return ThreeDSecureData
+     */
+    public function setSchemeId($schemeId)
+    {
+        $this->schemeId = $schemeId;
+
+        return $this;
+    }
+
+    public function getSchemeId()
+    {
+        return $this->schemeId;
     }
 
     /**
@@ -1583,4 +1611,23 @@ class ThreeDSecureData extends DataObject {
         return $this;
     }
 
+    /**
+     * @param string|null $exemptionIndicator
+     *
+     * @return $this
+     */
+    public function setExemptionIndicator($exemptionIndicator)
+    {
+        $this->exemptionIndicator = $exemptionIndicator;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExemptionIndicator()
+    {
+        return $this->exemptionIndicator;
+    }
 }

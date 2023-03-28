@@ -168,6 +168,4 @@ class DataObject implements \ArrayAccess, \JsonSerializable {
             }
         }
     }
-
-
 }

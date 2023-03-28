@@ -44,9 +44,9 @@ use Psr\Log\LogLevel;
  *
  * @package Ixopay\Client
  */
-class Client {
-
-    const VERSION = '3.0.0-rc2';
+class Client
+{
+    const VERSION = '3.9.0';
 
     /**
      * The default url points to the IxoPay Gateway
@@ -1421,5 +1421,4 @@ class Client {
 
         return $xml;
     }
-
 }
