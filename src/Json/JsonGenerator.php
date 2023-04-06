@@ -191,9 +191,16 @@ class JsonGenerator {
      *
      * @return array
      */
-    protected function createPreauthorize($transaction, $language){
+    protected function createPreauthorize($transaction, $language)
+    {
         /** @var Preauthorize $transaction */
-        return $this->createDebit($transaction, $language);
+        $txData = $this->createDebit($transaction, $language);
+
+        if($autoCapture = $transaction->getCaptureInMinutes()) {
+            $txData['captureInMinutes'] = $autoCapture;
+        }
+
+        return $txData;
     }
 
     protected function createIncrementalAuthorization($transaction, $language) {
