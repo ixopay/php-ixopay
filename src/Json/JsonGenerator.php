@@ -730,7 +730,8 @@ class JsonGenerator {
      * @param array $extraData
      * @return array
      */
-    protected function stringifyExtraData($extraData) {
+    public function stringifyExtraData($extraData)
+    {
         if (is_array($extraData)) {
             array_walk($extraData, function(&$v) {
                 $v = (string)$v;
