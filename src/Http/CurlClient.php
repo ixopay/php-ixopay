@@ -332,7 +332,7 @@ class CurlClient implements ClientInterface {
      */
     public function signMultiPart($sharedSecret, $url, $body, $method, $rfcCompliantTimezone = false, $newAlgo = false)
     {
-        $contentType = 'multipart/form-data; charset=utf-8';
+        $contentType = 'multipart/form-data';
 
         $data = $this->getSignRequestData(
             $url,
