@@ -211,14 +211,14 @@ class CurlClient implements ClientInterface {
      * @return Response
      * @throws ClientException
      */
-    public function post($url, $body, array $headers = []) {
+    public function post($url, $body, array $headers = [], $buildQuery = true) {
 
         if ($body && is_string($body)) {
             $this->setOption(CURLOPT_CUSTOMREQUEST, "POST");
             $this->setOption(CURLOPT_POSTFIELDS, $body);
         } elseif ($body && is_array($body)) {
             $this->setOption(CURLOPT_POST, 1);
-            $this->setOption(CURLOPT_POSTFIELDS, http_build_query($body));
+            $this->setOption(CURLOPT_POSTFIELDS, ($buildQuery) ? http_build_query($body) : $body);
         } else {
             throw new ClientException('invalid body datatype allowed: string and array');
         }
@@ -321,7 +321,53 @@ class CurlClient implements ClientInterface {
         return $this;
     }
 
-    private function getSignRequestData(
+    /**
+     * @param $sharedSecret
+     * @param $url
+     * @param $body
+     * @param $method
+     * @param $rfcCompliantTimezone
+     * @param $newAlgo
+     * @return $this
+     */
+    public function signMultiPart($sharedSecret, $url, $body, $method, $rfcCompliantTimezone = false, $newAlgo = false)
+    {
+        $contentType = 'multipart/form-data;';
+
+        $data = $this->getSignRequestData(
+            $url,
+            $sharedSecret,
+            $method,
+            $body,
+            $contentType,
+            $rfcCompliantTimezone,
+            $newAlgo,
+            true
+        );
+
+        $this->additionalHeaders = [
+            'Date' => $data['timestamp'],
+            'X-Date' => $data['timestamp'],
+            'X-Signature' => $data['signature'],
+            'Content-Type' => $contentType
+        ];
+
+        return $this;
+    }
+
+    /**
+     * @param $url
+     * @param $sharedSecret
+     * @param $method
+     * @param $body
+     * @param $contentType
+     * @param $rfcCompliantTimezone
+     * @param $newAlgo
+     * @param $forJsonApi
+     * @return array
+     * @throws \Exception
+     */
+    protected function getSignRequestData(
         $url,
         $sharedSecret,
         $method,
