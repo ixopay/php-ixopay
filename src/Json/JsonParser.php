@@ -15,6 +15,7 @@ use Ixopay\Client\Data\Result\ScheduleResultData;
 use Ixopay\Client\Data\Result\WalletData as ReturnWalletData;
 use Ixopay\Client\Data\RiskCheckData;
 use Ixopay\Client\Data\TransactionSplit;
+use Ixopay\Client\Dispute\DisputeResult;
 use Ixopay\Client\Options\OptionsResult;
 use Ixopay\Client\Schedule\ScheduleResult;
 use Ixopay\Client\StatusApi\StatusResult;
@@ -294,6 +295,30 @@ class JsonParser {
             $customerProfileData = $this->parseCustomerProfileData($json['customerProfileData']);
             $result->setCustomerProfileData($customerProfileData);
         }
+
+        return $result;
+    }
+
+    /**
+     * @param $jsonString
+     * @return DisputeResult
+     */
+    public function parseDisputeResult($jsonString)
+    {
+        $result = new DisputeResult();
+
+        $json = json_decode($jsonString, true);
+
+        if ($this->arrGet($json, 'success') === false) {
+            if (isset($json['errors'])) {
+                $errors = $this->parseErrors($json['errors']);
+                $result->setErrors($errors);
+            }
+            return $result;
+        }
+
+        $result->setSuccess(true);
+        $result->setExtraData($this->arrGet($json, 'extraData'));
 
         return $result;
     }
