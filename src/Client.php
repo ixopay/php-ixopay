@@ -647,7 +647,7 @@ class Client
         $response = $curl
             ->setCustomHeaders($this->customRequestHeaders)
             ->setCustomCurlOptions($this->customCurlOptions)
-            ->signMultiPart($apiKey, $sharedSecret, $url, $body)
+            ->signMultiPart($sharedSecret, $url, $body, 'POST', false, true)
             ->setAuthentication($username, $password)
             ->post($url, $body, [], false);
 
