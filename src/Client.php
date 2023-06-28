@@ -632,7 +632,7 @@ class Client
      * @return Response
      * @throws Http\Exception\ClientException
      */
-    public function signAndSendMultiPartFormData($body, $url, $username, $password, $apiKey, $sharedSecret)
+    protected function signAndSendMultiPartFormData($body, $url, $username, $password, $apiKey, $sharedSecret)
     {
         $this->log(LogLevel::DEBUG, "POST $url ",
             [
