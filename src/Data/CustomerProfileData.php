@@ -78,11 +78,11 @@ class CustomerProfileData extends DataObject {
     }
 
     /**
-     * @param string $paymentToken
+     * @param string|null $paymentToken
      *
      * @return CustomerProfileData
      */
-    public function setPaymentToken(string $paymentToken)
+    public function setPaymentToken($paymentToken)
     {
         $this->paymentToken = $paymentToken;
         return $this;
