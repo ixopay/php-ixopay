@@ -22,7 +22,7 @@ class CustomerProfileData extends DataObject {
     protected $customerIdentification;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $paymentToken;
 
@@ -70,7 +70,7 @@ class CustomerProfileData extends DataObject {
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPaymentToken()
     {
