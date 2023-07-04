@@ -22,6 +22,11 @@ class CustomerProfileData extends DataObject {
     protected $customerIdentification;
 
     /**
+     * @var string
+     */
+    protected $paymentToken;
+
+    /**
      * @var boolean
      */
     protected $markAsPreferred;
@@ -65,6 +70,25 @@ class CustomerProfileData extends DataObject {
     }
 
     /**
+     * @return string
+     */
+    public function getPaymentToken(): string
+    {
+        return $this->paymentToken;
+    }
+
+    /**
+     * @param string $paymentToken
+     *
+     * @return CustomerProfileData
+     */
+    public function setPaymentToken(string $paymentToken)
+    {
+        $this->paymentToken = $paymentToken;
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function getMarkAsPreferred()
@@ -82,5 +106,4 @@ class CustomerProfileData extends DataObject {
         $this->markAsPreferred = $markAsPreferred;
         return $this;
     }
-
 }

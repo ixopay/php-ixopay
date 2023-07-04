@@ -501,6 +501,7 @@ class JsonParser {
         $customerProfileData = new CustomerProfileData();
         $customerProfileData->setProfileGuid($this->arrGet($data, 'profileGuid'));
         $customerProfileData->setCustomerIdentification($this->arrGet($data, 'customerIdentification'));
+        $customerProfileData->setPaymentToken($this->arrGet($data, 'paymentToken'));
 
         return $customerProfileData;
     }
