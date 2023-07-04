@@ -72,7 +72,7 @@ class CustomerProfileData extends DataObject {
     /**
      * @return string
      */
-    public function getPaymentToken(): string
+    public function getPaymentToken()
     {
         return $this->paymentToken;
     }
