@@ -169,8 +169,8 @@ This repository is available under the [MIT License][license].
 <!-- references -->
 [license]: LICENSE.md
 [ixopay]: https://ixopay.com
-[ixopay-docs-api]: https://gateway.ixopay.com/documentation/apiv3
-[ixopay-docs-gateway]: https://gateway.ixopay.com/documentation/gateway
+[ixopay-docs-api]: https://documentation.ixopay.com/api/transaction/transaction-api
+[ixopay-docs-gateway]: https://documentation.ixopay.com
 [repo-new-issue]: https://github.com/ixopay/php-ixopay/issues/new/choose
 [packagist-shield]: https://img.shields.io/packagist/v/ixopay/ixopay-php-client.svg
 [packagist-url]: https://packagist.org/packages/ixopay/ixopay-php-client
