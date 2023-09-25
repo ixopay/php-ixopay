@@ -644,6 +644,7 @@ class JsonGenerator {
             'priorAuthenticationDateTime' => $threeDSecureData->getPriorAuthenticationDateTimeFormatted(),
             'priorAuthenticationData' => $threeDSecureData->getPriorAuthenticationData(),
             'cardholderAccountType' => $threeDSecureData->getCardholderAccountType(),
+            'cardholderAccountAgeIndicator' => $threeDSecureData->getCardholderAccountAgeIndicator(),
             'cardholderAccountDate' => $threeDSecureData->getCardholderAccountDateFormatted(),
             'cardholderAccountChangeIndicator' => $threeDSecureData->getCardholderAccountChangeIndicator(),
             'cardholderAccountLastChange' => $threeDSecureData->getCardholderAccountLastChangeFormatted(),
@@ -659,6 +660,10 @@ class JsonGenerator {
             'shippingNameEqualIndicator' => $threeDSecureData->getShippingNameEqualIndicator(),
             'paymentAccountAgeIndicator' => $threeDSecureData->getPaymentAccountAgeIndicator(),
             'paymentAccountAgeDate' => $threeDSecureData->getPaymentAccountAgeDateFormatted(),
+            'billingAddressLine3' => $threeDSecureData->getBillingAddressLine3(),
+            'billingAddressState' => $threeDSecureData->getBillingAddressState(),
+            'shippingAddressLine3' => $threeDSecureData->getShippingAddressLine3(),
+            'shippingAddressState' => $threeDSecureData->getShippingAddressState(),
             'billingShippingAddressMatch' => $threeDSecureData->getBillingShippingAddressMatch(),
             'homePhoneCountryPrefix' => $threeDSecureData->getHomePhoneCountryPrefix(),
             'homePhoneNumber' => $threeDSecureData->getHomePhoneNumber(),
@@ -680,6 +685,7 @@ class JsonGenerator {
             'recurringExpiry' => $threeDSecureData->getRecurringExpiryFormatted(),
             'recurringFrequency' => $threeDSecureData->getRecurringFrequency(),
             'transType' => $threeDSecureData->getTransType(),
+            'exemptionIndicator' => $threeDSecureData->getExemptionIndicator(),
             'browserChallengeWindowSize' => $threeDSecureData->getBrowserChallengeWindowSize(),
             'browserAcceptHeader' => $threeDSecureData->getBrowserAcceptHeader(),
             'browserIpAddress' => $threeDSecureData->getBrowserIpAddress(),
@@ -690,6 +696,7 @@ class JsonGenerator {
             'browserScreenWidth' => $threeDSecureData->getBrowserScreenWidth(),
             'browserTimezone' => $threeDSecureData->getBrowserTimezone(),
             'browserUserAgent' => $threeDSecureData->getBrowserUserAgent(),
+            'browserPlatform' => $threeDSecureData->getBrowserPlatform(),
             'sdkInterface' => $threeDSecureData->getSdkInterface(),
             'sdkUiType' => $threeDSecureData->getSdkUiType(),
             'sdkAppID' => $threeDSecureData->getSdkAppID(),
@@ -698,7 +705,6 @@ class JsonGenerator {
             'sdkMaxTimeout' => $threeDSecureData->getSdkMaxTimeout(),
             'sdkReferenceNumber' => $threeDSecureData->getSdkReferenceNumber(),
             'sdkTransID' => $threeDSecureData->getSdkTransID(),
-            'exemptionIndicator' => $threeDSecureData->getExemptionIndicator(),
         ];
     }
 

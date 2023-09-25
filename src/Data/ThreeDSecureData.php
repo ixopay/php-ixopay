@@ -217,6 +217,24 @@ class ThreeDSecureData extends DataObject
     /** @var string */
     protected $exemptionIndicator;
 
+    /** @var string */
+    protected $cardholderAccountAgeIndicator;
+
+    /** @var string */
+    protected $billingAddressLine3;
+
+    /** @var string */
+    protected $shippingAddressLine3;
+
+    /** @var string */
+    protected $billingAddressState;
+
+    /** @var string */
+    protected $shippingAddressState;
+
+    /** @var string */
+    protected $browserPlatform;
+
     /**
      * @return string
      */
@@ -1630,4 +1648,119 @@ class ThreeDSecureData extends DataObject
     {
         return $this->exemptionIndicator;
     }
+
+    /**
+     * @return string
+     */
+    public function getCardholderAccountAgeIndicator()
+    {
+        return $this->cardholderAccountAgeIndicator;
+    }
+
+    /**
+     * @param string $cardholderAccountAgeIndicator
+     *
+     * @return ThreeDSecureData
+     */
+    public function setCardholderAccountAgeIndicator($cardholderAccountAgeIndicator)
+    {
+        $this->cardholderAccountAgeIndicator = $cardholderAccountAgeIndicator;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBillingAddressLine3()
+    {
+        return $this->billingAddressLine3;
+    }
+
+    /**
+     * @param string $billingAddressLine3
+     *
+     * @return ThreeDSecureData
+     */
+    public function setBillingAddressLine3($billingAddressLine3)
+    {
+        $this->billingAddressLine3 = $billingAddressLine3;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingAddressLine3()
+    {
+        return $this->shippingAddressLine3;
+    }
+
+    /**
+     * @param string $shippingAddressLine3
+     *
+     * @return ThreeDSecureData
+     */
+    public function setShippingAddressLine3($shippingAddressLine3)
+    {
+        $this->shippingAddressLine3 = $shippingAddressLine3;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBillingAddressState()
+    {
+        return $this->billingAddressState;
+    }
+
+    /**
+     * @param string $billingAddressState
+     *
+     * @return ThreeDSecureData
+     */
+    public function setBillingAddressState($billingAddressState)
+    {
+        $this->billingAddressState = $billingAddressState;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingAddressState()
+    {
+        return $this->shippingAddressState;
+    }
+
+    /**
+     * @param string $shippingAddressState
+     *
+     * @return ThreeDSecureData
+     */
+    public function setShippingAddressState($shippingAddressState)
+    {
+        $this->shippingAddressState = $shippingAddressState;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBrowserPlatform()
+    {
+        return $this->browserPlatform;
+    }
+
+    /**
+     * @param string $browserPlatform
+     *
+     * @return ThreeDSecureData
+     */
+    public function setBrowserPlatform($browserPlatform)
+    {
+        $this->browserPlatform = $browserPlatform;
+        return $this;
+    }
+
 }
