@@ -7,6 +7,7 @@ use Ixopay\Client\Data\ChargebackData;
 use Ixopay\Client\Data\ChargebackReversalData;
 use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\CustomerProfileData;
+use Ixopay\Client\Data\Result\CreditcardData;
 use Ixopay\Client\Data\Result\CreditcardData as ReturnCardData;
 use Ixopay\Client\Data\Result\IbanData as ReturnIbanData;
 use Ixopay\Client\Data\Result\PhoneData as ReturnPhoneData;
@@ -75,6 +76,10 @@ class JsonParser {
         if (isset($json['returnData'])) {
             $returnData = $this->parseReturnData($json['returnData']);
             $result->setReturnData($returnData);
+
+            if ($returnData instanceof CreditcardData && !empty($returnData->getSchemeTransactionIdentifier())) {
+                $result->setSchemeTransactionIdentifier($returnData->getSchemeTransactionIdentifier());
+            }
         }
 
         if (isset($json['scheduleData'])) {
@@ -161,6 +166,10 @@ class JsonParser {
         if(isset($json['returnData'])) {
             $returnData = $this->parseReturnData($json['returnData']);
             $result->setReturnData($returnData);
+
+            if ($returnData instanceof CreditcardData && !empty($returnData->getSchemeTransactionIdentifier())) {
+                $result->setSchemeTransactionIdentifier($returnData->getSchemeTransactionIdentifier());
+            }
         }
 
         if(isset($json['customer'])) {
@@ -326,6 +335,7 @@ class JsonParser {
                 $creditcardData->setBinCountry($this->arrGet($returnData, 'binCountry'));
                 $creditcardData->setThreeDSecure($this->arrGet($returnData, 'threeDSecure'));
                 $creditcardData->setEci($this->arrGet($returnData, 'eci'));
+                $creditcardData->setSchemeTransactionIdentifier($this->arrGet($returnData, 'schemeTransactionIdentifier'));
 
                 if($this->arrGet($returnData, 'binDigits')){
                     $binDigits = $this->arrGet($returnData, 'binDigits');

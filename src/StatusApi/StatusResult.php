@@ -177,6 +177,11 @@ class StatusResult {
     protected $transactionSplits = [];
 
     /**
+     * @var string
+     */
+    protected $schemeTransactionIdentifier = null;
+
+    /**
      * @return bool
      */
     public function isSuccess()
@@ -307,7 +312,7 @@ class StatusResult {
         $this->incomingSettlementState = $incomingSettlementState;
         return $this;
     }
-    
+
     /**
      * set transaction errors
      *
@@ -635,6 +640,24 @@ class StatusResult {
     public function setTransactionSplits($transactionSplits)
     {
         $this->transactionSplits = $transactionSplits;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSchemeTransactionIdentifier()
+    {
+        return $this->schemeTransactionIdentifier;
+    }
+
+    /**
+     * @param $schemeTransactionIdentifier
+     * @return $this
+     */
+    public function setSchemeTransactionIdentifier($schemeTransactionIdentifier)
+    {
+        $this->schemeTransactionIdentifier = $schemeTransactionIdentifier;
+        return $this;
     }
 
     /**

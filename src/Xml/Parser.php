@@ -470,6 +470,7 @@ class Parser {
                     case 'binCountry':
                     case 'threeDSecure':
                     case 'eci':
+                    case 'schemeTransactionIdentifier':
                         if (method_exists($cc, 'set'.ucfirst($child->localName))) {
                             $cc->{'set' . ucfirst($child->localName)}($child->nodeValue);
                         }
