@@ -108,11 +108,6 @@ class Result {
     protected $paymentDescriptor = null;
 
     /**
-     * @var string
-     */
-    protected $schemeTransactionIdentifier = null;
-
-    /**
      * identifier of the payment method for this transaction
      *
      * @var string|null
@@ -435,24 +430,6 @@ class Result {
      */
     public function setPaymentDescriptor($paymentDescriptor) {
         $this->paymentDescriptor = $paymentDescriptor;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSchemeTransactionIdentifier()
-    {
-        return $this->schemeTransactionIdentifier;
-    }
-
-    /**
-     * @param $schemeTransactionIdentifier
-     * @return $this
-     */
-    public function setSchemeTransactionIdentifier($schemeTransactionIdentifier)
-    {
-        $this->schemeTransactionIdentifier = $schemeTransactionIdentifier;
         return $this;
     }
 
