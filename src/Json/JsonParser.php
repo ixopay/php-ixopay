@@ -326,6 +326,7 @@ class JsonParser {
                 $creditcardData->setBinCountry($this->arrGet($returnData, 'binCountry'));
                 $creditcardData->setThreeDSecure($this->arrGet($returnData, 'threeDSecure'));
                 $creditcardData->setEci($this->arrGet($returnData, 'eci'));
+                $creditcardData->setSchemeTransactionIdentifier($this->arrGet($returnData, 'schemeTransactionIdentifier'));
 
                 if($this->arrGet($returnData, 'binDigits')){
                     $binDigits = $this->arrGet($returnData, 'binDigits');

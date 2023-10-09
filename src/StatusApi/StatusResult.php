@@ -307,7 +307,7 @@ class StatusResult {
         $this->incomingSettlementState = $incomingSettlementState;
         return $this;
     }
-    
+
     /**
      * set transaction errors
      *

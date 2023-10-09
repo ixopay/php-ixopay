@@ -113,6 +113,11 @@ class CreditcardData extends ResultData {
     protected $eci;
 
     /**
+     * @var string
+     */
+    protected $schemeTransactionIdentifier;
+
+    /**
      * @return string
      */
     public function getType() {
@@ -423,6 +428,23 @@ class CreditcardData extends ResultData {
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getSchemeTransactionIdentifier()
+    {
+        return $this->schemeTransactionIdentifier;
+    }
+
+    /**
+     * @param string $schemeTransactionIdentifier
+     * @return $this
+     */
+    public function setSchemeTransactionIdentifier($schemeTransactionIdentifier)
+    {
+        $this->schemeTransactionIdentifier = $schemeTransactionIdentifier;
+        return $this;
+    }
 
     /**
      * @return array
