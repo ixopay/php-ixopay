@@ -56,6 +56,25 @@ class Register extends AbstractTransaction
      */
     protected $transactionIndicator;
 
+    /** @var bool */
+    protected $isAft=false;
+
+    /**
+     * @return bool
+     */
+    public function isAft()
+    {
+        return $this->isAft;
+    }
+
+    /**
+     * @param bool $isAft
+     */
+    public function setIsAft($isAft)
+    {
+        $this->isAft = $isAft;
+    }
+
     /**
      * @return string
      */

@@ -24,6 +24,8 @@ use Ixopay\Client\Transaction\Base\ReferenceSchemeTransactionIdentifierInterface
 use Ixopay\Client\Transaction\Base\ReferenceSchemeTransactionIdentifierTrait;
 use Ixopay\Client\Transaction\Base\ScheduleInterface;
 use Ixopay\Client\Transaction\Base\ScheduleTrait;
+use Ixopay\Client\Transaction\Base\SenderAccountPanInterface;
+use Ixopay\Client\Transaction\Base\SenderAccountPanTrait;
 use Ixopay\Client\Transaction\Base\SurchargeInterface;
 use Ixopay\Client\Transaction\Base\SurchargeTrait;
 use Ixopay\Client\Transaction\Base\TransactionSplitsInterface;
@@ -49,6 +51,7 @@ class Preauthorize extends AbstractTransactionWithReference
                               DccDataInterface,
                               SurchargeInterface,
                               ReferenceSchemeTransactionIdentifierInterface,
+                              SenderAccountPanInterface,
                               LevelTwoAndThreeDataInterface
 {
 
@@ -65,6 +68,7 @@ class Preauthorize extends AbstractTransactionWithReference
     use DccDataTrait;
     use SurchargeTrait;
     use ReferenceSchemeTransactionIdentifierTrait;
+    use SenderAccountPanTrait;
     use LevelTwoAndThreeDataTrait;
 
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
