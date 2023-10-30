@@ -24,8 +24,8 @@ use Ixopay\Client\Transaction\Base\ReferenceSchemeTransactionIdentifierInterface
 use Ixopay\Client\Transaction\Base\ReferenceSchemeTransactionIdentifierTrait;
 use Ixopay\Client\Transaction\Base\ScheduleInterface;
 use Ixopay\Client\Transaction\Base\ScheduleTrait;
-use Ixopay\Client\Transaction\Base\SenderAccountPanInterface;
-use Ixopay\Client\Transaction\Base\SenderAccountPanTrait;
+use Ixopay\Client\Transaction\Base\RecipientAccountPanInterface;
+use Ixopay\Client\Transaction\Base\RecipientAccountPanTrait;
 use Ixopay\Client\Transaction\Base\SurchargeInterface;
 use Ixopay\Client\Transaction\Base\SurchargeTrait;
 use Ixopay\Client\Transaction\Base\TransactionSplitsInterface;
@@ -51,7 +51,7 @@ class Debit extends AbstractTransactionWithReference
                        DccDataInterface,
                        SurchargeInterface,
                        ReferenceSchemeTransactionIdentifierInterface,
-                       SenderAccountPanInterface,
+                       RecipientAccountPanInterface,
                        LevelTwoAndThreeDataInterface
 {
     use AddToCustomerProfileTrait;
@@ -67,7 +67,7 @@ class Debit extends AbstractTransactionWithReference
     use DccDataTrait;
     use SurchargeTrait;
     use ReferenceSchemeTransactionIdentifierTrait;
-    use SenderAccountPanTrait;
+    use RecipientAccountPanTrait;
     use LevelTwoAndThreeDataTrait;
 
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
