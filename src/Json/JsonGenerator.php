@@ -151,27 +151,27 @@ class JsonGenerator {
     protected function createDebit($transaction, $language){
         /** @var Debit $transaction */
         $data = [
-            'referenceUuid'        => $transaction->getReferenceUuid(),
-            'amount'               => (string)$transaction->getAmount(),
-            'currency'             => $transaction->getCurrency(),
-            'successUrl'           => $transaction->getSuccessUrl(),
-            'cancelUrl'            => $transaction->getCancelUrl(),
-            'errorUrl'             => $transaction->getErrorUrl(),
-            'callbackUrl'          => $transaction->getCallbackUrl(),
-            'transactionToken'     => $transaction->getTransactionToken(),
-            'description'          => $transaction->getDescription(),
-            'items'                => $this->createItems($transaction->getItems()),
-            'splits'               => $this->createSplits($transaction->getTransactionSplits()),
-            'withRegister'         => $transaction->isWithRegister(),
+            'referenceUuid' => $transaction->getReferenceUuid(),
+            'amount' => (string)$transaction->getAmount(),
+            'currency' => $transaction->getCurrency(),
+            'successUrl' => $transaction->getSuccessUrl(),
+            'cancelUrl' => $transaction->getCancelUrl(),
+            'errorUrl' => $transaction->getErrorUrl(),
+            'callbackUrl' => $transaction->getCallbackUrl(),
+            'transactionToken' => $transaction->getTransactionToken(),
+            'description' => $transaction->getDescription(),
+            'items' => $this->createItems($transaction->getItems()),
+            'splits' => $this->createSplits($transaction->getTransactionSplits()),
+            'withRegister' => $transaction->isWithRegister(),
             'transactionIndicator' => $transaction->getTransactionIndicator(),
-            'customer'             => $this->createCustomer($transaction->getCustomer()),
-            'schedule'             => $this->createSchedule($transaction->getSchedule()),
-            'customerProfileData'  => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
-            'threeDSecureData'     => $this->createThreeDSecureData($transaction->getThreeDSecureData()),
-            'language'             => $language,
+            'customer' => $this->createCustomer($transaction->getCustomer()),
+            'schedule' => $this->createSchedule($transaction->getSchedule()),
+            'customerProfileData' => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
+            'threeDSecureData' => $this->createThreeDSecureData($transaction->getThreeDSecureData()),
+            'language' => $language,
             'referenceSchemeTransactionIdentifier' => $transaction->getReferenceSchemeTransactionIdentifier(),
-            'surchargeAmount'      => $transaction->getSurchargeAmount(),
-            'senderAccountReferenceUuid' => $transaction->getSenderAccountReferenceUuid()
+            'surchargeAmount' => $transaction->getSurchargeAmount(),
+            'recipientAccountReferenceUuid' => $transaction->getRecipientAccountReferenceUuid()
         ];
 
         if ($transaction->getL2L3Data()) {
@@ -297,7 +297,6 @@ class JsonGenerator {
             'customerProfileData' => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
             'threeDSecureData' => $this->createThreeDSecureData($transaction->getThreeDSecureData()),
             'language' => $language,
-            'isAft' => $transaction->isAft(),
         ];
 
         if ($transaction->getL2L3Data()) {
