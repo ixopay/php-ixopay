@@ -14,6 +14,8 @@ class Deregister extends AbstractTransactionWithReference {
     /** @var string */
     protected $transactionToken;
 
+    /** @var string */
+    protected $tokenType;
 
     /**
      * @return string
@@ -29,6 +31,25 @@ class Deregister extends AbstractTransactionWithReference {
     public function setTransactionToken($transactionToken)
     {
         $this->transactionToken = $transactionToken;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTokenType()
+    {
+        return $this->tokenType;
+    }
+
+    /**
+     * @param string $tokenType
+     *
+     * @return Deregister
+     */
+    public function setTokenType($tokenType)
+    {
+        $this->tokenType = $tokenType;
         return $this;
     }
 
