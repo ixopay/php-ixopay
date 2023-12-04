@@ -8,6 +8,7 @@ use Ixopay\Client\CustomerProfile\GetProfileResponse;
 use Ixopay\Client\CustomerProfile\PaymentInstrument;
 use Ixopay\Client\CustomerProfile\UpdateProfileResponse;
 use Ixopay\Client\Dispute\DisputeAcceptData;
+use Ixopay\Client\Dispute\DisputeMetaDataData;
 use Ixopay\Client\Dispute\DisputeSubmitEvidenceData;
 use Ixopay\Client\Dispute\DisputeUploadEvidenceData;
 use Ixopay\Client\Exception\GeneralErrorException;
@@ -106,6 +107,7 @@ class Client
     const OPTIONS_REQUEST = 'api/v3/options/[API_KEY]/{optionsName}';
 
     const DISPUTE_ACCEPT = 'api/v3/dispute/[API_KEY]/accept/{uuid}';
+    const DISPUTE_META_DATA = 'api/v3/dispute/[API_KEY]/meta-data/{uuid}';
     const DISPUTE_UPLOAD_EVIDENCE = 'api/v3/dispute/[API_KEY]/upload-evidence/{uuid}';
     const DISPUTE_SUBMIT_EVIDENCE = 'api/v3/dispute/[API_KEY]/submit-evidence/{uuid}';
 
@@ -1220,6 +1222,33 @@ class Client
         $data = [];
 
         if ($extraData = $disputeAcceptData->getExtraData()) {
+            $data['extraData'] = $this->getGenerator()->stringifyExtraData($extraData);
+        }
+
+        $httpResponse = $this->sendJsonApiRequest($url, $data);
+
+        return $this->getParser()->parseDisputeResult($httpResponse->getBody());
+    }
+
+    /**
+     * @param DisputeMetaDataData $disputeMetaDataData
+     * @return Dispute\DisputeResult
+     * @throws ClientException
+     * @throws GeneralErrorException
+     * @throws Http\Exception\ClientException
+     * @throws RateLimitException
+     * @throws TimeoutException
+     */
+    public function metaData(DisputeMetaDataData $disputeMetaDataData)
+    {
+        $url = $this->parseDisputeUrl(
+            $disputeMetaDataData->getUuid(),
+            self::DISPUTE_META_DATA
+        );
+
+        $data = [];
+
+        if ($extraData = $disputeMetaDataData->getExtraData()) {
             $data['extraData'] = $this->getGenerator()->stringifyExtraData($extraData);
         }
 
