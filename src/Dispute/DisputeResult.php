@@ -13,6 +13,10 @@ class DisputeResult
      */
     private $extraData = [];
     /**
+     * @var array
+     */
+    private $metaData = [];
+    /**
      * @var Error[]
      */
     private $errors = [];
@@ -51,6 +55,24 @@ class DisputeResult
     public function getExtraData()
     {
         return $this->extraData;
+    }
+
+    /**
+     * @param $metaData
+     * @return $this
+     */
+    public function setMetaData($metaData)
+    {
+        $this->metaData = $metaData;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetaData()
+    {
+        return $this->metaData;
     }
 
     /**
