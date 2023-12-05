@@ -320,8 +320,8 @@ class JsonParser {
         $result->setSuccess(true);
         $result->setExtraData($this->arrGet($json, 'extraData'));
 
-        if ($this->arrGet($json, 'metaData')) {
-            $result->setMetaData($this->arrGet($json, 'metaData'));
+        if ($this->arrGet($json, 'metadata')) {
+            $result->setMetadata($this->arrGet($json, 'metadata'));
         }
 
         return $result;

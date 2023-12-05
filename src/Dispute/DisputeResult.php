@@ -15,7 +15,7 @@ class DisputeResult
     /**
      * @var array
      */
-    private $metaData = [];
+    private $metadata = [];
     /**
      * @var Error[]
      */
@@ -61,18 +61,18 @@ class DisputeResult
      * @param $metaData
      * @return $this
      */
-    public function setMetaData($metaData)
+    public function setMetadata($metadata)
     {
-        $this->metaData = $metaData;
+        $this->metadata = $metadata;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getMetaData()
+    public function getMetadata()
     {
-        return $this->metaData;
+        return $this->metadata;
     }
 
     /**

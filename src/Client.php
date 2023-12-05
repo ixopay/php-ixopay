@@ -8,7 +8,7 @@ use Ixopay\Client\CustomerProfile\GetProfileResponse;
 use Ixopay\Client\CustomerProfile\PaymentInstrument;
 use Ixopay\Client\CustomerProfile\UpdateProfileResponse;
 use Ixopay\Client\Dispute\DisputeAcceptData;
-use Ixopay\Client\Dispute\DisputeMetaDataData;
+use Ixopay\Client\Dispute\DisputeMetadataData;
 use Ixopay\Client\Dispute\DisputeSubmitEvidenceData;
 use Ixopay\Client\Dispute\DisputeUploadEvidenceData;
 use Ixopay\Client\Exception\GeneralErrorException;
@@ -107,7 +107,7 @@ class Client
     const OPTIONS_REQUEST = 'api/v3/options/[API_KEY]/{optionsName}';
 
     const DISPUTE_ACCEPT = 'api/v3/dispute/[API_KEY]/accept/{uuid}';
-    const DISPUTE_META_DATA = 'api/v3/dispute/[API_KEY]/meta-data/{uuid}';
+    const DISPUTE_METADATA = 'api/v3/dispute/[API_KEY]/metadata/{uuid}';
     const DISPUTE_UPLOAD_EVIDENCE = 'api/v3/dispute/[API_KEY]/upload-evidence/{uuid}';
     const DISPUTE_SUBMIT_EVIDENCE = 'api/v3/dispute/[API_KEY]/submit-evidence/{uuid}';
 
@@ -1231,7 +1231,7 @@ class Client
     }
 
     /**
-     * @param DisputeMetaDataData $disputeMetaDataData
+     * @param DisputeMetadataData $disputeMetadataData
      * @return Dispute\DisputeResult
      * @throws ClientException
      * @throws GeneralErrorException
@@ -1239,16 +1239,16 @@ class Client
      * @throws RateLimitException
      * @throws TimeoutException
      */
-    public function metaData(DisputeMetaDataData $disputeMetaDataData)
+    public function fetchDisputeMetadata(DisputeMetadataData $disputeMetadataData)
     {
         $url = $this->parseDisputeUrl(
-            $disputeMetaDataData->getUuid(),
-            self::DISPUTE_META_DATA
+            $disputeMetadataData->getUuid(),
+            self::DISPUTE_METADATA
         );
 
         $data = [];
 
-        if ($extraData = $disputeMetaDataData->getExtraData()) {
+        if ($extraData = $disputeMetadataData->getExtraData()) {
             $data['extraData'] = $this->getGenerator()->stringifyExtraData($extraData);
         }
 
@@ -1266,7 +1266,7 @@ class Client
      * @throws RateLimitException
      * @throws TimeoutException
      */
-    public function uploadEvidence(DisputeUploadEvidenceData $disputeUploadEvidenceData)
+    public function uploadDisputeEvidence(DisputeUploadEvidenceData $disputeUploadEvidenceData)
     {
         $url = $this->parseDisputeUrl(
             $disputeUploadEvidenceData->getUuid(),
@@ -1303,7 +1303,7 @@ class Client
      * @throws RateLimitException
      * @throws TimeoutException
      */
-    public function submitEvidence(DisputeSubmitEvidenceData $disputeSubmitEvidenceData)
+    public function submitDisputeEvidence(DisputeSubmitEvidenceData $disputeSubmitEvidenceData)
     {
         $url = $this->parseDisputeUrl(
             $disputeSubmitEvidenceData->getUuid(),
