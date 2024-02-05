@@ -211,14 +211,14 @@ class CurlClient implements ClientInterface {
      * @return Response
      * @throws ClientException
      */
-    public function post($url, $body, array $headers = []) {
+    public function post($url, $body, array $headers = [], $buildQuery = true) {
 
         if ($body && is_string($body)) {
             $this->setOption(CURLOPT_CUSTOMREQUEST, "POST");
             $this->setOption(CURLOPT_POSTFIELDS, $body);
         } elseif ($body && is_array($body)) {
             $this->setOption(CURLOPT_POST, 1);
-            $this->setOption(CURLOPT_POSTFIELDS, http_build_query($body));
+            $this->setOption(CURLOPT_POSTFIELDS, ($buildQuery) ? http_build_query($body) : $body);
         } else {
             throw new ClientException('invalid body datatype allowed: string and array');
         }
@@ -258,31 +258,31 @@ class CurlClient implements ClientInterface {
      * @return $this
      * @throws \Exception
      */
-    public function sign($apiId, $sharedSecret, $url, $body, $headers = array(), $rfcCompliantTimezone = false, $newAlgo = false) {
-        if ($rfcCompliantTimezone) {
-            $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s \G\M\T');
-        } else {
-            $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s T');
-        }
-
-        $path = parse_url($url, PHP_URL_PATH);
-        $query = parse_url($url, PHP_URL_QUERY);
-        $anchor = parse_url($url, PHP_URL_FRAGMENT);
-
-        $requestUri = $path . ($query ? '?' . $query : '') . ($anchor ? '#' . $anchor : '');
-
+    public function sign($apiId, $sharedSecret, $url, $body, $headers = array(), $rfcCompliantTimezone = false, $newAlgo = false)
+    {
         $contentType = 'text/xml; charset=utf-8';
 
-        $signature = $this->createSignature($sharedSecret, 'POST', $body, $contentType, $timestamp, $requestUri, false, $newAlgo);
+        $data = $this->getSignRequestData(
+            $url,
+            $sharedSecret,
+            'POST',
+            $body,
+            $contentType,
+            $rfcCompliantTimezone,
+            $newAlgo
+        );
+
+        $signature = $data['signature'];
+
         $authHeader = $this->serviceName . ' ' . $apiId . ':' . $signature;
 
-        $this->additionalHeaders = array(
-            'Date' => $timestamp,
-            'X-Date' => $timestamp,
+        $this->additionalHeaders = [
+            'Date' => $data['timestamp'],
+            'X-Date' => $data['timestamp'],
             'Authorization' => $authHeader,
             'X-Authorization' => $authHeader,
             'Content-Type' => $contentType
-        );
+        ];
 
         return $this;
     }
@@ -296,12 +296,90 @@ class CurlClient implements ClientInterface {
      * @return $this
      * @throws \Exception
      */
-    public function signJson($sharedSecret, $url, $body, $method, $rfcCompliantTimezone = false, $newAlgo = false) {
-        if ($rfcCompliantTimezone) {
-            $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s \G\M\T');
-        } else {
-            $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s T');
-        }
+    public function signJson($sharedSecret, $url, $body, $method, $rfcCompliantTimezone = false, $newAlgo = false)
+    {
+        $contentType = 'application/json; charset=utf-8';
+
+        $data = $this->getSignRequestData(
+            $url,
+            $sharedSecret,
+            $method,
+            $body,
+            $contentType,
+            $rfcCompliantTimezone,
+            $newAlgo,
+            true
+        );
+
+        $this->additionalHeaders = [
+            'Date' => $data['timestamp'],
+            'X-Date' => $data['timestamp'],
+            'X-Signature' => $data['signature'],
+            'Content-Type' => $contentType
+        ];
+
+        return $this;
+    }
+
+    /**
+     * @param $sharedSecret
+     * @param $url
+     * @param $body
+     * @param $method
+     * @param $rfcCompliantTimezone
+     * @param $newAlgo
+     * @return $this
+     */
+    public function signMultiPart($sharedSecret, $url, $body, $method, $rfcCompliantTimezone = false, $newAlgo = false)
+    {
+        $contentType = 'multipart/form-data';
+
+        $data = $this->getSignRequestData(
+            $url,
+            $sharedSecret,
+            $method,
+            '',
+            $contentType,
+            $rfcCompliantTimezone,
+            $newAlgo,
+            true
+        );
+
+        $this->additionalHeaders = [
+            'Date' => $data['timestamp'],
+            'X-Date' => $data['timestamp'],
+            'X-Signature' => $data['signature'],
+            'Content-Type' => $contentType
+        ];
+
+        return $this;
+    }
+
+    /**
+     * @param $url
+     * @param $sharedSecret
+     * @param $method
+     * @param $body
+     * @param $contentType
+     * @param $rfcCompliantTimezone
+     * @param $newAlgo
+     * @param $forJsonApi
+     * @return array
+     * @throws \Exception
+     */
+    protected function getSignRequestData(
+        $url,
+        $sharedSecret,
+        $method,
+        $body,
+        $contentType,
+        $rfcCompliantTimezone = false,
+        $newAlgo = false,
+        $forJsonApi = false
+    ) {
+        $timestamp = ($rfcCompliantTimezone) ?
+            (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s \G\M\T') :
+            (new \DateTime('now', new \DateTimeZone('UTC')))->format('D, d M Y H:i:s T');
 
         $path = parse_url($url, PHP_URL_PATH);
         $query = parse_url($url, PHP_URL_QUERY);
@@ -309,23 +387,21 @@ class CurlClient implements ClientInterface {
 
         $requestUri = $path . ($query ? '?' . $query : '') . ($anchor ? '#' . $anchor : '');
 
-        $contentType = 'application/json; charset=utf-8';
-
-
-        $parts = array($method, $newAlgo ? hash('sha512', $body, false) : md5($body), $contentType, $timestamp, $requestUri);
-
-        $str = implode("\n", $parts);
-        $digest = hash_hmac('sha512', $str, $sharedSecret, true);
-        $signature = base64_encode($digest);
-
-        $this->additionalHeaders = array(
-            'Date' => $timestamp,
-            'X-Date' => $timestamp,
-            'X-Signature' => $signature,
-            'Content-Type' => $contentType
+        $signature = $this->createSignature(
+            $sharedSecret,
+            $method,
+            $body,
+            $contentType,
+            $timestamp,
+            $requestUri,
+            $forJsonApi,
+            $newAlgo
         );
 
-        return $this;
+        return [
+            'timestamp' => $timestamp,
+            'signature' => $signature,
+        ];
     }
 
     /**

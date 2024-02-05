@@ -7,6 +7,10 @@ use Ixopay\Client\CustomerProfile\DeleteProfileResponse;
 use Ixopay\Client\CustomerProfile\GetProfileResponse;
 use Ixopay\Client\CustomerProfile\PaymentInstrument;
 use Ixopay\Client\CustomerProfile\UpdateProfileResponse;
+use Ixopay\Client\Dispute\DisputeAcceptData;
+use Ixopay\Client\Dispute\DisputeMetadataData;
+use Ixopay\Client\Dispute\DisputeSubmitEvidenceData;
+use Ixopay\Client\Dispute\DisputeUploadEvidenceData;
 use Ixopay\Client\Exception\GeneralErrorException;
 use Ixopay\Client\Exception\TypeException;
 use Ixopay\Client\Json\ErrorResponse;
@@ -101,6 +105,11 @@ class Client
     const SCHEDULE_CANCEL = 'api/v3/schedule/[API_KEY]/{scheduleId}/cancel';
 
     const OPTIONS_REQUEST = 'api/v3/options/[API_KEY]/{optionsName}';
+
+    const DISPUTE_ACCEPT = 'api/v3/dispute/[API_KEY]/accept/{uuid}';
+    const DISPUTE_METADATA = 'api/v3/dispute/[API_KEY]/metadata/{uuid}';
+    const DISPUTE_UPLOAD_EVIDENCE = 'api/v3/dispute/[API_KEY]/upload-evidence/{uuid}';
+    const DISPUTE_SUBMIT_EVIDENCE = 'api/v3/dispute/[API_KEY]/submit-evidence/{uuid}';
 
     /**
      * @var string
@@ -479,9 +488,52 @@ class Client
 
         $httpResponse = $this->signAndSendJson($body, $url, $this->username, $this->password, $this->apiKey, $this->sharedSecret, $get);
 
-        $statusCode = $httpResponse->getStatusCode();
+        $this->validateStatusCode($httpResponse);
 
-        switch($statusCode){
+        return $httpResponse;
+    }
+
+    /**
+     * @param $path
+     * @param $data
+     * @return Response
+     * @throws ClientException
+     * @throws GeneralErrorException
+     * @throws Http\Exception\ClientException
+     * @throws RateLimitException
+     * @throws TimeoutException
+     */
+    protected function sendMultiPartFormDataRequest($path, $data = [])
+    {
+        $url = self::$gatewayUrl . $path;
+
+        $url = str_replace('[API_KEY]', $this->apiKey, $url);
+
+        $httpResponse = $this->signAndSendMultiPartFormData(
+            $data,
+            $url,
+            $this->username,
+            $this->password,
+            $this->apiKey,
+            $this->sharedSecret
+        );
+
+        $this->validateStatusCode($httpResponse);
+
+        return $httpResponse;
+    }
+
+    /**
+     * @param Response $httpResponse
+     * @return void
+     * @throws ClientException
+     * @throws GeneralErrorException
+     * @throws RateLimitException
+     * @throws TimeoutException
+     */
+    private function validateStatusCode(Response $httpResponse)
+    {
+        switch($statusCode = $httpResponse->getStatusCode()){
             case 504:
             case 522:
                 throw new TimeoutException('Request timed-out');
@@ -514,8 +566,6 @@ class Client
                 }
                 break;
         }
-
-        return $httpResponse;
     }
 
     /**
@@ -572,6 +622,44 @@ class Client
 		);
 
 		return $response;
+    }
+
+    /**
+     * @param $body
+     * @param $url
+     * @param $username
+     * @param $password
+     * @param $apiKey
+     * @param $sharedSecret
+     * @return Response
+     * @throws Http\Exception\ClientException
+     */
+    protected function signAndSendMultiPartFormData($body, $url, $username, $password, $apiKey, $sharedSecret)
+    {
+        $this->log(LogLevel::DEBUG, "POST $url ",
+            [
+                'url' => $url,
+                'body' => $body,
+                'apiKey' => $apiKey,
+                'sharedSecret' => $sharedSecret,
+            ]
+        );
+
+        $curl = new CurlClient();
+        $response = $curl
+            ->setCustomHeaders($this->customRequestHeaders)
+            ->setCustomCurlOptions($this->customCurlOptions)
+            ->signMultiPart($sharedSecret, $url, $body, 'POST', false, true)
+            ->setAuthentication($username, $password)
+            ->post($url, $body, [], false);
+
+        $this->log(LogLevel::DEBUG, "RESPONSE: " . $response->getBody(),
+            array(
+                'response' => $response
+            )
+        );
+
+        return $response;
     }
 
     /**
@@ -1113,6 +1201,137 @@ class Client
 
 
         throw new ClientException('Invalid response received: '.$response->getBody());
+    }
+
+    /**
+     * @param DisputeAcceptData $disputeAcceptData
+     * @return Dispute\DisputeResult
+     * @throws ClientException
+     * @throws GeneralErrorException
+     * @throws Http\Exception\ClientException
+     * @throws RateLimitException
+     * @throws TimeoutException
+     */
+    public function acceptDispute(DisputeAcceptData $disputeAcceptData)
+    {
+        $url = $this->parseDisputeUrl(
+            $disputeAcceptData->getUuid(),
+            self::DISPUTE_ACCEPT
+        );
+
+        $data = [];
+
+        if ($extraData = $disputeAcceptData->getExtraData()) {
+            $data['extraData'] = $this->getGenerator()->stringifyExtraData($extraData);
+        }
+
+        $httpResponse = $this->sendJsonApiRequest($url, $data);
+
+        return $this->getParser()->parseDisputeResult($httpResponse->getBody());
+    }
+
+    /**
+     * @param DisputeMetadataData $disputeMetadataData
+     * @return Dispute\DisputeResult
+     * @throws ClientException
+     * @throws GeneralErrorException
+     * @throws Http\Exception\ClientException
+     * @throws RateLimitException
+     * @throws TimeoutException
+     */
+    public function fetchDisputeMetadata(DisputeMetadataData $disputeMetadataData)
+    {
+        $url = $this->parseDisputeUrl(
+            $disputeMetadataData->getUuid(),
+            self::DISPUTE_METADATA
+        );
+
+        $data = [];
+
+        if ($extraData = $disputeMetadataData->getExtraData()) {
+            $data['extraData'] = $this->getGenerator()->stringifyExtraData($extraData);
+        }
+
+        $httpResponse = $this->sendJsonApiRequest($url, $data);
+
+        return $this->getParser()->parseDisputeResult($httpResponse->getBody());
+    }
+
+    /**
+     * @param DisputeUploadEvidenceData $disputeUploadEvidenceData
+     * @return Dispute\DisputeResult
+     * @throws ClientException
+     * @throws GeneralErrorException
+     * @throws Http\Exception\ClientException
+     * @throws RateLimitException
+     * @throws TimeoutException
+     */
+    public function uploadDisputeEvidence(DisputeUploadEvidenceData $disputeUploadEvidenceData)
+    {
+        $url = $this->parseDisputeUrl(
+            $disputeUploadEvidenceData->getUuid(),
+            self::DISPUTE_UPLOAD_EVIDENCE
+        );
+
+        $data = [];
+
+        if ($extraData = $disputeUploadEvidenceData->getExtraData()) {
+            $data['extraData'] = json_encode(
+                $this->getGenerator()->stringifyExtraData($extraData)
+            );
+        }
+
+        $curlFile = new \CURLFile(
+            $disputeUploadEvidenceData->getFilePathWithFileName(),
+            null,
+            $disputeUploadEvidenceData->getPostName()
+        );
+
+        $data['file'] = $curlFile;
+
+        $httpResponse = $this->sendMultiPartFormDataRequest($url, $data);
+
+        return $this->getParser()->parseDisputeResult($httpResponse->getBody());
+    }
+
+    /**
+     * @param DisputeSubmitEvidenceData $disputeSubmitEvidenceData
+     * @return Dispute\DisputeResult
+     * @throws ClientException
+     * @throws GeneralErrorException
+     * @throws Http\Exception\ClientException
+     * @throws RateLimitException
+     * @throws TimeoutException
+     */
+    public function submitDisputeEvidence(DisputeSubmitEvidenceData $disputeSubmitEvidenceData)
+    {
+        $url = $this->parseDisputeUrl(
+            $disputeSubmitEvidenceData->getUuid(),
+            self::DISPUTE_SUBMIT_EVIDENCE
+        );
+
+        $data = [];
+
+        if ($extraData = $disputeSubmitEvidenceData->getExtraData()) {
+            $data['extraData'] = $this->getGenerator()->stringifyExtraData($extraData);
+        }
+
+        $httpResponse = $this->sendJsonApiRequest($url, $data);
+
+        return $this->getParser()->parseDisputeResult($httpResponse->getBody());
+    }
+
+    /**
+     * @param $uuid
+     * @return string
+     */
+    private function parseDisputeUrl($uuid, $subject)
+    {
+        return str_replace(
+            '{uuid}',
+            $uuid,
+            $subject
+        );
     }
 
     /**
