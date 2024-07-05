@@ -10,6 +10,11 @@ trait IndicatorTrait
     protected $transactionIndicator;
 
     /**
+     * @var string
+     */
+    private $industryPractice;
+
+    /**
      * @return string
      */
     public function getTransactionIndicator()
@@ -25,5 +30,26 @@ trait IndicatorTrait
         $this->transactionIndicator = $transactionIndicator;
 
         return $this;
+    }
+
+    /**
+     * Get the industry practice indicator.
+     *
+     * @return string|null
+     */
+    public function getIndustryPractice()
+    {
+        return $this->industryPractice;
+    }
+
+    /**
+     * Set the industry practice indicator.
+     *
+     * @param string|null $industryPractice
+     * @return void
+     */
+    public function setIndustryPractice( $industryPractice)
+    {
+        $this->industryPractice = $industryPractice;
     }
 }
