@@ -11,8 +11,8 @@ use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
 use Ixopay\Client\Transaction\Base\IndicatorInterface;
 use Ixopay\Client\Transaction\Base\IndicatorTrait;
-use Ixopay\Client\Transaction\Base\industryPracticeInterface;
-use Ixopay\Client\Transaction\Base\industryPracticeTrait;
+use Ixopay\Client\Transaction\Base\IndustryPracticeInterface;
+use Ixopay\Client\Transaction\Base\IndustryPracticeTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataInterface;
@@ -55,7 +55,7 @@ class Debit extends AbstractTransactionWithReference
                ReferenceSchemeTransactionIdentifierInterface,
                RecipientAccountPanInterface,
                LevelTwoAndThreeDataInterface,
-               industryPracticeInterface
+               IndustryPracticeInterface
 {
     use AddToCustomerProfileTrait;
     use AmountableTrait;
@@ -72,7 +72,7 @@ class Debit extends AbstractTransactionWithReference
     use ReferenceSchemeTransactionIdentifierTrait;
     use RecipientAccountPanTrait;
     use LevelTwoAndThreeDataTrait;
-    use industryPracticeTrait;
+    use IndustryPracticeTrait;
 
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
     const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';
