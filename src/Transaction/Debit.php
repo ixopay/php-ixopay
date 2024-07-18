@@ -11,6 +11,8 @@ use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
 use Ixopay\Client\Transaction\Base\IndicatorInterface;
 use Ixopay\Client\Transaction\Base\IndicatorTrait;
+use Ixopay\Client\Transaction\Base\industryPracticeInterface;
+use Ixopay\Client\Transaction\Base\industryPracticeTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataInterface;
@@ -39,20 +41,21 @@ use Ixopay\Client\Transaction\Base\ThreeDSecureTrait;
  * @package Ixopay\Client\Transaction
  */
 class Debit extends AbstractTransactionWithReference
-            implements AddToCustomerProfileInterface,
-                       AmountableInterface,
-                       CustomerInterface,
-                       ItemsInterface,
-                       TransactionSplitsInterface,
-                       OffsiteInterface,
-                       ScheduleInterface,
-                       ThreeDSecureInterface,
-                       IndicatorInterface,
-                       DccDataInterface,
-                       SurchargeInterface,
-                       ReferenceSchemeTransactionIdentifierInterface,
-                       RecipientAccountPanInterface,
-                       LevelTwoAndThreeDataInterface
+    implements AddToCustomerProfileInterface,
+               AmountableInterface,
+               CustomerInterface,
+               ItemsInterface,
+               TransactionSplitsInterface,
+               OffsiteInterface,
+               ScheduleInterface,
+               ThreeDSecureInterface,
+               IndicatorInterface,
+               DccDataInterface,
+               SurchargeInterface,
+               ReferenceSchemeTransactionIdentifierInterface,
+               RecipientAccountPanInterface,
+               LevelTwoAndThreeDataInterface,
+               industryPracticeInterface
 {
     use AddToCustomerProfileTrait;
     use AmountableTrait;
@@ -69,6 +72,7 @@ class Debit extends AbstractTransactionWithReference
     use ReferenceSchemeTransactionIdentifierTrait;
     use RecipientAccountPanTrait;
     use LevelTwoAndThreeDataTrait;
+    use industryPracticeTrait;
 
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
     const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';
@@ -105,7 +109,8 @@ class Debit extends AbstractTransactionWithReference
     /**
      * @return boolean
      */
-    public function isWithRegister() {
+    public function isWithRegister()
+    {
         return $this->withRegister;
     }
 
@@ -116,7 +121,8 @@ class Debit extends AbstractTransactionWithReference
      *
      * @return $this
      */
-    public function setWithRegister($withRegister) {
+    public function setWithRegister($withRegister)
+    {
         $this->withRegister = $withRegister;
         return $this;
     }
