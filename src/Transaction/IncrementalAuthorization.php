@@ -7,6 +7,8 @@ use Ixopay\Client\Transaction\Base\AmountableInterface;
 use Ixopay\Client\Transaction\Base\AmountableTrait;
 use Ixopay\Client\Transaction\Base\IndicatorInterface;
 use Ixopay\Client\Transaction\Base\IndicatorTrait;
+use Ixopay\Client\Transaction\Base\industryPracticeInterface;
+use Ixopay\Client\Transaction\Base\industryPracticeTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataInterface;
@@ -19,22 +21,25 @@ use Ixopay\Client\Transaction\Base\OffsiteTrait;
  * @package IxopayV2\Transaction
  */
 class IncrementalAuthorization extends AbstractTransactionWithReference
-                               implements   AmountableInterface,
-                                            OffsiteInterface,
-                                            ItemsInterface,
-                                            IndicatorInterface,
-                                            LevelTwoAndThreeDataInterface
+    implements AmountableInterface,
+               OffsiteInterface,
+               ItemsInterface,
+               IndicatorInterface,
+               LevelTwoAndThreeDataInterface,
+               industryPracticeInterface
 {
     use OffsiteTrait;
     use AmountableTrait;
     use ItemsTrait;
     use IndicatorTrait;
     use LevelTwoAndThreeDataTrait;
+    use industryPracticeTrait;
 
     /**
      * @return string
      */
-    public function getTransactionMethod() {
+    public function getTransactionMethod()
+    {
         return self::TRANSACTION_METHOD_INCREMENTAL_AUTHORIZATION;
     }
 }

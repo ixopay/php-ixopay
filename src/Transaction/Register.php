@@ -9,6 +9,8 @@ use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
 use Ixopay\Client\Transaction\Base\IndicatorInterface;
 use Ixopay\Client\Transaction\Base\IndicatorTrait;
+use Ixopay\Client\Transaction\Base\IndustryPracticeInterface;
+use Ixopay\Client\Transaction\Base\IndustryPracticeTrait;
 use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataInterface;
 use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
@@ -27,13 +29,14 @@ use Ixopay\Client\Transaction\Base\ThreeDSecureTrait;
  * @package Ixopay\Client\Transaction
  */
 class Register extends AbstractTransaction
-               implements AddToCustomerProfileInterface,
-                          CustomerInterface,
-                          OffsiteInterface,
-                          ScheduleInterface,
-                          ThreeDSecureInterface,
-                          IndicatorInterface,
-                          LevelTwoAndThreeDataInterface
+    implements AddToCustomerProfileInterface,
+               CustomerInterface,
+               OffsiteInterface,
+               ScheduleInterface,
+               ThreeDSecureInterface,
+               IndicatorInterface,
+               LevelTwoAndThreeDataInterface,
+               IndustryPracticeInterface
 {
 
     use AddToCustomerProfileTrait;
@@ -44,6 +47,7 @@ class Register extends AbstractTransaction
     use PayByLinkTrait;
     use IndicatorTrait;
     use LevelTwoAndThreeDataTrait;
+    use IndustryPracticeTrait;
 
     /** @var string */
     protected $language;
@@ -87,4 +91,5 @@ class Register extends AbstractTransaction
     {
         $this->language = $language;
     }
+
 }

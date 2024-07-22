@@ -8,6 +8,8 @@ use Ixopay\Client\Transaction\Base\AmountableTrait;
 use Ixopay\Client\Transaction\Base\CustomerInterface;
 use Ixopay\Client\Transaction\Base\CustomerTrait;
 use Ixopay\Client\Transaction\Base\IndicatorInterface;
+use Ixopay\Client\Transaction\Base\IndustryPracticeInterface;
+use Ixopay\Client\Transaction\Base\IndustryPracticeTrait;
 use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataInterface;
@@ -25,13 +27,14 @@ use Ixopay\Client\Transaction\Base\IndicatorTrait;
  * @package Ixopay\Client\Transaction
  */
 class Payout extends AbstractTransactionWithReference
-             implements AmountableInterface,
-                        CustomerInterface,
-                        ItemsInterface,
-                        OffsiteInterface,
-                        TransactionSplitsInterface,
-                        IndicatorInterface,
-                        LevelTwoAndThreeDataInterface
+    implements AmountableInterface,
+               CustomerInterface,
+               ItemsInterface,
+               OffsiteInterface,
+               TransactionSplitsInterface,
+               IndicatorInterface,
+               LevelTwoAndThreeDataInterface,
+               IndustryPracticeInterface
 {
 
     use AmountableTrait;
@@ -42,6 +45,7 @@ class Payout extends AbstractTransactionWithReference
     use PayByLinkTrait;
     use IndicatorTrait;
     use LevelTwoAndThreeDataTrait;
+    use IndustryPracticeTrait;
 
     /** @var string */
     protected $transactionToken;

@@ -15,4 +15,5 @@ interface IndicatorInterface
      * @return $this
      */
     public function setTransactionIndicator($transactionIndicator);
+
 }

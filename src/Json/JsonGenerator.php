@@ -164,6 +164,7 @@ class JsonGenerator {
             'splits' => $this->createSplits($transaction->getTransactionSplits()),
             'withRegister' => $transaction->isWithRegister(),
             'transactionIndicator' => $transaction->getTransactionIndicator(),
+            'industryPractice' => $transaction->getIndustryPractice(),
             'customer' => $this->createCustomer($transaction->getCustomer()),
             'schedule' => $this->createSchedule($transaction->getSchedule()),
             'customerProfileData' => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
@@ -217,6 +218,7 @@ class JsonGenerator {
             'description' => $transaction->getDescription(),
             'items' => $this->createItems($transaction->getItems()),
             'transactionIndicator' => $transaction->getTransactionIndicator(),
+            'industryPractice' => $transaction->getIndustryPractice(),
             'language' => $language,
         ];
 
@@ -292,6 +294,7 @@ class JsonGenerator {
             'transactionToken' => $transaction->getTransactionToken(),
             'description' => $transaction->getDescription(),
             'transactionIndicator' => $transaction->getTransactionIndicator(),
+            'industryPractice' => $transaction->getIndustryPractice(),
             'customer' => $this->createCustomer($transaction->getCustomer()),
             'schedule' => $this->createSchedule($transaction->getSchedule()),
             'customerProfileData' => $this->createAddToCustomerProfile($transaction->getCustomerProfileData()),
@@ -378,6 +381,7 @@ class JsonGenerator {
             'customer' => $this->createCustomer($transaction->getCustomer()),
             'language' => $language,
             'transactionIndicator' => $transaction->getTransactionIndicator(),
+            'industryPractice' => $transaction->getIndustryPractice(),
         ];
 
         if ($transaction->getL2L3Data()) {
