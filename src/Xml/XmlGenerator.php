@@ -8,6 +8,7 @@ use Ixopay\Client\Data\IbanCustomer;
 use Ixopay\Client\Data\Request;
 use Ixopay\Client\Exception\InvalidValueException;
 use Ixopay\Client\Schedule\ScheduleData;
+use Ixopay\Client\Exception\NotSupportedException;
 use Ixopay\Client\Exception\TypeException;
 use Ixopay\Client\StatusApi\StatusRequestData;
 use Ixopay\Client\Transaction\Base\AbstractTransaction;
@@ -102,8 +103,10 @@ class XmlGenerator {
                     $node = $this->generatePayoutNode($transaction, $method);
                     break;
                 default:
-                    return null;
-                    break;
+                    throw new NotSupportedException(\sprintf(
+                        'Transaction Type %s is not supported',
+                        \substr(\get_class($transaction), \strrpos('\\') + 1)
+                    ));
             }
         }
 
