@@ -89,6 +89,11 @@ class StatusResult {
     /**
      * @var string
      */
+    protected $transactionSubType;
+
+    /**
+     * @var string
+     */
     protected $paymentMethod;
 
     /**
@@ -453,6 +458,25 @@ class StatusResult {
      */
     public function setTransactionType($transactionType) {
         $this->transactionType = $transactionType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionSubType()
+    {
+        return $this->transactionSubType;
+    }
+
+    /**
+     * @param string $transactionSubType
+     *
+     * @return $this
+     */
+    public function setTransactionSubType($transactionSubType)
+    {
+        $this->transactionSubType = $transactionSubType;
+        return $this;
     }
 
     /**

@@ -179,6 +179,10 @@ class JsonParser {
             $result->setTransactionSplits($splits);
         }
 
+        if (isset($json['transactionSubType'])) {
+            $result->setTransactionSubType($json['transactionSubType']);
+        }
+
         return $result;
     }
 
@@ -294,6 +298,10 @@ class JsonParser {
         if(isset($json['customerProfileData'])) {
             $customerProfileData = $this->parseCustomerProfileData($json['customerProfileData']);
             $result->setCustomerProfileData($customerProfileData);
+        }
+
+        if (isset($json['transactionSubType'])) {
+            $result->setTransactionSubType($json['transactionSubType']);
         }
 
         return $result;
