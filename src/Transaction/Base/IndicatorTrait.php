@@ -26,4 +26,5 @@ trait IndicatorTrait
 
         return $this;
     }
+
 }
