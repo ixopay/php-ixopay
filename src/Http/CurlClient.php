@@ -171,9 +171,7 @@ class CurlClient implements ClientInterface {
             $allHeaders[] = 'X-SDK-PlatformVersion: ' . phpversion();
         }
 
-        if (!empty($allHeaders)) {
-            $this->setOption(CURLOPT_HTTPHEADER, $allHeaders);
-        }
+        $this->setOption(CURLOPT_HTTPHEADER, $allHeaders);
 
         if($this->customOptions){
             $this->setOptionArray($this->customOptions);

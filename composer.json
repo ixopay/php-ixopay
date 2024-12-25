@@ -13,7 +13,7 @@
     },
     "scripts": {
         "phpstan": [
-            "./vendor/bin/phpstan analyze -l 0 -- src"
+            "./vendor/bin/phpstan analyze -l 1 -- src"
         ]
     },
     "autoload": {

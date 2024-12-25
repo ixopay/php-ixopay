@@ -15,7 +15,22 @@ use Ixopay\Client\Json\DataObject;
  *
  * @package Ixopay\Client\Data
  */
-class RiskCheckData extends DataObject {
+class RiskCheckData extends DataObject
+{
+    /**
+     * @var string
+     */
+    protected $riskCheckResult;
+
+    /**
+     * @var string
+     */
+    protected $riskScore;
+
+    /**
+     * @var bool
+     */
+    protected $threeDSecureRequired;
 
     /**
      * @return string
