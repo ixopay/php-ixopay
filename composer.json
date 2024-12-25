@@ -7,7 +7,7 @@
     "license": "MIT",
     "type": "library",
     "require": {
-        "php": ">=5.6",
+        "php": ">=v8.1",
         "ext-curl": "*",
         "psr/log": "*"
     },
