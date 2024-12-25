@@ -2,6 +2,8 @@
 
 namespace Ixopay\Client\Dispute;
 
+use Ixopay\Client\Transaction\Error;
+
 class DisputeResult
 {
     /**

@@ -31,7 +31,7 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
-     * @param ?CustomerProfileData|null $customerProfileData
+     * @param ?CustomerProfileData $customerProfileData
      *
      * @return $this
      */

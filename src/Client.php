@@ -1178,7 +1178,7 @@ class Client
      * @return DeleteProfileResponse|ErrorResponse
      * @throws ClientException
      * @throws Http\Exception\ClientException
-     * @throws TimeoutException#
+     * @throws TimeoutException
      * @throws RateLimitException
      * @throws GeneralErrorException
      */

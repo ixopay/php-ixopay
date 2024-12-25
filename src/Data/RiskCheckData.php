@@ -7,12 +7,6 @@ use Ixopay\Client\Json\DataObject;
 /**
  * Class RiskCheckData
  *
- *
- * @property string riskCheckResult
- * @property int riskScore
- * @property boolean threeDSecureRequired
- *
- *
  * @package Ixopay\Client\Data
  */
 class RiskCheckData extends DataObject
