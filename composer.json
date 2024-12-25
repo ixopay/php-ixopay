@@ -9,6 +9,8 @@
     "require": {
         "php": ">=v8.1",
         "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-json": "*",
         "psr/log": "*"
     },
     "scripts": {
