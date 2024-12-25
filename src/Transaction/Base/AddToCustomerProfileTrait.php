@@ -19,7 +19,7 @@ trait AddToCustomerProfileTrait {
     protected $addToCustomerProfile = false;
 
     /**
-     * @var CustomerProfileData
+     * @var CustomerProfileData|null
      */
     protected $customerProfileData;
 
@@ -31,12 +31,14 @@ trait AddToCustomerProfileTrait {
     }
 
     /**
-     * @param CustomerProfileData|null $customerProfileData
+     * @param ?CustomerProfileData|null $customerProfileData
      *
      * @return $this
      */
-    public function setCustomerProfileData(CustomerProfileData $customerProfileData = null) {
+    public function setCustomerProfileData(?CustomerProfileData $customerProfileData = null)
+    {
         $this->customerProfileData = $customerProfileData;
+
         return $this;
     }
 

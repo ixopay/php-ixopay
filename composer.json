@@ -11,13 +11,23 @@
         "ext-curl": "*",
         "psr/log": "*"
     },
+    "scripts": {
+        "phpstan": [
+            "./vendor/bin/phpstan analyze -l 0 -- src"
+        ]
+    },
     "autoload": {
         "psr-4": {
             "Ixopay\\Client\\": "src/"
         }
     },
-    "scripts": {
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "require-dev": {
+        "phpstan/phpstan": "^2.0"
+    }
 }

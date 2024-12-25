@@ -76,41 +76,27 @@ class DataObject implements \ArrayAccess, \JsonSerializable {
         return json_encode($this->_data) ?: '';
     }
 
-
-    /**
-     * @param string $offset
-     * @return bool
-     */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset) {
         return array_key_exists($offset, $this->_data);
     }
 
-    /**
-     * @param string $offset
-     * @return mixed|null
-     */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset) {
         return $this->__get($offset);
     }
 
-    /**
-     * @param string $offset
-     * @param mixed $value
-     */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value) {
         return $this->__set($offset, $value);
     }
 
-    /**
-     * @param string $offset
-     */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset) {
         $this->__unset($offset);
     }
 
-    /**
-     * @return array
-     */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize() {
         return $this->_data;
     }

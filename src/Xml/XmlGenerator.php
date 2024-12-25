@@ -103,10 +103,13 @@ class XmlGenerator {
                     $node = $this->generatePayoutNode($transaction, $method);
                     break;
                 default:
-                    throw new NotSupportedException(\sprintf(
+                    $className = get_class($transaction);
+                    $e = sprintf(
                         'Transaction Type %s is not supported',
-                        \substr(\get_class($transaction), \strrpos('\\') + 1)
-                    ));
+                        substr($className, strrpos($className, '\\') + 1),
+                    );
+
+                    throw new NotSupportedException($e);
             }
         }
 
@@ -347,15 +350,15 @@ class XmlGenerator {
             if ($transaction->getMarkAsPreferred()) {
                 $this->_appendTextNode($profileNode, 'markAsPreferred', 'true');
             }
-            
+
             $parentNode->appendChild($profileNode);
-            
+
         } elseif ($transaction->getCustomerProfileIdentification()) {
             $this->_appendTextNode($profileNode, 'customerIdentification', $transaction->getCustomerProfileIdentification());
             if ($transaction->getMarkAsPreferred()) {
                 $this->_appendTextNode($profileNode, 'markAsPreferred', 'true');
             }
-            
+
             $parentNode->appendChild($profileNode);
         }
 
@@ -400,7 +403,7 @@ class XmlGenerator {
     protected function appendAmountableNodes(\DOMNode $parentNode, AmountableInterface $transaction) {
         $this->verifyAmountType($transaction->getAmount(), 'amount');
         $this->verifyCurrencyType($transaction->getCurrency(), 'currency');
-		
+
         $this->_appendTextNode($parentNode, 'amount', number_format($transaction->getAmount(), 2, '.', ''));
         $this->_appendTextNode($parentNode, 'currency', $transaction->getCurrency());
     }
@@ -792,7 +795,7 @@ class XmlGenerator {
             throw new TypeException('Value of '.$elementName.' must be a Date/Time object in future');
         }
     }
-    
+
     /**
      * @param \DOMNode $parentNode
      * @param string $nodeName

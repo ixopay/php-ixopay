@@ -17,10 +17,10 @@ interface AddToCustomerProfileInterface {
     public function getCustomerProfileData();
 
     /**
-     * @param CustomerProfileData $customerProfileData
+     * @param ?CustomerProfileData $customerProfileData
      */
-    public function setCustomerProfileData(CustomerProfileData $customerProfileData = null);
-    
+    public function setCustomerProfileData(?CustomerProfileData $customerProfileData = null);
+
     /**
      * @param bool $addToCustomerProfile
      */
@@ -50,7 +50,7 @@ interface AddToCustomerProfileInterface {
      * @return string
      */
     public function getCustomerProfileIdentification();
-    
+
     /**
      * @return bool
      */

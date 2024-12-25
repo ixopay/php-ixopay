@@ -30,11 +30,4 @@ class IncrementalAuthorization extends AbstractTransactionWithReference
     use ItemsTrait;
     use IndicatorTrait;
     use LevelTwoAndThreeDataTrait;
-
-    /**
-     * @return string
-     */
-    public function getTransactionMethod() {
-        return self::TRANSACTION_METHOD_INCREMENTAL_AUTHORIZATION;
-    }
 }
