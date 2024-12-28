@@ -11,7 +11,7 @@
         "ext-curl": "*",
         "ext-dom": "*",
         "ext-json": "*",
-        "psr/log": "*"
+        "psr/log": "^1.0.0 || ^2.0.0 || ^3.0.0"
     },
     "scripts": {
         "phpstan": [
