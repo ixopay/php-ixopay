@@ -78,9 +78,6 @@ use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Result;
 
-// Include the autoloader (if not already done via Composer autoloader)
-require_once('path/to/initClientAutoload.php');
-
 // Instantiate the "Ixopay\Client\Client" with your credentials
 $api_user = "your_username";
 $api_password = "your_username";
@@ -95,6 +92,8 @@ Once you instantiated a [client with credentials](#setting-up-credentials),
 you can use the instance to make transaction API calls.
 
 ```php
+<?php
+
 // define your transaction ID: e.g. 'myId-'.date('Y-m-d').'-'.uniqid()
 $merchantTransactionId = 'your_transaction_id'; // must be unique
 
