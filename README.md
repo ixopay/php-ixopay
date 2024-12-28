@@ -34,8 +34,8 @@ provides convenient access to the [IXOPAY REST APIs][ixopay-docs-api].
 
 ### Requirements
 
-- PHP 5.6 or newer
-- Installed [Composer][composer]
+- PHP v8.1 or newer
+- [Composer][composer]
 
 ### Composer
 
