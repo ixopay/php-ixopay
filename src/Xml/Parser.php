@@ -417,7 +417,7 @@ class Parser {
 
     /**
      * @param \DOMNode $node
-     * @return string
+     * @return ?string
      */
     protected function parseRedirectType(\DOMNode $node) {
         if ($node && $node->attributes) {
