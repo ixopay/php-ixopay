@@ -23,7 +23,7 @@ class StatusRequestData {
     /**
      * the referenceId received by the transaction response
      *
-     * @var string
+     * @var ?string
      */
     protected $uuid;
 

@@ -395,9 +395,10 @@ class JsonGenerator {
      *
      * @param $items
      *
-     * @return array
+     * @return array|null
      */
-    protected function createItems($items){
+    protected function createItems($items)
+    {
 
         if(!$items){
             return null;
@@ -428,10 +429,10 @@ class JsonGenerator {
      *
      * @param $transactionSplits
      *
-     * @return array
+     * @return array|null
      */
-    protected function createSplits($transactionSplits){
-
+    protected function createSplits($transactionSplits)
+    {
         if(!$transactionSplits){
             return null;
         }

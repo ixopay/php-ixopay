@@ -167,7 +167,7 @@ class CreditCardCustomer extends Customer {
 
     /**
      * @deprecated
-     * @param int $cvv
+     * @param string $cvv
      *
      * @return $this
      */

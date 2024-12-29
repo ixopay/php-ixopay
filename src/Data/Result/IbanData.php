@@ -108,12 +108,12 @@ class IbanData extends ResultData {
      * @return array
      */
     public function toArray() {
-        return array(
+        return [
             'accountOwner' => $this->getAccountOwner(),
             'iban' => $this->getIban(),
             'bic' => $this->getBic(),
             'bankName' => $this->getBankName(),
             'country' => $this->getCountry()
-        );
+        ];
     }
 }

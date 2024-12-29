@@ -2,6 +2,7 @@
 
 namespace Ixopay\Client\Http;
 
+use CurlHandle;
 use Ixopay\Client\Client;
 use Ixopay\Client\Http\Exception\ClientException;
 
@@ -17,7 +18,7 @@ class CurlClient implements ClientInterface {
     const METHOD_PUT = 'put';
 
     /**
-     * @var resource
+     * @var CurlHandle
      */
     private $handle;
 
@@ -132,15 +133,6 @@ class CurlClient implements ClientInterface {
     public function setCustomCurlOptions(array $customOptions){
         $this->customOptions = $customOptions;
         return $this;
-    }
-
-    /**
-     *
-     */
-    public function __destruct() {
-        if (is_resource($this->handle)) {
-            curl_close($this->handle);
-        }
     }
 
     /**

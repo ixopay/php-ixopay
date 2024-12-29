@@ -88,7 +88,7 @@ class DataObject implements \ArrayAccess, \JsonSerializable {
 
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value) {
-        return $this->__set($offset, $value);
+        $this->__set($offset, $value);
     }
 
     #[\ReturnTypeWillChange]

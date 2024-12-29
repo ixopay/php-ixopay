@@ -552,7 +552,7 @@ class JsonParser {
      * @param      $key
      * @param null $default
      *
-     * @return null
+     * @return mixed
      */
     protected function arrGet($arr, $key, $default=null){
         if(isset($arr[$key])){

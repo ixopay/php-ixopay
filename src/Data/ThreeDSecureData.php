@@ -73,16 +73,16 @@ class ThreeDSecureData extends DataObject
     /** @var \DateTime */
     protected $shippingAddressFirstUsage;
 
-    /** @var int */
+    /** @var null|int */
     protected $transactionActivityDay;
 
-    /** @var int */
+    /** @var int|null */
     protected $transactionActivityYear;
 
-    /** @var int */
+    /** @var int|null */
     protected $addCardAttemptsDay;
 
-    /** @var int */
+    /** @var int|null */
     protected $purchaseCountSixMonths;
 
     /** @var string */
@@ -689,7 +689,7 @@ class ThreeDSecureData extends DataObject
     }
 
     /**
-     * @return string
+     * @return int|null
      */
     public function getTransactionActivityDay()
     {
@@ -697,7 +697,7 @@ class ThreeDSecureData extends DataObject
     }
 
     /**
-     * @param string $transactionActivityDay
+     * @param int|null $transactionActivityDay
      *
      * @return ThreeDSecureData
      */
@@ -708,7 +708,7 @@ class ThreeDSecureData extends DataObject
     }
 
     /**
-     * @return string
+     * @return int|null
      */
     public function getTransactionActivityYear()
     {
@@ -716,7 +716,7 @@ class ThreeDSecureData extends DataObject
     }
 
     /**
-     * @param string $transactionActivityYear
+     * @param int|null $transactionActivityYear
      *
      * @return ThreeDSecureData
      */
@@ -727,7 +727,7 @@ class ThreeDSecureData extends DataObject
     }
 
     /**
-     * @return string
+     * @return int|null
      */
     public function getAddCardAttemptsDay()
     {
@@ -735,7 +735,7 @@ class ThreeDSecureData extends DataObject
     }
 
     /**
-     * @param string $addCardAttemptsDay
+     * @param int|null $addCardAttemptsDay
      *
      * @return ThreeDSecureData
      */
@@ -746,7 +746,7 @@ class ThreeDSecureData extends DataObject
     }
 
     /**
-     * @return string
+     * @return int|null
      */
     public function getPurchaseCountSixMonths()
     {
@@ -754,7 +754,7 @@ class ThreeDSecureData extends DataObject
     }
 
     /**
-     * @param string $purchaseCountSixMonths
+     * @param int|null $purchaseCountSixMonths
      *
      * @return ThreeDSecureData
      */

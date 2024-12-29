@@ -17,7 +17,7 @@ class RiskCheckData extends DataObject
     protected $riskCheckResult;
 
     /**
-     * @var string
+     * @var int
      */
     protected $riskScore;
 
