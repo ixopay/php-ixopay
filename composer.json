@@ -15,7 +15,7 @@
     },
     "scripts": {
         "phpstan": [
-            "./vendor/bin/phpstan analyze -l 2 -- src examples"
+            "./vendor/bin/phpstan analyze -l 3 -- src examples"
         ]
     },
     "autoload": {
