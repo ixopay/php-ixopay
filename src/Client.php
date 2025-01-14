@@ -50,7 +50,7 @@ use Psr\Log\LogLevel;
  */
 class Client
 {
-    const VERSION = '3.18.1';
+    const VERSION = '3.19.0';
 
     /**
      * The default url points to the IxoPay Gateway
