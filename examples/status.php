@@ -1,7 +1,6 @@
 <?php
 
-// include the autoloader
-require_once('path/to/vendor/autoload.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
 
 use Ixopay\Client\Client;
 use Ixopay\Client\StatusApi\StatusRequestData;

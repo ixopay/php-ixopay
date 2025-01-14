@@ -351,14 +351,14 @@ class Result {
     /**
      * tells you how to proceed with the transaction
      *
-     * @return int
+     * @return string
      */
     public function getReturnType() {
         return $this->returnType;
     }
 
     /**
-     * @param int $returnType
+     * @param string $returnType
      *
      * @return $this
      */

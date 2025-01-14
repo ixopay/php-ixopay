@@ -7,16 +7,33 @@
     "license": "MIT",
     "type": "library",
     "require": {
-        "php": ">=5.6",
+        "php": ">=v8.1",
         "ext-curl": "*",
-        "psr/log": "*"
+        "ext-dom": "*",
+        "ext-json": "*",
+        "psr/log": "^1.0.0 || ^2.0.0 || ^3.0.0"
+    },
+    "require-dev": {
+        "php-parallel-lint/php-console-highlighter": "^1.0",
+        "php-parallel-lint/php-parallel-lint": "^1.4",
+        "phpstan/phpstan": "^2.0"
+    },
+    "scripts": {
+        "phpstan": [
+            "./vendor/bin/phpstan analyze -l 3 -- src examples"
+        ],
+        "parallel-lint": [
+            "vendor/bin/parallel-lint --colors --blame ."
+        ]
     },
     "autoload": {
         "psr-4": {
             "Ixopay\\Client\\": "src/"
         }
     },
-    "scripts": {
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true

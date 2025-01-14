@@ -1,7 +1,7 @@
 <?php
 
 // include the autoloader
-require_once('path/to/vendor/autoload.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
 
 use Ixopay\Client\Client;
 use Ixopay\Client\Callback\Result;
@@ -27,6 +27,7 @@ if($valid){
 // handle callback data
 $myTransactionId = $callbackResult->getMerchantTransactionId();
 $gatewayTransactionId = $callbackResult->getUuid();
+$status = $callbackResult->getResult();
 
 if ($status === Result::RESULT_OK) {
 

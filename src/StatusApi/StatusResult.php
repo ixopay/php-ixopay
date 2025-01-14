@@ -124,9 +124,9 @@ class StatusResult {
     protected $errors = array();
 
     /**
-     * @var ChargebackData
+     * @var ?ChargebackData
      */
-    protected $chargebackData = array();
+    protected $chargebackData = null;
 
     /**
      * for your internal use
@@ -529,9 +529,9 @@ class StatusResult {
     }
 
     /**
-     * @param ChargebackData $chargebackData
+     * @param ?ChargebackData $chargebackData
      */
-    public function setChargebackData(ChargebackData $chargebackData) {
+    public function setChargebackData(?ChargebackData $chargebackData) {
         $this->chargebackData = $chargebackData;
     }
 

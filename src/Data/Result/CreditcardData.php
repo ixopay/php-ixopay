@@ -251,7 +251,9 @@ class CreditcardData extends ResultData {
      * @return $this
      */
     public function setFirstSixDigits($firstSixDigits) {
-        return $this->setBinDigits($firstSixDigits);
+        $this->setBinDigits($firstSixDigits);
+
+        return $this;
     }
 
     /**
@@ -450,16 +452,38 @@ class CreditcardData extends ResultData {
      * @return array
      */
     public function toArray() {
-        $resultData = array();
+        $resultData = [];
 
-        foreach ($this as $field => $value) {
-            $resultData[$field] = $value;
+        $fields = [
+            'binBank',
+            'binBrand',
+            'binCountry',
+            'binDigits',
+            'binLevel',
+            'binType',
+            'cardHolder',
+            'country',
+            'eci',
+            'expiryMonth',
+            'expiryYear',
+            'fingerprint',
+            'firstName',
+            // 'firstSixDigits',
+            'lastFourDigits',
+            'lastName',
+            'schemeTransactionIdentifier',
+            'threeDSecure',
+            'type',
+        ];
+
+        foreach ($fields as $field) {
+            $resultData[$field] = $this->{$field};
         }
+
         // Property $firstSixDigits was removed because of the implementation of
         // binDigits. For backwards compatibility this will be set directly.
         $resultData['firstSixDigits'] = $this->getFirstSixDigits();
 
         return $resultData;
     }
-
 }

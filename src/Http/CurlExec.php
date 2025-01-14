@@ -3,6 +3,8 @@
 
 namespace Ixopay\Client\Http;
 
+use CurlHandle;
+
 /**
  * Class CurlExec
  *
@@ -11,7 +13,7 @@ namespace Ixopay\Client\Http;
 class CurlExec {
 
     /**
-     * @var resource
+     * @var CurlHandle
      */
     private $handle;
 
@@ -26,37 +28,25 @@ class CurlExec {
     private $headers = array();
 
     /**
-     * @var string
+     * @var ?string
      */
     private $body;
 
     /**
-     * @param resource $handle
+     * @param CurlHandle $handle
      */
     public function __construct($handle) {
         $this->handle = $handle;
-        curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, array($this, 'readHeaders'));
         $this->reset();
     }
 
     /**
-     * @param resource $handle
+     * @param CurlHandle $handle
      *
      * @return CurlExec
      */
     public static function getInstance($handle) {
         return new self($handle);
-    }
-
-    /**
-     * @param resource $curl
-     * @param string   $headerLine
-     *
-     * @return int
-     */
-    private function readHeaders($curl, $headerLine) {
-        $this->headerString .= $headerLine;
-        return strlen($headerLine);
     }
 
     /**

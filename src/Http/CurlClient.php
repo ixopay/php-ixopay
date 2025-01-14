@@ -2,6 +2,7 @@
 
 namespace Ixopay\Client\Http;
 
+use CurlHandle;
 use Ixopay\Client\Client;
 use Ixopay\Client\Http\Exception\ClientException;
 
@@ -17,7 +18,7 @@ class CurlClient implements ClientInterface {
     const METHOD_PUT = 'put';
 
     /**
-     * @var resource
+     * @var CurlHandle
      */
     private $handle;
 
@@ -135,15 +136,6 @@ class CurlClient implements ClientInterface {
     }
 
     /**
-     *
-     */
-    public function __destruct() {
-        if (is_resource($this->handle)) {
-            curl_close($this->handle);
-        }
-    }
-
-    /**
      * Execute the request and return the response
      *
      * @param string $method
@@ -171,9 +163,7 @@ class CurlClient implements ClientInterface {
             $allHeaders[] = 'X-SDK-PlatformVersion: ' . phpversion();
         }
 
-        if (!empty($allHeaders)) {
-            $this->setOption(CURLOPT_HTTPHEADER, $allHeaders);
-        }
+        $this->setOption(CURLOPT_HTTPHEADER, $allHeaders);
 
         if($this->customOptions){
             $this->setOptionArray($this->customOptions);

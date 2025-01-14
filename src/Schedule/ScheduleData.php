@@ -197,8 +197,7 @@ class ScheduleData implements AmountableInterface {
     }
 
     /**
-     * @param \DateTime|string
-     *
+     * @param \DateTime|string $startDateTime
      * @return ScheduleData
      * @throws \Exception
      */
@@ -219,7 +218,7 @@ class ScheduleData implements AmountableInterface {
     }
 
     /**
-     * @param string|null
+     * @param string|null $format
      * @return string|null
      */
     public function getContinueDateTimeFormatted($format = null) {
@@ -227,7 +226,7 @@ class ScheduleData implements AmountableInterface {
     }
 
     /**
-     * @param null|\DateTime
+     * @param null|\DateTime $continueDateTime
      *
      * @return ScheduleData
      */

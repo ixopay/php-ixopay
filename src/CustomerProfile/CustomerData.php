@@ -9,7 +9,7 @@ use Ixopay\Client\Json\DataObject;
  *
  * @package Ixopay\Client\CustomerProfile
  *
- * @property string firstName
+ * @property string $firstName
  * @property string $lastName
  * @property \DateTime $birthDate
  * @property string $gender
@@ -43,5 +43,4 @@ class CustomerData extends DataObject {
         }
         $this->birthDate = $birthDate;
     }
-
 }
