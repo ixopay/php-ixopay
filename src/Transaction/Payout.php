@@ -49,6 +49,9 @@ class Payout extends AbstractTransactionWithReference
     /** @var string */
     protected $language;
 
+    /** @var bool */
+    protected $includeTracing = false;
+
     /**
      * @return string
      */
@@ -81,4 +84,17 @@ class Payout extends AbstractTransactionWithReference
         $this->language = $language;
     }
 
+    /**
+     * @return bool
+     */
+    public function getIncludeTracing() {
+        return $this->includeTracing;
+    }
+
+    /**
+     * @param bool $includeTracing
+     */
+    public function setIncludeTracing($includeTracing) {
+        $this->includeTracing = $includeTracing;
+    }
 }

@@ -35,6 +35,13 @@ class StatusRequestData {
     protected $merchantTransactionId;
 
     /**
+     * Enable transaction routing and cascading details in the response
+     *
+     * @var bool
+     */
+    protected $includeTracing = false;
+
+    /**
      * StatusRequestData constructor.
      *
      * @param null $uuid
@@ -98,6 +105,24 @@ class StatusRequestData {
      */
     public function setMerchantTransactionId($merchantTransactionId) {
         $this->merchantTransactionId = $merchantTransactionId;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIncludeTracing() {
+        return $this->includeTracing;
+    }
+
+    /**
+     * @param bool $includeTracing
+     *
+     * @return StatusRequestData
+     */
+    public function setIncludeTracing($includeTracing) {
+        $this->includeTracing = $includeTracing;
 
         return $this;
     }

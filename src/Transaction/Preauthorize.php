@@ -89,6 +89,9 @@ class Preauthorize extends AbstractTransactionWithReference
     /** @var int */
     protected $captureInMinutes = 0;
 
+    /** @var bool */
+    protected $includeTracing = false;
+
     /**
      * @return string
      */
@@ -166,6 +169,23 @@ class Preauthorize extends AbstractTransactionWithReference
     public function setCaptureInMinutes($captureInMinutes)
     {
         $this->captureInMinutes = $captureInMinutes;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIncludeTracing() {
+        return $this->includeTracing;
+    }
+
+    /**
+     * @param bool $includeTracing
+     * @return Preauthorize
+     */
+    public function setIncludeTracing($includeTracing) {
+        $this->includeTracing = $includeTracing;
 
         return $this;
     }

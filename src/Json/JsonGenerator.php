@@ -179,6 +179,10 @@ class JsonGenerator {
             $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
+        if ($transaction->getIncludeTracing()) {
+            $data['includeTracing'] = $transaction->getIncludeTracing();
+        }
+
         $this->updateData($transaction, $data);
 
         return $this->addRequestDcc($data, $transaction);
@@ -383,6 +387,10 @@ class JsonGenerator {
         if ($transaction->getL2L3Data()) {
             $l2l3Data = $transaction->getL2L3Data();
             $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
+        }
+
+        if ($transaction->getIncludeTracing()) {
+            $data['includeTracing'] = $transaction->getIncludeTracing();
         }
 
         $this->updateData($transaction, $data);

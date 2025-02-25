@@ -85,6 +85,9 @@ class Debit extends AbstractTransactionWithReference
     /** @var string */
     protected $language;
 
+    /** @var bool */
+    protected $includeTracing = false;
+
     /**
      * @return string
      */
@@ -135,6 +138,23 @@ class Debit extends AbstractTransactionWithReference
     public function setLanguage($language)
     {
         $this->language = $language;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIncludeTracing() {
+        return $this->includeTracing;
+    }
+
+    /**
+     * @param bool $includeTracing
+     *
+     * @return $this
+     */
+    public function setIncludeTracing($includeTracing) {
+        $this->includeTracing = $includeTracing;
         return $this;
     }
 }
