@@ -28,6 +28,8 @@ use Ixopay\Client\Transaction\Base\RecipientAccountPanInterface;
 use Ixopay\Client\Transaction\Base\RecipientAccountPanTrait;
 use Ixopay\Client\Transaction\Base\SurchargeInterface;
 use Ixopay\Client\Transaction\Base\SurchargeTrait;
+use Ixopay\Client\Transaction\Base\TraceableInterface;
+use Ixopay\Client\Transaction\Base\TraceableTrait;
 use Ixopay\Client\Transaction\Base\TransactionSplitsInterface;
 use Ixopay\Client\Transaction\Base\TransactionSplitsTrait;
 use Ixopay\Client\Transaction\Base\ThreeDSecureInterface;
@@ -52,7 +54,8 @@ class Debit extends AbstractTransactionWithReference
                        SurchargeInterface,
                        ReferenceSchemeTransactionIdentifierInterface,
                        RecipientAccountPanInterface,
-                       LevelTwoAndThreeDataInterface
+                       LevelTwoAndThreeDataInterface,
+                       TraceableInterface
 {
     use AddToCustomerProfileTrait;
     use AmountableTrait;
@@ -69,6 +72,7 @@ class Debit extends AbstractTransactionWithReference
     use ReferenceSchemeTransactionIdentifierTrait;
     use RecipientAccountPanTrait;
     use LevelTwoAndThreeDataTrait;
+    use TraceableTrait;
 
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
     const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';
@@ -84,9 +88,6 @@ class Debit extends AbstractTransactionWithReference
 
     /** @var string */
     protected $language;
-
-    /** @var bool */
-    protected $includeTracing = false;
 
     /**
      * @return string
@@ -138,23 +139,6 @@ class Debit extends AbstractTransactionWithReference
     public function setLanguage($language)
     {
         $this->language = $language;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIncludeTracing() {
-        return $this->includeTracing;
-    }
-
-    /**
-     * @param bool $includeTracing
-     *
-     * @return $this
-     */
-    public function setIncludeTracing($includeTracing) {
-        $this->includeTracing = $includeTracing;
         return $this;
     }
 }

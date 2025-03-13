@@ -12,6 +12,8 @@ use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataInterface;
 use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataTrait;
+use Ixopay\Client\Transaction\Base\TraceableInterface;
+use Ixopay\Client\Transaction\Base\TraceableTrait;
 use Ixopay\Client\Transaction\Base\TransactionSplitsInterface;
 use Ixopay\Client\Transaction\Base\TransactionSplitsTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
@@ -31,7 +33,8 @@ class Payout extends AbstractTransactionWithReference
                         OffsiteInterface,
                         TransactionSplitsInterface,
                         IndicatorInterface,
-                        LevelTwoAndThreeDataInterface
+                        LevelTwoAndThreeDataInterface,
+                        TraceableInterface
 {
 
     use AmountableTrait;
@@ -42,15 +45,13 @@ class Payout extends AbstractTransactionWithReference
     use PayByLinkTrait;
     use IndicatorTrait;
     use LevelTwoAndThreeDataTrait;
+    use TraceableTrait;
 
     /** @var string */
     protected $transactionToken;
 
     /** @var string */
     protected $language;
-
-    /** @var bool */
-    protected $includeTracing = false;
 
     /**
      * @return string
@@ -82,19 +83,5 @@ class Payout extends AbstractTransactionWithReference
     public function setLanguage($language)
     {
         $this->language = $language;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIncludeTracing() {
-        return $this->includeTracing;
-    }
-
-    /**
-     * @param bool $includeTracing
-     */
-    public function setIncludeTracing($includeTracing) {
-        $this->includeTracing = $includeTracing;
     }
 }
