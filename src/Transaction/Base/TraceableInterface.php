@@ -7,7 +7,8 @@ namespace Ixopay\Client\Transaction\Base;
  *
  * @package Ixopay\Client\Transaction\Base
  */
-interface TraceableInterface {
+interface TraceableInterface
+{
     public function getIncludeTracing(): bool;
 
     public function setIncludeTracing(bool $includeTracing): void;

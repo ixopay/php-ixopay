@@ -186,10 +186,7 @@ class JsonParser {
             $result->setTransactionSubType($json['transactionSubType']);
         }
 
-        if (isset($json['tracingData'])) {
-            $tracingData = $this->parseTracingData($json['tracingData']);
-            $result->setTracingData($tracingData);
-        }
+        $this->setTracingData($json, $result);
 
         return $result;
     }
@@ -312,10 +309,7 @@ class JsonParser {
             $result->setTransactionSubType($json['transactionSubType']);
         }
 
-        if (isset($json['tracingData'])) {
-            $tracingData = $this->parseTracingData($json['tracingData']);
-            $result->setTracingData($tracingData);
-        }
+        $this->setTracingData($json, $result);
 
         return $result;
     }
@@ -562,7 +556,8 @@ class JsonParser {
      *
      * @return TracingData
      */
-    protected function parseTracingData($data){
+    protected function parseTracingData($data)
+    {
         $transactions = $this->arrGet($data, 'transactions');
         $transactions = array_map(
             fn(array $transactionData) => $this->parseTracingDataTransaction($transactionData),
@@ -576,11 +571,28 @@ class JsonParser {
     }
 
     /**
+     * @param $json
+     * @param StatusResult|CallbackResult $result
+     *
+     * @return void
+     */
+    public function setTracingData($json, $result)
+    {
+        if (!isset($json['tracingData'])) {
+            return;
+        }
+
+        $tracingData = $this->parseTracingData($json['tracingData']);
+        $result->setTracingData($tracingData);
+    }
+
+    /**
      * @param $data
      *
      * @return TracingDataTransaction
      */
-    protected function parseTracingDataTransaction($data){
+    protected function parseTracingDataTransaction($data)
+    {
         $tracingDataTransaction = new TracingDataTransaction();
         $tracingDataTransaction->setUuid($this->arrGet($data, 'uuid'));
         $tracingDataTransaction->setSequenceNumber($this->arrGet($data, 'sequence_number'));
@@ -597,7 +609,8 @@ class JsonParser {
      *
      * @return TracingDataConnector
      */
-    protected function parseTracingDataConnector($data){
+    protected function parseTracingDataConnector($data)
+    {
         $tracingDataConnector = new TracingDataConnector();
         $tracingDataConnector->setGuid($this->arrGet($data, 'guid'));
 

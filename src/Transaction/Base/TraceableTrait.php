@@ -7,7 +7,8 @@ namespace Ixopay\Client\Transaction\Base;
  *
  * @package Ixopay\Client\Transaction\Base
  */
-trait TraceableTrait {
+trait TraceableTrait
+{
     protected bool $includeTracing = false;
 
     public function getIncludeTracing(): bool

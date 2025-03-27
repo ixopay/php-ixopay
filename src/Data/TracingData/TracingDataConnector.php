@@ -15,12 +15,15 @@ class TracingDataConnector extends DataObject
     protected $guid;
 
     /** @return string */
-    public function getGuid() {
+    public function getGuid()
+    {
         return $this->guid;
     }
 
     /** @param string $guid */
-    public function setGuid($guid) {
+    public function setGuid($guid)
+    {
         $this->guid = $guid;
+        return $this;
     }
 }

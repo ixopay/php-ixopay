@@ -15,12 +15,15 @@ class TracingData extends DataObject
     protected $transactions;
 
     /** @return TracingDataTransaction[] */
-    public function getTransactions() {
+    public function getTransactions()
+    {
         return $this->transactions;
     }
 
     /** @param TracingDataTransaction[] $transactions */
-    public function setTransactions($transactions) {
+    public function setTransactions($transactions)
+    {
         $this->transactions = $transactions;
+        return $this;
     }
 }

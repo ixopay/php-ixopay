@@ -112,7 +112,8 @@ class StatusRequestData {
     /**
      * @return bool
      */
-    public function getIncludeTracing() {
+    public function getIncludeTracing()
+    {
         return $this->includeTracing;
     }
 
@@ -121,9 +122,9 @@ class StatusRequestData {
      *
      * @return StatusRequestData
      */
-    public function setIncludeTracing($includeTracing) {
+    public function setIncludeTracing($includeTracing)
+    {
         $this->includeTracing = $includeTracing;
-
         return $this;
     }
 

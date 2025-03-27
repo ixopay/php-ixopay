@@ -680,7 +680,8 @@ class StatusResult {
      *
      * @return $this
      */
-    public function setTracingData($tracingData) {
+    public function setTracingData($tracingData)
+    {
         $this->tracingData = $tracingData;
         return $this;
     }
