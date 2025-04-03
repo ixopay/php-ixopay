@@ -14,6 +14,9 @@ use Ixopay\Client\Data\Result\ResultData;
 use Ixopay\Client\Data\Result\ScheduleResultData;
 use Ixopay\Client\Data\Result\WalletData as ReturnWalletData;
 use Ixopay\Client\Data\RiskCheckData;
+use Ixopay\Client\Data\TracingData\TracingData;
+use Ixopay\Client\Data\TracingData\TracingDataConnector;
+use Ixopay\Client\Data\TracingData\TracingDataTransaction;
 use Ixopay\Client\Data\TransactionSplit;
 use Ixopay\Client\Dispute\DisputeResult;
 use Ixopay\Client\Options\OptionsResult;
@@ -183,6 +186,8 @@ class JsonParser {
             $result->setTransactionSubType($json['transactionSubType']);
         }
 
+        $this->setTracingData($json, $result);
+
         return $result;
     }
 
@@ -303,6 +308,8 @@ class JsonParser {
         if (isset($json['transactionSubType'])) {
             $result->setTransactionSubType($json['transactionSubType']);
         }
+
+        $this->setTracingData($json, $result);
 
         return $result;
     }
@@ -542,6 +549,72 @@ class JsonParser {
         $customerProfileData->setPaymentToken($this->arrGet($data, 'paymentToken'));
 
         return $customerProfileData;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return TracingData
+     */
+    protected function parseTracingData($data)
+    {
+        $transactions = $this->arrGet($data, 'transactions');
+        $transactions = array_map(
+            fn(array $transactionData) => $this->parseTracingDataTransaction($transactionData),
+            $transactions
+        );
+
+        $tracingData = new TracingData();
+        $tracingData->setTransactions($transactions);
+
+        return $tracingData;
+    }
+
+    /**
+     * @param $json
+     * @param StatusResult|CallbackResult $result
+     *
+     * @return void
+     */
+    public function setTracingData($json, $result)
+    {
+        if (!isset($json['tracingData'])) {
+            return;
+        }
+
+        $tracingData = $this->parseTracingData($json['tracingData']);
+        $result->setTracingData($tracingData);
+    }
+
+    /**
+     * @param $data
+     *
+     * @return TracingDataTransaction
+     */
+    protected function parseTracingDataTransaction($data)
+    {
+        $tracingDataTransaction = new TracingDataTransaction();
+        $tracingDataTransaction->setUuid($this->arrGet($data, 'uuid'));
+        $tracingDataTransaction->setSequenceNumber($this->arrGet($data, 'sequence_number'));
+        $tracingDataTransaction->setStatus($this->arrGet($data, 'status'));
+
+        $connector = $this->parseTracingDataConnector($this->arrGet($data, 'connector'));
+        $tracingDataTransaction->setConnector($connector);
+
+        return $tracingDataTransaction;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return TracingDataConnector
+     */
+    protected function parseTracingDataConnector($data)
+    {
+        $tracingDataConnector = new TracingDataConnector();
+        $tracingDataConnector->setGuid($this->arrGet($data, 'guid'));
+
+        return $tracingDataConnector;
     }
 
     /**

@@ -28,6 +28,8 @@ use Ixopay\Client\Transaction\Base\RecipientAccountPanInterface;
 use Ixopay\Client\Transaction\Base\RecipientAccountPanTrait;
 use Ixopay\Client\Transaction\Base\SurchargeInterface;
 use Ixopay\Client\Transaction\Base\SurchargeTrait;
+use Ixopay\Client\Transaction\Base\TraceableInterface;
+use Ixopay\Client\Transaction\Base\TraceableTrait;
 use Ixopay\Client\Transaction\Base\TransactionSplitsInterface;
 use Ixopay\Client\Transaction\Base\TransactionSplitsTrait;
 use Ixopay\Client\Transaction\Base\ThreeDSecureInterface;
@@ -52,7 +54,8 @@ class Preauthorize extends AbstractTransactionWithReference
                               SurchargeInterface,
                               ReferenceSchemeTransactionIdentifierInterface,
                               RecipientAccountPanInterface,
-                              LevelTwoAndThreeDataInterface
+                              LevelTwoAndThreeDataInterface,
+                              TraceableInterface
 {
 
     use AddToCustomerProfileTrait;
@@ -70,6 +73,7 @@ class Preauthorize extends AbstractTransactionWithReference
     use ReferenceSchemeTransactionIdentifierTrait;
     use RecipientAccountPanTrait;
     use LevelTwoAndThreeDataTrait;
+    use TraceableTrait;
 
     const TRANSACTION_INDICATOR_SINGLE = 'SINGLE';
     const TRANSACTION_INDICATOR_INITIAL = 'INITIAL';

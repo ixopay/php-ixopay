@@ -12,6 +12,8 @@ use Ixopay\Client\Transaction\Base\ItemsInterface;
 use Ixopay\Client\Transaction\Base\ItemsTrait;
 use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataInterface;
 use Ixopay\Client\Transaction\Base\LevelTwoAndThreeDataTrait;
+use Ixopay\Client\Transaction\Base\TraceableInterface;
+use Ixopay\Client\Transaction\Base\TraceableTrait;
 use Ixopay\Client\Transaction\Base\TransactionSplitsInterface;
 use Ixopay\Client\Transaction\Base\TransactionSplitsTrait;
 use Ixopay\Client\Transaction\Base\OffsiteInterface;
@@ -31,7 +33,8 @@ class Payout extends AbstractTransactionWithReference
                         OffsiteInterface,
                         TransactionSplitsInterface,
                         IndicatorInterface,
-                        LevelTwoAndThreeDataInterface
+                        LevelTwoAndThreeDataInterface,
+                        TraceableInterface
 {
 
     use AmountableTrait;
@@ -42,6 +45,7 @@ class Payout extends AbstractTransactionWithReference
     use PayByLinkTrait;
     use IndicatorTrait;
     use LevelTwoAndThreeDataTrait;
+    use TraceableTrait;
 
     /** @var string */
     protected $transactionToken;
@@ -80,5 +84,4 @@ class Payout extends AbstractTransactionWithReference
     {
         $this->language = $language;
     }
-
 }

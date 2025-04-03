@@ -179,6 +179,7 @@ class JsonGenerator {
             $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
+        $this->addTracingRules($transaction, $data);
         $this->updateData($transaction, $data);
 
         return $this->addRequestDcc($data, $transaction);
@@ -385,6 +386,7 @@ class JsonGenerator {
             $data['l2l3Data'] = $this->stringifyL2L3Data($l2l3Data);
         }
 
+        $this->addTracingRules($transaction, $data);
         $this->updateData($transaction, $data);
 
         return $data;
@@ -832,5 +834,18 @@ class JsonGenerator {
         }
 
         return $data;
+    }
+
+    /**
+     * @param Payout|Debit|Preauthorize $transaction
+     * @param array $data
+     *
+     * @return void
+     */
+    public function addTracingRules($transaction, &$data)
+    {
+        if ($transaction->getIncludeTracing()) {
+            $data['includeTracing'] = $transaction->getIncludeTracing();
+        }
     }
 }

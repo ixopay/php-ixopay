@@ -463,6 +463,11 @@ class Client
             throw new TypeException('Either transactionUuid or merchantTransactionId is required!');
         }
 
+        $includeTracing = $statusRequestData->getIncludeTracing();
+        if ($includeTracing) {
+            $endpoint .= '?includeTracing=' . $includeTracing;
+        }
+
         $httpResponse = $this->sendJsonApiRequest($endpoint, [], true);
 
         return $this->getParser()->parseStatusResult($httpResponse->getBody());
