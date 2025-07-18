@@ -115,6 +115,16 @@ class CreditcardData extends ResultData {
     /**
      * @var string
      */
+    protected $merchantAdviceCode;
+
+    /**
+     * @var string
+     */
+    protected $parsedMerchantAdviceCode;
+
+    /**
+     * @var string
+     */
     protected $schemeTransactionIdentifier;
 
     /**
@@ -433,6 +443,42 @@ class CreditcardData extends ResultData {
     /**
      * @return string
      */
+    public function getMerchantAdviceCode()
+    {
+        return $this->merchantAdviceCode;
+    }
+
+    /**
+     * @param string $merchantAdviceCode
+     * @return $this
+     */
+    public function setMerchantAdviceCode($merchantAdviceCode)
+    {
+        $this->merchantAdviceCode = $merchantAdviceCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getParsedMerchantAdviceCode()
+    {
+        return $this->parsedMerchantAdviceCode;
+    }
+
+    /**
+     * @param string $parsedMerchantAdviceCode
+     * @return $this
+     */
+    public function setParsedMerchantAdviceCode($parsedMerchantAdviceCode)
+    {
+        $this->parsedMerchantAdviceCode = $parsedMerchantAdviceCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getSchemeTransactionIdentifier()
     {
         return $this->schemeTransactionIdentifier;
@@ -471,6 +517,8 @@ class CreditcardData extends ResultData {
             // 'firstSixDigits',
             'lastFourDigits',
             'lastName',
+            'merchantAdviceCode',
+            'parsedMerchantAdviceCode',
             'schemeTransactionIdentifier',
             'threeDSecure',
             'type',
